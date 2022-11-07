@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { AimModel, EMPTY_AIM } from '../interfaces/aim.model';
 
 @Component({
@@ -7,9 +7,9 @@ import { AimModel, EMPTY_AIM } from '../interfaces/aim.model';
   styleUrls: ['./aim-raw.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AimRawComponent {
+export class AimRawComponent implements OnChanges {
   public readonly gradientColors = { '0%': '#ff0000', '50%': '#ff0000', '75%': '#ff9900', '100%': '#0f0' };
-  public isTitleEdit = false;
+  @Input() isTitleEdit = false;
   @Input() isExpand = false;
   @Input() isEdit = false;
   @Input() aim: AimModel = EMPTY_AIM;
@@ -23,6 +23,11 @@ export class AimRawComponent {
   inlineEditorActions = ['save', 'cancel'];
 
 
+  ngOnChanges(data: SimpleChanges): void {
+    if (data['aim']?.firstChange && this.isEdit) {
+      this.isTitleEdit = true;
+    }
+  }
   toggle(): void {
     this.isExpand = !this.isExpand;
     this.expand.emit(this.isExpand);

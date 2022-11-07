@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { AimModel, EMPTY_AIM } from '../interfaces/aim.model';
 import { TargetService } from '../target.service';
 

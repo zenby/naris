@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { AimModel, EMPTY_AIM } from '../interfaces/aim.model';
+import { AimModel } from '../interfaces/aim.model';
 
 @Component({
   selector: 'soer-aims-tree',

@@ -30,9 +30,6 @@ function calcProgress(target: AimModel): number {
 @Injectable()
 export class TargetService {
 
-  constructor() { 
-    console.log('????', 'TARGET SERVICE');
-  }
 
   factory(target: AimModel): TargetMiddleware {
     return new TargetMiddleware(target);

@@ -12,5 +12,9 @@
         <div class="card_progress">
             <nz-progress [nzStrokeColor]="gradientColors" [nzPercent]="target.progress"></nz-progress>
         </div>
-        <soer-aims-tree [isEdit]="isEdit" [root]="target" (update)="check($event, target)" (delete)="onDelete($event)" (add)="onAddTo($event)"></soer-aims-tree>
+        <soer-aims-tree [isEdit]="isEdit" [tasks]="target.tasks" (update)="check($event, target)" (delete)="onDelete($event)" (add)="onAddTo($event)"></soer-aims-tree>
+
+        <div class="card_edit-toolbar">
+        <soer-toolbar *ngIf="isEdit" [actions]="['plus']" (action)="onAction($event)"  size="large"></soer-toolbar>
+        </div>
 </nz-card>

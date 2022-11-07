@@ -1,5 +1,4 @@
-<ng-container  *ngIf="root.progress !== doneProgress">
-    <ng-container *ngFor="let task of root.tasks; let index = index;">
+    <ng-container *ngFor="let task of tasks; let index = index;">
         <soer-aim-raw 
             [isEdit]="isEdit"
             [aim]="task"
@@ -8,5 +7,5 @@
             (add)="add.emit($event)"
         ></soer-aim-raw>
     </ng-container>
-</ng-container>
+
 

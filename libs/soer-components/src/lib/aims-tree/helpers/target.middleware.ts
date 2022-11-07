@@ -31,13 +31,13 @@ export class TargetMiddleware {
     }
 
     public addTaskTo(aim: AimModel): AimModel {
-        aim.tasks.push({
+        aim.tasks = [...aim.tasks, {
             id: UUID.UUID(),
-            title: 'New task' + Math.random(),
+            title: 'New task ' + aim.tasks.length,
             progress: 0,
             overview: '',
             tasks: []
-        });
+        }];
         this.updateProgress();
         return this.target;
     }

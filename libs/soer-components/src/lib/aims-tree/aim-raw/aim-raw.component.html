@@ -39,7 +39,7 @@
         </ng-template>
     </div>
     <div class="aim" *ngIf="isExpand && aim.tasks.length > 0">
-        <soer-aims-tree [isEdit]="isEdit" [root]="aim" (update)="update.emit($event)"
+        <soer-aims-tree [isEdit]="isEdit" [tasks]="aim.tasks" (update)="update.emit($event)"
             (delete)="toolbarAction('delete', $event)" (add)="toolbarAction('plus', $event)"></soer-aims-tree>
     </div>
 </div>

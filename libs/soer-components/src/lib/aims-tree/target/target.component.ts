@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AimModel, EMPTY_AIM } from '../interfaces/aim.model';
 import { TargetService } from '../target.service';
 
@@ -37,8 +37,18 @@ export class TargetComponent {
   }
 
   onDelete(aim: AimModel): void {
-    console.log('????');
     this.targetService.factory(this.target).delete(aim);
+  }
+
+  onAction(action: string): void {
+    switch(action) {
+      case 'plus':
+        this.onAddTo(this.target);
+        break;
+      case 'save':
+        this.onSave();
+        break;
+    }
   }
 
 }

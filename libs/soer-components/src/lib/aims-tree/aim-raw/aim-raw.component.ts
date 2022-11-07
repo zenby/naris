@@ -43,6 +43,13 @@ export class AimRawComponent {
   }
 
   updateTitle(newTitle: string): void  {
+    if (newTitle === '') {
+      if (this.aim.tasks.length > 0) {
+        return;
+      }
+      this.delete.emit(this.aim);
+      return;
+    }
     this.aim.title = newTitle;
     this.isTitleEdit = false;
   }

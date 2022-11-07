@@ -9,8 +9,8 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, View
           (keydown.esc)="onCancel()"
           (keydown.enter)="onEnter($event)"
       ></textarea>
-      <a nz-button nzSize="large" nzType="link" (click)="onEnter($event)" ><i nz-icon nzType="check-circle"></i></a>
-      <a nz-button nzDanger nzSize="large" nzType="link" (click)="onCancel()"><i nz-icon nzType="close-circle"></i></a>
+      <button nz-button nzSize="large" nzType="link" (click)="onEnter($event)" [disabled]="currentText.length === 0"><i nz-icon nzType="check-circle"></i></button>
+      <button nz-button nzDanger nzSize="large" nzType="link" (click)="onCancel()"><i nz-icon nzType="close-circle"></i></button>
   `,
   styleUrls: ['./inline-editor.component.scss']
 })

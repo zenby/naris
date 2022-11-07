@@ -10,6 +10,7 @@
             ><i nz-icon nzType="undo"></i></button>            
 <button
             *ngIf="!checked"
+            [disabled]="disabled"
             nz-button
             nzType="default"
             nzSize="small"

@@ -20,6 +20,7 @@
             <nz-row *ngIf="!isTitleEdit">
                 <nz-col nzFlex="1">
                     <soer-todo [label]="aim.title" [checked]="aim.progress === doneProgress"
+                        [disabled]="isEdit"
                         (update)="update.emit(aim)"></soer-todo>
                 </nz-col>
                 <nz-col *ngIf="isEdit" nzFlex="none">
@@ -37,7 +38,7 @@
 
         </ng-template>
     </div>
-    <div class="aim" *ngIf="isExpand">
+    <div class="aim" *ngIf="isExpand && aim.tasks.length > 0">
         <soer-aims-tree [isEdit]="isEdit" [root]="aim" (update)="update.emit($event)"
             (delete)="toolbarAction('delete', $event)" (add)="toolbarAction('plus', $event)"></soer-aims-tree>
     </div>

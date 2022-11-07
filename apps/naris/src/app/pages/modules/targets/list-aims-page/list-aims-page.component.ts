@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/cor
 import { ActivatedRoute, Router } from '@angular/router';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
 import { AimModel } from '@soer/soer-components';
-import { CommandUpdate, DataStoreService, DtoPack, OK } from '@soer/sr-dto';
+import { CommandDelete, CommandUpdate, DataStoreService, DtoPack, OK } from '@soer/sr-dto';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { filter, first, Observable } from 'rxjs';
 import { convertToJsonDTO, parseJsonDTOPack } from '../../../../api/json.dto.helpers';
@@ -57,6 +57,13 @@ export class ListAimsPageComponent implements OnInit {
         { ...convertToJsonDTO(target, ['id']), id: target.id },
         {skipRoute: true, skipSyncRead: true}
       )
+    );
+  }
+
+  onDelete(target: AimModel): void {
+    const tmpTargetId = {...this.targetId, key: {tid: target.id}};
+    this.bus$.publish(
+      new CommandDelete(tmpTargetId, {}, {tid: target.id})
     );
   }
 

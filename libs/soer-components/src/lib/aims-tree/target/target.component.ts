@@ -16,6 +16,7 @@ export class TargetComponent {
   @Input() target: AimModel = EMPTY_AIM;
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() edit: EventEmitter<AimModel> = new EventEmitter<AimModel>();
+  @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
 
   constructor(private targetService: TargetService) {}
 

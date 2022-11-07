@@ -4,6 +4,7 @@
             <!--<a nz-button nzType="link" (click)="hideCompleted = !hideCompleted"><i nz-icon [nzType]="hideCompleted ? 'eye' : 'eye-invisible'"></i></a>-->
             <a *ngIf="!isEdit" nz-button nzType="link" (click)="isEdit = !isEdit"><i nz-icon [nzType]="'edit'"></i></a>
             <a *ngIf="isEdit" nz-button nzType="link" (click)="onSave()"><i nz-icon [nzType]="'save'"></i></a>
+            <a *ngIf="isEdit" nz-button nzType="link" nzDanger (click)="delete.emit(target)"><i nz-icon [nzType]="'delete'"></i></a>
         </div>
 
         <div class="card_title">

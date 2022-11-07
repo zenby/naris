@@ -1,13 +1,7 @@
-import { AimModel } from "../interfaces/aim.model";
 import { UUID } from "angular2-uuid";
+import { AimModel } from "../interfaces/aim.model";
 
 
-function propagateProgress(target: AimModel, progress: number): void {
-    if (target.tasks?.length > 0) {
-      target.tasks.forEach(task => propagateProgress(task, progress));
-    }
-    target.progress = progress;
-  }
   
   function updateProgress(target: AimModel): void {
     if (target.tasks?.length > 0) {

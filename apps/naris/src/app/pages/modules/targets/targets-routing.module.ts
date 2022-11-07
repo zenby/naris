@@ -17,11 +17,16 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        data: { header: {title: 'Сегодня', subtitle: 'текущие задачи'}},
+        data: { header: {title: 'Сегодня', subtitle: 'текущие задачи'},
+          controls: [
+            {title: 'Добавить', path: ['.', {outlets: {popup: ['target', 'new']}}], icon: 'plus'},
+          ]
+
+        },
         component: ListAimsPageComponent,
         resolve: {
           targets: 'targetsEmitter'
-        }
+        },
       },
       {
         path: 'filter/:tid',

@@ -9,6 +9,7 @@ import { AimModel, EMPTY_AIM } from '../interfaces/aim.model';
 })
 export class AimRawComponent {
   public readonly gradientColors = { '0%': '#ff0000', '50%': '#ff0000', '75%': '#ff9900', '100%': '#0f0' };
+  public isTitleEdit = false;
   @Input() isExpand = false;
   @Input() isEdit = false;
   @Input() aim: AimModel = EMPTY_AIM;
@@ -19,6 +20,7 @@ export class AimRawComponent {
   @Output() expand: EventEmitter<boolean> = new EventEmitter<boolean>();
   doneProgress = 100;
   actions = ['plus', 'edit', 'delete']
+  inlineEditorActions = ['save', 'cancel'];
 
 
   toggle(): void {
@@ -29,15 +31,19 @@ export class AimRawComponent {
   toolbarAction(action: string, task: AimModel): void {
     switch(action) {
       case 'edit':
-
+          this.isTitleEdit = !this.isTitleEdit;
         break;
       case 'plus':
          this.add.emit(task)
         break;
       case 'delete':
-        console.log('Delete');
         this.delete.emit(task);
         break;
     }
+  }
+
+  updateTitle(newTitle: string): void  {
+    this.aim.title = newTitle;
+    this.isTitleEdit = false;
   }
 }

@@ -36,23 +36,6 @@
           <a *ngIf="userInfo.role === 'GUEST'" [routerLink]="['/', 'pages', 'pay']" nz-button nzType="primary">Улучшить
             уровень</a>
 
-          <ng-container *ngIf="(helpUs$ | async) as helpUs">
-            <nz-badge *ngIf="helpUs.length > 0" [nzCount]="helpUs.length" [nzOverflowCount]="9">
-              <button nz-button nzTrigger="click" nzType="default" nzShape="circle" nz-popover
-                nzPopoverTitle="Нужна помощь" nzPopoverTrigger="click" [nzPopoverContent]="contribHelp"
-                [nzPopoverArrowPointAtCenter]="false" nzPopoverPlacement="leftTop"><i nz-icon nzType="github"
-                  nzTheme="outline"></i></button>
-            </nz-badge>
-
-            <ng-template #contribHelp>
-              <div *ngFor="let message of helpUs">
-                <p>{{message.body}}</p>
-                <a [href]="message.html_url" target="_blank">Подробнее</a>
-                <nz-divider></nz-divider>
-              </div>
-            </ng-template>
-
-          </ng-container>
           <button nz-button nzTrigger="click" nzType="default" nzShape="circle"><i nz-icon nzType="bell"
               nzTheme="outline"></i></button>
         </ng-container>

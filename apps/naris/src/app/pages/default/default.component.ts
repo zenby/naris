@@ -38,7 +38,6 @@ export class DefaultComponent implements OnInit, OnDestroy {
   }
 
 
-  public helpUs$: Observable<any>;
   menuItems = MAIN_MENU;
 
   constructor(
@@ -51,17 +50,7 @@ export class DefaultComponent implements OnInit, OnDestroy {
               private message: NzMessageService,
               private breakpointService: NzBreakpointService,
               private personalActivtiy: PersonalActivityService
-              ) {
-    this.helpUs$ = this.store$.of(this.issuesId).pipe(map(data => {
-      if (data.payload?.status === OK) {
-        return data.payload.items.map((item: any) => {
-          const {body, html_url} = item;
-          return {body, html_url};
-        });
-      }
-      return data;
-    }));
-  }
+              ) {}
 
   ngOnInit(): void {
 

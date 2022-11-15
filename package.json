@@ -8,7 +8,8 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "storybook:naris": "nx run naris:storybook"
+    "storybook:naris:serve": "nx storybook naris",
+    "storybook:naris:build": "nx build-storybook naris"
   },
   "private": true,
   "dependencies": {
@@ -66,7 +67,6 @@
     "prettier": "^2.7.0",
     "ts-jest": "^28.0.5",
     "ts-node": "~10.8.0",
-    "typescript": "4.7.3",
-    "webpack": "^5.64.0"
+    "typescript": "4.7.3"
   }
 }

@@ -17,10 +17,14 @@ export class LoginComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    if (this.auth.token) {
+    const isTokenValid = this.auth.isTokenValid(this.auth.token);
+
+    if (isTokenValid) {
       this.router.navigate(['pages']);
+
       return;
     }
+
     this.loading = false;
   }
 

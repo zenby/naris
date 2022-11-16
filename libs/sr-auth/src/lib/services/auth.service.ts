@@ -39,9 +39,15 @@ export class AuthService {
   constructor(
     @Inject('AuthServiceConfig') private options: AuthEmitter,
     private bus$: MixedBusService,
-    private http: HttpClient) { 
-      this.token = localStorage.getItem(TOKEN) || null;
+    private http: HttpClient) {
+        const token: string | null = localStorage.getItem(TOKEN);
+
+        this.token = this.isTokenValid(token) ? token : null;
     }
+
+  public isTokenValid(token: string | null) {
+    return token ? !this.isTokenExpired(token) : false;
+  }
 
   logout(): void {
     this.token = null;
@@ -90,5 +96,11 @@ export class AuthService {
       this.decodeJWT(this.token);
     }
     return this.decodedJSON.role.toUpperCase();
+  }
+
+  private isTokenExpired(token: string) {
+    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+
+    return Date.now() > expiry * 1000;
   }
 }

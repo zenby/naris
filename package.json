@@ -7,7 +7,9 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "storybook:naris:serve": "nx storybook naris",
+    "storybook:naris:build": "nx build-storybook naris"
   },
   "private": true,
   "dependencies": {
@@ -43,8 +45,14 @@
     "@nrwl/eslint-plugin-nx": "14.3.5",
     "@nrwl/jest": "14.3.5",
     "@nrwl/linter": "14.3.5",
+    "@nrwl/storybook": "14.3.5",
     "@nrwl/tao": "14.3.5",
     "@nrwl/workspace": "14.3.5",
+    "@storybook/addon-essentials": "~6.5.9",
+    "@storybook/angular": "~6.5.9",
+    "@storybook/builder-webpack5": "~6.5.9",
+    "@storybook/core-server": "~6.5.9",
+    "@storybook/manager-webpack5": "~6.5.9",
     "@types/jest": "^28.1.1",
     "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.28.0",

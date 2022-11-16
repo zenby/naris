@@ -29,7 +29,7 @@ export class AuthService {
         this.checkIsAuth();
     }
 
-  public get isAuth() {
+  public get isAuth(): boolean {
     return this.checkIsAuth();
   }
 
@@ -117,5 +117,4 @@ export class AuthService {
     }
     return this.decodedJSON.role.toUpperCase();
   }
-
 }

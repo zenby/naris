@@ -13,13 +13,13 @@ export class LoginComponent implements OnInit {
   public loading = true;
 
   constructor(
-    private auth: AuthService,
+    private authService: AuthService,
     private router: Router) { }
 
   ngOnInit(): void {
-    const isTokenValid = this.auth.isTokenValid(this.auth.token);
+    const isAuth = this.authService.isAuth;
 
-    if (isTokenValid) {
+    if (isAuth) {
       this.router.navigate(['pages']);
 
       return;

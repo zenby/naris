@@ -45,7 +45,7 @@ export class AuthService {
         this.token = this.isTokenValid(token) ? token : null;
     }
 
-  public isTokenValid(token: string | null) {
+  public isTokenValid(token: string | null): boolean {
     return token ? !this.isTokenExpired(token) : false;
   }
 
@@ -98,8 +98,8 @@ export class AuthService {
     return this.decodedJSON.role.toUpperCase();
   }
 
-  private isTokenExpired(token: string) {
-    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+  private isTokenExpired(token: string): boolean {
+    const expiry: number = (JSON.parse(atob(token.split('.')[1]))).exp;
 
     return Date.now() > expiry * 1000;
   }

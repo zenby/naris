@@ -15,18 +15,33 @@ const TOKEN = 'token';
 export class AuthService {
 
   static cookieCheck = false;
-  private decodedJSON: JWTModel = {id: -1, email: '', role: 'GUEST', iat: 0, exp: 0};
 
   public tokenUpdate$ = new BehaviorSubject<string|null>(null);
 
+  private decodedJSON: JWTModel = {id: -1, email: '', role: 'GUEST', iat: 0, exp: 0};
+
   private _token: string|null = '';
+
+  constructor(
+    @Inject('AuthServiceConfig') private options: AuthEmitter,
+    private bus$: MixedBusService,
+    private http: HttpClient) {
+        this.checkIsAuth();
+    }
+
+  public get isAuth(): boolean {
+    return this.checkIsAuth();
+  }
 
   public get token(): string|null {
     return this._token;
   }
+
   public set token(n: string|null) {
     this._token = n;
+
     n !== null ? localStorage.setItem(TOKEN, n) : localStorage.removeItem(TOKEN);
+
     this.decodeJWT(n);
     this.tokenUpdate$.next(n);
 
@@ -36,12 +51,23 @@ export class AuthService {
     
   }
 
-  constructor(
-    @Inject('AuthServiceConfig') private options: AuthEmitter,
-    private bus$: MixedBusService,
-    private http: HttpClient) { 
-      this.token = localStorage.getItem(TOKEN) || null;
-    }
+  private checkIsAuth(): boolean {
+    const token: string | null = localStorage.getItem(TOKEN);
+
+    this.token = this.isTokenValid(token) ? token : null;
+
+    return this.token ? true : false;
+  }
+
+  private isTokenValid(token: string | null): boolean {
+    return token ? !this.isTokenExpired(token) : false;
+  }
+
+  private isTokenExpired(token: string): boolean {
+    const expiry: number = (JSON.parse(atob(token.split('.')[1]))).exp;
+
+    return Date.now() > expiry * 1000;
+  }
 
   logout(): void {
     this.token = null;

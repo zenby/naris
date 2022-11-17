@@ -13,14 +13,18 @@ export class LoginComponent implements OnInit {
   public loading = true;
 
   constructor(
-    private auth: AuthService,
+    private authService: AuthService,
     private router: Router) { }
 
   ngOnInit(): void {
-    if (this.auth.token) {
+    const isAuth = this.authService.isAuth;
+
+    if (isAuth) {
       this.router.navigate(['pages']);
+
       return;
     }
+
     this.loading = false;
   }
 

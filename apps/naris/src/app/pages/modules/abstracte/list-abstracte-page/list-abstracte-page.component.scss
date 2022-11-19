@@ -4,4 +4,8 @@
         max-height: 10em;
         overflow: hidden;
     }
+    ::ng-deep.ant-card-actions {
+        display: flex;
+        align-items: center;
+    }
 }

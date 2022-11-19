@@ -3,3 +3,9 @@
   max-height: 95vh;
   overflow-y: scroll;
 }
+.ant-dropdown-menu-item > *,
+.ant-dropdown-menu-submenu-vertical > * {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

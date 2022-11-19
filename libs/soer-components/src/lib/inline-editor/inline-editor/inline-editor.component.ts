@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'sr-text-edit',
+  selector: 'soer-inline-text-edit',
   template: `
       <textarea #textarea
           (blur)="confirm()"
@@ -9,12 +9,12 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, View
           (keydown.esc)="onCancel()"
           (keydown.enter)="onEnter($event)"
       ></textarea>
-      <a nz-button nzSize="large" nzType="link" (click)="onEnter($event)" ><i nz-icon nzType="check-circle"></i></a>
-      <a nz-button nzDanger nzSize="large" nzType="link" (click)="onCancel()"><i nz-icon nzType="close-circle"></i></a>
+      <button nz-button nzSize="large" nzType="link" (click)="onEnter($event)" [disabled]="currentText.length === 0"><i nz-icon nzType="check-circle"></i></button>
+      <button nz-button nzDanger nzSize="large" nzType="link" (click)="onCancel()"><i nz-icon nzType="close-circle"></i></button>
   `,
-  styleUrls: ['./sr-text-edit.component.scss']
+  styleUrls: ['./inline-editor.component.scss']
 })
-export class SrTextEditComponent implements AfterViewInit {
+export class InlineEditorComponent implements AfterViewInit {
 
   @Input() srText = '';
   @Output() srTextChange = new EventEmitter<string>();
@@ -30,11 +30,14 @@ export class SrTextEditComponent implements AfterViewInit {
   }
 
   confirm(): void {
-    if (this.currentText !== this.beforeText) {
-      this.ok.emit(this.currentText);
-    } else {
-      this.onCancel();
-    }
+    
+    setTimeout(() => {
+      if (this.currentText !== this.beforeText) {
+        this.ok.emit(this.currentText);
+      } else {
+        this.onCancel();
+      }
+    }, 100);
 
   }
 

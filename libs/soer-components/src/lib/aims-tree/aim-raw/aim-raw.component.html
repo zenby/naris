@@ -1,0 +1,45 @@
+<div class="task">
+    <div class="task-container">
+        <ng-container *ngIf="aim.tasks.length > 0;else aimDone">
+            <nz-row *ngIf="!isTitleEdit;else aimDone">
+                <nz-col nzFlex="1">
+                    <a class="tasks_expander" *ngIf="aim.tasks.length > 0" (click)="toggle()">
+                        <nz-progress [nzStrokeColor]="gradientColors" [nzPercent]="aim.progress" nzType="circle"
+                            [nzWidth]="30">
+                        </nz-progress>
+                        <i nz-icon [nzType]="isExpand ? 'down' : 'right'"></i>
+                        <span>{{aim.title}}</span>
+                    </a>
+                </nz-col>
+                <nz-col *ngIf="isEdit" nzFlex="none">
+                    <soer-toolbar [actions]="actions" (action)="toolbarAction($event, aim)"></soer-toolbar>
+                </nz-col>
+            </nz-row>
+        </ng-container>
+        <ng-template #aimDone>
+            <nz-row *ngIf="!isTitleEdit">
+                <nz-col nzFlex="1">
+                    <soer-todo [label]="aim.title" [checked]="aim.progress === doneProgress"
+                        [disabled]="isEdit"
+                        (update)="update.emit(aim)"></soer-todo>
+                </nz-col>
+                <nz-col *ngIf="isEdit" nzFlex="none">
+                    <soer-toolbar [actions]="actions" (action)="toolbarAction($event, aim)"></soer-toolbar>
+                </nz-col>
+            </nz-row>
+
+            <nz-row *ngIf="isTitleEdit">
+                <nz-col nzFlex="1">
+                    <soer-inline-text-edit [(srText)]="aim.title" (cancel)="this.isTitleEdit = !this.isTitleEdit" (ok)="updateTitle($event)"></soer-inline-text-edit>
+                </nz-col>
+            </nz-row>
+
+
+
+        </ng-template>
+    </div>
+    <div class="aim" [ngStyle]="{display: isExpand && aim.tasks.length > 0 ? 'block' : 'none'}">
+        <soer-aims-tree [isEdit]="isEdit" [tasks]="aim.tasks" (update)="update.emit($event)"
+            (delete)="toolbarAction('delete', $event)" (add)="toolbarAction('plus', $event)"></soer-aims-tree>
+    </div>
+</div>

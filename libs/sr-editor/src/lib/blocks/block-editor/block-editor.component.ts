@@ -23,6 +23,7 @@ export class BlockEditorComponent {
   }
   @Input() localIndex = -1;
   @Input() isEdit = false;
+
   @Output() addBlock = new EventEmitter<number>();
   @Output() removeBlock = new EventEmitter<number>();
   @Output() endEdit = new EventEmitter<number>();
@@ -41,14 +42,17 @@ export class BlockEditorComponent {
       this.isEdit = false;
       this.addBlock.next(this.localIndex);
     }
+
     if ($event.altKey && $event.code === 'Backspace') {
       this.endEdit.next(this.localIndex);
       this.isEdit = false;
       this.removeBlock.next(this.localIndex);
     }
+
     if ($event.altKey && $event.code === 'ArrowUp') {
       this.moveUp.next(this.localIndex);
     }
+
     if ($event.altKey && $event.code === 'ArrowDown') {
       this.moveDown.next(this.localIndex);
     }

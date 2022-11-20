@@ -10,10 +10,6 @@
   .row {
     flex-direction: row;
   }
-
-  .markdown-block {
-    margin: 0.2rem 1rem;
-  }
 }
 
 @media screen and (max-width: 768px) {
@@ -33,10 +29,19 @@
   .edit {
     flex-basis: 100%;
     flex-grow: 1;
+
+    @media screen and (max-width: 768px) {
+      margin-top: 10px;
+    }
   }
   .help {
     font-size: 0.7rem;
     font-style: italic;
     color: gray;
   }
+}
+
+.info {
+  white-space: nowrap;
+  margin-right: 10px;
 }

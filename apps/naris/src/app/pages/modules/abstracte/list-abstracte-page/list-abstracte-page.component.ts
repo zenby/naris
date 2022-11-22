@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { PreloaderService } from './../../../../services/preloader.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
 import { CommandDelete, CommandEdit, CommandNew, CommandView, DataStoreService, DtoPack } from '@soer/sr-dto';
 import { WorkbookModel } from '@soer/sr-editor';
-import { Observable } from 'rxjs';
+import { Observable, finalize } from 'rxjs';
 import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
 
 
@@ -13,22 +14,43 @@ import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
   styleUrls: ['./list-abstracte-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListAbstractePageComponent {
+export class ListAbstractePageComponent implements OnInit {
 
   public name? = '';
+
   private workbooksId: BusEmitter;
   private workbookId: BusEmitter;
-  workbook$: Observable<DtoPack<WorkbookModel>>;
+
+  public workbook$!: Observable<DtoPack<WorkbookModel>>;
+
   constructor(
     private bus$: MixedBusService,
     private store$: DataStoreService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private preloaderService: PreloaderService,
   ) {
     this.name = this.route.snapshot.data['header'].title;
-    
+
     this.workbooksId = this.route.snapshot.data['workbooks'];
-    this.workbookId = {...this.workbooksId, key: {wid: '?'}}
-    this.workbook$ = parseJsonDTOPack<WorkbookModel>(this.store$.of(this.workbooksId), 'workbooks');
+    this.workbookId = {...this.workbooksId, key: {wid: '?'}};
+  }
+
+  public ngOnInit(): void {
+    this.loadData();
+  }
+
+  private loadData(): void {
+    this.preloaderService.showLoader();
+    this.loadWorkbookInfo();    
+  }
+
+  private loadWorkbookInfo(): void {
+    this.workbook$ = parseJsonDTOPack<WorkbookModel>(
+        this.store$.of(this.workbooksId).pipe(
+            finalize(() => this.preloaderService.hideLoader())
+        ),
+        'workbooks'
+    );
   }
 
   workbookDelete(workbook: WorkbookModel): void {

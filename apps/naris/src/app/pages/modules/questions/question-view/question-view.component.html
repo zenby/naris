@@ -1,12 +1,17 @@
-<ng-container *ngIf="(question$ | async) as questions">
-    <div *ngFor="let question of questions" class="question_answer">
-            <div class="audio-player">
-                <soer-audio-player *ngIf="question?.url;else noans" [audioUrl]="hostUrl + question?.url"></soer-audio-player>
-            </div>
-            <div class="text">
-                <p>{{question.question}}</p>
-            </div>
+<ng-container *ngIf="question$ | async as questions">
+  <div *ngFor="let question of questions" class="question_answer">
+    <div class="audio-player">
+      <soer-audio-player
+        *ngIf="question?.url; else noans"
+        [audioUrl]="hostUrl + question?.url"
+        [speed]="audioSpeed"
+        (changeSpeed)="changeAudioSpeed($event)"
+      ></soer-audio-player>
     </div>
+    <div class="text">
+      <p>{{ question.question }}</p>
+    </div>
+  </div>
 </ng-container>
 
 <ng-template #noans><h2>Нет ответа</h2></ng-template>

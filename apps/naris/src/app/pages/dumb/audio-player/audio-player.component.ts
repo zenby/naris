@@ -1,19 +1,17 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'soer-audio-player',
   templateUrl: './audio-player.component.html',
-  styleUrls: ['./audio-player.component.scss']
+  styleUrls: ['./audio-player.component.scss'],
 })
 export class AudioPlayerComponent {
-
   @Input() audioUrl = '';
+  @Input() speed = 1;
+  @Output() changeSpeed: EventEmitter<number> = new EventEmitter();
 
-  changeSound(event: any, item: any) {
-      this.audioUrl = '';
-      const audioPlayer =  <HTMLAudioElement> document.getElementById('audio');
-      if (audioPlayer) {
-        audioPlayer.load();
-      }
+  changePlaybackSpeed(event: Event) {
+    const audioPlayer = event.target as HTMLAudioElement;
+    this.changeSpeed.emit(audioPlayer.playbackRate);
   }
 }

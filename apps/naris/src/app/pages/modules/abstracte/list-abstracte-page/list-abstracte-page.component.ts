@@ -35,7 +35,7 @@ export class ListAbstractePageComponent implements OnInit {
     this.workbookId = {...this.workbooksId, key: {wid: '?'}};
   }
 
-  public ngOnInit(): void {
+  ngOnInit() {
     this.loadData();
   }
 

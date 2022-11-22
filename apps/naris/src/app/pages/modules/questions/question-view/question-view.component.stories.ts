@@ -1,9 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { AudioPlayerModule } from '@soer/soer-components';
 import { DataStoreService } from '@soer/sr-dto';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { of } from 'rxjs';
-import { AudioPlayerComponent } from '../../../dumb/audio-player/audio-player.component';
 import { QuestionsConfigService } from '../services/questions-config.service';
 import { QuestionViewComponent } from './question-view.component';
 
@@ -12,8 +12,8 @@ export default {
   component: QuestionViewComponent,
   decorators: [
     moduleMetadata({
-      declarations: [AudioPlayerComponent],
-      imports: [HttpClientModule],
+      declarations: [],
+      imports: [HttpClientModule, AudioPlayerModule],
       providers: [
         {
           provide: ActivatedRoute,

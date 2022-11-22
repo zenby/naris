@@ -29,6 +29,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { QuestionViewComponent } from './question-view/question-view.component';
 import { OnlyWithAnaswerPipe } from './only-with-anaswer.pipe';
 import { QuestionsConfigService } from './services/questions-config.service';
+import { AudioPlayerModule } from '@soer/soer-components';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { QuestionsConfigService } from './services/questions-config.service';
     NzListModule,
     NzTypographyModule,
     NzToolTipModule,
+    AudioPlayerModule
   ],
   providers: [QuestionsConfigService],
   exports: [QuestionFormComponent],

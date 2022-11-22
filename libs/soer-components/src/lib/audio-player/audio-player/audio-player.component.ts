@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'soer-audio-player',
   templateUrl: './audio-player.component.html',
-  styleUrls: ['./audio-player.component.scss'],
+  styleUrls: [],
 })
 export class AudioPlayerComponent {
   @Input() audioUrl = '';

@@ -6,38 +6,25 @@
   background-color: rgb(247, 247, 247);
 }
 
-@media screen and (min-width: 768px) {
-  .row {
-    flex-direction: row;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .row {
-    flex-direction: column;
-  }
-  .markdown-block {
-    margin: 0;
-  }
-}
-
 .row {
   display: flex;
-  .info {
-    flex-grow: 0;
-  }
-  .edit {
-    flex-basis: 100%;
-    flex-grow: 1;
 
-    @media screen and (max-width: 768px) {
-      margin-top: 10px;
-    }
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
   }
-  .help {
-    font-size: 0.7rem;
-    font-style: italic;
-    color: gray;
+}
+
+.help {
+  font-size: 0.7rem;
+  font-style: italic;
+  color: gray;
+}
+
+.edit {
+  width: 100%;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 10px;
   }
 }
 

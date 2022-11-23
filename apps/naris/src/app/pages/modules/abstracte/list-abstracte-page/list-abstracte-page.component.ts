@@ -56,9 +56,9 @@ export class ListAbstractePageComponent implements OnInit {
 
         т.е, например
         public get loadingState$(): Observable<LoadingState> {
-            return this.documents.documentsViewLoadingState$;
+            return this.documentsService.documentsViewLoadingState$;
               или
-            this workbooksService.workbooksViewLoadingState$;
+            return this.workbooksService.workbooksViewLoadingState$;
         }
 
         documentsService в свою очередь будет возвращать методы извлечения состояния из стора

@@ -1,6 +1,6 @@
 <ng-container *ngIf="(workbook$ | async) as workbooks">
     <ng-container [ngSwitch]="workbooks.status">
-        <ng-container *ngSwitchCase="'ok'">
+        <ng-container *ngSwitchCase="loadingState.OK">
             <ng-container *ngTemplateOutlet="result; context: workbooks"></ng-container>
         </ng-container>
 

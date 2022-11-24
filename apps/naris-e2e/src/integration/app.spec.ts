@@ -1,13 +1,13 @@
-import { getGreeting } from '../support/app.po';
-
 describe('naris', () => {
-  beforeEach(() => cy.visit('/'));
+  it('should display login page', () => {
+    cy.visit('/');
 
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword');
+    cy.get('h2').contains('LOGIN via');
 
-    // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome naris');
+    cy.get('.ant-btn.login-form-button').its('length').should('equal', 3);
+
+    cy.contains('Yandex')
+    cy.contains('Google')
+    cy.contains('Patreon')
   });
 });

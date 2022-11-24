@@ -244,6 +244,58 @@
       "tags": [],
       "implicitDependencies": ["naris"]
     },
+    "payment": {
+      "root": "apps/payment",
+      "sourceRoot": "apps/payment/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:webpack",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/payment",
+            "main": "apps/payment/src/main.ts",
+            "tsConfig": "apps/payment/tsconfig.app.json",
+            "assets": ["apps/payment/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/payment/src/environments/environment.ts",
+                  "with": "apps/payment/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:node",
+          "options": {
+            "buildTarget": "payment:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/payment/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/payment"],
+          "options": {
+            "jestConfig": "apps/payment/jest.config.ts",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "soer-components": {
       "projectType": "library",
       "root": "libs/soer-components",

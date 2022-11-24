@@ -1,6 +1,58 @@
 {
   "version": 1,
   "projects": {
+    "auth": {
+      "root": "apps/auth",
+      "sourceRoot": "apps/auth/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:webpack",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/auth",
+            "main": "apps/auth/src/main.ts",
+            "tsConfig": "apps/auth/tsconfig.app.json",
+            "assets": ["apps/auth/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/auth/src/environments/environment.ts",
+                  "with": "apps/auth/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:node",
+          "options": {
+            "buildTarget": "auth:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/auth/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/auth"],
+          "options": {
+            "jestConfig": "apps/auth/jest.config.ts",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "mixed-bus": {
       "$schema": "../../node_modules/nx/schemas/project-schema.json",
       "projectType": "library",
@@ -103,7 +155,10 @@
               "browserTarget": "naris:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "apps/naris/proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

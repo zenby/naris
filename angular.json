@@ -215,6 +215,58 @@
       },
       "tags": []
     },
+    "naris-api": {
+      "root": "apps/naris-api",
+      "sourceRoot": "apps/naris-api/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:webpack",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/naris-api",
+            "main": "apps/naris-api/src/main.ts",
+            "tsConfig": "apps/naris-api/tsconfig.app.json",
+            "assets": ["apps/naris-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/naris-api/src/environments/environment.ts",
+                  "with": "apps/naris-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:node",
+          "options": {
+            "buildTarget": "naris-api:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/naris-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/naris-api"],
+          "options": {
+            "jestConfig": "apps/naris-api/jest.config.ts",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "naris-e2e": {
       "$schema": "../../node_modules/nx/schemas/project-schema.json",
       "root": "apps/naris-e2e",

@@ -22,7 +22,7 @@ import { NoContentComponent } from './no-content/no-content.component';
     UnderDevelopmentComponent,
     SrTextEditComponent,
     NoContentComponent,
-    PreloaderComponent,,
+    PreloaderComponent,
   ],
   imports: [
     CommonModule,
@@ -40,7 +40,6 @@ import { NoContentComponent } from './no-content/no-content.component';
     UnderDevelopmentComponent,
     SrTextEditComponent,
     PreloaderComponent,
-,
   ],
 })
 export class DumbModule {}

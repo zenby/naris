@@ -1,3 +1,4 @@
+import { PreloaderComponent } from '../dumb/preloader/preloader.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VideoPlayerComponent } from './video-player/video-player.component';
@@ -24,7 +25,8 @@ import { NoContentComponent } from './no-content/no-content.component';
     UnderDevelopmentComponent,
     AudioPlayerComponent,
     SrTextEditComponent,
-    NoContentComponent
+    NoContentComponent,
+    PreloaderComponent,
   ],
   imports: [
     CommonModule,
@@ -41,6 +43,8 @@ import { NoContentComponent } from './no-content/no-content.component';
     AccessDeniedComponent,
     UnderDevelopmentComponent,
     AudioPlayerComponent,
-    SrTextEditComponent]
+    SrTextEditComponent,
+    PreloaderComponent,
+]
 })
 export class DumbModule { }

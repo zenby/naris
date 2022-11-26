@@ -9,13 +9,10 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { UnderDevelopmentComponent } from './under-development/under-development.component';
-import { AudioPlayerComponent } from './audio-player/audio-player.component';
 import { SrTextEditComponent } from './sr-text-edit/sr-text-edit.component';
 import { RouterModule } from '@angular/router';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NoContentComponent } from './no-content/no-content.component';
-
-
 
 @NgModule({
   declarations: [
@@ -23,10 +20,9 @@ import { NoContentComponent } from './no-content/no-content.component';
     OverlayComponent,
     AccessDeniedComponent,
     UnderDevelopmentComponent,
-    AudioPlayerComponent,
     SrTextEditComponent,
     NoContentComponent,
-    PreloaderComponent,
+    PreloaderComponent,,
   ],
   imports: [
     CommonModule,
@@ -35,16 +31,16 @@ import { NoContentComponent } from './no-content/no-content.component';
     NzResultModule,
     NzButtonModule,
     RouterModule,
-    NzSpinModule
+    NzSpinModule,
   ],
   exports: [
     VideoPlayerComponent,
     OverlayComponent,
     AccessDeniedComponent,
     UnderDevelopmentComponent,
-    AudioPlayerComponent,
     SrTextEditComponent,
     PreloaderComponent,
-]
+,
+  ],
 })
-export class DumbModule { }
+export class DumbModule {}

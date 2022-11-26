@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const rootMain = require('../../../.storybook/main');
 
 module.exports = {
@@ -18,6 +19,12 @@ module.exports = {
     }
 
     // add your own webpack tweaks if needed
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(
+        /src[\\/]environments[\\/]environment/,
+        '../../.storybook/__mocks__/environment.ts'
+      )
+    );
 
     return config;
   },

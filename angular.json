@@ -451,6 +451,32 @@
       },
       "tags": []
     },
+    "sr-local-storage": {
+      "projectType": "library",
+      "root": "libs/sr-local-storage",
+      "sourceRoot": "libs/sr-local-storage/src",
+      "prefix": "soer",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/sr-local-storage"],
+          "options": {
+            "jestConfig": "libs/sr-local-storage/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/sr-local-storage/**/*.ts",
+              "libs/sr-local-storage/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
     "sr-url-builder": {
       "$schema": "../../node_modules/nx/schemas/project-schema.json",
       "projectType": "library",

@@ -1,6 +1,7 @@
 <soer-block-editor *ngFor="let block of document.blocks; index as bIndex" [textBlock]="block"
     [isEdit]="bIndex === editIndex"
     [localIndex]="bIndex"
+    (setActive)="setActive($event)"
     (moveDown)="move($event, $event + 1)"
     (moveUp)="move($event, $event - 1)"
     (removeBlock)="removeBlock($event)"

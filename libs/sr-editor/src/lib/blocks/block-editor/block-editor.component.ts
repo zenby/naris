@@ -1,4 +1,11 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { TextBlock } from '../../interfaces/document.model';
 
 @Component({
@@ -7,9 +14,9 @@ import { TextBlock } from '../../interfaces/document.model';
   styleUrls: ['./block-editor.component.scss'],
 })
 export class BlockEditorComponent {
-  @Input() textBlock: TextBlock = {type: 'markdown', text: ''};
-  
-  @ViewChild("edit") set editRef(ref: ElementRef) {
+  @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
+
+  @ViewChild('edit') set editRef(ref: ElementRef) {
     if (ref) {
       ref.nativeElement.focus();
     }
@@ -21,8 +28,12 @@ export class BlockEditorComponent {
   @Output() endEdit = new EventEmitter<number>();
   @Output() moveUp = new EventEmitter<number>();
   @Output() moveDown = new EventEmitter<number>();
- 
+  @Output() setActive = new EventEmitter<number>();
   @Output() markdownTextChange = new EventEmitter<string>();
+
+  onSelectBlock(): void {
+    this.setActive.next(this.localIndex);
+  }
 
   command($event: KeyboardEvent): void {
     if ($event.altKey && $event.code === 'Enter') {
@@ -58,4 +69,5 @@ export class BlockEditorComponent {
   onEndEdit(): void {
     this.isEdit = false;
     this.endEdit.next(this.localIndex);
-  }}
+  }
+}

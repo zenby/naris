@@ -1,8 +1,8 @@
 <div class="row">
     <div class="info">{{textBlock.type === 'markdown' ? 'MD&nbsp;' : ''}}{{textBlock.type === 'test' ? 'TST' : ''}}&nbsp;[{{isEdit ? '*': '&nbsp;'}}]</div>
-    <div class="edit">
+    <div class="edit" (click)="onSelectBlock()">
         <ng-container *ngIf="isEdit">
-            <textarea class="markdown-block" [(ngModel)]="textBlock.text" (blur)="onEndEdit()"
+            <textarea class="markdown-block" [(ngModel)]="textBlock.text" (blur)="onEndEdit()" 
                 (ngModelChange)="markdownTextChange.emit($event)" (keydown)="command($event)" #edit
                 soerAutoresize></textarea>
 

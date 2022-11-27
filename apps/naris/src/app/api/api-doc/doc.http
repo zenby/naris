@@ -10,10 +10,18 @@ Authorization: Bearer {{auth_token}}
 GET {{backend}}/api/github
 Authorization: Bearer {{auth_token}}
 
-### Get assets
+### Get info
 GET {{backend}}/assets/guest/info.json
+Authorization: Bearer {{auth_token}}
+
+### Get workshops info for guests
+GET {{backend}}/assets/guest/workshops.json
 Authorization: Bearer {{auth_token}}
 
 ### Get personal activity
 GET {{backend}}/api/{{version}}/{{format}}/activity/personal
+Authorization: Bearer {{auth_token}}
+
+### Get roles
+GET {{backend}}/api/{{version}}/seller/shelf/roles
 Authorization: Bearer {{auth_token}}

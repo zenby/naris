@@ -15,25 +15,25 @@ Content-Type: application/json
 { "json" : "{\"question\":\"\",\"blocks\":[{\"text\":\"### Test new workbook\",\"type\":\"markdown\"}]}" }
 
 > {%
-    client.global.set("id", response.body.items[0].id);
+    client.global.set("workbookId", response.body.items[0].id);
 %}
 
 ### Get workbook by id
 #@name oneWorkbook
-GET {{backend}}/api/{{version}}/{{format}}/workbook/{{id}}
+GET {{backend}}/api/{{version}}/{{format}}/workbook/{{workbookId}}
 Authorization: Bearer {{auth_token}}
 
 > {%
-    client.global.set("id", response.body.items[0].id);
+    client.global.set("workbookId", response.body.items[0].id);
 %}
 
 ### Update workbook
-PUT {{backend}}/api/{{version}}/{{format}}/workbook/{{id}}
+PUT {{backend}}/api/{{version}}/{{format}}/workbook/{{workbookId}}
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 { "id": "{{id}}", "json" : "{\"question\":\"\",\"blocks\":[{\"text\":\"### Test new workbook _updated_\",\"type\":\"markdown\"}]}" }
 
 ### Delete workbook
-DELETE {{backend}}/api/{{version}}/{{format}}/workbook/{{id}}
+DELETE {{backend}}/api/{{version}}/{{format}}/workbook/{{workbookId}}
 Authorization: Bearer {{auth_token}}

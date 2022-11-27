@@ -25,3 +25,15 @@ Authorization: Bearer {{auth_token}}
 ### Get roles
 GET {{backend}}/api/{{version}}/seller/shelf/roles
 Authorization: Bearer {{auth_token}}
+
+### Get streams
+GET {{backend}}/assets/guest/streams.json
+Authorization: Bearer {{auth_token}}
+
+### Get sources
+GET {{backend}}/assets/guest/sources.json
+Authorization: Bearer {{auth_token}}
+
+### Get book
+GET {{backend}}/assets/guest/book.json
+Authorization: Bearer {{auth_token}}

@@ -1,13 +1,15 @@
+export type TextBlockType = 'markdown' | 'test' | 'presentation';
+
 export interface TextBlock {
-    type: 'markdown' | 'test' | 'presentation',
+    type: TextBlockType,
     text: string;
 }
+
 export interface WorkbookModel {
     id?: number|null,
     question: string,
     text?: string,
     blocks: TextBlock[]
-
 }
 
 export const EMPTY_WORKBOOK: WorkbookModel = {

@@ -6,6 +6,8 @@ import { MarkdownModule } from 'ngx-markdown';
 import { FormsModule } from '@angular/forms';
 import { TextareaAutoresizeDirective } from './textarea-autoresize.directive';
 import { BlockTestComponent } from './blocks/block-test/block-test.component';
+import { TypeFormatPipe } from './pipes/type-format.pipe';
+import { BooleanToStringPipe } from './pipes/boolean-to-string.pipe';
 
 @NgModule({
   imports: [CommonModule, MarkdownModule.forRoot(), FormsModule],
@@ -14,6 +16,8 @@ import { BlockTestComponent } from './blocks/block-test/block-test.component';
     BlockEditorComponent,
     TextareaAutoresizeDirective,
     BlockTestComponent,
+    TypeFormatPipe,
+    BooleanToStringPipe,
   ],
   exports: [EditorComponent],
 })

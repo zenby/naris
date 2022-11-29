@@ -20,9 +20,7 @@ const routes: Routes = [
         path: 'conspects',
         data: {
           header: { title: 'Конспекты', iconText: 'Конспекты' },
-          controls: [
-            { title: 'Добавить', path: ['create', 'new'], icon: 'plus' },
-          ],
+          controls: [{ title: 'Добавить', path: ['create', 'new'], icon: 'plus' }],
         },
         resolve: {
           workbooks: 'workbooksEmitter',
@@ -152,9 +150,7 @@ const routes: Routes = [
         path: 'quiz',
         data: {
           header: { title: 'Тесты и опросы', iconText: 'Тесты' },
-          controls: [
-            { title: 'Добавить', path: ['create', 'new'], icon: 'plus' },
-          ],
+          controls: [{ title: 'Добавить', path: ['create', 'new'], icon: 'plus' }],
         },
         resolve: {
           workbooks: 'quizsEmitter',
@@ -236,9 +232,7 @@ const routes: Routes = [
         path: 'articles',
         data: {
           header: { title: 'Статьи', iconText: 'Статьи' },
-          controls: [
-            { title: 'Добавить', path: ['create', 'new'], icon: 'plus' },
-          ],
+          controls: [{ title: 'Добавить', path: ['create', 'new'], icon: 'plus' }],
         },
         resolve: {
           workbooks: 'articlesEmitter',

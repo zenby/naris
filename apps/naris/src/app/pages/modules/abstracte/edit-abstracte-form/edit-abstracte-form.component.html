@@ -1,17 +1,16 @@
 <nz-form-item>
-    <nz-form-control>
-        <input nz-input [(ngModel)]="workbook.question" placeholder="Тема" nzSize="large" />
-    </nz-form-control>
+  <nz-form-control>
+    <input nz-input [(ngModel)]="workbook.question" placeholder="Тема" nzSize="large" />
+  </nz-form-control>
 </nz-form-item>
 <nz-form-item>
-    <nz-form-control>
-        <div *ngIf="previewFlag;else blocks" style="padding: 1.5em;">
-            <markdown *ngFor="let block of workbook.blocks;">{{block.text}}</markdown>
-        </div>
-    </nz-form-control>
+  <nz-form-control>
+    <div *ngIf="previewFlag; else blocks" style="padding: 1.5em">
+      <markdown *ngFor="let block of workbook.blocks">{{ block.text }}</markdown>
+    </div>
+  </nz-form-control>
 </nz-form-item>
 
-
 <ng-template #blocks>
-    <soer-editor [document]="workbook" ></soer-editor>
+  <soer-editor [document]="workbook"></soer-editor>
 </ng-template>

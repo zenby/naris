@@ -53,7 +53,7 @@ import { AimsTreeModule } from '@soer/soer-components';
     CalcProgressPipe,
     CountOpenTasksPipe,
     CountClosedTasksPipe,
-    TemplateCreateComponent
+    TemplateCreateComponent,
   ],
   imports: [
     CommonModule,
@@ -87,8 +87,8 @@ import { AimsTreeModule } from '@soer/soer-components';
     RouterModule,
     SrDTOModule,
 
-    AimsTreeModule
+    AimsTreeModule,
   ],
-  exports: []
+  exports: [],
 })
-export class TargetsModule { }
+export class TargetsModule {}

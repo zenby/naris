@@ -13,18 +13,14 @@ describe('ListQuestionsPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListQuestionsPageComponent, OnlyWithAnaswerPipe ],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-      ],
+      declarations: [ListQuestionsPageComponent, OnlyWithAnaswerPipe],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
-        {provide: ActivatedRoute, useValue: {snapshot: {data: {questions: ANY_SERVICE}}}},
-        {provide: 'question', useValue: ANY_SERVICE},
-        {provide: 'questionsAll', useValue: ANY_SERVICE}
-      ]
-    })
-    .compileComponents();
+        { provide: ActivatedRoute, useValue: { snapshot: { data: { questions: ANY_SERVICE } } } },
+        { provide: 'question', useValue: ANY_SERVICE },
+        { provide: 'questionsAll', useValue: ANY_SERVICE },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

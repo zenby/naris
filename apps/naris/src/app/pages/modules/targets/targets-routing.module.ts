@@ -13,86 +13,84 @@ const routes: Routes = [
   {
     path: 'targets',
     component: ComposeTabPageComponent,
-    data: { header: {title: 'Достижение целей', subtitle: 'помощь в саморазвитии'}},
+    data: { header: { title: 'Достижение целей', subtitle: 'помощь в саморазвитии' } },
     children: [
       {
         path: '',
-        data: { header: {title: 'Сегодня', subtitle: 'текущие задачи'},
-          controls: [
-            {title: 'Добавить', path: ['.', {outlets: {popup: ['target', 'new']}}], icon: 'plus'},
-          ]
-
+        data: {
+          header: { title: 'Сегодня', subtitle: 'текущие задачи' },
+          controls: [{ title: 'Добавить', path: ['.', { outlets: { popup: ['target', 'new'] } }], icon: 'plus' }],
         },
         component: ListAimsPageComponent,
         resolve: {
-          targets: 'targetsEmitter'
+          targets: 'targetsEmitter',
         },
       },
       {
         path: 'filter/:tid',
-        data: { header: {title: 'Сегодня', subtitle: 'текущие задачи', cantBeTab: true}},
+        data: { header: { title: 'Сегодня', subtitle: 'текущие задачи', cantBeTab: true } },
         component: ListAimsPageComponent,
         resolve: {
-          targets: 'targetEmitter'
-        }
+          targets: 'targetEmitter',
+        },
       },
       {
         path: 'list',
-        data: { header: {title: 'Цели', subtitle: 'Установите новые цели'}},
+        data: { header: { title: 'Цели', subtitle: 'Установите новые цели' } },
         component: ListTargetsPageComponent,
         resolve: {
-          targets: 'targetsEmitter'
-        }
+          targets: 'targetsEmitter',
+        },
       },
       {
         path: 'templates/private',
-        data: { 
-          header: {title: 'Мои шаблоны', subtitle: 'Личные шаблоны'},
+        data: {
+          header: { title: 'Мои шаблоны', subtitle: 'Личные шаблоны' },
           isEditable: true,
-          afterCommandDoneRedirectTo: [{outlets: {primary: ['list']}}]
+          afterCommandDoneRedirectTo: [{ outlets: { primary: ['list'] } }],
         },
         component: ListTemplatesPageComponent,
         resolve: {
           templates: 'templatesEmitter',
-        }
+        },
       },
       {
         path: 'templates/public',
-        data: { 
-          header: {title: 'Общие шаблоны', subtitle: 'Шаблоны созданные сообществом'},
+        data: {
+          header: { title: 'Общие шаблоны', subtitle: 'Шаблоны созданные сообществом' },
           isEditable: false,
-          afterCommandDoneRedirectTo: [{outlets: {primary: ['list']}}]
+          afterCommandDoneRedirectTo: [{ outlets: { primary: ['list'] } }],
         },
         component: ListTemplatesPageComponent,
         resolve: {
           templates: 'publicTemplatesEmitter',
-        }
+        },
       },
       {
         path: 'target/new',
         component: TargetEditFormComponent,
         outlet: 'popup',
         data: {
-          afterCommandDoneRedirectTo: [{outlets: {popup: ['target', 'edit', ':id']}}]
-        }
+          afterCommandDoneRedirectTo: [{ outlets: { popup: ['target', 'edit', ':id'] } }],
+        },
       },
       {
         path: 'target/edit/:tid',
         component: TaskEditFormComponent,
         resolve: {
-          target: 'targetEmitter'
+          target: 'targetEmitter',
         },
-        outlet: 'popup'
+        outlet: 'popup',
       },
       {
         path: 'target/:tid/template/create',
         component: TemplateCreateComponent,
         resolve: {
-          target: 'targetEmitter'
+          target: 'targetEmitter',
         },
-        outlet: 'popup'
-      }
-    ]
+        outlet: 'popup',
+      },
+    ],
   },
   {
     path: 'targets/edit/:tid',
@@ -102,10 +100,10 @@ const routes: Routes = [
         path: '',
         component: TaskEditFormComponent,
         resolve: {
-          target: 'targetEmitter'
-        }
-      }
-    ]
+          target: 'targetEmitter',
+        },
+      },
+    ],
   },
   {
     path: 'targets/new',
@@ -115,15 +113,15 @@ const routes: Routes = [
         path: '',
         component: TargetEditFormComponent,
         resolve: {
-          target: 'targetEmitter'
-        }
-      }
-    ]
-  }
+          target: 'targetEmitter',
+        },
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class TargetsRoutingModule { }
+export class TargetsRoutingModule {}

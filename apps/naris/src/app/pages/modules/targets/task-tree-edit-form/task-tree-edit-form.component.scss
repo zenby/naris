@@ -1,71 +1,71 @@
 .task_form {
-    padding: 1.5em;
-    height: 100%;
-    overflow: auto;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: stretch;
+  padding: 1.5em;
+  height: 100%;
+  overflow: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
 
-    .task-item {
-        display: inline-block;
-        margin: 0 0.5rem;
-    }
+  .task-item {
+    display: inline-block;
+    margin: 0 0.5rem;
+  }
 }
 
 nz-breadcrumb {
-    margin: 0 0 2rem;
+  margin: 0 0 2rem;
 }
 ::ng-deep .ant-timeline-item-head-custom {
-    background-color: transparent;
+  background-color: transparent;
 }
 
-::ng-deep .ant-breadcrumb-link, ::ng-deep .ant-breadcrumb-separator   {
-    white-space: nowrap;
-    max-width: 15rem;
-    overflow: hidden;
-    display: inline-block;
-    text-overflow: ellipsis;
+::ng-deep .ant-breadcrumb-link,
+::ng-deep .ant-breadcrumb-separator {
+  white-space: nowrap;
+  max-width: 15rem;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
 }
 
 .back {
-    position: absolute;
+  position: absolute;
 }
 .target-title {
-    padding-left: 1.5rem;
+  padding-left: 1.5rem;
 }
 
-
 .task-desc {
-    max-width: 30rem;
-    width: 100%; 
-    margin: 0 1rem 0.5rem 0;
-    border-width: 1px;
+  max-width: 30rem;
+  width: 100%;
+  margin: 0 1rem 0.5rem 0;
+  border-width: 1px;
 }
 
 button {
-    margin: 0 0.5rem 0.5rem 0;
+  margin: 0 0.5rem 0.5rem 0;
 }
 
 header {
-    flex-grow: 1;
-    max-height: 5rem;
-    height: 5rem;
+  flex-grow: 1;
+  max-height: 5rem;
+  height: 5rem;
 }
 
 content {
-    flex-grow: 1;
-    overflow: auto;
-    padding: 2rem 10px 0rem 10px;
-    margin: 1rem 0;
-    background: #fbfbfb;
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
+  flex-grow: 1;
+  overflow: auto;
+  padding: 2rem 10px 0rem 10px;
+  margin: 1rem 0;
+  background: #fbfbfb;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
 }
 
 footer {
-    height: 2.5rem;
-    max-height: 2.5rem;
-    flex-grow: 1;
+  height: 2.5rem;
+  max-height: 2.5rem;
+  flex-grow: 1;
 }

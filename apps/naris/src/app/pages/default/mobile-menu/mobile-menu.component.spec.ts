@@ -10,14 +10,12 @@ describe('MobileMenuComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [MobileMenuComponent],
-      imports: [
-        NzDropDownModule
-      ]
+      imports: [NzDropDownModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MobileMenuComponent);
     component = fixture.componentInstance;
-    component.userInfo = {id: 1, role: 'GUEST', email: 'test@test.com'};
+    component.userInfo = { id: 1, role: 'GUEST', email: 'test@test.com' };
     fixture.detectChanges();
   });
 

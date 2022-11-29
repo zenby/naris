@@ -8,11 +8,7 @@ describe('ByRoutePathResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        HttpClient,
-        HttpHandler,
-        ByRoutePathResolver
-      ]
+      providers: [HttpClient, HttpHandler, ByRoutePathResolver],
     });
     resolver = TestBed.inject(ByRoutePathResolver);
   });

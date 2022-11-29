@@ -7,18 +7,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { TopicsListComponent } from './topics-list/topics-list.component';
 
-
-
 @NgModule({
   declarations: [TopicsListComponent],
-  imports: [
-    CommonModule,
-    NzButtonModule,
-    NzLayoutModule,
-    NzGridModule,
-    NzIconModule,
-    NzCardModule
-  ],
-  exports: [TopicsListComponent]
+  imports: [CommonModule, NzButtonModule, NzLayoutModule, NzGridModule, NzIconModule, NzCardModule],
+  exports: [TopicsListComponent],
 })
-export class SoerComponentsModule { }
+export class SoerComponentsModule {}

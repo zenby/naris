@@ -1,11 +1,5 @@
 import { Location } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY_WORKBOOK, TextBlock, WorkbookModel } from '@soer/sr-editor';
 
@@ -59,9 +53,7 @@ export class EditAbstracteFormComponent {
   }
 
   removeBlock(removeIndex: number): void {
-    this.workbook.blocks = this.workbook.blocks.filter(
-      (el, index) => removeIndex !== index
-    );
+    this.workbook.blocks = this.workbook.blocks.filter((el, index) => removeIndex !== index);
     this.editIndex = -1;
   }
 

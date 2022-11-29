@@ -9,16 +9,13 @@ import { convertToJsonDTO, parseJsonDTOPack } from '../../../../api/json.dto.hel
 import { TargetModel, Visibility } from '../../../../api/targets/target.interface';
 import { DONE_PROGRESS, TargetKey, UNDONE_PROGRESS } from '../targets.const';
 
-
-
 @Component({
   selector: 'soer-list-aims-page',
   templateUrl: './list-aims-page.component.html',
   styleUrls: ['./list-aims-page.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListAimsPageComponent implements OnInit {
-
   checked = false;
   public targets$: Observable<DtoPack<TargetModel>>;
   public visibility: Visibility = {};
@@ -32,60 +29,61 @@ export class ListAimsPageComponent implements OnInit {
   private targetsId: BusEmitter<TargetKey>;
 
   constructor(
-      @Inject('target') private targetId: BusEmitter,
-      private bus$: MixedBusService,
-      private store$: DataStoreService,
-      private notification: NzNotificationService,
-      private route: ActivatedRoute,
-      private router: Router
-
-  ) { 
+    @Inject('target') private targetId: BusEmitter,
+    private bus$: MixedBusService,
+    private store$: DataStoreService,
+    private notification: NzNotificationService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.targetsId = this.route.snapshot.data['targets'];
-    this.targets$ = parseJsonDTOPack<TargetModel>(this.store$.of(this.targetsId), 'Targets'); 
+    this.targets$ = parseJsonDTOPack<TargetModel>(this.store$.of(this.targetsId), 'Targets');
     this.isSingleMode = this.route.snapshot.params['tid'] !== undefined;
   }
 
   ngOnInit() {
-    this.createTasksVisibility()
+    this.createTasksVisibility();
   }
 
   onUpdate(target: AimModel): void {
-    const tmpTargetId = {...this.targetId, key: {tid: target.id}};
+    const tmpTargetId = { ...this.targetId, key: { tid: target.id } };
     this.bus$.publish(
       new CommandUpdate(
         tmpTargetId,
         { ...convertToJsonDTO(target, ['id']), id: target.id },
-        {skipRoute: true, skipSyncRead: true}
+        { skipRoute: true, skipSyncRead: true }
       )
     );
   }
 
   onDelete(target: AimModel): void {
-    const tmpTargetId = {...this.targetId, key: {tid: target.id}};
-    this.bus$.publish(
-      new CommandDelete(tmpTargetId, {}, {tid: target.id})
-    );
+    const tmpTargetId = { ...this.targetId, key: { tid: target.id } };
+    this.bus$.publish(new CommandDelete(tmpTargetId, {}, { tid: target.id }));
   }
 
   createTasksVisibility(): void {
-    this.targets$.pipe(filter(target => target.status === OK), first()).subscribe(
-      (target => {
+    this.targets$
+      .pipe(
+        filter((target) => target.status === OK),
+        first()
+      )
+      .subscribe((target) => {
         const visibility = target.items.reduce((acc: Visibility, curr: TargetModel) => {
           acc[curr.id || 0] = this.isSingleMode;
-          return acc
-        }, {})
+          return acc;
+        }, {});
 
         this.visibility = visibility;
-    }))
+      });
   }
 
   toggleTaskVisibility(taskId: TargetModel['id']): void {
     if (taskId) {
-      this.visibility[taskId] = !this.visibility[taskId] 
+      this.visibility[taskId] = !this.visibility[taskId];
     }
   }
 
   onEdit(target: AimModel): void {
-    this.router.navigate(['/pages/targets', {outlets: {popup: ['target', 'edit', target.id]}}]);
+    this.router.navigate(['/pages/targets', { outlets: { popup: ['target', 'edit', target.id] } }]);
   }
 }

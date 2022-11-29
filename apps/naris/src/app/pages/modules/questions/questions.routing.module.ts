@@ -11,81 +11,78 @@ const routes: Routes = [
     path: 'qa',
     component: ComposeOnePageComponent,
     children: [
-      { path: '', redirectTo: 'my', pathMatch: 'prefix'},
+      { path: '', redirectTo: 'my', pathMatch: 'prefix' },
       {
         path: 'my',
         component: ListQuestionsPageComponent,
         data: {
           header: { title: 'Вопросы и ответы', subtitle: 'здесь можно получить аудио-ответ' },
-          controls: [
-            {title: 'Добавить', path: ['..', 'create', 'new'], icon: 'plus'},
-          ]
+          controls: [{ title: 'Добавить', path: ['..', 'create', 'new'], icon: 'plus' }],
         },
         resolve: {
-          questions: 'questionsEmitter'
+          questions: 'questionsEmitter',
         },
         children: [
           {
             path: 'show/video/:videoId',
             component: ComposeVideoPlayerComponent,
-            data: { header: {title: 'Видео ответ'}}
-          }
-        ]
+            data: { header: { title: 'Видео ответ' } },
+          },
+        ],
       },
       {
         path: 'my/create/new',
         component: QuestionFormComponent,
         data: {
-          header: {title: 'Новый вопрос', subtitle: 'любые вопросы на айти тематику'},
+          header: { title: 'Новый вопрос', subtitle: 'любые вопросы на айти тематику' },
           controls: [
-            {title: 'Сохранить', path: ['.'], action: 'save', icon: 'save'},
-            {title: 'Назад', path: ['../..'], icon: 'rollback'},
-          ]
-        }
+            { title: 'Сохранить', path: ['.'], action: 'save', icon: 'save' },
+            { title: 'Назад', path: ['../..'], icon: 'rollback' },
+          ],
+        },
       },
       {
-          path: 'show/video/:videoId',
-          component: ComposeVideoPlayerComponent,
-          data: { header: {title: 'Видео ответ'}},
-          outlet: 'popup'
+        path: 'show/video/:videoId',
+        component: ComposeVideoPlayerComponent,
+        data: { header: { title: 'Видео ответ' } },
+        outlet: 'popup',
       },
       {
-          path: 'show/answer/:qid',
-          component: QuestionViewComponent,
-          data: {
-            header: {title: 'Ответ на вопрос'},
-          },
-          resolve: {
-            question: 'questionEmitter'
-          },
-          outlet: 'popup'
+        path: 'show/answer/:qid',
+        component: QuestionViewComponent,
+        data: {
+          header: { title: 'Ответ на вопрос' },
+        },
+        resolve: {
+          question: 'questionEmitter',
+        },
+        outlet: 'popup',
       },
 
-        {
-          path: 'all',
-          component: ListQuestionsPageComponent,
-          data: {
-            header: {title: 'Все вопросы', subtitle: 'ответы на все вопросы'},
+      {
+        path: 'all',
+        component: ListQuestionsPageComponent,
+        data: {
+          header: { title: 'Все вопросы', subtitle: 'ответы на все вопросы' },
+        },
+        resolve: {
+          questions: 'questionsAllEmitter',
+        },
+        children: [
+          {
+            path: 'show/video/:videoId',
+            component: ComposeVideoPlayerComponent,
+            data: { header: { title: 'Видео ответ' } },
           },
-          resolve: {
-            questions: 'questionsAllEmitter'
-          },
-          children: [
-            {
-              path: 'show/video/:videoId',
-              component: ComposeVideoPlayerComponent,
-              data: { header: {title: 'Видео ответ'}}
-            }
-          ]
-        }
-    ]
-  }
+        ],
+      },
+    ],
+  },
 ];
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   providers: [],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class QuestionsRoutingModule { }
+export class QuestionsRoutingModule {}

@@ -1,9 +1,10 @@
-
 <ng-container *ngIf="workbook$ | async as workbooks">
-    <ng-container *ngIf="workbooks.length > 0; else loading">
-        <soer-edit-abstracte-form *ngFor="let w of workbooks" (save)="onSave($event)" [workbook]="w"></soer-edit-abstracte-form>
-    </ng-container>
+  <ng-container *ngIf="workbooks.length > 0; else loading">
+    <soer-edit-abstracte-form
+      *ngFor="let w of workbooks"
+      (save)="onSave($event)"
+      [workbook]="w"
+    ></soer-edit-abstracte-form>
+  </ng-container>
 </ng-container>
-<ng-template #loading>
-    Loading...
-</ng-template>
+<ng-template #loading> Loading... </ng-template>

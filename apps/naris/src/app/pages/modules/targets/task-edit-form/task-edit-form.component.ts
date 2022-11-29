@@ -9,15 +9,14 @@ import { BusEmitter } from '@soer/mixed-bus';
 import { MixedBusService } from '@soer/mixed-bus';
 import { ActivatedRoute, Router } from '@angular/router';
 
-
 @Component({
   selector: 'soer-task-edit-form',
   templateUrl: './task-edit-form.component.html',
-  styleUrls: ['./task-edit-form.component.scss']
+  styleUrls: ['./task-edit-form.component.scss'],
 })
 export class TaskEditFormComponent {
   target$: Observable<DtoPack<TargetModel>>;
-  public history: {ind: number, title: string}[] = [];
+  public history: { ind: number; title: string }[] = [];
 
   private targetId;
   constructor(
@@ -25,8 +24,8 @@ export class TaskEditFormComponent {
     private store$: DataStoreService,
     private router: Router,
     private route: ActivatedRoute
-  ) { 
-    this.targetId =  this.route.snapshot.data['target'];
+  ) {
+    this.targetId = this.route.snapshot.data['target'];
     this.target$ = parseJsonDTOPack<TargetModel>(this.store$.of(this.targetId), 'Targets edit');
   }
 
@@ -34,33 +33,25 @@ export class TaskEditFormComponent {
     this.bus$.publish(
       new CommandUpdate(
         this.targetId,
-        { ...convertToJsonDTO(target, ['id']), id: target.id},
-        {skipRoute: true, skipInfo: true}
+        { ...convertToJsonDTO(target, ['id']), id: target.id },
+        { skipRoute: true, skipInfo: true }
       )
     );
   }
 
   createTask(target: TargetModel, title: any): void {
     target.tasks = target.tasks || [];
-    target.tasks.push({title: title.value, overview: '', progress: 0, tasks: []});
+    target.tasks.push({ title: title.value, overview: '', progress: 0, tasks: [] });
     title.value = '';
     this.onSave(target);
   }
 
-
-
   onDelete(target: TargetModel): void {
-    this.bus$.publish(
-      new CommandDelete(
-        this.targetId,
-        target,
-        {tid: target.id}
-      )
-    );
+    this.bus$.publish(new CommandDelete(this.targetId, target, { tid: target.id }));
   }
 
   onCreateTemplate(target: TargetModel): void {
-    this.router.navigate(['/pages/targets', {outlets: {popup: ['target', target.id, 'template', 'create']}}]);
+    this.router.navigate(['/pages/targets', { outlets: { popup: ['target', target.id, 'template', 'create'] } }]);
     /*this.bus$.publish(
       new CommandCreate(
         this.templateId,
@@ -71,10 +62,6 @@ export class TaskEditFormComponent {
   }
 
   onCancel(): void {
-    this.bus$.publish(
-      new CommandCancel(
-        this.targetId
-      )
-    );
+    this.bus$.publish(new CommandCancel(this.targetId));
   }
 }

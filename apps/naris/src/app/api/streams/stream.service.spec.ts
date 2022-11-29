@@ -8,12 +8,7 @@ describe('StreamService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        HttpClient,
-        HttpHandler,
-        StreamService
-
-      ]
+      providers: [HttpClient, HttpHandler, StreamService],
     });
     service = TestBed.inject(StreamService);
   });

@@ -12,18 +12,14 @@ describe('QuestionViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ QuestionViewComponent ],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-      ],
+      declarations: [QuestionViewComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
-        {provide: ActivatedRoute, useValue: {snapshot: {data: {question: ANY_SERVICE}}} },
-        {provide: 'question', useValue: ANY_SERVICE},
-        {provide: 'questionsAll', useValue: ANY_SERVICE}
-      ]
-    })
-    .compileComponents();
+        { provide: ActivatedRoute, useValue: { snapshot: { data: { question: ANY_SERVICE } } } },
+        { provide: 'question', useValue: ANY_SERVICE },
+        { provide: 'questionsAll', useValue: ANY_SERVICE },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

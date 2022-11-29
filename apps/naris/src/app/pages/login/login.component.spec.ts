@@ -18,7 +18,7 @@ describe('LoginComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
+      declarations: [LoginComponent],
       imports: [
         CommonModule,
         FormsModule,
@@ -31,16 +31,14 @@ describe('LoginComponent', () => {
         NzSpinModule,
         HttpClientTestingModule,
         RouterTestingModule,
-        NzButtonModule
+        NzButtonModule,
       ],
       providers: [
         FormBuilder,
-        {provide: 'AuthService', useValue: {}},
-        {provide: 'AuthServiceConfig', useValue: {}},
-
-      ]
-    })
-    .compileComponents();
+        { provide: 'AuthService', useValue: {} },
+        { provide: 'AuthServiceConfig', useValue: {} },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;

@@ -29,7 +29,7 @@ import { ViewAbstractePageComponent } from './view-abstracte-page/view-abstracte
     ListAbstractePageComponent,
     EditAbstractePageComponent,
     ViewAbstractePageComponent,
-    EditAbstracteFormComponent
+    EditAbstracteFormComponent,
   ],
   imports: [
     CommonModule,
@@ -53,7 +53,7 @@ import { ViewAbstractePageComponent } from './view-abstracte-page/view-abstracte
     MarkdownModule.forRoot(),
     SrDTOModule,
     SoerComponentsModule,
-    SrEditorModule
+    SrEditorModule,
   ],
 })
 export class AbstracteModule {}

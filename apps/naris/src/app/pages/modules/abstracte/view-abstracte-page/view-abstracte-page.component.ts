@@ -9,19 +9,14 @@ import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
 @Component({
   selector: 'soer-view-abstracte-page',
   templateUrl: './view-abstracte-page.component.html',
-  styleUrls: ['./view-abstracte-page.component.scss']
+  styleUrls: ['./view-abstracte-page.component.scss'],
 })
 export class ViewAbstractePageComponent {
-
   public workbook$: Observable<DtoPack<WorkbookModel>>;
   private workbookId: BusEmitter;
 
-  constructor(
-    private store$: DataStoreService,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store$: DataStoreService, private route: ActivatedRoute) {
     this.workbookId = this.route.snapshot.data['workbook'];
     this.workbook$ = parseJsonDTOPack<WorkbookModel>(this.store$.of(this.workbookId), 'workbook');
   }
-
 }

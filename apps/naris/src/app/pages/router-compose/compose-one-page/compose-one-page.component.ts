@@ -8,10 +8,9 @@ import { ComposePage } from '../compose-page';
   selector: 'soer-compose-one-page',
   templateUrl: './compose-one-page.component.html',
   styleUrls: ['./compose-one-page.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComposeOnePageComponent extends ComposePage implements OnInit, OnDestroy {
-
   constructor(
     bus$: MixedBusService,
     router: Router,
@@ -23,10 +22,10 @@ export class ComposeOnePageComponent extends ComposePage implements OnInit, OnDe
   }
 
   ngOnInit(): void {
-      this.composeInit();
+    this.composeInit();
   }
 
   ngOnDestroy(): void {
-      this.composeDestroy();
+    this.composeDestroy();
   }
 }

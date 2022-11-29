@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PreloaderService {
   private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -17,5 +17,4 @@ export class PreloaderService {
   hideLoader() {
     this.loadingSubject.next(false);
   }
-
 }

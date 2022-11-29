@@ -11,18 +11,14 @@ describe('ListAbstractePageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListAbstractePageComponent ],
-      imports: [
-        MixedBusModule,
-        SrDTOModule
-      ],
+      declarations: [ListAbstractePageComponent],
+      imports: [MixedBusModule, SrDTOModule],
       providers: [
-        {provide: ApplicationService, useValue: {}},
-        {provide: 'workbooks', useValue: ANY_SERVICE},
-        {provide: 'workbook', useValue: ANY_SERVICE},
-      ]
-    })
-    .compileComponents();
+        { provide: ApplicationService, useValue: {} },
+        { provide: 'workbooks', useValue: ANY_SERVICE },
+        { provide: 'workbook', useValue: ANY_SERVICE },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

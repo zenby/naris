@@ -8,9 +8,8 @@ describe('TaskTreeEditFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TaskTreeEditFormComponent ]
-    })
-    .compileComponents();
+      declarations: [TaskTreeEditFormComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

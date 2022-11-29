@@ -9,10 +9,7 @@ import { AuthService } from '@soer/sr-auth';
 })
 export class AuthComponent implements OnInit {
   private jwt: string | null = null;
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     this.jwt = this.route.snapshot.queryParams?.['jwt'] ?? null;
@@ -25,7 +22,7 @@ export class AuthComponent implements OnInit {
       localStorage.setItem('token', this.jwt);
       this.redirectToHome();
       return;
-    } 
+    }
     this.redirectToLogin();
   }
 
@@ -36,5 +33,4 @@ export class AuthComponent implements OnInit {
   redirectToLogin(): void {
     this.router.navigate(['login']);
   }
-
 }

@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 
 import { NzAffixModule } from 'ng-zorro-antd/affix';
@@ -136,12 +135,10 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
     NzTreeViewModule,
     NzTreeSelectModule,
     NzTypographyModule,
-//    NzUploadModule,
+    //    NzUploadModule,
     NzWaveModule,
     NzResizableModule,
     NzPipesModule,
-  ]
+  ],
 })
-export class DemoNgZorroAntdModule {
-
-}
+export class DemoNgZorroAntdModule {}

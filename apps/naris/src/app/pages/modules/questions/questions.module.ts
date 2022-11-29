@@ -65,7 +65,7 @@ import { AudioPlayerModule } from '@soer/soer-components';
     NzListModule,
     NzTypographyModule,
     NzToolTipModule,
-    AudioPlayerModule
+    AudioPlayerModule,
   ],
   providers: [QuestionsConfigService],
   exports: [QuestionFormComponent],

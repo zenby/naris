@@ -4,7 +4,7 @@ import Player from '@vimeo/player';
 @Component({
   selector: 'soer-video-player',
   templateUrl: './video-player.component.html',
-  styleUrls: ['./video-player.component.scss']
+  styleUrls: ['./video-player.component.scss'],
 })
 export class VideoPlayerComponent implements OnInit, AfterViewInit {
   @Input() videoId = '';
@@ -21,15 +21,12 @@ export class VideoPlayerComponent implements OnInit, AfterViewInit {
       document.body.appendChild(tag);
       this.isLoading = false;
     }
-    
-
   }
 
   ngAfterViewInit(): void {
     if (this.videoSource === 'vimeo') {
-      this.player = new Player(this.vimeo.nativeElement,
-        {autoplay: true, dnt: true});
-      this.player.on('loaded', () => this.isLoading = false);
+      this.player = new Player(this.vimeo.nativeElement, { autoplay: true, dnt: true });
+      this.player.on('loaded', () => (this.isLoading = false));
 
       const vimeo_storage_id = `vimeo_video_${this.videoId}`;
       const seconds = parseInt(localStorage.getItem(vimeo_storage_id) || '0');

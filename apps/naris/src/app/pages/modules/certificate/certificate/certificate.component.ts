@@ -7,18 +7,17 @@ import { BusEmitter } from '@soer/mixed-bus';
 import { DataStoreService, DtoPack, extractDtoPackFromBus } from '@soer/sr-dto';
 import { Observable } from 'rxjs';
 
-
 @Component({
   selector: 'soer-certificate',
   templateUrl: './certificate.component.html',
-  styleUrls: ['./certificate.component.scss']
+  styleUrls: ['./certificate.component.scss'],
 })
 export class CertificateComponent {
   public certUrl = '';
 
   public hasCert = false;
   public certText = '';
-  public certObject:any = null;
+  public certObject: any = null;
   public user$: Observable<DtoPack<JWTModel>>;
 
   constructor(
@@ -26,15 +25,17 @@ export class CertificateComponent {
     private authService: AuthService,
     private store$: DataStoreService,
     private router: Router,
-    private http: HttpClient) 
-  { 
-      this.user$ = extractDtoPackFromBus<JWTModel>(this.store$.of(this.manifestId));
+    private http: HttpClient
+  ) {
+    this.user$ = extractDtoPackFromBus<JWTModel>(this.store$.of(this.manifestId));
   }
 
   useCert(email: string): void {
-    this.http.get(environment.host + '/api/v2/seller/prepaid/' + email + '/' + this.getClearedCertText()).subscribe(result => {
-      this.certObject.status = (result as any)['status'];
-    });
+    this.http
+      .get(environment.host + '/api/v2/seller/prepaid/' + email + '/' + this.getClearedCertText())
+      .subscribe((result) => {
+        this.certObject.status = (result as any)['status'];
+      });
   }
 
   certinfo(): void {
@@ -43,13 +44,15 @@ export class CertificateComponent {
       this.certObject = {
         role: cert.role,
         status: 'pending',
-        exp: new Date(cert.exp * 1000)
-      }
+        exp: new Date(cert.exp * 1000),
+      };
 
-      this.http.get(environment.host + '/api/v2/seller/prepaid_status/' + this.getClearedCertText()).subscribe(result => {
-        this.certObject.status = (result as any)['status'];
-      });
-    } 
+      this.http
+        .get(environment.host + '/api/v2/seller/prepaid_status/' + this.getClearedCertText())
+        .subscribe((result) => {
+          this.certObject.status = (result as any)['status'];
+        });
+    }
   }
 
   getClearedCertText(): string {

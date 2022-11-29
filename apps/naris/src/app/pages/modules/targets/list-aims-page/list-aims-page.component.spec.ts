@@ -5,9 +5,7 @@ import { SrDTOModule } from '@soer/sr-dto';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 import { ListAimsPageComponent } from './list-aims-page.component';
-class MockNzNotificationService {
-
-}
+class MockNzNotificationService {}
 
 describe('ListAimsPageComponent', () => {
   let component: ListAimsPageComponent;
@@ -15,20 +13,15 @@ describe('ListAimsPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListAimsPageComponent ],
-      imports: [
-        MixedBusModule,
-        SrDTOModule
-      ],
+      declarations: [ListAimsPageComponent],
+      imports: [MixedBusModule, SrDTOModule],
       providers: [
-
-        {provide: ActivatedRoute, useValue: {snapshot: {params: {}, data: {targets: ANY_SERVICE}}}},
-        {provide: 'target', useValue: ANY_SERVICE},
-        {provide: 'targets', useValue: ANY_SERVICE},
-        {provide: NzNotificationService, useClass: MockNzNotificationService}
-      ]
-    })
-    .compileComponents();
+        { provide: ActivatedRoute, useValue: { snapshot: { params: {}, data: { targets: ANY_SERVICE } } } },
+        { provide: 'target', useValue: ANY_SERVICE },
+        { provide: 'targets', useValue: ANY_SERVICE },
+        { provide: NzNotificationService, useClass: MockNzNotificationService },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

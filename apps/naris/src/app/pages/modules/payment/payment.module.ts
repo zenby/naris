@@ -15,15 +15,9 @@ import { SrDTOModule } from '@soer/sr-dto';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 
-
-
 @NgModule({
-  declarations: [
-    PayFormComponent
-  ],
-  providers: [
-    PayService
-  ],
+  declarations: [PayFormComponent],
+  providers: [PayService],
   imports: [
     CommonModule,
     NzButtonModule,
@@ -37,7 +31,7 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
     NzSpinModule,
     RouterModule,
     FormsModule,
-    SrDTOModule
-  ]
+    SrDTOModule,
+  ],
 })
-export class PaymentModule { }
+export class PaymentModule {}

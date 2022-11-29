@@ -11,17 +11,14 @@ describe('TemplateCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TemplateCreateComponent ],
-      imports: [
-        RouterTestingModule,
-      ],
+      declarations: [TemplateCreateComponent],
+      imports: [RouterTestingModule],
       providers: [
-        {provide: ActivatedRoute, useValue: {snapshot: {data: {target: ANY_SERVICE}} }},
-        {provide: 'target', useValue: ANY_SERVICE},
-        {provide: 'template', useValue: ANY_SERVICE},
-      ]
-    })
-    .compileComponents();
+        { provide: ActivatedRoute, useValue: { snapshot: { data: { target: ANY_SERVICE } } } },
+        { provide: 'target', useValue: ANY_SERVICE },
+        { provide: 'template', useValue: ANY_SERVICE },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

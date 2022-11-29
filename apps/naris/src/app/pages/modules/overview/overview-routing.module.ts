@@ -16,35 +16,35 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'info'
+        redirectTo: 'info',
       },
 
       {
         path: 'metrics',
-        data: { header: {title: 'Метрики', subtitle: 'отражают ваши достижения и цели', icon: 'pie-chart'}},
+        data: { header: { title: 'Метрики', subtitle: 'отражают ваши достижения и цели', icon: 'pie-chart' } },
         component: MetricsComponent,
         resolve: {
-            workbooks: 'workbooksEmitter',
-            targets: 'targetsEmitter',
-            questions: 'questionsEmitter',
-            streams: StreamService,
-            workshops: WorkshopsService
-          },
+          workbooks: 'workbooksEmitter',
+          targets: 'targetsEmitter',
+          questions: 'questionsEmitter',
+          streams: StreamService,
+          workshops: WorkshopsService,
+        },
       },
       {
-      path: 'info',
-      data: { header: {title: 'Информация', subtitle: 'контакты и группы сообщества', icon: 'info-circle'}},
-      component: InfoComponent,
-      resolve: {
-          brif: ByRoutePathResolver
+        path: 'info',
+        data: { header: { title: 'Информация', subtitle: 'контакты и группы сообщества', icon: 'info-circle' } },
+        component: InfoComponent,
+        resolve: {
+          brif: ByRoutePathResolver,
+        },
       },
-    }
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class OverviewRoutingModule { }
+export class OverviewRoutingModule {}

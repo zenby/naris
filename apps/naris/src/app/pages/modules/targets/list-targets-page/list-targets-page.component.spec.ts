@@ -9,14 +9,12 @@ describe('ListTargetsPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListTargetsPageComponent ],
+      declarations: [ListTargetsPageComponent],
       providers: [
-        {provide: 'target', useValue: ANY_SERVICE},
-        {provide: 'targets', useValue: ANY_SERVICE},
-
-      ]
-    })
-    .compileComponents();
+        { provide: 'target', useValue: ANY_SERVICE },
+        { provide: 'targets', useValue: ANY_SERVICE },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

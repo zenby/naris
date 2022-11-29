@@ -7,11 +7,10 @@ import { CommandRead, DataStoreService, DtoPack, extractDtoPackFromBus, OK } fro
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 
-
 @Component({
   selector: 'soer-pay-form',
   templateUrl: './pay-form.component.html',
-  styleUrls: ['./pay-form.component.scss']
+  styleUrls: ['./pay-form.component.scss'],
 })
 export class PayFormComponent {
   public payUrl = '';
@@ -19,7 +18,11 @@ export class PayFormComponent {
   public pendingOrders: any[] = [];
   public periodicOrders: any[] = [];
   public goods: any[] = [];
-  public remoteState: { status: string, messages: string[], actions: any[] } = { status: 'loading', messages: [], actions: [] };
+  public remoteState: { status: string; messages: string[]; actions: any[] } = {
+    status: 'loading',
+    messages: [],
+    actions: [],
+  };
   public user: Observable<DtoPack<JWTModel>>;
 
   constructor(
@@ -28,13 +31,14 @@ export class PayFormComponent {
     private bus$: MixedBusService,
     private store$: DataStoreService,
     private router: Router,
-    private http: HttpClient) {
+    private http: HttpClient
+  ) {
     this.user = extractDtoPackFromBus<JWTModel>(this.store$.of(this.manifestId));
-    this.user.subscribe(data => {
+    this.user.subscribe((data) => {
       if (data.status === OK) {
         const [userManifest] = data.items;
         if (userManifest.expired) {
-          this.deadline=  new Date(userManifest.expired).getTime();
+          this.deadline = new Date(userManifest.expired).getTime();
         }
         this.checkRemoteStatus();
       }
@@ -48,16 +52,17 @@ export class PayFormComponent {
   }
 
   checkRemoteStatus(): void {
-    this.http.get<DtoPack<{subs: any[], goods: any[], pending: any[]}>>(environment.host + '/api/v2/seller/shelf/roles')
-    .subscribe(result => {
-      if (result['status'] === OK) {
-        this.remoteState.status = 'ok';
-        const [shelf] = result.items;
-        this.periodicOrders = shelf.subs;
-        this.goods = shelf.goods;
-        this.pendingOrders = shelf.pending;
-      }
-    });
+    this.http
+      .get<DtoPack<{ subs: any[]; goods: any[]; pending: any[] }>>(environment.host + '/api/v2/seller/shelf/roles')
+      .subscribe((result) => {
+        if (result['status'] === OK) {
+          this.remoteState.status = 'ok';
+          const [shelf] = result.items;
+          this.periodicOrders = shelf.subs;
+          this.goods = shelf.goods;
+          this.pendingOrders = shelf.pending;
+        }
+      });
 
     /*this.http.get(environment.host + '/api/v2/seller/status/' + email)
       .subscribe(result => {
@@ -111,7 +116,7 @@ export class PayFormComponent {
 
   deletePayment(id: number): void {
     this.remoteState.status = 'loading';
-    this.http.get(environment.host + '/api/v2/seller/cancel/' + id).subscribe(result => {
+    this.http.get(environment.host + '/api/v2/seller/cancel/' + id).subscribe((result) => {
       this.checkRemoteStatus();
     });
   }
@@ -123,16 +128,17 @@ export class PayFormComponent {
 
   renew(id: number): void {
     this.remoteState.status = 'loading';
-    this.http.get(environment.host + '/api/v2/seller/check/' + id)
-    .subscribe(result => {
+    this.http.get(environment.host + '/api/v2/seller/check/' + id).subscribe((result) => {
       let status = 'error';
       let { messages, actions } = this.remoteState;
       if ((result as any).status === 'succeeded') {
         status = 'error';
         messages = ['У вас есть уже оплаченные тарифы'];
-        actions = [{
-          logout: { id: 0, role: '' }
-        }];
+        actions = [
+          {
+            logout: { id: 0, role: '' },
+          },
+        ];
       } else {
         messages.push('Результат проверки: платеж не проведен, свяжитесь с поддержкой soersoft@gmail.com');
       }
@@ -142,25 +148,24 @@ export class PayFormComponent {
 
   cancelSubscription(id: number): void {
     this.remoteState.status = 'loading';
-    this.http.delete(environment.host + '/api/v2/seller/subscription/' + id)
-    .subscribe(result => {
-        this.checkRemoteStatus();
+    this.http.delete(environment.host + '/api/v2/seller/subscription/' + id).subscribe((result) => {
+      this.checkRemoteStatus();
     });
   }
 
   order(email: string, role: string): void {
-    this.http.post<DtoPack<Record<string, {id: string}>>>(environment.host + '/api/v2/seller/order', {
-      email,
-      role
-    })
-    .subscribe(result=> {
-      if (result.status === OK) {
-        if (result.items.length === 1) {
-          const [order] = result.items;
-          window.location.href =  environment.host + '/api/v2/seller/order/' + order['id'];
+    this.http
+      .post<DtoPack<Record<string, { id: string }>>>(environment.host + '/api/v2/seller/order', {
+        email,
+        role,
+      })
+      .subscribe((result) => {
+        if (result.status === OK) {
+          if (result.items.length === 1) {
+            const [order] = result.items;
+            window.location.href = environment.host + '/api/v2/seller/order/' + order['id'];
+          }
         }
-      }
-    });
+      });
   }
-
 }

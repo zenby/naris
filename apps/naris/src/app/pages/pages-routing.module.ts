@@ -23,18 +23,18 @@ import { TargetsRoutingModule } from './modules/targets/targets-routing.module';
 import { TargetKey, TemplateKey } from './modules/targets/targets.const';
 
 const routes: Routes = [
-      { path: '', redirectTo: 'overview', pathMatch: 'prefix' },
-      {
-        path: 'certificate',
-        data: { header: {title: 'Подарочный сертификат', subtitle: 'использовать сертификат'}},
-        component: CertificateComponent
-      },
-      {
-        path: 'pay',
-        data: { header: {title: 'Выбор тарифа', subtitle: 'определите уровень платного доступа'}},
-        component: PayFormComponent
-      },
-      /*{
+  { path: '', redirectTo: 'overview', pathMatch: 'prefix' },
+  {
+    path: 'certificate',
+    data: { header: { title: 'Подарочный сертификат', subtitle: 'использовать сертификат' } },
+    component: CertificateComponent,
+  },
+  {
+    path: 'pay',
+    data: { header: { title: 'Выбор тарифа', subtitle: 'определите уровень платного доступа' } },
+    component: PayFormComponent,
+  },
+  /*{
         path: 'overview',
         component: OverviewComponent,
         data: { header: {title: 'Брифинг', subtitle: 'кратко о возможностях и достижениях'}},
@@ -47,59 +47,58 @@ const routes: Routes = [
           workshops: WorkshopsService
         },
       },*/
+  {
+    path: 'streams',
+    component: StreamsComponent,
+    data: { header: { title: 'Архитектурные стримы', subtitle: 'грамотно строим работу над приложением' } },
+    resolve: { streams: StreamService },
+    children: [
       {
-        path: 'streams',
-        component: StreamsComponent,
-        data: { header: {title: 'Архитектурные стримы', subtitle: 'грамотно строим работу над приложением'}},
-        resolve: {streams: StreamService},
-        children: [
-          {
-            path: 'novideo',
-            component: NoContentComponent,
-            data: { header: {title: 'Смотрим стрим...'}}
-          },
-          {
-            path: ':videoSource/:videoId',
-            component: ComposeVideoPlayerComponent,
-            data: { header: {title: 'Смотрим стрим...'}}
-          }
-        ]
+        path: 'novideo',
+        component: NoContentComponent,
+        data: { header: { title: 'Смотрим стрим...' } },
       },
       {
-        path: 'workshops',
-        component: StreamsComponent,
-        data: { header: {title: 'Мастерклассы', subtitle: 'создаем приложение по шагам'}},
-        resolve: {streams: WorkshopsService},
-        children: [
-          {
-            path: 'novideo',
-            component: NoContentComponent,
-            data: { header: {title: 'Смотрим стрим...'}}
-          },
-          {
-            path: ':videoSource/:videoId',
-            component: ComposeVideoPlayerComponent,
-            data: { header: {title: 'Смотрим воркшоп...'}}
-          }
-        ]
+        path: ':videoSource/:videoId',
+        component: ComposeVideoPlayerComponent,
+        data: { header: { title: 'Смотрим стрим...' } },
+      },
+    ],
+  },
+  {
+    path: 'workshops',
+    component: StreamsComponent,
+    data: { header: { title: 'Мастерклассы', subtitle: 'создаем приложение по шагам' } },
+    resolve: { streams: WorkshopsService },
+    children: [
+      {
+        path: 'novideo',
+        component: NoContentComponent,
+        data: { header: { title: 'Смотрим стрим...' } },
       },
       {
-        path: 'book',
-        component: RoadmapComponent,
-        data: { header: {title: 'Главы книги', subtitle: 'быстрый старт в карьере'}},
-        resolve: {
-          target: ByRoutePathResolver
-        },
+        path: ':videoSource/:videoId',
+        component: ComposeVideoPlayerComponent,
+        data: { header: { title: 'Смотрим воркшоп...' } },
       },
-      {
-        path: 'sources',
-        component: FilesListComponent,
-        data: { header: {title: 'Исходники проектов', subtitle: ''}},
-        resolve: {
-          webfiles: ByRoutePathResolver
-        },
-      }
-
+    ],
+  },
+  {
+    path: 'book',
+    component: RoadmapComponent,
+    data: { header: { title: 'Главы книги', subtitle: 'быстрый старт в карьере' } },
+    resolve: {
+      target: ByRoutePathResolver,
+    },
+  },
+  {
+    path: 'sources',
+    component: FilesListComponent,
+    data: { header: { title: 'Исходники проектов', subtitle: '' } },
+    resolve: {
+      webfiles: ByRoutePathResolver,
+    },
+  },
 ];
 
 @NgModule({
@@ -108,68 +107,63 @@ const routes: Routes = [
 
     SrDTOModule.forChild<WorkbookKey>({
       namespace: 'workbook',
-      schema: {url: 'v2/json/workbook/:wid'},
+      schema: { url: 'v2/json/workbook/:wid' },
       keys: {
-        workbook: {wid: '?'},
-        workbooks: {wid: 'personal'},
-      }
+        workbook: { wid: '?' },
+        workbooks: { wid: 'personal' },
+      },
     }),
 
     SrDTOModule.forChild<WorkbookKey>({
       namespace: 'quiz',
-      schema: {url: 'v2/json/quiz/:wid'},
+      schema: { url: 'v2/json/quiz/:wid' },
       keys: {
-        quiz: {wid: '?'},
-        quizs: {wid: 'personal'},
-      }
+        quiz: { wid: '?' },
+        quizs: { wid: 'personal' },
+      },
     }),
 
     SrDTOModule.forChild<WorkbookKey>({
       namespace: 'articles',
-      schema: {url: 'v2/json/article/:wid'},
+      schema: { url: 'v2/json/article/:wid' },
       keys: {
-        article: {wid: '?'},
-        articles: {wid: 'personal'},
-      }
+        article: { wid: '?' },
+        articles: { wid: 'personal' },
+      },
     }),
 
     SrDTOModule.forChild<QuestionKey>({
       namespace: 'qa',
-      schema: {url: 'questions/:qid'},
+      schema: { url: 'questions/:qid' },
       keys: {
-        questionsAll: {qid: 'all'},
-        questions: {qid: ''},
-        question: {qid: '?'} 
-      }
+        questionsAll: { qid: 'all' },
+        questions: { qid: '' },
+        question: { qid: '?' },
+      },
     }),
     SrDTOModule.forChild<TargetKey>({
       namespace: 'targets',
-      schema: {url: 'v2/json/targets/:tid'},
+      schema: { url: 'v2/json/targets/:tid' },
       keys: {
-        target: {tid: '?'},
-        targets: {tid: 'personal'},
-      }
+        target: { tid: '?' },
+        targets: { tid: 'personal' },
+      },
     }),
     SrDTOModule.forChild<TemplateKey>({
       namespace: 'templates',
-      schema: {url: 'v2/json/templates/:tid'},
+      schema: { url: 'v2/json/templates/:tid' },
       keys: {
-        template: {tid: '?'},
-        templates: {tid: 'personal'},
-        publicTemplates: {tid: 'public'},
-      }
+        template: { tid: '?' },
+        templates: { tid: 'personal' },
+        publicTemplates: { tid: 'public' },
+      },
     }),
     QuestionsRoutingModule,
     TargetsRoutingModule,
     AbstracteRoutingModule,
-    OverviewRoutingModule
+    OverviewRoutingModule,
   ],
-  providers: [
-    TasksResolver,
-    StreamService,
-    WorkshopsService,
-    ByRoutePathResolver
-  ],
-  exports: [RouterModule]
+  providers: [TasksResolver, StreamService, WorkshopsService, ByRoutePathResolver],
+  exports: [RouterModule],
 })
-export class PagesRoutingModule { }
+export class PagesRoutingModule {}

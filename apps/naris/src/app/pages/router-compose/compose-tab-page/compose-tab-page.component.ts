@@ -8,17 +8,16 @@ import { ComposePage } from '../compose-page';
   selector: 'soer-compose-tab-page',
   templateUrl: './compose-tab-page.component.html',
   styleUrls: ['./compose-tab-page.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComposeTabPageComponent extends ComposePage implements OnInit, OnDestroy {
-
-  public tabs: {title: string, path: string[]}[] = [];
-  constructor( 
-               bus$: MixedBusService,
-               router: Router,
-               route: ActivatedRoute,
-               message: NzMessageService,
-               cdp: ChangeDetectorRef
+  public tabs: { title: string; path: string[] }[] = [];
+  constructor(
+    bus$: MixedBusService,
+    router: Router,
+    route: ActivatedRoute,
+    message: NzMessageService,
+    cdp: ChangeDetectorRef
   ) {
     super(bus$, router, route, message, cdp);
   }
@@ -29,22 +28,20 @@ export class ComposeTabPageComponent extends ComposePage implements OnInit, OnDe
   }
 
   ngOnDestroy(): void {
-      this.composeDestroy();
+    this.composeDestroy();
   }
-
 
   prepareTabs(): void {
-      this.route.routeConfig?.children?.forEach( child => {
-        if (child.data?.['header']) {
-          const newPath = (child.path === undefined || child.path === '') ? '.' : child.path;
-          if (!(child.data?.['header']?.['cantBeTab'])) {
-            this.tabs.push({
-              title: child.data?.['header'].title,
-              path: [newPath]
-            });
-          }
+    this.route.routeConfig?.children?.forEach((child) => {
+      if (child.data?.['header']) {
+        const newPath = child.path === undefined || child.path === '' ? '.' : child.path;
+        if (!child.data?.['header']?.['cantBeTab']) {
+          this.tabs.push({
+            title: child.data?.['header'].title,
+            path: [newPath],
+          });
         }
-      });
+      }
+    });
   }
-
 }

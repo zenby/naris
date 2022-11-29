@@ -10,13 +10,9 @@ describe('RoadmapComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RoadmapComponent ],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-      ],
-    })
-    .compileComponents();
+      declarations: [RoadmapComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

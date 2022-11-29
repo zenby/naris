@@ -6,16 +6,12 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 @Component({
   selector: 'soer-files-list',
   templateUrl: './files-list.component.html',
-  styleUrls: ['./files-list.component.scss']
+  styleUrls: ['./files-list.component.scss'],
 })
 export class FilesListComponent implements OnInit {
-
   webFiles = [];
 
-
-  constructor(private route: ActivatedRoute,
-              private message: NzMessageService
-    ) { }
+  constructor(private route: ActivatedRoute, private message: NzMessageService) {}
 
   ngOnInit(): void {
     this.webFiles = this.route.snapshot.data['webfiles'];
@@ -29,7 +25,7 @@ export class FilesListComponent implements OnInit {
   }
 
   download(event: any, file: any): void {
-    if(file.icon === 'lock') {
+    if (file.icon === 'lock') {
       this.message.error(`Для скачивания этого файла нужен уровень ${file.level.toUpperCase()}`);
       event.preventDefault();
     }

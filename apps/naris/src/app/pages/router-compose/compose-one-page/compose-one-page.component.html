@@ -1,10 +1,8 @@
 <router-outlet></router-outlet>
 <soer-overlay (close)="closePopup()" [activate]="popup">
-    <div class="player-container player-container-width">
-        <div class="player-wrapper">
-            <router-outlet (activate)="showPopup(true)" (deactivate)="showPopup(false)" name='popup'></router-outlet>    
-        </div>
-    </div>    
+  <div class="player-container player-container-width">
+    <div class="player-wrapper">
+      <router-outlet (activate)="showPopup(true)" (deactivate)="showPopup(false)" name="popup"></router-outlet>
+    </div>
+  </div>
 </soer-overlay>
-
-

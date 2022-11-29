@@ -33,8 +33,8 @@ registerLocaleData(ru);
       sid: AUTH_ID,
       schema: {
         cookieApi: `${environment.apiUrl}auth/cookie`,
-        renewApi: `${environment.apiUrl}auth/renew`
-      }
+        renewApi: `${environment.apiUrl}auth/renew`,
+      },
     }),
     SrUrlBuilderModule.forRoot({ apiRoot: environment.apiUrl }),
     HttpClientModule,
@@ -48,10 +48,10 @@ registerLocaleData(ru);
 
     SrDTOModule.forChild<ActivityKey>({
       namespace: 'activity',
-      schema: {url: 'v2/json/activity/:aid'},
+      schema: { url: 'v2/json/activity/:aid' },
       keys: {
-        activity: {aid: '?'},
-      }
+        activity: { aid: '?' },
+      },
     }),
   ],
 
@@ -66,14 +66,14 @@ registerLocaleData(ru);
           UrlBuilderService: UrlBuilderService,
           MixedBusService: MixedBusService,
           DataStoreService: DataStoreService,
-          StoreCrudService: StoreCrudService,
+          StoreCrudService: StoreCrudService
         ) =>
         () =>
-          null
+          null,
     },
     { provide: NZ_I18N, useValue: ru_RU },
-    ApplicationService
+    ApplicationService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -10,13 +10,9 @@ describe('ComposeVideoPlayerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ComposeVideoPlayerComponent ],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-      ],
-    })
-    .compileComponents();
+      declarations: [ComposeVideoPlayerComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

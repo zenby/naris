@@ -10,23 +10,22 @@ import { ApplicationMenu, IMenuControl } from './menu/menu.interfaces';
 import { MenuControl } from './menu/MenuControl.class';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApplicationService {
-
   public control$ = new BehaviorSubject<IMenuControl[]>([]);
   public mainMenu = MAIN_MENU;
 
-  public user: UserModel = {id: -1, role: 'guest', email: ''};
+  public user: UserModel = { id: -1, role: 'guest', email: '' };
   public user$: Observable<DtoPack<JWTModel>>;
 
   constructor(
     @Inject('manifest') private manifestId: BusEmitter,
     public auth: AuthService,
-    public store$: DataStoreService,
+    public store$: DataStoreService
   ) {
     this.user$ = extractDtoPackFromBus<JWTModel>(this.store$.of(this.manifestId)).pipe(
-      tap(dtoPack => {
+      tap((dtoPack) => {
         const [jwtModel] = dtoPack.items;
         if (jwtModel) {
           this.user.id = jwtModel.id;

@@ -12,11 +12,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @NgModule({
-  declarations: [
-    ComposeOnePageComponent,
-    ComposeTabPageComponent,
-    ComposeIcontabsPageComponent,
-  ],
+  declarations: [ComposeOnePageComponent, ComposeTabPageComponent, ComposeIcontabsPageComponent],
   imports: [
     CommonModule,
     NzTabsModule,
@@ -25,7 +21,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     DumbModule,
     RouterModule,
     NzIconModule,
-    NzButtonModule
+    NzButtonModule,
   ],
   exports: [[ComposeOnePageComponent, ComposeTabPageComponent, ComposeIcontabsPageComponent]],
 })

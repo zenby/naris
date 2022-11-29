@@ -15,11 +15,10 @@ import { IMenuControl } from '../../services/menu/menu.interfaces';
 import { MenuControl } from '../../services/menu/MenuControl.class';
 import { MAIN_MENU } from './menu.const';
 
-
 @Component({
   selector: 'soer-default',
   templateUrl: './default.component.html',
-  styleUrls: ['./default.component.scss']
+  styleUrls: ['./default.component.scss'],
 })
 export class DefaultComponent implements OnInit, OnDestroy {
   isCollapsed = false;
@@ -32,46 +31,43 @@ export class DefaultComponent implements OnInit, OnDestroy {
   isShowOverlay = true;
   header: Visibility = {
     pay: true,
-    level: true, 
+    level: true,
     github: true,
-    messages: true
-  }
-
+    messages: true,
+  };
 
   menuItems = MAIN_MENU;
 
   constructor(
-              @Inject('issues') private issuesId: BusEmitter,
-              public app: ApplicationService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private bus$: MixedBusService,
-              private store$: DataStoreService,
-              private message: NzMessageService,
-              private breakpointService: NzBreakpointService,
-              private personalActivtiy: PersonalActivityService
-              ) {}
+    @Inject('issues') private issuesId: BusEmitter,
+    public app: ApplicationService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private bus$: MixedBusService,
+    private store$: DataStoreService,
+    private message: NzMessageService,
+    private breakpointService: NzBreakpointService,
+    private personalActivtiy: PersonalActivityService
+  ) {}
 
   ngOnInit(): void {
-
     this.subscriptions = [
-      this.breakpointService.subscribe(siderResponsiveMap).subscribe(size => {
+      this.breakpointService.subscribe(siderResponsiveMap).subscribe((size) => {
         this.breakpoint = size;
         this.isMobileView = ['xs', 'sm', 'md', 'lg'].includes(size);
       }),
-      this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(this.findTitle.bind(this)),
-      this.bus$.of(BusError).subscribe(errorMessage => {
+      this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(this.findTitle.bind(this)),
+      this.bus$.of(BusError).subscribe((errorMessage) => {
         if (errorMessage instanceof BusError) {
-          errorMessage.errors.forEach(msg => this.message.error(msg));
+          errorMessage.errors.forEach((msg) => this.message.error(msg));
         }
-      })
+      }),
     ];
     this.findTitle();
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach( (sub: any) => sub.unsubscribe());
+    this.subscriptions.forEach((sub: any) => sub.unsubscribe());
   }
 
   logout(): void {
@@ -82,11 +78,10 @@ export class DefaultComponent implements OnInit, OnDestroy {
   findTitle(): void {
     const findChildActiveRoute = (nextChild: ActivatedRoute): ActivatedRoute => {
       if (nextChild.children.length > 0) {
-          const filteredChildren = nextChild.children
-                                   .filter(childTmp => childTmp.outlet === 'primary');
-          for ( const childTmp of filteredChildren) {
-            return findChildActiveRoute(childTmp);
-          }
+        const filteredChildren = nextChild.children.filter((childTmp) => childTmp.outlet === 'primary');
+        for (const childTmp of filteredChildren) {
+          return findChildActiveRoute(childTmp);
+        }
       }
       return nextChild;
     };
@@ -99,31 +94,34 @@ export class DefaultComponent implements OnInit, OnDestroy {
 
     const controls = child.snapshot.data['controls'];
     if (controls && Array.isArray(controls)) {
-      const renderIcon = (ctrl: any): string  => {
-        if(ctrl.toggle) {
+      const renderIcon = (ctrl: any): string => {
+        if (ctrl.toggle) {
           const value = child.snapshot.queryParams[ctrl['toggle']] === 'true';
           return ctrl.icon.split('/')[value ? 1 : 0] || '';
         }
         return ctrl['icon'];
-      }
-      const controlsMenu = controls.map(ctrl => new MenuControl(ctrl['title'], renderIcon(ctrl), () => {
-        const queryParams = {...child.snapshot.queryParams};
-        if (ctrl['action']) {
-          queryParams['action'] = ctrl['action'];
-        }
+      };
+      const controlsMenu = controls.map(
+        (ctrl) =>
+          new MenuControl(ctrl['title'], renderIcon(ctrl), () => {
+            const queryParams = { ...child.snapshot.queryParams };
+            if (ctrl['action']) {
+              queryParams['action'] = ctrl['action'];
+            }
 
-        if (ctrl['toggle']) {
-          queryParams[ctrl['toggle']] = !(child.snapshot.queryParams[ctrl['toggle']] === 'true') ? 'true' : undefined; 
-        }
+            if (ctrl['toggle']) {
+              queryParams[ctrl['toggle']] = !(child.snapshot.queryParams[ctrl['toggle']] === 'true')
+                ? 'true'
+                : undefined;
+            }
 
-        this.router.navigate(ctrl.path, {relativeTo: child, queryParams});
-      })
+            this.router.navigate(ctrl.path, { relativeTo: child, queryParams });
+          })
       );
-    this.controls$.next(controlsMenu);
+      this.controls$.next(controlsMenu);
     } else {
       this.controls$.next([]);
     }
-
   }
 
   check(sider: NzSiderComponent): void {
@@ -137,6 +135,6 @@ export class DefaultComponent implements OnInit, OnDestroy {
   }
 
   onClose(): void {
-    console.log('CLOSE!!!');    
+    console.log('CLOSE!!!');
   }
 }

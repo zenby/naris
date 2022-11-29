@@ -1,33 +1,29 @@
-<div nz-row [nzGutter]="[24, 24]" >
-  
-    <ng-container *ngIf="webFiles && webFiles.length > 0;else nocontent">
-        <div class="video-info" nz-col nzXs="24" nzSm="12" nzMd="8" nzLg="8" nzXl="8" *ngFor="let file of webFiles">
-          <a [href]="url(file['url'], file['level'])" (click)="download($event, file)" class="files-card-link">
-            <nz-card nzHoverable [nzCover]="coverTemplate" [nzActions]="[downloadIcon]" class="files-card">
-                <nz-card-meta [nzTitle]="file['title']" [nzDescription]="overview"></nz-card-meta>
-            </nz-card>
-         </a>
+<div nz-row [nzGutter]="[24, 24]">
+  <ng-container *ngIf="webFiles && webFiles.length > 0; else nocontent">
+    <div class="video-info" nz-col nzXs="24" nzSm="12" nzMd="8" nzLg="8" nzXl="8" *ngFor="let file of webFiles">
+      <a [href]="url(file['url'], file['level'])" (click)="download($event, file)" class="files-card-link">
+        <nz-card nzHoverable [nzCover]="coverTemplate" [nzActions]="[downloadIcon]" class="files-card">
+          <nz-card-meta [nzTitle]="file['title']" [nzDescription]="overview"></nz-card-meta>
+        </nz-card>
+      </a>
 
-          <ng-template #coverTemplate>
-              <div class="file-icon">
-                <i nz-icon [nzType]="file['icon']" nzTheme="outline"></i>
-              </div>
-          </ng-template>
-          <ng-template #overview>
-            <p class="files-card-desc">{{file['desc']}}</p>
-            <div class="file-label">
-                <nz-tag [nzColor]="'blue'">{{file['level']}}</nz-tag>
-                <nz-tag *ngFor="let label of file['labels']" [nzColor]="'green'">{{label}}</nz-tag>
-              </div>
-
-          </ng-template>
-          
+      <ng-template #coverTemplate>
+        <div class="file-icon">
+          <i nz-icon [nzType]="file['icon']" nzTheme="outline"></i>
         </div>
-    </ng-container>
+      </ng-template>
+      <ng-template #overview>
+        <p class="files-card-desc">{{ file['desc'] }}</p>
+        <div class="file-label">
+          <nz-tag [nzColor]="'blue'">{{ file['level'] }}</nz-tag>
+          <nz-tag *ngFor="let label of file['labels']" [nzColor]="'green'">{{ label }}</nz-tag>
+        </div>
+      </ng-template>
+    </div>
+  </ng-container>
 </div>
 
 <router-outlet></router-outlet>
-
 
 <ng-template #nocontent>
   <soer-access-denied></soer-access-denied>

@@ -20,16 +20,10 @@ describe('ComposeTabPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ComposeTabPageComponent ],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-      ],
-      providers: [
-        {provide: NzMessageService, useClass: MockNzMessageService}
-      ]
-    })
-    .compileComponents();
+      declarations: [ComposeTabPageComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule],
+      providers: [{ provide: NzMessageService, useClass: MockNzMessageService }],
+    }).compileComponents();
   });
 
   beforeEach(() => {

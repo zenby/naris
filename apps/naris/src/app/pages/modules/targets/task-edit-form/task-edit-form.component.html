@@ -1,14 +1,15 @@
-
 <ng-container *ngIf="(target$ | async)?.items as targets">
-    <ng-container *ngIf="targets.length > 0;else nocontent">
-        <soer-task-tree-edit-form *ngFor="let target of targets"
-            [target]="target"
-            [(history)]="history"
-            (save)="onSave($event)"
-            (inTemplate)="onCreateTemplate($event)"
-            (cancel)="onCancel()"
-            (delete)="onDelete($event)"></soer-task-tree-edit-form>
-    </ng-container>
+  <ng-container *ngIf="targets.length > 0; else nocontent">
+    <soer-task-tree-edit-form
+      *ngFor="let target of targets"
+      [target]="target"
+      [(history)]="history"
+      (save)="onSave($event)"
+      (inTemplate)="onCreateTemplate($event)"
+      (cancel)="onCancel()"
+      (delete)="onDelete($event)"
+    ></soer-task-tree-edit-form>
+  </ng-container>
 </ng-container>
 
 <ng-template #nocontent><nz-empty nzNotFoundImage="simple"></nz-empty></ng-template>

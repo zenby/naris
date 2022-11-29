@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class InfoComponent {
   data;
-  constructor(private route: ActivatedRoute,
-  ) {
-    this.data = this.route.snapshot.data;}
+  constructor(private route: ActivatedRoute) {
+    this.data = this.route.snapshot.data;
+  }
 }

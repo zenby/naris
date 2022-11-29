@@ -1,41 +1,41 @@
 .menu-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .mobile-menu {
-    z-index: 500;
-    position: fixed;
-    left:0;
-    right:0;
-    bottom:0;
-    background-color: rgba(255,255,255,0.9);
-    padding: 5px;
+  z-index: 500;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 5px;
 }
 
 .desktop-menu {
-    z-index: 500;
-    position: fixed;
-    right:25px;
-    bottom:25px;
-    padding: 2px 0 2px 1em;
-    border-radius: 5%;
-		box-shadow: 0 0 2px rgb(147 151 173 / 10%), 0px 2px 5px 2px rgb(147 151 173 / 30%);
-    background-color:rgba($color: #fff, $alpha: 0.3); 
+  z-index: 500;
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  padding: 2px 0 2px 1em;
+  border-radius: 5%;
+  box-shadow: 0 0 2px rgb(147 151 173 / 10%), 0px 2px 5px 2px rgb(147 151 173 / 30%);
+  background-color: rgba($color: #fff, $alpha: 0.3);
 }
 
 .main-menu {
-    flex-grow: 0;
+  flex-grow: 0;
 }
 
 .controls {
-    display: flex;
-    padding-right: 1em;
-    flex-direction: row;
-    flex-grow: 1;
-    justify-content: flex-end;
-    .control {
-        margin: 2px;
-    }
+  display: flex;
+  padding-right: 1em;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: flex-end;
+  .control {
+    margin: 2px;
+  }
 }

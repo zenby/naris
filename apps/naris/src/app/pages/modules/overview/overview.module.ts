@@ -36,12 +36,7 @@ import { InfoComponent } from './info/info.component';
     NzGridModule,
     NzTypographyModule,
   ],
-  providers: [
-    TasksResolver,
-    StreamService,
-    WorkshopsService,
-    ByRoutePathResolver,
-  ],
+  providers: [TasksResolver, StreamService, WorkshopsService, ByRoutePathResolver],
   exports: [],
 })
 export class OverviewModule {}

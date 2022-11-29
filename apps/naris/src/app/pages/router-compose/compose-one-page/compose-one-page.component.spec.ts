@@ -20,16 +20,10 @@ describe('ComposeOnePageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ComposeOnePageComponent ],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-      ],
-      providers: [
-        {provide: NzMessageService, useClass: MockNzMessageService}
-      ]
-    })
-    .compileComponents();
+      declarations: [ComposeOnePageComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule],
+      providers: [{ provide: NzMessageService, useClass: MockNzMessageService }],
+    }).compileComponents();
   });
 
   beforeEach(() => {

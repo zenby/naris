@@ -12,21 +12,21 @@ describe('PersonalActivityService', () => {
 
   const fakePersonalActivity: PersonalActivity = {
     watched: {
-      videos: [{videoId: 'some_vimeo_id'}, {videoId: 'some_youtube_id'}]
-    }
-  }
+      videos: [{ videoId: 'some_vimeo_id' }, { videoId: 'some_youtube_id' }],
+    },
+  };
 
   beforeEach(() => {
     bus$ = new MixedBusService();
     store$ = new DataStoreService(bus$);
-    TestBed.configureTestingModule({ imports: [SrDTOModule],
+    TestBed.configureTestingModule({
+      imports: [SrDTOModule],
       providers: [
-        {provide: MixedBusService, useValue: bus$},
-        {provide: DataStoreService, useValue: store$},
+        { provide: MixedBusService, useValue: bus$ },
+        { provide: DataStoreService, useValue: store$ },
         PersonalActivityService,
-        {provide: 'activity', useValue: ANY_SERVICE},
-        
-      ]
+        { provide: 'activity', useValue: ANY_SERVICE },
+      ],
     });
     personalActivityService = TestBed.inject(PersonalActivityService);
   });
@@ -39,46 +39,32 @@ describe('PersonalActivityService', () => {
     expect(personalActivityService.bus$).toBeDefined();
   });
 
-
   it('should recive ChangeDataEvent with full state of activity', () => {
     bus$.publish(
-      new ChangeDataEvent(ANY_SERVICE, {status: OK, items:[
-        {json: JSON.stringify(fakePersonalActivity)}
-      ]})
+      new ChangeDataEvent(ANY_SERVICE, { status: OK, items: [{ json: JSON.stringify(fakePersonalActivity) }] })
     );
     expect(personalActivityService.getWatchedVideos()).toMatchObject(fakePersonalActivity.watched.videos);
   });
 
-  
   it('should recive WatchVideoEvent', () => {
     //TODO: Create fake CRUD server
-    const sub = bus$.of(CommandCreate).subscribe(data => {
-      if (isBusMessage(data)){
+    const sub = bus$.of(CommandCreate).subscribe((data) => {
+      if (isBusMessage(data)) {
         bus$.publish(
-          new ChangeDataEvent(
-              ANY_SERVICE, 
-              {
-                status: OK, 
-                items:[
-                  {id: 1, ...data.payload}
-                ]
-              }
-          )
+          new ChangeDataEvent(ANY_SERVICE, {
+            status: OK,
+            items: [{ id: 1, ...data.payload }],
+          })
         );
       }
     });
-    const sub2 = bus$.of(CommandUpdate).subscribe(data => {
-      if (isBusMessage(data)){
+    const sub2 = bus$.of(CommandUpdate).subscribe((data) => {
+      if (isBusMessage(data)) {
         bus$.publish(
-          new ChangeDataEvent(
-              ANY_SERVICE, 
-              {
-                status: OK, 
-                items:[
-                  data.payload
-                ]
-              }
-          )
+          new ChangeDataEvent(ANY_SERVICE, {
+            status: OK,
+            items: [data.payload],
+          })
         );
       }
     });

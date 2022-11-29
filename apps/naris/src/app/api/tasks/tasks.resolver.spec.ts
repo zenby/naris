@@ -8,10 +8,7 @@ describe('TasksResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        HttpClient,
-        HttpHandler
-      ]
+      providers: [HttpClient, HttpHandler],
     });
     resolver = TestBed.inject(TasksResolver);
   });

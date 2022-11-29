@@ -7,11 +7,11 @@ import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { QuestionsConfigService } from '../services/questions-config.service';
 import { QuestionViewComponent } from './question-view.component';
 
-const activatedRouteMock =  {
+const activatedRouteMock = {
   snapshot: {
     data: { question: null },
   },
-}
+};
 
 const dataStoreServiceMock = {
   of: () =>
@@ -29,7 +29,7 @@ const dataStoreServiceMock = {
         ],
       },
     }),
-}
+};
 
 export default {
   title: 'QuestionViewComponent',
@@ -45,16 +45,14 @@ export default {
         },
         {
           provide: DataStoreService,
-          useValue: dataStoreServiceMock
+          useValue: dataStoreServiceMock,
         },
       ],
     }),
   ],
 } as Meta<QuestionViewComponent>;
 
-const Template: Story<QuestionViewComponent> = (
-  args: QuestionViewComponent
-) => ({
+const Template: Story<QuestionViewComponent> = (args: QuestionViewComponent) => ({
   props: args,
 });
 

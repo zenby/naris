@@ -13,21 +13,15 @@ describe('EditAbstractePageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditAbstractePageComponent ],
-      imports: [
-        MixedBusModule,
-        SrDTOModule,
-        HttpClientTestingModule,
-        RouterTestingModule
-      ],
+      declarations: [EditAbstractePageComponent],
+      imports: [MixedBusModule, SrDTOModule, HttpClientTestingModule, RouterTestingModule],
       providers: [
         FormBuilder,
-        {provide: ActivatedRoute, useValue: {snapshot: {data: {workbook: ANY_SERVICE}} }},
-        {  provide: 'workbook', useValue: ANY_SERVICE },
-        UntypedFormBuilder
-      ]
-    })
-    .compileComponents();
+        { provide: ActivatedRoute, useValue: { snapshot: { data: { workbook: ANY_SERVICE } } } },
+        { provide: 'workbook', useValue: ANY_SERVICE },
+        UntypedFormBuilder,
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

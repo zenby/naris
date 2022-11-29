@@ -10,7 +10,7 @@ export default {
   component: FilesListComponent,
   decorators: [
     moduleMetadata({
-      imports: [RouterModule.forRoot([], {useHash: true}), DemoNgZorroAntdModule, HttpClientModule],
+      imports: [RouterModule.forRoot([], { useHash: true }), DemoNgZorroAntdModule, HttpClientModule],
       providers: [
         {
           provide: APP_BASE_HREF,

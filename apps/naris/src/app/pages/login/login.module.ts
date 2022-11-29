@@ -12,7 +12,6 @@ import { HttpClient } from '@angular/common/http';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { AuthComponent } from './auth/auth.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -24,10 +23,10 @@ import { AuthComponent } from './auth/auth.component';
     NzInputModule,
     NzInputNumberModule,
     NzCheckboxModule,
-    NzSpinModule
+    NzSpinModule,
   ],
   providers: [HttpClient],
   declarations: [LoginComponent, AuthComponent],
-  exports: [LoginComponent]
+  exports: [LoginComponent],
 })
-export class LoginModule { }
+export class LoginModule {}

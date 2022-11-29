@@ -12,18 +12,15 @@ describe('ListTemplatesPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListTemplatesPageComponent ],
-      imports: [
-        RouterTestingModule,
-      ],
+      declarations: [ListTemplatesPageComponent],
+      imports: [RouterTestingModule],
       providers: [
-        {provide: ActivatedRoute, useValue: {snapshot: {data: {templates: ANY_SERVICE}} }},
-        {provide: 'target', useValue: ANY_SERVICE},
-        {provide: 'template', useValue: ANY_SERVICE},
-        {provide: 'publicTemplates', useValue: ANY_SERVICE},
-      ]
-    })
-    .compileComponents();
+        { provide: ActivatedRoute, useValue: { snapshot: { data: { templates: ANY_SERVICE } } } },
+        { provide: 'target', useValue: ANY_SERVICE },
+        { provide: 'template', useValue: ANY_SERVICE },
+        { provide: 'publicTemplates', useValue: ANY_SERVICE },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -5,18 +5,19 @@ import { AuthGuard } from '@soer/sr-auth';
 import { SrDTOModule } from '@soer/sr-dto';
 import { DefaultComponent } from './pages/default/default.component';
 
-
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/login' },
-  { path: 'pages',
-          component: DefaultComponent,
-          loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule),
-          resolve: {
-            manifest: 'manifestEmitter',
-            issues: 'issuesEmitter',
-          },
-          canActivate: [AuthGuard]},
-  { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
+  {
+    path: 'pages',
+    component: DefaultComponent,
+    loadChildren: () => import('./pages/pages.module').then((m) => m.PagesModule),
+    resolve: {
+      manifest: 'manifestEmitter',
+      issues: 'issuesEmitter',
+    },
+    canActivate: [AuthGuard],
+  },
+  { path: 'login', loadChildren: () => import('./pages/login/login.module').then((m) => m.LoginModule) },
 ];
 
 @NgModule({
@@ -24,25 +25,23 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     SrDTOModule.forChild({
       namespace: 'manifest',
-      schema: {url: 'user/manifest'},
+      schema: { url: 'user/manifest' },
       keys: {
-        manifest: {}
-      }
+        manifest: {},
+      },
     }),
     SrDTOModule.forChild({
       namespace: 'issues',
-      schema: {url: 'github'},
+      schema: { url: 'github' },
       keys: {
-        issues: {}
-      }
+        issues: {},
+      },
     }),
-    
   ],
   providers: [
-    {provide: APP_BASE_HREF, useValue: '!'},
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
-
+    { provide: APP_BASE_HREF, useValue: '!' },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -4,9 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { FilesListComponent } from './files-list.component';
-class MockNzMessageService {
-
-}
+class MockNzMessageService {}
 
 describe('FilesListComponent', () => {
   let component: FilesListComponent;
@@ -14,16 +12,10 @@ describe('FilesListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FilesListComponent ],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule
-      ],
-      providers: [
-        { provide: NzMessageService, useClass: MockNzMessageService}
-      ]
-    })
-    .compileComponents();
+      declarations: [FilesListComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule],
+      providers: [{ provide: NzMessageService, useClass: MockNzMessageService }],
+    }).compileComponents();
   });
 
   beforeEach(() => {

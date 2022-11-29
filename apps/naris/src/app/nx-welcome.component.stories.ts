@@ -7,7 +7,7 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [],
-    })
+    }),
   ],
 } as Meta<NxWelcomeComponent>;
 
@@ -15,7 +15,5 @@ const Template: Story<NxWelcomeComponent> = (args: NxWelcomeComponent) => ({
   props: args,
 });
 
-
 export const Primary = Template.bind({});
-Primary.args = {
-}
+Primary.args = {};

@@ -9,35 +9,28 @@ import { MenuControl } from './menu/MenuControl.class';
 
 describe('ApplicationService', () => {
   let service: ApplicationService;
-  const someTestControl: MenuControl = new MenuControl(
-    'title1',
-    'icon1',
-    () => {
-      // empty
-    }
-  );
+  const someTestControl: MenuControl = new MenuControl('title1', 'icon1', () => {
+    // empty
+  });
 
-  const anotherTestControl = new MenuControl(
-    'title2',
-    'icon2',
-    () => {
-      // empty
-    }
-  )
+  const anotherTestControl = new MenuControl('title2', 'icon2', () => {
+    // empty
+  });
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: AuthService, useValue: {
-            logout: () => { 
+          provide: AuthService,
+          useValue: {
+            logout: () => {
               // empty
-            }
-          }
+            },
+          },
         },
         DataStoreService,
-        { provide: 'manifest', useValue: ANY_SERVICE }
-      ]
+        { provide: 'manifest', useValue: ANY_SERVICE },
+      ],
     });
     service = TestBed.inject(ApplicationService);
   });
@@ -53,14 +46,14 @@ describe('ApplicationService', () => {
     expect(service.auth).toBeTruthy();
     expect(service.mainMenu).toBeTruthy();
     expect(service.control$).toBeTruthy();
-  })
+  });
 
   it('should have menu$ porperty', waitForAsync(() => {
     service.pageControls([someTestControl, anotherTestControl]);
 
-    service.control$.subscribe(menu => {
+    service.control$.subscribe((menu) => {
       console.log(menu);
       expect(menu).toEqual([someTestControl, anotherTestControl]);
-    })
-  }))
+    });
+  }));
 });

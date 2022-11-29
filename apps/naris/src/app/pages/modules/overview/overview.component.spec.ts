@@ -14,29 +14,29 @@ describe('OverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OverviewComponent ],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-        DemoNgZorroAntdModule
-      ],
+      declarations: [OverviewComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule, DemoNgZorroAntdModule],
       providers: [
-        {provide: 'activity', useValue: {}},
+        { provide: 'activity', useValue: {} },
         PersonalActivityService,
-        {provide: ActivatedRoute, useValue: {snapshot: {data: {
-              workshops: [],
-              streams: [], 
-              brif: {role: {}, contacts: [], social: []}
-            }
-          } 
-        }},
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              data: {
+                workshops: [],
+                streams: [],
+                brif: { role: {}, contacts: [], social: [] },
+              },
+            },
+          },
+        },
         PersonalActivityService,
-        {provide: 'workbooks', useValue: ANY_SERVICE},
-        {provide: 'targets', useValue: ANY_SERVICE},
-        {provide: 'questions', useValue: ANY_SERVICE},
-      ]
-    })
-    .compileComponents();
+        { provide: 'workbooks', useValue: ANY_SERVICE },
+        { provide: 'targets', useValue: ANY_SERVICE },
+        { provide: 'questions', useValue: ANY_SERVICE },
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

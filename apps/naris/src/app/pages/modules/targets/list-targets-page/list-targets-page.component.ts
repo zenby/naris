@@ -11,22 +11,20 @@ import { TargetModel } from '../../../../api/targets/target.interface';
 @Component({
   selector: 'soer-list-targets-page',
   templateUrl: './list-targets-page.component.html',
-  styleUrls: ['./list-targets-page.component.scss']
+  styleUrls: ['./list-targets-page.component.scss'],
 })
-export class ListTargetsPageComponent  {
+export class ListTargetsPageComponent {
   public targets$: Observable<DtoPack<TargetModel>>;
   constructor(
-      @Inject('targets') private targetsId: BusEmitter,
-      @Inject('target') private targetId: BusEmitter,
-      private bus$: MixedBusService,
-      private store$: DataStoreService,
+    @Inject('targets') private targetsId: BusEmitter,
+    @Inject('target') private targetId: BusEmitter,
+    private bus$: MixedBusService,
+    private store$: DataStoreService
   ) {
     this.targets$ = parseJsonDTOPack<TargetModel>(this.store$.of(this.targetsId), 'Targets list');
   }
 
   onDelete(target: TargetModel): void {
-    this.bus$.publish(
-      new CommandDelete(this.targetId, {}, {tid: target.id})
-    );
+    this.bus$.publish(new CommandDelete(this.targetId, {}, { tid: target.id }));
   }
 }

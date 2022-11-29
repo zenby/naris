@@ -7,7 +7,7 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [],
-    })
+    }),
   ],
 } as Meta<OverlayComponent>;
 
@@ -15,8 +15,7 @@ const Template: Story<OverlayComponent> = (args: OverlayComponent) => ({
   props: args,
 });
 
-
 export const Primary = Template.bind({});
 Primary.args = {
-    activate:  true,
-}
+  activate: true,
+};

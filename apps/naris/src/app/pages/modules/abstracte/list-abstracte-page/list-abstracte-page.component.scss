@@ -1,11 +1,11 @@
 .personal-target {
-    ::ng-deep .ant-card-body {
-        min-height: 10em;
-        max-height: 10em;
-        overflow: hidden;
-    }
-    ::ng-deep.ant-card-actions {
-        display: flex;
-        align-items: center;
-    }
+  ::ng-deep .ant-card-body {
+    min-height: 10em;
+    max-height: 10em;
+    overflow: hidden;
+  }
+  ::ng-deep.ant-card-actions {
+    display: flex;
+    align-items: center;
+  }
 }

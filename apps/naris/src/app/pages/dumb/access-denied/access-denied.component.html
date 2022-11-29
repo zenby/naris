@@ -1,27 +1,27 @@
 <div class="warning-message">
-    <nz-result
-        nzTitle="Не хватает уровня доступа"
-        nzStatus="error"
-        nzSubTitle="Для того, чтобы просматривать данный раздел необходимо оформить подписку."
-      >
-        <div nz-result-content>
-          <div class="desc">
-            <p nz-paragraph>
-              <i nz-icon nzType="check-circle"></i>
-              Для доступа к архитектурным стримам - <strong>"Stream"</strong>
-            </p>
-            <p nz-paragraph>
-              <i nz-icon nzType="check-circle"></i>
-              Для доступа к архитектурным стримам и мастерклассам - <strong>"Workshop"</strong>
-            </p>
-            <p nz-paragraph>
-              <i nz-icon nzType="check-circle"></i>
-              Для доступа ко всем материалам и исходным кодам проектов - <strong>"PRO"</strong>
-            </p>
-          </div>
-        </div>
-        <div nz-result-extra>
-          <a [routerLink]="['/', 'pages', 'pay']" nz-button nzType="primary">Оформить подписку</a>
-        </div>
-    </nz-result>
+  <nz-result
+    nzTitle="Не хватает уровня доступа"
+    nzStatus="error"
+    nzSubTitle="Для того, чтобы просматривать данный раздел необходимо оформить подписку."
+  >
+    <div nz-result-content>
+      <div class="desc">
+        <p nz-paragraph>
+          <i nz-icon nzType="check-circle"></i>
+          Для доступа к архитектурным стримам - <strong>"Stream"</strong>
+        </p>
+        <p nz-paragraph>
+          <i nz-icon nzType="check-circle"></i>
+          Для доступа к архитектурным стримам и мастерклассам - <strong>"Workshop"</strong>
+        </p>
+        <p nz-paragraph>
+          <i nz-icon nzType="check-circle"></i>
+          Для доступа ко всем материалам и исходным кодам проектов - <strong>"PRO"</strong>
+        </p>
+      </div>
+    </div>
+    <div nz-result-extra>
+      <a [routerLink]="['/', 'pages', 'pay']" nz-button nzType="primary">Оформить подписку</a>
+    </div>
+  </nz-result>
 </div>

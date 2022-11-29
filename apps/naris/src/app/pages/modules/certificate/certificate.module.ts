@@ -11,12 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { SrDTOModule } from '@soer/sr-dto';
 
-
-
 @NgModule({
-  declarations: [
-    CertificateComponent
-  ],
+  declarations: [CertificateComponent],
   imports: [
     CommonModule,
     CommonModule,
@@ -28,7 +24,7 @@ import { SrDTOModule } from '@soer/sr-dto';
     NzInputModule,
     RouterModule,
     FormsModule,
-    SrDTOModule
-  ]
+    SrDTOModule,
+  ],
 })
-export class CertificateModule { }
+export class CertificateModule {}

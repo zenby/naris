@@ -10,11 +10,8 @@ describe('StreamsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StreamsComponent ],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-      ],
+      declarations: [StreamsComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule],
     }).compileComponents();
   });
 

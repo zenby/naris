@@ -6,10 +6,8 @@ import { environment } from '../../../environments/environment';
 import { VideoModel } from './stream.model';
 
 @Injectable()
-export class StreamService implements Resolve<VideoModel>{
-
+export class StreamService implements Resolve<VideoModel> {
   constructor(private http: HttpClient) {}
-
 
   getStreams(): Observable<VideoModel> {
     return this.http.get<VideoModel>(environment.assetsUrl + 'streams.json');

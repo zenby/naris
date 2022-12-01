@@ -1,0 +1,23 @@
+<div class="player-container player-container-width">
+  <div class="player-wrapper">
+    <div *ngIf="isLoading" style="position: absolute; left: 50%; top: 50%">
+      <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+    </div>
+
+    <ng-container [ngSwitch]="videoSource">
+      <ng-container #vimeo *ngSwitchCase="'vimeo'">
+        <div #vimeoPlayer [attr.data-vimeo-id]="videoId" style="width: '100%'; height: '100%'"></div>
+      </ng-container>
+
+      <youtube-player
+        *ngSwitchCase="'youtube'"
+        [videoId]="videoId"
+        style="width: '100%'; height: '100%'"
+      ></youtube-player>
+
+      <ng-container *ngSwitchCase="'kinescope'">
+        <div id="player" class></div>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

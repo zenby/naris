@@ -11,7 +11,7 @@ import { WatchVideoEvent } from '../../../api/progress/events/watch-video.event'
 })
 export class ComposeVideoPlayerComponent implements OnInit, OnDestroy {
   public videoId = null;
-  public videoSource: 'youtube' | 'vimeo' = 'youtube';
+  public videoSource: 'youtube' | 'vimeo' | 'kinescope' = 'youtube';
   subscription: Subscription | null = null;
   constructor(private route: ActivatedRoute, private router: Router, private Bus$: MixedBusService) {}
 

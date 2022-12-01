@@ -50,6 +50,11 @@ export class StreamsComponent implements OnInit, OnDestroy {
       videoSource = 'vimeo';
     }
 
+    if (video.kinescope_id) {
+      videoId = video.kinescope_id;
+      videoSource = 'kinescope';
+    }
+
     if (videoId === undefined) {
       const queryParams = this.route.snapshot.queryParams;
       this.router.navigate(['novideo'], { relativeTo: this.route, queryParams });

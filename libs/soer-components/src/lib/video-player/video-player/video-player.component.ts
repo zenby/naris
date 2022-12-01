@@ -1,26 +1,37 @@
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import Player from '@vimeo/player';
 import { VideoPlayerService } from '../video-player.service';
-
-export type VideoSource = 'youtube' | 'vimeo' | 'kinescope';
+import { VideoSource } from '../video-source.model';
 
 @Component({
   selector: 'soer-video-player',
   templateUrl: './video-player.component.html',
   styleUrls: ['./video-player.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VideoPlayerComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() videoId = '';
   @Input() videoSource: VideoSource = 'youtube';
   @ViewChild('vimeoPlayer', { static: false }) vimeo!: ElementRef;
 
-  public isLoading = true;
+  public isLoading$ = this.videoPlayerService.getIsLoading();
   private player: Player | null = null;
 
-  constructor(private videoPlayerService: VideoPlayerService) {}
+  constructor(private videoPlayerService: VideoPlayerService) {
+    this.videoPlayerService.startLoading();
+  }
 
   ngOnInit(): void {
-    if (this.isLoading && this.videoSource === 'youtube') {
+    if (this.videoSource === 'youtube') {
       this.initializeYouTubePlayer();
     }
   }
@@ -43,12 +54,12 @@ export class VideoPlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     const tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
     document.body.appendChild(tag);
-    this.isLoading = false;
+    this.videoPlayerService.stopLoading();
   }
 
   private initializeVimeoPlayer() {
     this.player = new Player(this.vimeo.nativeElement, { autoplay: true, dnt: true });
-    this.player.on('loaded', () => (this.isLoading = false));
+    this.player.on('loaded', () => this.videoPlayerService.stopLoading());
 
     const VIMEO_STORAGE_KEY = `vimeo_video_${this.videoId}`;
     const seconds = this.videoPlayerService.getVideoProgress(VIMEO_STORAGE_KEY);
@@ -75,7 +86,7 @@ export class VideoPlayerComponent implements OnInit, AfterViewInit, OnDestroy {
           behaviour: { autoPlay: true },
         })
         .then((player: any) => {
-          this.isLoading = false;
+          this.videoPlayerService.stopLoading();
           this.player = player;
           player.once(player.Events.Ready, this.setDefaultPlaybackRate.bind(this));
           player.on(player.Events.PlaybackRateChange, this.savePlaybackRate.bind(this));

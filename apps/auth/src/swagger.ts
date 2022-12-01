@@ -8,7 +8,7 @@ export function setupSwagger(app: INestApplication, port: string) {
   const config = new DocumentBuilder()
     .setTitle('Auth app')
     .setDescription('Naris auth app API description')
-    .setVersion('1.0')
+    .setVersion('0.1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(SWAGGER_PREFIX, app, document);

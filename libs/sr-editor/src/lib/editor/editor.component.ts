@@ -79,6 +79,8 @@ export class EditorComponent {
   }
 
   removeBlock(removeIndex: number): void {
+    if(this.document.blocks.length === 1) return
+    
     this.document.blocks = this.document.blocks.filter(
       (el, index) => removeIndex !== index
     );

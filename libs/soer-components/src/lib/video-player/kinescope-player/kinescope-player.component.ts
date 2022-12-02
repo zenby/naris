@@ -16,8 +16,17 @@ export class KinescopePlayerComponent implements AfterViewInit, OnDestroy {
   constructor(private videoPlayerService: VideoPlayerService) {}
 
   ngAfterViewInit(): void {
+    /*
+      we have to download player script each time when modal opens because
+      it calls onKinescopeIframeAPIReady only when script is loaded
+    */
     this.downloadPlayerScript();
 
+    /*
+      need to declare this function on window object as
+      when player script is downloaded it will be called automatically see
+      https://kinescope.notion.site/IFrame-Player-API-Embedding-1381e9d8952d4d19a5c3530a3d99445f
+    */
     (window as any).onKinescopeIframeAPIReady = (playerFactory: any) => {
       playerFactory
         .create('player', {
@@ -36,30 +45,32 @@ export class KinescopePlayerComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.player?.destroy();
+    // clear kinescope player handlers, otherwise they will be called several times
     const wnd = window as any;
     wnd.onKinescopeIframeAPIReady = undefined;
     wnd.KinescopeIframeApiReadyHandlers = undefined;
 
+    // remove player script tag from the markup, otherwise there will be several scripts there
     this.removePlayerScript();
   }
 
-  private downloadPlayerScript() {
+  private downloadPlayerScript(): void {
     const scriptTag = document.createElement('script');
     scriptTag.src = SCRIPT_URL;
     document.body.appendChild(scriptTag);
   }
 
-  private setDefaultPlaybackRate() {
+  private setDefaultPlaybackRate(): void {
     const speed = this.videoPlayerService.getVideoPlayerSpeed();
     this.player?.setPlaybackRate(speed);
   }
 
-  private savePlaybackRate(value: { data: { playbackRate: number } }) {
+  private savePlaybackRate(value: { data: { playbackRate: number } }): void {
     const newSpeed = value.data.playbackRate;
     this.videoPlayerService.setVideoPlayerSpeed(newSpeed);
   }
 
-  private removePlayerScript() {
+  private removePlayerScript(): void {
     const script = document.querySelector(`script[src='${SCRIPT_URL}']`);
     script?.remove();
   }

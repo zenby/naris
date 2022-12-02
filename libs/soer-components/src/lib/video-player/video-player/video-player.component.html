@@ -1,23 +1,13 @@
 <div class="player-container player-container-width">
   <div class="player-wrapper">
-    <div *ngIf="isLoading$ | async" style="position: absolute; left: 50%; top: 50%">
+    <div *ngIf="isLoading$ | async" class="player-loader">
       <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
     </div>
 
     <ng-container [ngSwitch]="videoSource">
-      <ng-container #vimeo *ngSwitchCase="'vimeo'">
-        <div #vimeoPlayer [attr.data-vimeo-id]="videoId" style="width: '100%'; height: '100%'"></div>
-      </ng-container>
-
-      <youtube-player
-        *ngSwitchCase="'youtube'"
-        [videoId]="videoId"
-        style="width: '100%'; height: '100%'"
-      ></youtube-player>
-
-      <ng-container *ngSwitchCase="'kinescope'">
-        <div id="player" class></div>
-      </ng-container>
+      <soer-vimeo-player *ngSwitchCase="'vimeo'" [videoId]="videoId"></soer-vimeo-player>
+      <soer-youtube-player *ngSwitchCase="'youtube'" [videoId]="videoId"></soer-youtube-player>
+      <soer-kinescope-player *ngSwitchCase="'kinescope'" [videoId]="videoId"> </soer-kinescope-player>
     </ng-container>
   </div>
 </div>

@@ -1,0 +1,13 @@
+<div class="player-container player-container-width">
+  <div class="player-wrapper">
+    <div *ngIf="isLoading$ | async" class="player-loader">
+      <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+    </div>
+
+    <ng-container [ngSwitch]="videoSource">
+      <soer-vimeo-player *ngSwitchCase="'vimeo'" [videoId]="videoId"></soer-vimeo-player>
+      <soer-youtube-player *ngSwitchCase="'youtube'" [videoId]="videoId"></soer-youtube-player>
+      <soer-kinescope-player *ngSwitchCase="'kinescope'" [videoId]="videoId"> </soer-kinescope-player>
+    </ng-container>
+  </div>
+</div>

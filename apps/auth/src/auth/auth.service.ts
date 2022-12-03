@@ -21,7 +21,6 @@ export class AuthService {
     }
   }
 
-  // TODO: check userId type
   private async decodeToken(token: string) {
     try {
       return await this.jwtService.verifyAsync(token);

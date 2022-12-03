@@ -1,0 +1,28 @@
+### Get access token 200
+GET {{host}}/api/auth/access_token
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2NzAxMDYzNTB9.YV-dHh2awB6dQ6d0hw43F87i0bSz3IBeNr08Lm2L3Tg
+
+> {%
+client.test("Request executed successfully", () => {
+  client.assert(response.status === 200, "Response status is 200");
+});
+%}
+
+### Get access token 403
+GET {{host}}/api/auth/access_token
+
+> {%
+client.test("Request completed with an error 403", () => {
+  client.assert(response.status === 403, "Response status is not 200");
+});
+%}
+
+### Get access token 500
+GET {{host}}/api/auth/access_token
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
+> {%
+client.test("Request completed with an error 500", () => {
+  client.assert(response.status === 500, "Response status is not 200");
+});
+%}

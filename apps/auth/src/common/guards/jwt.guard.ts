@@ -11,6 +11,6 @@ export class JwtGuard implements CanActivate {
       return true;
     }
 
-    throw new HttpException('', HttpStatus.FORBIDDEN);
+    throw new HttpException('Access is denied', HttpStatus.FORBIDDEN);
   }
 }

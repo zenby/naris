@@ -1,2 +1,10 @@
 ### Get all
 GET {{host}}/api/{{version}}/json/md
+
+### Create new json document
+POST {{host}}/api/{{version}}/json/md/new
+Content-Type: application/json
+
+{ "json": "{\"title\":\"Разобраться с документацией .http\",\"overview\":\"Я впервые сталкиваюсь с подобным форматом и хотел бы его изучить. \",\"progress\":0,\"tasks\":[]}" }
+
+

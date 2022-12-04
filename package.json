@@ -38,6 +38,7 @@
     "@types/vimeo__player": "^2.16.3",
     "@vimeo/player": "^2.17.0",
     "angular2-uuid": "^1.1.1",
+    "class-validator": "^0.13.2",
     "mysql2": "^2.3.3",
     "ng-zorro-antd": "^14.1.0",
     "ngx-markdown": "^14.0.0",

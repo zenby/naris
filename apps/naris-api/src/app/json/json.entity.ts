@@ -17,7 +17,7 @@ export class JsonEntity {
 
   @ApiProperty()
   @Column()
-  data: string;
+  json: string;
 
   @ApiProperty()
   @Column()

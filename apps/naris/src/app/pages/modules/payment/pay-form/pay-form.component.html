@@ -123,7 +123,15 @@
             <li *ngFor="let option of good.options"><i nz-icon nzType="check-circle"></i> {{ option }}</li>
           </ul>
           <nz-divider></nz-divider>
-          <a (click)="order(userManifest.email, good.role)" nzSize="large" nz-button nzType="primary">Оплатить</a>
+          <a *ngIf="good.role !== 'PRO'"(click)="order(userManifest.email, good.role)" nzSize="large" nz-button nzType="primary">Оформить подписку</a>
+          <a *ngIf="good.role === 'PRO'"
+          (nzOnConfirm)="order(userManifest.email, good.role)"
+          nzPopconfirmTitle="Вы приобретаете подписку, деньги будут списываться ежемесячно, отказаться от подписки можно будет после оплаты в меню 'Платежи'?"
+          nzOkText="Да, я понял"
+          nzCancelText="Нет, я передумал"
+          nzPopconfirmPlacement="bottom"
+          nz-popconfirm
+          nzSize="large" nz-button nzType="primary">Оформить подписку</a>
         </div>
       </div>
     </ng-container>
@@ -134,6 +142,7 @@
       <b>Внимание!</b> Подписка будет оформлена на email:&nbsp;<b>{{ userManifest.email }}</b> и привязана к аккаунту,
       через который вы вошли.
     </p>
+    <p>После оплаты отказаться от подписки можно в меню "Платежи", при этом пользоваться сайтом можно будет до конца оплаченного периода.</p>
     <p>
       <i
         >Обратите внимание после выбора и оплаты конкретного тарифа, его можно будет изменить только после окончания

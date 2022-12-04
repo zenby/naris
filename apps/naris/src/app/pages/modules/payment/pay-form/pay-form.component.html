@@ -126,7 +126,7 @@
           <a *ngIf="good.role !== 'PRO'"(click)="order(userManifest.email, good.role)" nzSize="large" nz-button nzType="primary">Оформить подписку</a>
           <a *ngIf="good.role === 'PRO'"
           (nzOnConfirm)="order(userManifest.email, good.role)"
-          nzPopconfirmTitle="Вы приобретаете подписку, деньги будут списываться ежемесячно, отказаться от подписки можно будет после оплаты в меню 'Платежи'?"
+          nzPopconfirmTitle="Вы приобретаете подписку, деньги будут списываться ежемесячно. После оплаты отказаться от подписки можно будет в любой момент через меню 'Платежи'."
           nzOkText="Да, я понял"
           nzCancelText="Нет, я передумал"
           nzPopconfirmPlacement="bottom"

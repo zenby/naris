@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class AuthService {
     try {
       return await this.jwtService.signAsync({ userId, userEmail });
     } catch (e) {
-      throw new HttpException('Failed to generate token', 500);
+      throw new HttpException('Failed to generate token', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -25,7 +25,7 @@ export class AuthService {
     try {
       return await this.jwtService.verifyAsync(token);
     } catch (e) {
-      throw new HttpException('Failed to decrypt token', 500);
+      throw new HttpException('Failed to decrypt token', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

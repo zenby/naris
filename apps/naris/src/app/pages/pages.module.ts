@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { MobileFill } from '@ant-design/icons-angular/icons';
 import { SrDTOModule } from '@soer/sr-dto';
+import { VideoPlayerModule } from '@soer/soer-components';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { IconsProviderModule } from '../../icons-provider.module';
 import { FilesListComponent } from './components/files-list/files-list.component';
@@ -41,6 +42,7 @@ import { RouterComposeModule } from './router-compose/router-compose.module';
     CertificateModule,
     SrDTOModule,
     NzModalModule,
+    VideoPlayerModule,
   ],
   declarations: [
     MobileMenuComponent,

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ANY_SERVICE, MixedBusService } from '@soer/mixed-bus';
+import { VideoSource } from '@soer/soer-components';
 import { Subscription } from 'rxjs';
 import { WatchVideoEvent } from '../../../api/progress/events/watch-video.event';
 
@@ -11,7 +12,7 @@ import { WatchVideoEvent } from '../../../api/progress/events/watch-video.event'
 })
 export class ComposeVideoPlayerComponent implements OnInit, OnDestroy {
   public videoId = null;
-  public videoSource: 'youtube' | 'vimeo' = 'youtube';
+  public videoSource: VideoSource = 'youtube';
   subscription: Subscription | null = null;
   constructor(private route: ActivatedRoute, private router: Router, private Bus$: MixedBusService) {}
 

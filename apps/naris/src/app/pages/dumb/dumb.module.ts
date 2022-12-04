@@ -1,9 +1,7 @@
 import { PreloaderComponent } from '../dumb/preloader/preloader.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VideoPlayerComponent } from './video-player/video-player.component';
 import { OverlayComponent } from './overlay/overlay.component';
-import { YouTubePlayerModule } from '@angular/youtube-player';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { NzResultModule } from 'ng-zorro-antd/result';
@@ -16,7 +14,6 @@ import { NoContentComponent } from './no-content/no-content.component';
 
 @NgModule({
   declarations: [
-    VideoPlayerComponent,
     OverlayComponent,
     AccessDeniedComponent,
     UnderDevelopmentComponent,
@@ -24,17 +21,8 @@ import { NoContentComponent } from './no-content/no-content.component';
     NoContentComponent,
     PreloaderComponent,
   ],
-  imports: [
-    CommonModule,
-    YouTubePlayerModule,
-    NzIconModule,
-    NzResultModule,
-    NzButtonModule,
-    RouterModule,
-    NzSpinModule,
-  ],
+  imports: [CommonModule, NzIconModule, NzResultModule, NzButtonModule, RouterModule, NzSpinModule],
   exports: [
-    VideoPlayerComponent,
     OverlayComponent,
     AccessDeniedComponent,
     UnderDevelopmentComponent,

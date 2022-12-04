@@ -5,6 +5,7 @@ export interface Config<T extends TypeOrmModuleOptions = any> {
   port: number;
   prefix: string;
   typeOrm: T;
+  version: number;
 }
 
 export function getTypeOrmConfig(): TypeOrmModuleOptions {
@@ -28,6 +29,7 @@ export function configurationFactory(): Config {
     port: process.env.PORT ? parseInt(process.env.PORT, 10) : 3200,
     prefix: process.env.PREFIX ?? 'api',
     typeOrm: getTypeOrmConfig(),
+    version: 3,
   };
 }
 

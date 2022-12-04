@@ -1,0 +1,2 @@
+### Get all
+GET {{host}}/api/{{version}}/json/md

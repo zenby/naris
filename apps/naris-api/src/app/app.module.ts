@@ -6,6 +6,7 @@ import { configurationFactory, typeOrmFactory } from './config/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JsonModule } from './json/json.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       useFactory: typeOrmFactory,
       inject: [ConfigService],
     }),
+    JsonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

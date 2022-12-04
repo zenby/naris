@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
 import { Repository } from 'typeorm';
@@ -24,6 +24,16 @@ export class JsonService {
     document.group = documentGroup;
 
     return await this.jsonRepository.save(document);
+  }
+
+  async findOne(documentGroup: string, id: number): Promise<JsonEntity> {
+    const document = await this.jsonRepository.findOne({ where: { id, group: documentGroup } });
+
+    if (!document) {
+      throw new HttpException('Document not found', HttpStatus.NOT_FOUND);
+    }
+
+    return document;
   }
 
   prepareResponse(list: JsonEntity[]): ResponseInterface<JsonEntity[]> {

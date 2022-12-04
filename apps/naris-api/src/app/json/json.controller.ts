@@ -23,4 +23,11 @@ export class JsonController {
     // console.log(document);
     return this.jsonService.prepareResponse([document]);
   }
+
+  @Get(':id')
+  async findOne(@Param() params: Record<'documentGroup' | 'id', string>) {
+    const document = await this.jsonService.findOne(params.documentGroup, +params.id);
+
+    return this.jsonService.prepareResponse([document]);
+  }
 }

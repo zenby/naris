@@ -1,20 +1,23 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 
 import { AppModule } from './app/app.module';
 import { setupSwagger } from './swagger';
 
-const API_PREFIX = 'api';
-const PORT = process.env.AUTH_PORT || '3200';
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix(API_PREFIX);
+  const configService = app.get(ConfigService);
 
-  setupSwagger(app, PORT);
+  const globalPrefix = await configService.get('prefix');
+  app.setGlobalPrefix(globalPrefix);
 
-  await app.listen(PORT);
-  Logger.log(`🚀 Application is running on: http://localhost:${PORT}/${API_PREFIX}`);
+  const port = configService.get('port');
+
+  setupSwagger(app, port);
+
+  await app.listen(port);
+  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
 }
 
 bootstrap();

@@ -10,7 +10,12 @@
     "test": "nx test",
     "format": "prettier --write \"apps/**/*.{ts,js,scss,html}\"",
     "storybook:naris:serve": "nx storybook naris",
-    "storybook:naris:build": "nx build-storybook naris"
+    "storybook:naris:build": "nx build-storybook naris",
+    "typeorm": "ts-node -P apps/naris-api/tsconfig.app.json  -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config apps/naris-api/src/app/config/ormconfig.ts",
+    "typeorm:migrate": "npm run typeorm migration:generate -n",
+    "typeorm:create": "npm run typeorm migration:create -n",
+    "typeorm:run": "npm run typeorm migration:run",
+    "typeorm:revert": "npm run typeorm migration:revert"
   },
   "private": true,
   "dependencies": {
@@ -28,15 +33,18 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.1.3",
+    "@nestjs/typeorm": "^9.0.1",
     "@nrwl/angular": "14.3.5",
     "@types/vimeo__player": "^2.16.3",
     "@vimeo/player": "^2.17.0",
     "angular2-uuid": "^1.1.1",
+    "mysql2": "^2.3.3",
     "ng-zorro-antd": "^14.1.0",
     "ngx-markdown": "^14.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.5.5",
     "tslib": "^2.4.0",
+    "typeorm": "^0.3.11",
     "zone.js": "^0.11.6"
   },
   "devDependencies": {
@@ -47,6 +55,7 @@
     "@angular/cli": "14.1.0",
     "@angular/compiler-cli": "14.1.0",
     "@angular/language-service": "14.1.0",
+    "@nestjs/config": "^2.2.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
     "@nrwl/cli": "14.3.5",
@@ -78,6 +87,7 @@
     "prettier": "2.6.2",
     "ts-jest": "^28.0.5",
     "ts-node": "~10.8.0",
+    "tsconfig-paths": "^4.1.1",
     "typescript": "4.7.4"
   }
 }

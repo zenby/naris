@@ -9,6 +9,7 @@ import { IMenuControl, MenuTree } from '../../../services/menu/menu.interfaces';
 })
 export class MobileMenuComponent {
   @Input() isMobile = false;
+  @Input() menuView = false;
   @Input() userInfo: UserModel = { id: -1, role: '', email: '' };
   @Input() applicationMenu: MenuTree = [];
   @Input() controls: IMenuControl[] | null = null;

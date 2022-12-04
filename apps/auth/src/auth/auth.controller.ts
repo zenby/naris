@@ -1,12 +1,20 @@
-import { Controller, Get, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, UseGuards, Req, HttpStatus } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtGuard } from '../common/guards/jwt.guard';
 import { AuthService } from './auth.service';
+import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({
+    summary: 'Get access token',
+    description: 'Requires cookie with token, returns JWT access token',
+  })
+  @ApiOkResponse()
+  @ApiResponse({ status: HttpStatus.FORBIDDEN })
+  @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR })
   @Get('/access_token')
   @UseGuards(JwtGuard)
   async getAccessToken(@Req() request: Request) {

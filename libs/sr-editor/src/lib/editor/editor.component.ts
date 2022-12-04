@@ -1,17 +1,7 @@
 import { Location } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  EMPTY_WORKBOOK,
-  TextBlock,
-  WorkbookModel,
-} from '../interfaces/document.model';
+import { EMPTY_WORKBOOK, TextBlock, WorkbookModel } from '../interfaces/document.model';
 
 @Component({
   selector: 'soer-editor',
@@ -21,8 +11,10 @@ import {
 export class EditorComponent {
   @Input() document: WorkbookModel = EMPTY_WORKBOOK;
   @Output() save = new EventEmitter<WorkbookModel>();
+
   public previewFlag = false;
   public editIndex = -1;
+
   constructor(
     private cdp: ChangeDetectorRef,
     private _location: Location,
@@ -57,6 +49,15 @@ export class EditorComponent {
   setActive(activeBlock: number) {
     this.editIndex = activeBlock;
   }
+
+  insertBlocks(blocksToInsert: string[]) {
+    const beforeInsertBlocks = this.document.blocks.slice(0, this.editIndex);
+    const afterInsertBlocks = this.document.blocks.slice(this.editIndex + 1);
+    const insertedBlocks = blocksToInsert.map((b: string) => ({ text: b.trim(), type: 'markdown' } as TextBlock));
+    this.document.blocks = [...beforeInsertBlocks, ...insertedBlocks, ...afterInsertBlocks];
+    this.editIndex = this.editIndex + blocksToInsert.length - 1;
+  }
+
   move(from: number, to: number): void {
     const blocks = this.document.blocks;
     const tmp: TextBlock = blocks[to];
@@ -79,11 +80,9 @@ export class EditorComponent {
   }
 
   removeBlock(removeIndex: number): void {
-    if(this.document.blocks.length === 1) return
-    
-    this.document.blocks = this.document.blocks.filter(
-      (el, index) => removeIndex !== index
-    );
+    if (this.document.blocks.length === 1) return;
+
+    this.document.blocks = this.document.blocks.filter((el, index) => removeIndex !== index);
     this.editIndex = this.editIndex - 1;
   }
 

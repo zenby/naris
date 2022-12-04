@@ -25,7 +25,7 @@ describe('EditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('insertBlocks', () => {
+  describe('handleTextChange', () => {
     const doc: WorkbookModel = {
       id: 1,
       question: '',
@@ -38,7 +38,8 @@ describe('EditorComponent', () => {
     it('should add text blocks and change focus when edit first block', () => {
       component.document = { ...doc };
       component.editIndex = 0;
-      component.insertBlocks(['h', '']);
+      const textInput = ['h', ''].join('\n\n');
+      component.handleTextChange(textInput);
 
       fixture.detectChanges();
 
@@ -49,7 +50,8 @@ describe('EditorComponent', () => {
     it('should add text blocks and change focus when edit second block', () => {
       component.document = { ...doc };
       component.editIndex = 1;
-      component.insertBlocks(['h', '']);
+      const textInput = ['h', ''].join('\n\n');
+      component.handleTextChange(textInput);
 
       fixture.detectChanges();
 
@@ -60,7 +62,8 @@ describe('EditorComponent', () => {
     it('should add several text blocks and change focus when edit the first block', () => {
       component.document = { ...doc };
       component.editIndex = 0;
-      component.insertBlocks(['a', 'b', 'c', 'd']);
+      const textInput = ['a', 'b', 'c', 'd'].join('\n\n');
+      component.handleTextChange(textInput);
 
       fixture.detectChanges();
 

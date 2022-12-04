@@ -3,6 +3,8 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angu
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY_WORKBOOK, TextBlock, WorkbookModel } from '../interfaces/document.model';
 
+const BLOCKS_DELIMETER_REGEXP = /\n\n/;
+
 @Component({
   selector: 'soer-editor',
   templateUrl: './editor.component.html',
@@ -50,12 +52,11 @@ export class EditorComponent {
     this.editIndex = activeBlock;
   }
 
-  insertBlocks(blocksToInsert: string[]) {
-    const beforeInsertBlocks = this.document.blocks.slice(0, this.editIndex);
-    const afterInsertBlocks = this.document.blocks.slice(this.editIndex + 1);
-    const insertedBlocks = blocksToInsert.map((b: string) => ({ text: b.trim(), type: 'markdown' } as TextBlock));
-    this.document.blocks = [...beforeInsertBlocks, ...insertedBlocks, ...afterInsertBlocks];
-    this.editIndex = this.editIndex + blocksToInsert.length - 1;
+  handleTextChange(changedText: string) {
+    if (BLOCKS_DELIMETER_REGEXP.test(changedText)) {
+      const blocksToInsert = changedText.split(BLOCKS_DELIMETER_REGEXP);
+      this.insertBlocks(blocksToInsert);
+    }
   }
 
   move(from: number, to: number): void {
@@ -88,5 +89,13 @@ export class EditorComponent {
 
   onFolderUp() {
     this._location.back();
+  }
+
+  private insertBlocks(blocksToInsert: string[]) {
+    const beforeInsertBlocks = this.document.blocks.slice(0, this.editIndex);
+    const afterInsertBlocks = this.document.blocks.slice(this.editIndex + 1);
+    const insertedBlocks = blocksToInsert.map((b: string) => ({ text: b.trim(), type: 'markdown' } as TextBlock));
+    this.document.blocks = [...beforeInsertBlocks, ...insertedBlocks, ...afterInsertBlocks];
+    this.editIndex = this.editIndex + blocksToInsert.length - 1;
   }
 }

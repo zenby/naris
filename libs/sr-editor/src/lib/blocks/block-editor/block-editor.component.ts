@@ -1,7 +1,12 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { TextBlock } from '../../interfaces/document.model';
-
-const BLOCKS_DELIMETER_REGEXP = /\n\n/;
 
 @Component({
   selector: 'soer-block-editor',
@@ -25,17 +30,10 @@ export class BlockEditorComponent {
   @Output() moveUp = new EventEmitter<number>();
   @Output() moveDown = new EventEmitter<number>();
   @Output() setActive = new EventEmitter<number>();
-  @Output() insertBlocks = new EventEmitter<string[]>();
+  @Output() markdownTextChange = new EventEmitter<string>();
 
   onSelectBlock(): void {
     this.setActive.next(this.localIndex);
-  }
-
-  onChangeMarkdown(text: string): void {
-    const blocksToInsert = text.split(BLOCKS_DELIMETER_REGEXP);
-    if (blocksToInsert.length > 1) {
-      this.insertBlocks.emit(blocksToInsert);
-    }
   }
 
   command($event: KeyboardEvent): void {

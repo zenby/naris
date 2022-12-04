@@ -9,7 +9,7 @@
         class="markdown-block"
         [(ngModel)]="textBlock.text"
         (blur)="onEndEdit()"
-        (ngModelChange)="onChangeMarkdown($event)"
+        (ngModelChange)="markdownTextChange.emit($event)"
         (keydown)="command($event)"
         #edit
         soerAutoresize

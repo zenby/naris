@@ -6,6 +6,8 @@ import { AuthService } from './auth.service';
 import { HttpJsonResult } from '../common/interfaces/http-json-result.interface';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { Configuration } from '../config/config';
+import { User } from '../common/decorators/user.decorator';
+import { UserEntity } from '../user/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -19,11 +21,9 @@ export class AuthController {
   @ApiResponse({ status: HttpStatus.FORBIDDEN })
   @Get('/access_token')
   @UseGuards(JwtAuthGuard)
-  async getAccessToken(@Req() request: Request): Promise<HttpJsonResult<{ token: string }>> {
-    const refreshToken: string = request.cookies[this.configService.get<Configuration['jwt']>('jwt').cookieName];
-
+  async getAccessToken(@User() user: UserEntity): Promise<HttpJsonResult<{ token: string }>> {
     try {
-      const accessToken = await this.authService.getAccessToken(refreshToken);
+      const accessToken = await this.authService.getAccessToken(user);
 
       return { status: 'ok', items: [{ token: accessToken }] };
     } catch (e) {

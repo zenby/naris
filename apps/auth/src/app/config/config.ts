@@ -1,15 +1,35 @@
 export interface Configuration {
   port: number;
-  jwtSecret: string;
-  expAccess: number;
-  expRefresh: number;
+  jwt: {
+    jwtSecret: string;
+    expiresInAccess: number | string;
+    expiresInRefresh: number | string;
+  };
 }
 
 export function configurationFactory(): Configuration {
   return {
     port: process.env.PORT ? parseInt(process.env.PORT, 10) : 3100,
-    jwtSecret: process.env.JWT_SECRET || 'Some random key here',
-    expAccess: process.env.EXP_ACCESS ? parseInt(process.env.EXP_ACCESS, 10) : 60 * 15, // 15 min
-    expRefresh: process.env.EXP_REFRESH ? parseInt(process.env.EXP_REFRESH, 10) : 60 * 60 * 24, // 1 day
+    jwt: {
+      jwtSecret: process.env.JWT_SECRET || 'Some random key here',
+      expiresInAccess: setExpiresIn(process.env.EXP_ACCESS || 60 * 15), // 15 min
+      expiresInRefresh: setExpiresIn(process.env.EXP_REFRESH || 60 * 60 * 24), // 1 day
+    },
   };
+}
+
+function setExpiresIn(exp: string | number): string | number {
+  if (typeof exp === 'number') {
+    return exp;
+  }
+
+  const stringToNumber = parseInt(exp, 10);
+
+  // case when expiresIn is string like '1d' or '15m'
+  if (Number.isNaN(stringToNumber)) {
+    return exp;
+  }
+
+  // case when expiresIn is number like 60 * 15
+  return stringToNumber;
 }

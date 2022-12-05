@@ -5,7 +5,7 @@ import { Request } from 'express';
 export class JwtGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request: Request = context.switchToHttp().getRequest();
-    const token = request.cookies['token'];
+    const token = request.cookies['refresh_token'];
 
     if (token) {
       return true;

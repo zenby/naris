@@ -1,31 +1,19 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly jwtService: JwtService, private readonly configService: ConfigService) {}
 
-  async getAccessToken(token: string) {
-    const decoded = await this.decodeToken(token);
+  async getAccessToken(token: string): Promise<string> {
+    const decoded = await this.jwtService.verifyAsync(token, {
+      secret: this.configService.get('jwtSecret'),
+    });
 
-    const accessToken = await this.generateAccessToken(decoded.id, decoded.email);
-
-    return { status: 'ok', items: [{ token: accessToken }] };
-  }
-
-  private async generateAccessToken(userId: number, userEmail: string): Promise<string> {
-    try {
-      return await this.jwtService.signAsync({ userId, userEmail });
-    } catch (e) {
-      throw new HttpException('Failed to generate token', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  private async decodeToken(token: string) {
-    try {
-      return await this.jwtService.verifyAsync(token);
-    } catch (e) {
-      throw new HttpException('Failed to decrypt token', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return await this.jwtService.signAsync(
+      { userId: decoded.id, userEmail: decoded.email },
+      { secret: this.configService.get('jwtSecret'), expiresIn: this.configService.get('expAccess') }
+    );
   }
 }

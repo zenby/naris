@@ -4,6 +4,7 @@ export interface Configuration {
     jwtSecret: string;
     expiresInAccess: number | string;
     expiresInRefresh: number | string;
+    cookieName: string;
   };
 }
 
@@ -14,6 +15,7 @@ export function configurationFactory(): Configuration {
       jwtSecret: process.env.JWT_SECRET || 'Some random key here',
       expiresInAccess: setExpiresIn(process.env.EXP_ACCESS || 60 * 15), // 15 min
       expiresInRefresh: setExpiresIn(process.env.EXP_REFRESH || 60 * 60 * 24), // 1 day
+      cookieName: process.env.COOKIE_NAME || 'refresh_token',
     },
   };
 }

@@ -1,13 +1,15 @@
 import { Controller, Get, UseGuards, Req, HttpStatus } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
-import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpJsonResult } from '../common/interfaces/http-json-result.interface';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { Configuration } from '../config/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService, private readonly configService: ConfigService) {}
 
   @ApiOperation({
     summary: 'Get access token',
@@ -18,7 +20,7 @@ export class AuthController {
   @Get('/access_token')
   @UseGuards(JwtAuthGuard)
   async getAccessToken(@Req() request: Request): Promise<HttpJsonResult<{ token: string }>> {
-    const refreshToken: string = request.cookies['refresh_token'];
+    const refreshToken: string = request.cookies[this.configService.get<Configuration['jwt']>('jwt').cookieName];
 
     try {
       const accessToken = await this.authService.getAccessToken(refreshToken);

@@ -4,26 +4,26 @@
   [ngClass]="{ 'mobile-menu': isMobile, 'desktop-menu': !isMobile }"
 >
   <div class="main-menu">
-    <button *ngIf="isMobile && !menuView" nz-button nzSize="large" nzType="primary" (click)="menuView = !menuView">
+    <button *ngIf="isMobile && !isMenuSohw" nz-button nzSize="large" nzType="primary" (click)=onShowMenu()>
       <i nz-icon nzType="menu" nzTheme="outline"></i>
     </button>
 
-    <ul class="menu-drop" *ngIf="menuView">
+    <ul class="menu-drop" *ngIf="isMenuSohw">
       <ng-container *ngFor="let item of applicationMenu">
-        <li class="menu-drop__item" nzType="link" [routerLink]="item.link" (click)="menuView = !menuView">
-          <i class="menu-drop__item-icon" nz-icon nzType="{{ item.icon }}" nzTheme="twotone"></i>{{ item.title
-          }}<img *ngIf="item.isPro" src="/assets/favicons/favicon-194x194.png" width="16" style="margin-top: -8px" />
+        <li class="menu-drop__item" nzType="link" [routerLink]="item.link" (click)=onShowMenu()>
+          <i class="menu-drop__item-icon" nz-icon nzType="{{ item.icon }}" nzTheme="twotone"></i>{{ item.title }}
+          <img *ngIf="item.isPro" src="/assets/favicons/favicon-194x194.png" width="16" style="margin-top: -8px" />
           <ul class="sub-menu-drop">
             <li
               class="sub-menu-drop__item"
               *ngFor="let childItem of item.children"
               nzType="link"
               [routerLink]="childItem.link"
-              (click)="menuView = !menuView"
+              (click)=onShowMenu()
             >
               <i class="menu-drop__item-icon" nz-icon nzType="{{ childItem.icon }}" nzTheme="outline"></i
-              >{{ childItem.title
-              }}<img
+              >{{ childItem.title }}
+              <img
                 *ngIf="childItem.isPro"
                 src="/assets/favicons/favicon-194x194.png"
                 width="16"
@@ -34,14 +34,14 @@
         </li>
       </ng-container>
       <li nz-menu-divider></li>
-      <li *ngIf="userInfo.role === 'GUEST'" (click)="menuView = !menuView">
+      <li *ngIf="userInfo.role === 'GUEST'" (click)=onShowMenu()>
         <a [routerLink]="['/', 'pages', 'pay']">Улучшить уровень</a>
       </li>
-      <li (click)="menuView = !menuView"><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>
+      <li (click)=onShowMenu()><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>
       <li (click)="logout.next(true)">Выход</li>
     </ul>
 
-    <button *ngIf="isMobile && menuView" nz-button nzSize="large" nzType="primary" (click)="menuView = !menuView">
+    <button *ngIf="isMobile && isMenuSohw" nz-button nzSize="large" nzType="primary" (click)=onShowMenu()>
       <i nz-icon nzType="menu" nzTheme="outline"></i>
     </button>
 

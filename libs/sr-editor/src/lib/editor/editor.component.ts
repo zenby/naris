@@ -1,9 +1,8 @@
 import { Location } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY_WORKBOOK, TextBlock, WorkbookModel } from '../interfaces/document.model';
-
-const BLOCKS_DELIMETER_REGEXP = /\n\n/;
+import { BlockService } from '../block.service';
+import { DelimitEvent, EMPTY_WORKBOOK, TextBlock, WorkbookModel } from '../interfaces/document.model';
 
 @Component({
   selector: 'soer-editor',
@@ -16,12 +15,14 @@ export class EditorComponent {
 
   public previewFlag = false;
   public editIndex = -1;
+  public blocksDelimiter = this.blockService.blocksDelimiter;
 
   constructor(
     private cdp: ChangeDetectorRef,
     private _location: Location,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private blockService: BlockService
   ) {
     this.route.queryParams.subscribe((params) => {
       if (params['action'] === 'save') {
@@ -50,13 +51,6 @@ export class EditorComponent {
 
   setActive(activeBlock: number) {
     this.editIndex = activeBlock;
-  }
-
-  handleTextChange(changedText: string) {
-    if (BLOCKS_DELIMETER_REGEXP.test(changedText)) {
-      const blocksToInsert = changedText.split(BLOCKS_DELIMETER_REGEXP);
-      this.insertBlocks(blocksToInsert);
-    }
   }
 
   move(from: number, to: number): void {
@@ -95,11 +89,13 @@ export class EditorComponent {
     this._location.back();
   }
 
-  private insertBlocks(blocksToInsert: string[]) {
-    const beforeInsertBlocks = this.document.blocks.slice(0, this.editIndex);
-    const afterInsertBlocks = this.document.blocks.slice(this.editIndex + 1);
-    const insertedBlocks = blocksToInsert.map((b: string) => ({ text: b.trim(), type: 'markdown' } as TextBlock));
-    this.document.blocks = [...beforeInsertBlocks, ...insertedBlocks, ...afterInsertBlocks];
-    this.editIndex = this.editIndex + blocksToInsert.length - 1;
+  delimitBLock(delimitData: DelimitEvent) {
+    const { blocks, activeBlockIndex } = this.blockService.delimitBlock(
+      delimitData,
+      this.document.blocks,
+      this.editIndex
+    );
+    this.document.blocks = blocks;
+    this.editIndex = activeBlockIndex;
   }
 }

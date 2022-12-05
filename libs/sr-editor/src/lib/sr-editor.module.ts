@@ -8,6 +8,7 @@ import { TextareaAutoresizeDirective } from './textarea-autoresize.directive';
 import { BlockTestComponent } from './blocks/block-test/block-test.component';
 import { TypeFormatPipe } from './pipes/type-format.pipe';
 import { BooleanToStringPipe } from './pipes/boolean-to-string.pipe';
+import { BlockService } from './block.service';
 
 @NgModule({
   imports: [CommonModule, MarkdownModule.forRoot(), FormsModule],
@@ -19,6 +20,7 @@ import { BooleanToStringPipe } from './pipes/boolean-to-string.pipe';
     TypeFormatPipe,
     BooleanToStringPipe,
   ],
+  providers: [BlockService],
   exports: [EditorComponent],
 })
 export class SrEditorModule {}

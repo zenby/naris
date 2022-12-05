@@ -2,8 +2,8 @@ import { Controller, Get, UseGuards, Req, HttpStatus } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { JwtGuard } from '../common/guards/jwt.guard';
 import { HttpJsonResult } from '../common/interfaces/http-json-result.interface';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +16,7 @@ export class AuthController {
   @ApiOkResponse()
   @ApiResponse({ status: HttpStatus.FORBIDDEN })
   @Get('/access_token')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtAuthGuard)
   async getAccessToken(@Req() request: Request): Promise<HttpJsonResult<{ token: string }>> {
     const refreshToken: string = request.cookies['refresh_token'];
 

@@ -87,6 +87,10 @@ export class EditorComponent {
     this.editIndex = this.editIndex - 1;
   }
 
+  isBlockEditable(index: number): boolean {
+    return index === this.editIndex;
+  }
+
   onFolderUp() {
     this._location.back();
   }

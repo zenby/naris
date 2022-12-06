@@ -13,3 +13,9 @@ Content-Type: application/json
 
 ### Get one by id
 GET {{host}}/api/{{version}}/json/md/{{documentId}}
+
+### Update
+PUT {{host}}/api/{{version}}/json/md/{{documentId}}
+Content-Type: application/json
+
+{ "id": {{documentId}}, "json": "{\"title\":\"Разобрался с документацией .http\",\"overview\":\"Занимательная тема. \",\"progress\":0,\"tasks\":[]}" }

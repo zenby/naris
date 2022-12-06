@@ -1,11 +1,9 @@
 import { Controller, Get, UseGuards, Req, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { HttpJsonResult } from '../common/interfaces/http-json-result.interface';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { Configuration } from '../config/config';
 import { User } from '../common/decorators/user.decorator';
 import { UserEntity } from '../user/user.entity';
 

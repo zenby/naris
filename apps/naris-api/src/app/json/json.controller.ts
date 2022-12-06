@@ -4,6 +4,7 @@ import { JsonEntity } from './json.entity';
 import { CreateJsonDto } from './dto/create-json.dto';
 import { HttpJsonResponse, HttpJsonStatus } from '../common/types/http-json-response.interface';
 import { UpdateJsonDto } from './dto/update-json.dto';
+import { JsonParams } from './types/json-params.type';
 
 @Controller({ version: '3', path: 'json/:documentGroup' })
 export class JsonController {
@@ -34,10 +35,10 @@ export class JsonController {
     }
   }
 
-  @Get(':id')
-  async findOne(@Param() params: Record<'documentGroup' | 'id', string>): Promise<HttpJsonResponse<JsonEntity>> {
+  @Get(':documentId')
+  async findOne(@Param() params: JsonParams): Promise<HttpJsonResponse<JsonEntity>> {
     try {
-      const document = await this.jsonService.findOne(params.documentGroup, +params.id);
+      const document = await this.jsonService.findOne(params.documentGroup, +params.documentId);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
@@ -45,13 +46,13 @@ export class JsonController {
     }
   }
 
-  @Put(':id')
+  @Put(':documentId')
   async updateJson(
-    @Param() params: Record<'documentGroup' | 'id', string>,
+    @Param() params: JsonParams,
     @Body() updateJsonDto: UpdateJsonDto
   ): Promise<HttpJsonResponse<JsonEntity>> {
     try {
-      const document = await this.jsonService.update(+params.id, params.documentGroup, updateJsonDto);
+      const document = await this.jsonService.update(+params.documentId, params.documentGroup, updateJsonDto);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
@@ -59,10 +60,10 @@ export class JsonController {
     }
   }
 
-  @Delete(':id')
-  async deleteJson(@Param() params: Record<'documentGroup' | 'id', string>): Promise<HttpJsonResponse<JsonEntity>> {
+  @Delete(':documentId')
+  async deleteJson(@Param() params: JsonParams): Promise<HttpJsonResponse<JsonEntity>> {
     try {
-      await this.jsonService.delete(+params.id, params.documentGroup);
+      await this.jsonService.delete(+params.documentId, params.documentGroup);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, []);
     } catch (e) {

@@ -27,8 +27,8 @@ export class JsonService {
     return await this.jsonRepository.save(document);
   }
 
-  async findOne(documentGroup: string, id: number): Promise<JsonEntity> {
-    return await this.jsonRepository.findOne({ where: { id, group: documentGroup } });
+  async findOne(documentGroup: string, documentId: number): Promise<JsonEntity> {
+    return await this.jsonRepository.findOne({ where: { id: documentId, group: documentGroup } });
   }
 
   async update(documentId: number, documentGroup: string, updateJsonDto: UpdateJsonDto): Promise<JsonEntity> {
@@ -43,14 +43,14 @@ export class JsonService {
     return await this.jsonRepository.save(document);
   }
 
-  async delete(id: number, documentGroup: string): Promise<DeleteResult> {
-    const document = await this.jsonRepository.findOne({ where: { id, group: documentGroup } });
+  async delete(documentId: number, documentGroup: string): Promise<DeleteResult> {
+    const document = await this.jsonRepository.findOne({ where: { id: documentId, group: documentGroup } });
 
     if (!document) {
       throw new HttpException('Document does not exist', HttpStatus.NOT_FOUND);
     }
 
-    return await this.jsonRepository.delete({ id });
+    return await this.jsonRepository.delete({ id: documentId });
   }
 
   prepareResponse(status: HttpJsonStatus, list: JsonEntity[]): HttpJsonResponse<JsonEntity> {

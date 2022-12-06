@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { JsonService } from './json.service';
 import { JsonEntity } from './json.entity';
 import { CreateJsonDto } from './dto/create-json.dto';
@@ -54,6 +54,17 @@ export class JsonController {
       const document = await this.jsonService.update(+params.id, params.documentGroup, updateJsonDto);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
+    } catch (e) {
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @Delete(':id')
+  async deleteJson(@Param() params: Record<'documentGroup' | 'id', string>): Promise<HttpJsonResponse<JsonEntity>> {
+    try {
+      await this.jsonService.delete(+params.id, params.documentGroup);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, []);
     } catch (e) {
       return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
     }

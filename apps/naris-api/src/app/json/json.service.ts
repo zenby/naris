@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateJsonDto } from './dto/create-json.dto';
 import { HttpJsonResponse, HttpJsonStatus } from '../common/types/http-json-response.interface';
 import { UpdateJsonDto } from './dto/update-json.dto';
@@ -35,12 +35,22 @@ export class JsonService {
     const document = await this.jsonRepository.findOne({ where: { id: documentId, group: documentGroup } });
 
     if (!document) {
-      throw new HttpException('', HttpStatus.NOT_FOUND);
+      throw new HttpException('Document does not exist', HttpStatus.NOT_FOUND);
     }
 
     Object.assign(document, updateJsonDto);
 
     return await this.jsonRepository.save(document);
+  }
+
+  async delete(id: number, documentGroup: string): Promise<DeleteResult> {
+    const document = await this.jsonRepository.findOne({ where: { id, group: documentGroup } });
+
+    if (!document) {
+      throw new HttpException('Document does not exist', HttpStatus.NOT_FOUND);
+    }
+
+    return await this.jsonRepository.delete({ id });
   }
 
   prepareResponse(status: HttpJsonStatus, list: JsonEntity[]): HttpJsonResponse<JsonEntity> {

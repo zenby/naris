@@ -5,6 +5,6 @@ Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzLCJlbWFpb
 ### Get access token without token (403)
 GET {{host}}/auth/access_token
 
-### Get access token with ivalid token (403)
+### Get access token with invalid token (403)
 GET {{host}}/auth/access_token
 Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9

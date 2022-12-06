@@ -2,8 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
 import { Repository } from 'typeorm';
-import { ResponseInterface } from '../common/response.interface';
 import { CreateJsonDto } from './dto/create-json.dto';
+import { HttpJsonResponse, HttpJsonStatus } from '../common/types/http-json-response.interface';
 
 @Injectable()
 export class JsonService {
@@ -16,7 +16,7 @@ export class JsonService {
     return this.jsonRepository.find({ where: { group: documentGroup } });
   }
 
-  async createJson(documentGroup: string, createJsonDto: CreateJsonDto) {
+  async createJson(documentGroup: string, createJsonDto: CreateJsonDto): Promise<JsonEntity> {
     const document = new JsonEntity();
 
     Object.assign(document, createJsonDto);
@@ -27,16 +27,10 @@ export class JsonService {
   }
 
   async findOne(documentGroup: string, id: number): Promise<JsonEntity> {
-    const document = await this.jsonRepository.findOne({ where: { id, group: documentGroup } });
-
-    if (!document) {
-      throw new HttpException('Document not found', HttpStatus.NOT_FOUND);
-    }
-
-    return document;
+    return await this.jsonRepository.findOne({ where: { id, group: documentGroup } });
   }
 
-  prepareResponse(list: JsonEntity[]): ResponseInterface<JsonEntity[]> {
-    return { status: 'ok', items: list };
+  prepareResponse(status: HttpJsonStatus, list: JsonEntity[]): HttpJsonResponse<JsonEntity> {
+    return { status, items: list };
   }
 }

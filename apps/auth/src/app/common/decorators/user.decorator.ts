@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { ExpressRequestInterface } from '../interfaces/express-request.interface';
+import { ExpressRequestInterface } from '../types/express-request.interface';
 
 export const User = createParamDecorator((data: string, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest<ExpressRequestInterface>();

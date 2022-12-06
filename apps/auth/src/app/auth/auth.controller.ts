@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards, Req, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { HttpJsonResult } from '../common/interfaces/http-json-result.interface';
+import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { User } from '../common/decorators/user.decorator';
 import { UserEntity } from '../user/user.entity';
@@ -23,9 +23,9 @@ export class AuthController {
     try {
       const accessToken = await this.authService.getAccessToken(user);
 
-      return { status: 'ok', items: [{ token: accessToken }] };
+      return { status: HttpJsonStatus.Ok, items: [{ token: accessToken }] };
     } catch (e) {
-      return { status: 'error', items: [] };
+      return { status: HttpJsonStatus.Error, items: [] };
     }
   }
 }

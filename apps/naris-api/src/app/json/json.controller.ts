@@ -5,11 +5,15 @@ import { CreateJsonDto } from './dto/create-json.dto';
 import { HttpJsonResponse, HttpJsonStatus } from '../common/types/http-json-response.interface';
 import { UpdateJsonDto } from './dto/update-json.dto';
 import { JsonParams } from './types/json-params.type';
+import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { JsonResponseDto } from './dto/json-response.dto';
 
 @Controller({ version: '3', path: 'json/:documentGroup' })
 export class JsonController {
   constructor(private readonly jsonService: JsonService) {}
 
+  @ApiOperation({ summary: 'Get all', description: 'Get a list of documents of a specific group' })
+  @ApiOkResponse({ type: JsonResponseDto })
   @Get()
   async getAll(@Param('documentGroup') documentGroup: string): Promise<HttpJsonResponse<JsonEntity>> {
     try {
@@ -21,6 +25,8 @@ export class JsonController {
     }
   }
 
+  @ApiOperation({ summary: 'Create', description: 'Create a document that belongs to a specific group' })
+  @ApiCreatedResponse({ type: JsonResponseDto })
   @Post('new')
   async createJson(
     @Param('documentGroup') documentGroup: string,
@@ -35,6 +41,10 @@ export class JsonController {
     }
   }
 
+  @ApiOperation({ summary: 'Get one', description: 'Getting a document by id and belonging to a specific group' })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiParam({ name: 'documentGroup' })
+  @ApiParam({ name: 'documentId' })
   @Get(':documentId')
   async findOne(@Param() params: JsonParams): Promise<HttpJsonResponse<JsonEntity>> {
     try {
@@ -46,6 +56,13 @@ export class JsonController {
     }
   }
 
+  @ApiOperation({
+    summary: 'Update',
+    description: 'Change a document with a specific id belonging to a specific category',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiParam({ name: 'documentGroup' })
+  @ApiParam({ name: 'documentId' })
   @Put(':documentId')
   async updateJson(
     @Param() params: JsonParams,
@@ -60,6 +77,13 @@ export class JsonController {
     }
   }
 
+  @ApiOperation({
+    summary: 'Delete',
+    description: 'Delete a document with a specific id belonging to a specific category',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiParam({ name: 'documentGroup' })
+  @ApiParam({ name: 'documentId' })
   @Delete(':documentId')
   async deleteJson(@Param() params: JsonParams): Promise<HttpJsonResponse<JsonEntity>> {
     try {

@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 
 export interface Config<T extends TypeOrmModuleOptions = any> {
   port: number;
@@ -10,12 +11,12 @@ export interface Config<T extends TypeOrmModuleOptions = any> {
 
 export function getTypeOrmConfig(): TypeOrmModuleOptions {
   return {
-    type: (process.env.DATABASE_TYPE as any) ?? 'mariadb',
-    host: process.env.DATABASE_HOST ?? 'localhost',
+    type: process.env.DATABASE_TYPE as MysqlConnectionOptions['type'],
+    host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT ? parseInt(process.env.DATABASE_PORT, 10) : 3306,
-    username: process.env.DATABASE_USER ?? 'naris',
-    password: process.env.DATABASE_PASSWORD ?? '123456',
-    database: process.env.DATABASE_NAME ?? 'naris',
+    username: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME,
     synchronize: process.env.DATABASE_SYNCHRONIZE ? process.env.DATABASE_SYNCHRONIZE === 'true' : true,
     autoLoadEntities: process.env.DATABASE_AUTO_LOAD_ENTITIES
       ? process.env.DATABASE_AUTO_LOAD_ENTITIES === 'true'
@@ -34,5 +35,5 @@ export function configurationFactory(): Config {
 }
 
 export async function typeOrmFactory(configService: ConfigService): Promise<TypeOrmModuleOptions> {
-  return await configService.get<any>('typeOrm');
+  return await configService.get<TypeOrmModuleOptions>('typeOrm');
 }

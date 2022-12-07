@@ -1,5 +1,27 @@
+@keyframes showMenu{
+  0%{transform: translateX(-100%);}
+  100%{transform: translateX(0%);}
+}
+
+@keyframes hideMenu{
+  0%{transform: translateX(0%);}
+  100%{transform: translateX(-150%);}
+}
+
 ul li {
   list-style: none;
+}
+
+.displayNone{
+  display:none;
+}
+.isShowMenu{
+  display: block;
+  animation:showMenu 0.3s linear;
+}
+.isHideMenu{
+  animation:hideMenu 0.5s linear;
+  animation-fill-mode:forwards;
 }
 
 .menu-drop {
@@ -14,7 +36,7 @@ ul li {
   position: absolute;
   bottom: 2.5rem;
   left: 0.4rem;
-  box-shadow: 2px 2px 5px rgba(18, 100, 222, 0.864);
+  box-shadow: 2px 2px 5px rgba(229, 230, 233, 0.864);
 
   &__item {
     cursor: pointer;

@@ -4,13 +4,13 @@
   [ngClass]="{ 'mobile-menu': isMobile, 'desktop-menu': !isMobile }"
 >
   <div class="main-menu">
-    <button *ngIf="isMobile && !isMenuSohw" nz-button nzSize="large" nzType="primary" (click)=onShowMenu()>
+    <button *ngIf="isMobile" nz-button nzSize="large" nzType="primary" (click)="onShowMenu()">
       <i nz-icon nzType="menu" nzTheme="outline"></i>
     </button>
 
-    <ul class="menu-drop" *ngIf="isMenuSohw">
+    <ul class="menu-drop {{ classAnimationSCSS }}" (click)="onShowMenu()">
       <ng-container *ngFor="let item of applicationMenu">
-        <li class="menu-drop__item" nzType="link" [routerLink]="item.link" (click)=onShowMenu()>
+        <li class="menu-drop__item" nzType="link" [routerLink]="item.link">
           <i class="menu-drop__item-icon" nz-icon nzType="{{ item.icon }}" nzTheme="twotone"></i>{{ item.title }}
           <img *ngIf="item.isPro" src="/assets/favicons/favicon-194x194.png" width="16" style="margin-top: -8px" />
           <ul class="sub-menu-drop">
@@ -19,7 +19,6 @@
               *ngFor="let childItem of item.children"
               nzType="link"
               [routerLink]="childItem.link"
-              (click)=onShowMenu()
             >
               <i class="menu-drop__item-icon" nz-icon nzType="{{ childItem.icon }}" nzTheme="outline"></i
               >{{ childItem.title }}
@@ -34,24 +33,20 @@
         </li>
       </ng-container>
       <li nz-menu-divider></li>
-      <li *ngIf="userInfo.role === 'GUEST'" (click)=onShowMenu()>
+      <li *ngIf="userInfo.role === 'GUEST'">
         <a [routerLink]="['/', 'pages', 'pay']">Улучшить уровень</a>
       </li>
-      <li (click)=onShowMenu()><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>
+      <li><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>
       <li (click)="logout.next(true)">Выход</li>
     </ul>
 
-    <button *ngIf="isMobile && isMenuSohw" nz-button nzSize="large" nzType="primary" (click)=onShowMenu()>
-      <i nz-icon nzType="menu" nzTheme="outline"></i>
-    </button>
-
-    <a *ngIf="isMobile" [routerLink]="['overview']" nz-button nzSize="large" nzType="link"
+    <a *ngIf="isMobile" [routerLink]="['overview']" nz-button nzSize="large" nzType="link" (click)="onHideMenu()"
       ><i nz-icon nzType="rocket" nzTheme="outline"></i
     ></a>
-    <a *ngIf="isMobile" [routerLink]="['workshops']" nz-button nzSize="large" nzType="link"
+    <a *ngIf="isMobile" [routerLink]="['workshops']" nz-button nzSize="large" nzType="link" (click)="onHideMenu()"
       ><i nz-icon nzType="experiment" nzTheme="outline"></i
     ></a>
-    <a *ngIf="isMobile" [routerLink]="['streams']" nz-button nzSize="large" nzType="link"
+    <a *ngIf="isMobile" [routerLink]="['streams']" nz-button nzSize="large" nzType="link" (click)="onHideMenu()"
       ><i nz-icon nzType="play-circle" nzTheme="outline"></i
     ></a>
   </div>

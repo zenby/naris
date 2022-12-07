@@ -1,12 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { TextBlock } from '../../interfaces/document.model';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { DelimitEvent, TextBlock } from '../../interfaces/document.model';
 
 @Component({
   selector: 'soer-block-editor',
@@ -23,6 +16,7 @@ export class BlockEditorComponent {
   }
   @Input() localIndex = -1;
   @Input() isEdit = false;
+  @Input() blockDelimeter: string | undefined;
 
   @Output() addBlock = new EventEmitter<number>();
   @Output() removeBlock = new EventEmitter<number>();
@@ -31,9 +25,18 @@ export class BlockEditorComponent {
   @Output() moveDown = new EventEmitter<number>();
   @Output() setActive = new EventEmitter<number>();
   @Output() markdownTextChange = new EventEmitter<string>();
+  @Output() delimitBlock = new EventEmitter<DelimitEvent>();
 
   onSelectBlock(): void {
     this.setActive.next(this.localIndex);
+  }
+
+  textChange(changedText: string) {
+    this.markdownTextChange.emit(changedText);
+
+    if (this.blockDelimeter && changedText.includes(this.blockDelimeter)) {
+      this.delimitBlock.emit({ text: changedText, type: this.textBlock.type });
+    }
   }
 
   command($event: KeyboardEvent): void {

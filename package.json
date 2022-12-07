@@ -35,6 +35,7 @@
     "@types/vimeo__player": "^2.16.3",
     "@vimeo/player": "^2.17.0",
     "angular2-uuid": "^1.1.1",
+    "helmet": "^6.0.1",
     "cookie-parser": "^1.4.6",
     "mysql2": "^2.3.3",
     "ng-zorro-antd": "^14.1.0",

@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import helmet from 'helmet';
 
 import { AppModule } from './app/app.module';
 import { setupSwagger } from './swagger';
@@ -9,6 +10,10 @@ const PORT = process.env.AUTH_PORT || '3200';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // ATTENTION! This call must come before all app.use(...)
+  app.use(helmet());
+
   app.setGlobalPrefix(API_PREFIX);
 
   setupSwagger(app, PORT);

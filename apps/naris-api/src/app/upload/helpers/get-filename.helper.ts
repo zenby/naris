@@ -8,6 +8,8 @@ export const getFilenameHelper = (
 ) => {
   const suffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
   const ext = extname(file.originalname);
+
   const filename = `${suffix}${ext}`;
+
   return callback(null, filename);
 };

@@ -1,11 +1,15 @@
-import { Controller, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { join } from 'path';
-import { getFilenameHelper } from '../helpers/get-filename.helper';
+import { getFilenameHelper } from './helpers/get-filename.helper';
+import { UploadService } from './upload.service';
+import { HttpJsonStatus } from '../common/types/http-json-result.interface';
 
 @Controller('upload')
 export class UploadController {
+  constructor(private readonly uploadService: UploadService) {}
+
   @Post()
   @UseInterceptors(
     FileInterceptor('file', {
@@ -16,6 +20,6 @@ export class UploadController {
     })
   )
   async uploadFiles(@UploadedFile() file: Express.Multer.File) {
-    return file;
+    return this.uploadService.prepareResponse(HttpJsonStatus.Ok, file.filename);
   }
 }

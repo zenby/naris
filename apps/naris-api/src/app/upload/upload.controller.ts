@@ -4,7 +4,7 @@ import { diskStorage } from 'multer';
 import { join } from 'path';
 import { getFilenameHelper } from './helpers/get-filename.helper';
 import { UploadService } from './upload.service';
-import { HttpJsonStatus } from '../common/types/http-json-result.interface';
+import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
 import { ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 
 @Controller('upload')
@@ -37,7 +37,7 @@ export class UploadController {
           type: 'array',
           items: {
             type: 'string',
-            example: '1670443088998-795980499.png',
+            example: '/1670443088998-795980499.png',
           },
         },
       },
@@ -51,7 +51,9 @@ export class UploadController {
       }),
     })
   )
-  async uploadFiles(@UploadedFile() file: Express.Multer.File) {
-    return this.uploadService.prepareResponse(HttpJsonStatus.Ok, file.filename);
+  async uploadFiles(@UploadedFile() file: Express.Multer.File): Promise<HttpJsonResult<{ uri: string }>> {
+    const response = await this.uploadService.saveFile(file);
+
+    return this.uploadService.prepareResponse(HttpJsonStatus.Ok, response);
   }
 }

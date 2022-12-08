@@ -1,7 +1,7 @@
 import { extname } from 'path';
 import { Request } from 'express';
 
-export const getFilenameHelper = (
+export const setFilenameHelper = (
   request: Request,
   file: Express.Multer.File,
   callback: (error: Error | null, filename: string) => void

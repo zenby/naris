@@ -3,7 +3,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 import { join } from 'path';
-import { getFilenameHelper } from './helpers/get-filename.helper';
+import { setFilenameHelper } from './helpers/set-filename.helper';
 import { UploadService } from './upload.service';
 import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
 
@@ -23,7 +23,7 @@ export class UploadController {
     FileInterceptor('file', {
       storage: diskStorage({
         destination: `${join(__dirname, '../../../')}apps/naris-api/src/assets`,
-        filename: getFilenameHelper,
+        filename: setFilenameHelper,
       }),
     })
   )

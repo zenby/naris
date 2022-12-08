@@ -22,7 +22,7 @@ export class UploadController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: `${join(__dirname, '../../../')}apps/naris-api/src/assets`,
+        destination: join(__dirname, '../../../', 'apps/naris-api/src/assets'),
         filename: setFilenameHelper,
       }),
     })

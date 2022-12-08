@@ -28,8 +28,12 @@ export class UploadController {
     })
   )
   async uploadFiles(@UploadedFile() file: Express.Multer.File): Promise<HttpJsonResult<{ uri: string }>> {
-    const response = await this.uploadService.saveFile(file);
+    try {
+      const response = await this.uploadService.saveFile(file);
 
-    return this.uploadService.prepareResponse(HttpJsonStatus.Ok, response);
+      return this.uploadService.prepareResponse(HttpJsonStatus.Ok, response);
+    } catch (e) {
+      return this.uploadService.prepareResponse(HttpJsonStatus.Error, { uri: '' });
+    }
   }
 }

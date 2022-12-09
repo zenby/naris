@@ -1,4 +1,4 @@
-import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, HttpException, Logger, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
@@ -22,7 +22,7 @@ export class UploadController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: join(__dirname, '../../../', 'apps/naris-api/src/assets'),
+        destination: join(__dirname, '../../../', 'apps/auth-cdn/src/assets'),
         filename: setFilenameHelper,
       }),
     })
@@ -33,7 +33,8 @@ export class UploadController {
 
       return this.uploadService.prepareResponse(HttpJsonStatus.Ok, response);
     } catch (e) {
-      return this.uploadService.prepareResponse(HttpJsonStatus.Error, { uri: '' });
+      Logger.error(e);
+      throw new HttpException(e.message, e?.status ?? 500);
     }
   }
 }

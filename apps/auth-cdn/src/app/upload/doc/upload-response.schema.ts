@@ -1,3 +1,6 @@
+/**
+ * This schema describes the format of the POST /upload response аor Swagger.
+ */
 export const uploadResponseSchema = {
   type: 'object',
   properties: {

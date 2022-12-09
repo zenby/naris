@@ -53,6 +53,58 @@
       },
       "tags": []
     },
+    "auth-cdn": {
+      "root": "apps/auth-cdn",
+      "sourceRoot": "apps/auth-cdn/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:webpack",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/auth-cdn",
+            "main": "apps/auth-cdn/src/main.ts",
+            "tsConfig": "apps/auth-cdn/tsconfig.app.json",
+            "assets": ["apps/auth-cdn/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/auth-cdn/src/environments/environment.ts",
+                  "with": "apps/auth-cdn/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:node",
+          "options": {
+            "buildTarget": "auth-cdn:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/auth-cdn/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/auth-cdn"],
+          "options": {
+            "jestConfig": "apps/auth-cdn/jest.config.ts",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "mixed-bus": {
       "$schema": "../../node_modules/nx/schemas/project-schema.json",
       "projectType": "library",
@@ -71,10 +123,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/mixed-bus/src/**/*.ts",
-              "libs/mixed-bus/src/**/*.html"
-            ]
+            "lintFilePatterns": ["libs/mixed-bus/src/**/*.ts", "libs/mixed-bus/src/**/*.html"]
           }
         }
       },
@@ -106,10 +155,7 @@
                 "output": "/assets/"
               }
             ],
-            "styles": [
-              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
-              "apps/naris/src/styles.scss"
-            ],
+            "styles": ["./node_modules/ng-zorro-antd/ng-zorro-antd.min.css", "apps/naris/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -166,10 +212,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/naris/src/**/*.ts",
-              "apps/naris/src/**/*.html"
-            ]
+            "lintFilePatterns": ["apps/naris/src/**/*.ts", "apps/naris/src/**/*.html"]
           }
         },
         "test": {
@@ -362,10 +405,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/soer-components/**/*.ts",
-              "libs/soer-components/**/*.html"
-            ]
+            "lintFilePatterns": ["libs/soer-components/**/*.ts", "libs/soer-components/**/*.html"]
           }
         }
       },
@@ -389,10 +429,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/sr-auth/src/**/*.ts",
-              "libs/sr-auth/src/**/*.html"
-            ]
+            "lintFilePatterns": ["libs/sr-auth/src/**/*.ts", "libs/sr-auth/src/**/*.html"]
           }
         }
       },
@@ -416,10 +453,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/sr-dto/src/**/*.ts",
-              "libs/sr-dto/src/**/*.html"
-            ]
+            "lintFilePatterns": ["libs/sr-dto/src/**/*.ts", "libs/sr-dto/src/**/*.html"]
           }
         }
       },
@@ -442,10 +476,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/sr-editor/**/*.ts",
-              "libs/sr-editor/**/*.html"
-            ]
+            "lintFilePatterns": ["libs/sr-editor/**/*.ts", "libs/sr-editor/**/*.html"]
           }
         }
       },
@@ -468,10 +499,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/sr-local-storage/**/*.ts",
-              "libs/sr-local-storage/**/*.html"
-            ]
+            "lintFilePatterns": ["libs/sr-local-storage/**/*.ts", "libs/sr-local-storage/**/*.html"]
           }
         }
       },
@@ -495,10 +523,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/sr-url-builder/src/**/*.ts",
-              "libs/sr-url-builder/src/**/*.html"
-            ]
+            "lintFilePatterns": ["libs/sr-url-builder/src/**/*.ts", "libs/sr-url-builder/src/**/*.html"]
           }
         }
       },

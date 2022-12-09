@@ -1,4 +1,4 @@
-import { Controller, HttpException, Logger, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, HttpException, HttpStatus, Logger, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
@@ -34,7 +34,7 @@ export class UploadController {
       return this.uploadService.prepareResponse(HttpJsonStatus.Ok, response);
     } catch (e) {
       Logger.error(e);
-      throw new HttpException(e.message, e?.status ?? 500);
+      throw new HttpException(e.message, e?.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

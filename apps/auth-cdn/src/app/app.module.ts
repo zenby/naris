@@ -17,6 +17,7 @@ import { configurationFactory } from './config/config';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../../../', 'apps/auth-cdn/src/assets'),
+      serveStaticOptions: { index: false },
     }),
     UploadModule,
   ],

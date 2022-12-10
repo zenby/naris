@@ -2,7 +2,7 @@ import { BadGatewayException, ForbiddenException } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import axios from 'axios';
 
-enum Message {
+export enum Message {
   Forbidden = 'Access is denied',
   Gateway = 'Something went wrong, please try again later',
 }
@@ -15,8 +15,9 @@ export const isValidToken = async (token: string): Promise<boolean> => {
 };
 
 export const verifyToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  if (!req.headers?.authorization) {
+  if (!req?.headers?.authorization) {
     next(new ForbiddenException(Message.Forbidden));
+    return;
   }
 
   const token = req.headers.authorization?.split(' ')?.[1];
@@ -27,11 +28,14 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
 
     if (isAccess) {
       next();
+      return;
     } else {
       next(new ForbiddenException(Message.Forbidden));
+      return;
     }
   } catch (e) {
     // if the error is in the auth service
     next(new BadGatewayException(Message.Gateway));
+    return;
   }
 };

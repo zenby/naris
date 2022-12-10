@@ -10,33 +10,27 @@
 
     <ul class="menu-drop {{ classAnimationSCSS }}" (click)="onShowMenu()">
       <ng-container *ngFor="let item of applicationMenu">
-        <li class="menu-drop__item" nzType="link" [routerLink]="item.link">
+        <li *ngIf="item.link" nzType="link" [routerLink]="item.link">
           <i class="menu-drop__item-icon" nz-icon nzType="{{ item.icon }}" nzTheme="twotone"></i>{{ item.title }}
           <img *ngIf="item.isPro" src="/assets/favicons/favicon-194x194.png" width="16" style="margin-top: -8px" />
-          <ul class="sub-menu-drop">
-            <li
-              class="sub-menu-drop__item"
-              *ngFor="let childItem of item.children"
-              nzType="link"
-              [routerLink]="childItem.link"
-            >
-              <i class="menu-drop__item-icon" nz-icon nzType="{{ childItem.icon }}" nzTheme="outline"></i
-              >{{ childItem.title }}
-              <img
-                *ngIf="childItem.isPro"
-                src="/assets/favicons/favicon-194x194.png"
-                width="16"
-                style="margin-top: -8px"
-              />
-            </li>
-          </ul>
+        </li>
+        <li *ngFor="let childItem of item.children" nzType="link" [routerLink]="childItem.link">
+          <i
+            *ngIf="childItem.link"
+            class="menu-drop__item-icon"
+            nz-icon
+            nzType="{{ childItem.icon }}"
+            nzTheme="outline"
+          ></i>{{ childItem.title }}
+          <img *ngIf="childItem.isPro" src="/assets/favicons/favicon-194x194.png" width="16" style="margin-top: -8px" />
         </li>
       </ng-container>
-      <li nz-menu-divider></li>
-      <li *ngIf="userInfo.role === 'GUEST'">
-        <a [routerLink]="['/', 'pages', 'pay']">Улучшить уровень</a>
-      </li>
-      <li><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>
+      <ul class="menu-drop__user-status">
+        <li *ngIf="userInfo.role === 'GUEST'">
+          <a [routerLink]="['/', 'pages', 'pay']">Улучшить уровень</a>
+        </li>
+        <li><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>
+      </ul>
       <li (click)="logout.next(true)">Выход</li>
     </ul>
 

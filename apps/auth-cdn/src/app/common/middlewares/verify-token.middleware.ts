@@ -1,6 +1,6 @@
-import { BadGatewayException, ForbiddenException } from '@nestjs/common';
+import { BadGatewayException, ForbiddenException, Logger } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-import axios from 'axios';
+import { verify } from 'jsonwebtoken';
 
 export enum Message {
   Forbidden = 'Access is denied',
@@ -8,10 +8,13 @@ export enum Message {
 }
 
 export const isValidToken = async (token: string): Promise<boolean> => {
-  const path = process.env.AUTH_PATH;
-  const { data } = await axios.post(path, { token });
-  // TODO: not sure
-  return data?.status === 'ok';
+  try {
+    verify(token, process.env.JWT_SECRET);
+    return true;
+  } catch (e) {
+    Logger.warn(e, 'Token validation');
+    return false;
+  }
 };
 
 export const verifyToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {

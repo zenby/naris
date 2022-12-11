@@ -49,6 +49,12 @@
             "jestConfig": "apps/auth/jest.config.ts",
             "passWithNoTests": true
           }
+        },
+        "version": {
+          "builder": "@jscutlery/semver:version",
+          "options": {
+            "preset": "conventional"
+          }
         }
       },
       "tags": []
@@ -251,6 +257,12 @@
               "quiet": true
             }
           }
+        },
+        "version": {
+          "builder": "@jscutlery/semver:version",
+          "options": {
+            "preset": "conventional"
+          }
         }
       },
       "tags": []
@@ -303,6 +315,12 @@
             "jestConfig": "apps/naris-api/jest.config.ts",
             "passWithNoTests": true
           }
+        },
+        "version": {
+          "builder": "@jscutlery/semver:version",
+          "options": {
+            "preset": "conventional"
+          }
         }
       },
       "tags": []
@@ -330,6 +348,12 @@
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["apps/naris-e2e/**/*.{js,ts}"]
+          }
+        },
+        "version": {
+          "builder": "@jscutlery/semver:version",
+          "options": {
+            "preset": "conventional"
           }
         }
       },
@@ -383,6 +407,12 @@
           "options": {
             "jestConfig": "apps/payment/jest.config.ts",
             "passWithNoTests": true
+          }
+        },
+        "version": {
+          "builder": "@jscutlery/semver:version",
+          "options": {
+            "preset": "conventional"
           }
         }
       },

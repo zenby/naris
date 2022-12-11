@@ -12,7 +12,7 @@
       <ng-container *ngFor="let item of applicationMenu">
         <li *ngIf="item.link" nzType="link" [routerLink]="item.link">
           <i class="menu-drop__item-icon" nz-icon nzType="{{ item.icon }}" nzTheme="twotone"></i>{{ item.title }}
-          <img *ngIf="item.isPro" src="/assets/favicons/favicon-194x194.png" width="16" style="margin-top: -8px" />
+          <img  *ngIf="item.isPro" class="menu-drop__img-pro" src="/assets/favicons/favicon-194x194.png" width="16"/>
         </li>
         <li *ngFor="let childItem of item.children" nzType="link" [routerLink]="childItem.link">
           <i
@@ -22,25 +22,23 @@
             nzType="{{ childItem.icon }}"
             nzTheme="outline"
           ></i>{{ childItem.title }}
-          <img *ngIf="childItem.isPro" src="/assets/favicons/favicon-194x194.png" width="16" style="margin-top: -8px" />
+          <img *ngIf="childItem.isPro" class="menu-drop__img-pro" src="/assets/favicons/favicon-194x194.png" width="16"/>
         </li>
       </ng-container>
-      <ul class="menu-drop__user-status">
         <li *ngIf="userInfo.role === 'GUEST'">
           <a [routerLink]="['/', 'pages', 'pay']">Улучшить уровень</a>
         </li>
         <li><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>
-      </ul>
       <li (click)="logout.next(true)">Выход</li>
     </ul>
 
-    <a *ngIf="isMobile" [routerLink]="['overview']" nz-button nzSize="large" nzType="link" (click)="onHideMenu()"
+    <a *ngIf="isMobile" [routerLink]="['overview']" nz-button nzSize="large" nzType="link" (click)="hideMenu()"
       ><i nz-icon nzType="rocket" nzTheme="outline"></i
     ></a>
-    <a *ngIf="isMobile" [routerLink]="['workshops']" nz-button nzSize="large" nzType="link" (click)="onHideMenu()"
+    <a *ngIf="isMobile" [routerLink]="['workshops']" nz-button nzSize="large" nzType="link" (click)="hideMenu()"
       ><i nz-icon nzType="experiment" nzTheme="outline"></i
     ></a>
-    <a *ngIf="isMobile" [routerLink]="['streams']" nz-button nzSize="large" nzType="link" (click)="onHideMenu()"
+    <a *ngIf="isMobile" [routerLink]="['streams']" nz-button nzSize="large" nzType="link" (click)="hideMenu()"
       ><i nz-icon nzType="play-circle" nzTheme="outline"></i
     ></a>
   </div>

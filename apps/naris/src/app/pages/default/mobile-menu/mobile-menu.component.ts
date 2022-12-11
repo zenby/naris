@@ -15,27 +15,27 @@ export class MobileMenuComponent {
   @Output() logout = new EventEmitter<boolean>();
   @Output() check = new EventEmitter<any>();
 
-  classAnimationSCSS = 'displayNone';
+  classAnimationSCSS = 'display-none';
 
   onShowMenu(): void {
     switch (this.classAnimationSCSS) {
-      case 'displayNone':
-        this.classAnimationSCSS = 'isShowMenu';
+      case 'display-none':
+        this.classAnimationSCSS = 'open-menu-animation';
         break;
-      case 'isShowMenu':
-        this.classAnimationSCSS = 'isHideMenu';
+      case 'open-menu-animation':
+        this.classAnimationSCSS = 'close-menu-animation';
         break;
-      case 'isHideMenu':
-        this.classAnimationSCSS = 'isShowMenu';
+      case 'close-menu-animation':
+        this.classAnimationSCSS = 'open-menu-animation';
         break;
       default:
-        this.classAnimationSCSS = 'displayNone';
+        this.classAnimationSCSS = 'display-none';
     }
   }
 
-  onHideMenu(): void {
-    if (this.classAnimationSCSS === 'isShowMenu'){
-      this.classAnimationSCSS = 'isHideMenu'
+  hideMenu(): void {
+    if (this.classAnimationSCSS === 'open-menu-animation'){
+      this.classAnimationSCSS = 'close-menu-animation'
     }
   }
 }

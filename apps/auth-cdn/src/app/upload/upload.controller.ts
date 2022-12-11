@@ -27,7 +27,7 @@ export class UploadController {
       }),
     })
   )
-  async uploadFiles(@UploadedFile() file: Express.Multer.File): Promise<HttpJsonResult<{ uri: string }>> {
+  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<HttpJsonResult<{ uri: string }>> {
     try {
       const response = await this.uploadService.saveFile(file);
 

@@ -25,14 +25,14 @@ describe('UploadController', () => {
     };
   });
 
-  describe('UploadedFiles', () => {
+  describe('UploadedFile', () => {
     it('should return HttpJsonResult with file uri', async () => {
       const uri = '/my-super-filename.txt';
       const result: HttpJsonResult<{ uri: string }> = { status: HttpJsonStatus.Ok, items: [{ uri }] };
 
       jest.spyOn(uploadService, 'saveFile').mockImplementation(async () => ({ uri }));
 
-      expect(await uploadController.uploadFiles(file)).toStrictEqual(result);
+      expect(await uploadController.uploadFile(file)).toStrictEqual(result);
     });
   });
 });

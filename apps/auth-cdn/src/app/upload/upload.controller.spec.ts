@@ -26,7 +26,7 @@ describe('UploadController', () => {
   });
 
   describe('UploadedFiles', () => {
-    it('should ', async () => {
+    it('should return HttpJsonResult with file uri', async () => {
       const uri = '/my-super-filename.txt';
       const result: HttpJsonResult<{ uri: string }> = { status: HttpJsonStatus.Ok, items: [{ uri }] };
 

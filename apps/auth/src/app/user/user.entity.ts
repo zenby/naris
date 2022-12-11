@@ -10,4 +10,10 @@ export class UserEntity {
   @ApiProperty()
   @Column()
   email: string;
+
+  @ApiProperty()
+  login: string;
+
+  @ApiProperty()
+  password: string;
 }

@@ -76,6 +76,15 @@ export class AuthController {
     }
   }
 
+  @Get('signout')
+  async signOut(@Res({ passthrough: true }) response: Response) {
+    const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
+
+    response.clearCookie(cookieName);
+
+    return { status: HttpJsonStatus.Ok };
+  }
+
   @Post('signup')
   async signUp(@Body() createUserDto: CreateUserDto) {
     try {

@@ -1,14 +1,7 @@
-@keyframes open-menu-animation{
-  0%{transform: translateX(-100%);}
-  100%{transform: translateX(0%);}
-}
-
-@keyframes close-menu-animation{
-  0%{transform: translateX(0%);}
-  100%{transform: translateX(-150%);}
-}
-
 .menu-drop {
+  transition: all 0.5s linear;
+  transform: translate(0);
+  opacity: 1;
   display: flex;
   flex-direction: row;
   flex-wrap:wrap;
@@ -56,17 +49,10 @@
   
 }
 
-.display-none{
-  display: none;
+.menu-drop__close{
+  transform: translate(-150%);
+  opacity: 0;
 }
-.open-menu-animation{
-  animation:open-menu-animation 0.3s linear;
-}
-.close-menu-animation{
-  animation:close-menu-animation 0.5s linear;
-  animation-fill-mode:forwards;
-}
-
 
 .menu-container {
   display: flex;

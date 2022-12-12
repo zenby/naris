@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { configurationFactory } from './config/config';
+import { configurationFactory, typeOrmFactory } from './config/config';
 
 @Module({
   imports: [
@@ -12,6 +13,10 @@ import { configurationFactory } from './config/config';
       envFilePath: '../../.env',
       isGlobal: true,
       load: [configurationFactory],
+    }),
+    TypeOrmModule.forRootAsync({
+      useFactory: typeOrmFactory,
+      inject: [ConfigService],
     }),
     AuthModule,
   ],

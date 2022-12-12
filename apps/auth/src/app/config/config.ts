@@ -1,10 +1,31 @@
-export interface Configuration {
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import { ConfigService } from '@nestjs/config';
+
+export interface Configuration<T extends TypeOrmModuleOptions = any> {
   port: number;
   jwt: {
     jwtSecret: string;
     expiresInAccess: number | string;
     expiresInRefresh: number | string;
     cookieName: string;
+  };
+  typeOrm: T;
+}
+
+export function getTypeOrmConfig(): TypeOrmModuleOptions {
+  return {
+    type: (process.env.DATABASE_TYPE as MysqlConnectionOptions['type']) || 'mariadb',
+    host: process.env.DATABASE_HOST || 'localhost',
+    port: process.env.DATABASE_PORT ? parseInt(process.env.DATABASE_PORT, 10) : 3306,
+    username: process.env.DATABASE_USER || 'auth',
+    password: process.env.DATABASE_PASSWORD || '123456',
+    database: process.env.DATABASE_NAME || 'auth',
+    synchronize: process.env.DATABASE_SYNCHRONIZE ? process.env.DATABASE_SYNCHRONIZE === 'true' : true,
+    autoLoadEntities: process.env.DATABASE_AUTO_LOAD_ENTITIES
+      ? process.env.DATABASE_AUTO_LOAD_ENTITIES === 'true'
+      : true,
+    entities: [`${__dirname}/**/*.entity.{ts,js}`],
   };
 }
 
@@ -14,10 +35,15 @@ export function configurationFactory(): Configuration {
     jwt: {
       jwtSecret: process.env.JWT_SECRET || 'Some random key here',
       expiresInAccess: setExpiresIn(process.env.EXP_ACCESS || 60 * 15), // 15 min
-      expiresInRefresh: setExpiresIn(process.env.EXP_REFRESH || 60 * 60 * 24), // 1 day
+      expiresInRefresh: setExpiresIn(process.env.EXP_REFRESH || 60 * 60 * 24 * 30), // 30 days
       cookieName: process.env.COOKIE_NAME || 'refresh_token',
     },
+    typeOrm: getTypeOrmConfig(),
   };
+}
+
+export async function typeOrmFactory(configService: ConfigService): Promise<TypeOrmModuleOptions> {
+  return await configService.get<TypeOrmModuleOptions>('typeOrm');
 }
 
 function setExpiresIn(exp: string | number): string | number {

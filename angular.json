@@ -59,6 +59,58 @@
       },
       "tags": []
     },
+    "auth-cdn": {
+      "root": "apps/auth-cdn",
+      "sourceRoot": "apps/auth-cdn/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:webpack",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/auth-cdn",
+            "main": "apps/auth-cdn/src/main.ts",
+            "tsConfig": "apps/auth-cdn/tsconfig.app.json",
+            "assets": ["apps/auth-cdn/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/auth-cdn/src/environments/environment.ts",
+                  "with": "apps/auth-cdn/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:node",
+          "options": {
+            "buildTarget": "auth-cdn:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/auth-cdn/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/auth-cdn"],
+          "options": {
+            "jestConfig": "apps/auth-cdn/jest.config.ts",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "mixed-bus": {
       "$schema": "../../node_modules/nx/schemas/project-schema.json",
       "projectType": "library",

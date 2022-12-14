@@ -37,7 +37,7 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
       return;
     }
   } catch (e) {
-    // if the error is in the auth service
+    // if the error is in the verify method
     next(new BadGatewayException(Message.Gateway));
     return;
   }

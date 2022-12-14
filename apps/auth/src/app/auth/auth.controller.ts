@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpException,
   HttpStatus,
   Logger,
   Post,
@@ -12,7 +11,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
@@ -22,21 +21,24 @@ import { UserEntity } from '../user/user.entity';
 import { Configuration } from '../config/config';
 import { SignInUserDto } from '../user/dto/sign-in-user.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { responseSchema } from './doc/response.schema';
+import { accessTokenSchema } from './doc/access_token.schema';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService, private readonly configService: ConfigService) {}
 
   logger = new Logger(AuthController.name);
 
+  @Get('/access_token')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Get access token',
     description: 'Requires cookie with token, returns JWT access token',
   })
-  @ApiOkResponse()
+  @ApiOkResponse({ schema: accessTokenSchema })
   @ApiResponse({ status: HttpStatus.FORBIDDEN })
-  @Get('/access_token')
-  @UseGuards(JwtAuthGuard)
   async getAccessToken(@User() user: UserEntity): Promise<HttpJsonResult<{ token: string }>> {
     try {
       const accessToken = await this.authService.getAccessToken(user);
@@ -49,6 +51,11 @@ export class AuthController {
 
   @Post('signin')
   @UsePipes(ValidationPipe)
+  @ApiOperation({
+    summary: 'Login',
+    description: "Requires body { login, password }. Returns HTTP_ONLY cookie['refresh_token']",
+  })
+  @ApiCreatedResponse({ schema: responseSchema })
   async signIn(
     @Body() signInUserDto: SignInUserDto,
     @Res({ passthrough: true }) response: Response
@@ -77,6 +84,8 @@ export class AuthController {
   }
 
   @Get('signout')
+  @ApiOperation({ summary: 'Logout', description: 'The cookie with the refresh_token is destroyed' })
+  @ApiOkResponse({ schema: responseSchema })
   async signOut(@Res({ passthrough: true }) response: Response) {
     const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
 
@@ -86,6 +95,8 @@ export class AuthController {
   }
 
   @Post('signup')
+  @ApiOperation({ summary: 'Registration' })
+  @ApiCreatedResponse({ schema: responseSchema })
   async signUp(@Body() createUserDto: CreateUserDto) {
     try {
       const user = await this.authService.createUser(createUserDto);

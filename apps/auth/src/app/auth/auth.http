@@ -8,3 +8,18 @@ GET {{host}}/auth/access_token
 ### Get access token with invalid token (403)
 GET {{host}}/auth/access_token
 Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
+### Create user
+POST {{host}}/auth/signup
+Content-Type: application/json
+
+{ "login": "login", "email": "login@email.com", "password": "123" }
+
+### Login
+POST {{host}}/auth/signin
+Content-Type: application/json
+
+{ "login": "login", "password": "123" }
+
+### Logout
+GET {{host}}/auth/signout

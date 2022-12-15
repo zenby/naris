@@ -10,7 +10,12 @@
     "test": "nx test",
     "format": "prettier --write \"apps/**/*.{ts,js,scss,html}\"",
     "storybook:naris:serve": "nx storybook naris",
-    "storybook:naris:build": "nx build-storybook naris"
+    "storybook:naris:build": "nx build-storybook naris",
+    "typeorm": "ts-node -P apps/naris-api/tsconfig.app.json  -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config apps/naris-api/src/app/config/ormconfig.ts",
+    "typeorm:migrate": "npm run typeorm migration:generate -n",
+    "typeorm:create": "npm run typeorm migration:create -n",
+    "typeorm:run": "npm run typeorm migration:run",
+    "typeorm:revert": "npm run typeorm migration:revert"
   },
   "private": true,
   "dependencies": {
@@ -36,9 +41,10 @@
     "@types/vimeo__player": "^2.16.3",
     "@vimeo/player": "^2.17.0",
     "angular2-uuid": "^1.1.1",
-    "cookie-parser": "^1.4.6",
-    "helmet": "^6.0.1",
+    "class-validator": "^0.13.2",
     "mysql2": "^2.3.3",
+    "helmet": "^6.0.1",
+    "cookie-parser": "^1.4.6",
     "ng-zorro-antd": "^14.1.0",
     "ngx-markdown": "^14.0.0",
     "passport": "^0.6.0",
@@ -96,6 +102,7 @@
     "prettier": "2.6.2",
     "ts-jest": "^28.0.5",
     "ts-node": "~10.8.0",
+    "tsconfig-paths": "^4.1.1",
     "typescript": "4.7.4"
   }
 }

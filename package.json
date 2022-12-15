@@ -10,7 +10,12 @@
     "test": "nx test",
     "format": "prettier --write \"apps/**/*.{ts,js,scss,html}\"",
     "storybook:naris:serve": "nx storybook naris",
-    "storybook:naris:build": "nx build-storybook naris"
+    "storybook:naris:build": "nx build-storybook naris",
+    "typeorm": "ts-node -P apps/naris-api/tsconfig.app.json  -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config apps/naris-api/src/app/config/ormconfig.ts",
+    "typeorm:migrate": "npm run typeorm migration:generate -n",
+    "typeorm:create": "npm run typeorm migration:create -n",
+    "typeorm:run": "npm run typeorm migration:run",
+    "typeorm:revert": "npm run typeorm migration:revert"
   },
   "private": true,
   "dependencies": {
@@ -99,6 +104,7 @@
     "prettier": "2.6.2",
     "ts-jest": "^28.0.5",
     "ts-node": "~10.8.0",
+    "tsconfig-paths": "^4.1.1",
     "typescript": "4.7.4"
   }
 }

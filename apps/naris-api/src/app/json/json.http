@@ -1,0 +1,24 @@
+### Get all
+GET {{host}}/api/{{version}}/json/md
+
+### Create new json document
+POST {{host}}/api/{{version}}/json/md/new
+Content-Type: application/json
+
+{ "json": "{\"title\":\"Разобраться с документацией .http\",\"overview\":\"Я впервые сталкиваюсь с подобным форматом и хотел бы его изучить. \",\"progress\":0,\"tasks\":[]}" }
+
+> {%
+    client.global.set("documentId", response.body.items[0].id);
+%}
+
+### Get one by id
+GET {{host}}/api/{{version}}/json/md/{{documentId}}
+
+### Update json
+PUT {{host}}/api/{{version}}/json/md/{{documentId}}
+Content-Type: application/json
+
+{ "id": {{documentId}}, "json": "{\"title\":\"Разобрался с документацией .http\",\"overview\":\"Занимательная тема. \",\"progress\":0,\"tasks\":[]}" }
+
+### Delete json
+DELETE {{host}}/api/{{version}}/json/md/{{documentId}}

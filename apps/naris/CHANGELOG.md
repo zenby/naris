@@ -2,6 +2,78 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## 0.1.0 (2022-12-15)
+
+
+### Features
+
+* add 'afterCommandDoneRedirectTo' proprty to routes ([b03f500](https://gitlog.ru:2222/Naris/soermono/commit/b03f5002b688aef4f08dcdf9b0037895cf50d492))
+* add certificate support ([d4b91af](https://gitlog.ru:2222/Naris/soermono/commit/d4b91af484c4a14f80117f75b591b5ff477bdfa7))
+* add confirmation when select period ([87b216a](https://gitlog.ru:2222/Naris/soermono/commit/87b216ade33b8f9898fae60d5c4d9d6827b7ea4f))
+* add icon-tabs route component ([b94f503](https://gitlog.ru:2222/Naris/soermono/commit/b94f503a6ec9ee5b5ffed7737d07689cd723db82))
+* add kassa support ([45c6cfe](https://gitlog.ru:2222/Naris/soermono/commit/45c6cfe6393d517ce07c9d9beabd8ea590c323fe))
+* add pin buntton ([00be9a0](https://gitlog.ru:2222/Naris/soermono/commit/00be9a0658ee966f81421fc3c7091a800a533217))
+* add publishing to template ([872bef1](https://gitlog.ru:2222/Naris/soermono/commit/872bef12a61c1922716e4dec90e17a9671130aaa))
+* add questionsConfig service ([698799a](https://gitlog.ru:2222/Naris/soermono/commit/698799a26be7a7bf55c081819e5cba2e83a82bad))
+* add template feature ([c0fe1bb](https://gitlog.ru:2222/Naris/soermono/commit/c0fe1bb5cde38a59e114dae6304a79f0d3bc8f1f))
+* add todo list ([0e66a58](https://gitlog.ru:2222/Naris/soermono/commit/0e66a582f57093353d2a1bd990376ffd62571f85))
+* add undo btn ([1c7dd69](https://gitlog.ru:2222/Naris/soermono/commit/1c7dd697853eff950b90c118b001219a954e943a))
+* add user manifest ([01828e2](https://gitlog.ru:2222/Naris/soermono/commit/01828e2b1b272c17fbfdd52e071e81a4db5903a9))
+* add watched video activity ([afe6bb7](https://gitlog.ru:2222/Naris/soermono/commit/afe6bb7715e358b4184cef18d970e2e9488c7623))
+* add workbooks, quiz and articles ([a285df6](https://gitlog.ru:2222/Naris/soermono/commit/a285df6ed30763f724b66d81722ad7d96424d9b8))
+* cancel from payment ([fc8944e](https://gitlog.ru:2222/Naris/soermono/commit/fc8944e44eda2a04b599eace9f4740911b8f1a91))
+* mobile menu ([0663d33](https://gitlog.ru:2222/Naris/soermono/commit/0663d33ac53c436b356b0a095a51eaae18467b44))
+* **mobile menu:** the drop-down menu replace dies. ([24b5d3f](https://gitlog.ru:2222/Naris/soermono/commit/24b5d3f4aa7ae3231c6347acdf104c1230d2bb2b))
+* **naris/pages/dumb:** add preloader component ([097e6a1](https://gitlog.ru:2222/Naris/soermono/commit/097e6a14f1ed727156d4a5728465c905d1de8f99))
+* **naris/pages/modules/abstracte:** add preloader template renders if data is loading & refactor list-abstracte-page layout & update component logic ([c3a8daa](https://gitlog.ru:2222/Naris/soermono/commit/c3a8daab5e6087e8a74889cb2a257389ff7683d1))
+* **naris/services:** add preloader service ([632d6db](https://gitlog.ru:2222/Naris/soermono/commit/632d6dbe7c295da013d19d437f758ee5e6184a0e))
+* new dashboard ([d893d66](https://gitlog.ru:2222/Naris/soermono/commit/d893d6622833033fee7b764835cd095d22e723c2))
+* new workbook editor ([c03e719](https://gitlog.ru:2222/Naris/soermono/commit/c03e7192d3e71dfbfa5a79407bf366b3158dac98))
+* store audio speed for questions page ([4192402](https://gitlog.ru:2222/Naris/soermono/commit/4192402891ed9276f42b95a0e4bfd7c415c8f7b7))
+* storybook setup ([945545b](https://gitlog.ru:2222/Naris/soermono/commit/945545b2642fe0b4aa3b92bf843a0e5a73dada0b))
+* **video-player:** add loading observable ([d49d151](https://gitlog.ru:2222/Naris/soermono/commit/d49d1512984636d960edac3e83209c6b764b6131))
+* **videoplayer:** implement kinescope player ([cfaed27](https://gitlog.ru:2222/Naris/soermono/commit/cfaed27de6ea03d9397e2c3bbe6cd530c8a0daae))
+* **workbook:** add mobile buttons ([ef1449d](https://gitlog.ru:2222/Naris/soermono/commit/ef1449d465d40dae2a9987835d6d5c04ab759be6))
+
+
+### Bug Fixes
+
+* [#19](https://gitlog.ru:2222/Naris/soermono/issues/19) moved requests for workbook to a separate file ([05ffd04](https://gitlog.ru:2222/Naris/soermono/commit/05ffd0443e6677d81ad195d48fda47ad335a3018))
+* изменил местоположение файлов .http ([2a8f29f](https://gitlog.ru:2222/Naris/soermono/commit/2a8f29f4cfe28084f4e22aabf6b72413ecc150d8))
+* переместил http-client.env.json в apps/naris/src/environments ([e106f00](https://gitlog.ru:2222/Naris/soermono/commit/e106f0077b2fe7d420ac83458e4abc0ab498c956))
+* add missing provider in specs ([571d005](https://gitlog.ru:2222/Naris/soermono/commit/571d005524a59555b0083e29c45c063370764fbb))
+* add null value for token ([1cfd90c](https://gitlog.ru:2222/Naris/soermono/commit/1cfd90c113ee5d40c3d4b2f281493e3642e18e3e))
+* add type for subscription ([8b1f0c2](https://gitlog.ru:2222/Naris/soermono/commit/8b1f0c2a37e3a267077897c844bb1d5042e27750))
+* added margin after create button ([cfa2a56](https://gitlog.ru:2222/Naris/soermono/commit/cfa2a562f6fd1b834489bb18fcc0f7b7baed3d89))
+* anwer form in qa section ([7199b5e](https://gitlog.ru:2222/Naris/soermono/commit/7199b5e5c4e4604b760e617fb6b27e272953faa3))
+* auth-spinner aligned center ([3433a31](https://gitlog.ru:2222/Naris/soermono/commit/3433a318b48db052efdc7290765abcd9a642b5aa))
+* check if tasks field exists ([7f20c77](https://gitlog.ru:2222/Naris/soermono/commit/7f20c77ed5d5ab9a4bc92a2ae7cc76db00d0eb01))
+* conspects icon layout fix ([5eb1fee](https://gitlog.ru:2222/Naris/soermono/commit/5eb1feeb93e7a2c3ef8b8e29ba05810e046a12ee))
+* css for default page after upgrade ([029e0a0](https://gitlog.ru:2222/Naris/soermono/commit/029e0a06698d3aa0295716dc0687847ac18fc19e))
+* doubles in activity ([687bdc1](https://gitlog.ru:2222/Naris/soermono/commit/687bdc10f3770a264bed06a8ce20eb9db95a9843))
+* dropdown-menu icon layout fix ([e4abc02](https://gitlog.ru:2222/Naris/soermono/commit/e4abc02d398bf79a255f9daa83cbaafc9281175e))
+* error when empty activity ([46f1e6b](https://gitlog.ru:2222/Naris/soermono/commit/46f1e6b3270a632d28784b8074498d73db370abc))
+* error when jwt expired and redirect from logo ([92a5ac8](https://gitlog.ru:2222/Naris/soermono/commit/92a5ac8460c7cb0f99c8f88e5beed1597213e86a))
+* height of cards in files list are aligned ([2c9641a](https://gitlog.ru:2222/Naris/soermono/commit/2c9641a97987bb5d7da261714d2a33c3628e5ef5))
+* init visibility only once, stop subscribe leak ([5005a34](https://gitlog.ru:2222/Naris/soermono/commit/5005a34d0de04e3b139044550e30956761bab80e))
+* optimize import and add words to dictionary ([9d24298](https://gitlog.ru:2222/Naris/soermono/commit/9d2429828a4afa3b542bf7de5cff07c3ac69166c))
+* problem with current icon tab ([839d81f](https://gitlog.ru:2222/Naris/soermono/commit/839d81f43ebeb4b33c0005de3d42c58a73b3aec3))
+* problem with fullscreen in vimeo ([9210e74](https://gitlog.ru:2222/Naris/soermono/commit/9210e745153a4d149b8ad1eae0b4474808bcf63c))
+* problem with getting data from bus in workbook view page ([81831bb](https://gitlog.ru:2222/Naris/soermono/commit/81831bb34d229854eb35ca74656559925e3827eb))
+* problem with multiple menu selection ([17a6a09](https://gitlog.ru:2222/Naris/soermono/commit/17a6a09d2e358a1f430bb648d2c87fee3e17ea55))
+* problem with scheme update ([ba5dfbe](https://gitlog.ru:2222/Naris/soermono/commit/ba5dfbe889e3c29a64fbb536946af937ad3c6738))
+* redirect error when created questions and workbooks ([1ebb865](https://gitlog.ru:2222/Naris/soermono/commit/1ebb865966d963f81cfb0cf3976d7b8704f5da7f))
+* remove token from env ([63139ab](https://gitlog.ru:2222/Naris/soermono/commit/63139abef9acd04a71688c8ce5dafdbadbefdeaa))
+* remove unused field from env ([8c7e400](https://gitlog.ru:2222/Naris/soermono/commit/8c7e400f2feab2aa1fe097421268a058d891daf8))
+* remove unused style class ([912c610](https://gitlog.ru:2222/Naris/soermono/commit/912c610d417afeeef14b9d9637b745564b6b2fc2))
+* rename var from id to workbookId ([4ea0f60](https://gitlog.ru:2222/Naris/soermono/commit/4ea0f6023e65c592b2089d005590f1a43b5fd803))
+* sass compilation error ([7765168](https://gitlog.ru:2222/Naris/soermono/commit/7765168a4b2422f14e9fe3b7e4dc36e94af2428d))
+* semantic stylization by BEM ([395c231](https://gitlog.ru:2222/Naris/soermono/commit/395c231635954dd92d9ecec7aeb6bbdb6d934adb))
+* some spec files ([2b7e392](https://gitlog.ru:2222/Naris/soermono/commit/2b7e392dd59eb9a00b3b6f17ea9e5d8d614fc681))
+* task visibility ([e98a5c1](https://gitlog.ru:2222/Naris/soermono/commit/e98a5c1b696331d6545fc2fb16feb583ecfc0deb))
+* template creation for old targets ([61cb5aa](https://gitlog.ru:2222/Naris/soermono/commit/61cb5aa7f3ee01d923b2a6b611936c6d33f958f8))
+* update logic of token validity check ([8d7bcc0](https://gitlog.ru:2222/Naris/soermono/commit/8d7bcc0e58ba5a71b68c6727bb702efde91b0080))
+
 ## 0.1.0 (2022-12-10)
 
 

@@ -1,12 +1,10 @@
-import { Logger } from '@nestjs/common';
+import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 
 import { AppModule } from './app/app.module';
 import { setupSwagger } from './swagger';
-
-const API_PREFIX = 'api';
-const PORT = process.env.AUTH_PORT || '3200';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,12 +12,21 @@ async function bootstrap() {
   // ATTENTION! This call must come before all app.use(...)
   app.use(helmet());
 
-  app.setGlobalPrefix(API_PREFIX);
+  const configService = app.get(ConfigService);
 
-  setupSwagger(app, PORT);
+  const globalPrefix = await configService.get('prefix');
+  app.setGlobalPrefix(globalPrefix);
 
-  await app.listen(PORT);
-  Logger.log(`🚀 Application is running on: http://localhost:${PORT}/${API_PREFIX}`);
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
+
+  const port = configService.get('port');
+
+  setupSwagger(app, port);
+
+  await app.listen(port);
+  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
 }
 
 bootstrap();

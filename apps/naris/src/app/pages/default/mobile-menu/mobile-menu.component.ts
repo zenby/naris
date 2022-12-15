@@ -14,4 +14,16 @@ export class MobileMenuComponent {
   @Input() controls: IMenuControl[] | null = null;
   @Output() logout = new EventEmitter<boolean>();
   @Output() check = new EventEmitter<any>();
+
+  isMenuOpen = false;
+
+  openMenu():void{
+    this.isMenuOpen = !this.isMenuOpen
+  }
+
+  closeMenu():void{
+    if(this.isMenuOpen){
+      this.isMenuOpen = false;
+    }
+  }
 }

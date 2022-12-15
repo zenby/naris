@@ -107,6 +107,12 @@
             "jestConfig": "apps/auth-cdn/jest.config.ts",
             "passWithNoTests": true
           }
+        },
+        "version": {
+          "builder": "@jscutlery/semver:version",
+          "options": {
+            "preset": "conventional"
+          }
         }
       },
       "tags": []

@@ -96,12 +96,12 @@ export class AuthController {
   @Get('signout')
   @ApiOperation({ summary: 'Logout', description: 'The cookie with the refresh_token is destroyed' })
   @ApiOkResponse({ schema: responseSchema })
-  async signOut(@Res({ passthrough: true }) response: Response) {
+  async signOut(@Res({ passthrough: true }) response: Response): Promise<HttpJsonResult<never>> {
     const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
 
     response.clearCookie(cookieName);
 
-    return { status: HttpJsonStatus.Ok };
+    return { status: HttpJsonStatus.Ok, items: [] };
   }
 
   @Post('signup')

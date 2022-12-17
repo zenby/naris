@@ -89,7 +89,7 @@ export class AuthController {
       return { status: HttpJsonStatus.Ok, items: [] };
     } catch (e) {
       this.logger.error(e);
-      return this.authService.generateError(e.message);
+      throw e;
     }
   }
 

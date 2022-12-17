@@ -1,14 +1,3 @@
-### Get access token with valid token (200)
-GET {{host}}/auth/access_token
-Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2NzAxMDYzNTB9.YV-dHh2awB6dQ6d0hw43F87i0bSz3IBeNr08Lm2L3Tg
-
-### Get access token without token (403)
-GET {{host}}/auth/access_token
-
-### Get access token with invalid token (403)
-GET {{host}}/auth/access_token
-Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-
 ### Create user
 POST {{host}}/auth/signup
 Content-Type: application/json
@@ -20,6 +9,10 @@ POST {{host}}/auth/signin
 Content-Type: application/json
 
 { "login": "login", "password": "123" }
+
+### Get access token with valid token (200)
+GET {{host}}/auth/access_token
+
 
 ### Logout
 GET {{host}}/auth/signout

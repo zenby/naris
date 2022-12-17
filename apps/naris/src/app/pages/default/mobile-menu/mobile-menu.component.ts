@@ -16,14 +16,29 @@ export class MobileMenuComponent {
   @Output() check = new EventEmitter<any>();
 
   isMenuOpen = false;
+  isOpenControlPanel = false;
 
-  openMenu():void{
-    this.isMenuOpen = !this.isMenuOpen
+  openMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
-  closeMenu():void{
-    if(this.isMenuOpen){
+  closeMenu(): void {
+    if (this.isMenuOpen) {
       this.isMenuOpen = false;
+    }
+  }
+
+  controlPanel(control: any): void {
+    this.checkOpenControlPanel(control.title);
+    control.cb();
+  }
+
+  checkOpenControlPanel(nameControl: string): void {
+    if (nameControl.toLowerCase() === 'добавить') {
+      this.isOpenControlPanel = true;
+    }
+    if (nameControl.toLowerCase() === 'назад') {
+      this.isOpenControlPanel = false;
     }
   }
 }

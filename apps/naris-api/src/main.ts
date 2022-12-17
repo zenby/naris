@@ -15,6 +15,8 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   const globalPrefix = await configService.get('prefix');
+
+  app.enableCors();
   app.setGlobalPrefix(globalPrefix);
 
   app.enableVersioning({

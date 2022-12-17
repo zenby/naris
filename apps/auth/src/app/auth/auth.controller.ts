@@ -12,7 +12,17 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
@@ -27,6 +37,7 @@ import { accessTokenSchema } from './doc/access_token.schema';
 import { UserService } from '../user/user.service';
 import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
 import { error } from '@ant-design/icons-angular';
+import { responseErrorSchema } from './doc/response-error.schema';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -53,7 +64,8 @@ export class AuthController {
 
       return { status: HttpJsonStatus.Ok, items: [{ token: accessToken }] };
     } catch (e) {
-      return { status: HttpJsonStatus.Error, items: [] };
+      this.logger.error(e);
+      throw e;
     }
   }
 
@@ -64,6 +76,8 @@ export class AuthController {
     description: "Requires body { login, password }. Returns HTTP_ONLY cookie['refresh_token']",
   })
   @ApiCreatedResponse({ schema: responseSchema })
+  @ApiNotFoundResponse({ schema: responseErrorSchema('User with login ... not found') })
+  @ApiUnauthorizedResponse({ schema: responseErrorSchema('Invalid password') })
   async signIn(
     @Body() signInUserDto: SignInUserDto,
     @Res({ passthrough: true }) response: Response
@@ -108,6 +122,8 @@ export class AuthController {
   @UsePipes(BackendValidationPipe)
   @ApiOperation({ summary: 'Registration' })
   @ApiCreatedResponse({ schema: responseSchema })
+  @ApiUnprocessableEntityResponse({ schema: responseErrorSchema('Email or login has already been taken') })
+  @ApiInternalServerErrorResponse({ schema: responseErrorSchema('Something went wrong. Try it later') })
   async signUp(@Body() createUserDto: CreateUserDto): Promise<HttpJsonResult<string>> {
     try {
       const user = await this.userService.createUser(createUserDto);

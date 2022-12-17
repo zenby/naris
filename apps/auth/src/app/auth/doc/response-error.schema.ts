@@ -1,7 +1,7 @@
 /**
  * This schema describes the format of the POST /signin response for Swagger.
  */
-export const responseSchema = {
+export const responseErrorSchema = (message: string) => ({
   type: 'object',
   properties: {
     status: {
@@ -12,8 +12,8 @@ export const responseSchema = {
       type: 'array',
       items: {
         type: 'string',
+        example: message,
       },
-      example: [],
     },
   },
-};
+});

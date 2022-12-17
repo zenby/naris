@@ -4,13 +4,12 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  InternalServerErrorException,
   Logger,
   Post,
   Res,
-  UnauthorizedException,
   UseGuards,
   UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -26,6 +25,8 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 import { responseSchema } from './doc/response.schema';
 import { accessTokenSchema } from './doc/access_token.schema';
 import { UserService } from '../user/user.service';
+import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
+import { error } from '@ant-design/icons-angular';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -57,7 +58,7 @@ export class AuthController {
   }
 
   @Post('signin')
-  @UsePipes(ValidationPipe)
+  @UsePipes(BackendValidationPipe)
   @ApiOperation({
     summary: 'Login',
     description: "Requires body { login, password }. Returns HTTP_ONLY cookie['refresh_token']",
@@ -104,7 +105,7 @@ export class AuthController {
   }
 
   @Post('signup')
-  @UsePipes(ValidationPipe)
+  @UsePipes(BackendValidationPipe)
   @ApiOperation({ summary: 'Registration' })
   @ApiCreatedResponse({ schema: responseSchema })
   async signUp(@Body() createUserDto: CreateUserDto): Promise<HttpJsonResult<string>> {
@@ -118,6 +119,10 @@ export class AuthController {
       return { status: HttpJsonStatus.Ok, items: [] };
     } catch (e) {
       this.logger.error(e);
+
+      if (typeof e === 'object' && !Object.keys(e).length) {
+        throw new InternalServerErrorException('Something went wrong. Try it later');
+      }
 
       const isHttpException = typeof e.status === 'number';
 

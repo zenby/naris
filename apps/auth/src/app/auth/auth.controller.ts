@@ -2,10 +2,12 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
   HttpStatus,
   Logger,
   Post,
   Res,
+  UnauthorizedException,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -23,11 +25,16 @@ import { SignInUserDto } from '../user/dto/sign-in-user.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { responseSchema } from './doc/response.schema';
 import { accessTokenSchema } from './doc/access_token.schema';
+import { UserService } from '../user/user.service';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService, private readonly configService: ConfigService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+    private readonly configService: ConfigService
+  ) {}
 
   logger = new Logger(AuthController.name);
 
@@ -59,27 +66,29 @@ export class AuthController {
   async signIn(
     @Body() signInUserDto: SignInUserDto,
     @Res({ passthrough: true }) response: Response
-  ): Promise<Required<Pick<HttpJsonResult<never>, 'status'>>> {
+  ): Promise<HttpJsonResult<string>> {
     try {
-      const user = await this.authService.getComparedUser(signInUserDto);
+      const user = await this.userService.findByLogin(signInUserDto);
 
-      if (!user || user instanceof Error) {
-        return { status: HttpJsonStatus.Error };
+      if (user instanceof Error) {
+        return this.authService.generateError(user.message);
+      }
+
+      const isPasswordsMatch = await this.authService.compareUsersByPassword(signInUserDto, user);
+
+      if (isPasswordsMatch instanceof Error) {
+        return this.authService.generateError(isPasswordsMatch.message);
       }
 
       const token = await this.authService.getRefreshToken(user);
 
-      if (!token) {
-        return { status: HttpJsonStatus.Error };
-      }
-
       const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
       response.cookie(cookieName, token, { httpOnly: true });
 
-      return { status: HttpJsonStatus.Ok };
+      return { status: HttpJsonStatus.Ok, items: [] };
     } catch (e) {
       this.logger.error(e);
-      return { status: HttpJsonStatus.Error };
+      return this.authService.generateError(e.message);
     }
   }
 
@@ -95,20 +104,28 @@ export class AuthController {
   }
 
   @Post('signup')
+  @UsePipes(ValidationPipe)
   @ApiOperation({ summary: 'Registration' })
   @ApiCreatedResponse({ schema: responseSchema })
-  async signUp(@Body() createUserDto: CreateUserDto) {
+  async signUp(@Body() createUserDto: CreateUserDto): Promise<HttpJsonResult<string>> {
     try {
-      const user = await this.authService.createUser(createUserDto);
+      const user = await this.userService.createUser(createUserDto);
 
-      if (!user || user instanceof Error) {
-        return { status: HttpJsonStatus.Error };
+      if (user instanceof Error) {
+        return this.authService.generateError(user.message);
       }
 
-      return { status: HttpJsonStatus.Ok };
+      return { status: HttpJsonStatus.Ok, items: [] };
     } catch (e) {
       this.logger.error(e);
-      return { status: HttpJsonStatus.Ok };
+
+      const isHttpException = typeof e.status === 'number';
+
+      if (isHttpException) {
+        throw new HttpException(e.message, e.status);
+      }
+
+      throw new Error(e.message);
     }
   }
 }

@@ -6,15 +6,11 @@ import { Request } from 'express';
 import { Configuration } from '../../config/config';
 import { JwtPayload } from '../../auth/jwt-payload.interface';
 import { UserEntity } from '../../user/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { UserService } from '../../user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    private readonly configService: ConfigService,
-    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>
-  ) {
+  constructor(private readonly configService: ConfigService, private readonly userService: UserService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([JwtStrategy.extractJWT]),
       ignoreExpiration: false,
@@ -25,8 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: JwtPayload): Promise<UserEntity> {
     const { id, email } = payload;
 
-    const user = await this.userRepository.findOne({ where: { id, email } });
-    // const user = { id, email, login: '', password: '' };
+    const user = await this.userService.findByIdAndEmail({ id, email });
 
     if (!user) {
       throw new ForbiddenException();

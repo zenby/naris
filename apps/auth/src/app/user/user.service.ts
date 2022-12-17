@@ -9,17 +9,12 @@ import { SignInUserDto } from './dto/sign-in-user.dto';
 export class UserService {
   constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
+  async createUser(createUserDto: CreateUserDto): Promise<UserEntity | Error> {
     const userByEmail = await this.userRepository.findOne({ where: { email: createUserDto.email } });
-
-    if (userByEmail) {
-      throw new HttpException('Email has already been taken', HttpStatus.UNPROCESSABLE_ENTITY);
-    }
-
     const userByLogin = await this.userRepository.findOne({ where: { login: createUserDto.login } });
 
-    if (userByLogin) {
-      throw new HttpException('Login has already been taken', HttpStatus.UNPROCESSABLE_ENTITY);
+    if (userByEmail || userByLogin) {
+      return new HttpException('Email or login has already been taken', HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     const newUser = new UserEntity();
@@ -29,11 +24,11 @@ export class UserService {
     return await this.userRepository.save(newUser);
   }
 
-  async findByLogin(signInUserDto: SignInUserDto): Promise<UserEntity> {
+  async findByLogin(signInUserDto: SignInUserDto): Promise<UserEntity | Error> {
     const user = await this.userRepository.findOne({ where: { login: signInUserDto.login } });
 
     if (!user) {
-      throw new NotFoundException(`User with login ${signInUserDto.login} not found`);
+      return new NotFoundException(`User with login ${signInUserDto.login} not found`);
     }
 
     return user;

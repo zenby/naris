@@ -78,14 +78,14 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response
   ): Promise<HttpJsonResult<string>> {
     try {
-      const token = await this.authService.signIn(signInUserDto);
+      const refreshToken = await this.authService.signIn(signInUserDto);
 
-      if (token instanceof Error) {
-        return { status: HttpJsonStatus.Error, items: [token.message] };
+      if (refreshToken instanceof Error) {
+        return { status: HttpJsonStatus.Error, items: [refreshToken.message] };
       }
 
       const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
-      response.cookie(cookieName, token, { httpOnly: true });
+      response.cookie(cookieName, refreshToken, { httpOnly: true });
 
       return { status: HttpJsonStatus.Ok, items: [] };
     } catch (e) {

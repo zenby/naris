@@ -3,13 +3,38 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/config';
 import { UserEntity } from '../user/user.entity';
-import { SignInUserDto } from '../user/dto/sign-in-user.dto';
+import { LoginUserDto } from '../user/dto/login-user.dto';
 import { compare } from 'bcrypt';
-import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
+import { UserService } from '../user/user.service';
+import { CreateUserDto } from '../user/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly jwtService: JwtService, private readonly configService: ConfigService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly userService: UserService
+  ) {}
+
+  async signIn(signInUserDto: LoginUserDto): Promise<string | Error> {
+    const user = await this.userService.findByLogin(signInUserDto);
+
+    if (user instanceof Error) {
+      return user;
+    }
+
+    const isPasswordsMatch = await this.compareUsersByPassword(signInUserDto, user);
+
+    if (isPasswordsMatch instanceof Error) {
+      return isPasswordsMatch;
+    }
+
+    return await this.getRefreshToken(user);
+  }
+
+  async signUp(createUserDto: CreateUserDto) {
+    return await this.userService.createUser(createUserDto);
+  }
 
   async getAccessToken(user: UserEntity): Promise<string> {
     const { jwtSecret: secret, expiresInAccess: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
@@ -23,7 +48,7 @@ export class AuthService {
     return await this.jwtService.signAsync({ userId: user.id, userEmail: user.email }, { secret, expiresIn });
   }
 
-  async compareUsersByPassword(signInUserDto: SignInUserDto, userFromDb: UserEntity): Promise<boolean | Error> {
+  async compareUsersByPassword(signInUserDto: LoginUserDto, userFromDb: UserEntity): Promise<boolean | Error> {
     const isPasswordsMatch = await compare(signInUserDto.password, userFromDb.password);
 
     if (!isPasswordsMatch) {
@@ -31,9 +56,5 @@ export class AuthService {
     }
 
     return true;
-  }
-
-  generateError(errorMessage: string): HttpJsonResult<string> {
-    return { status: HttpJsonStatus.Error, items: [errorMessage] };
   }
 }

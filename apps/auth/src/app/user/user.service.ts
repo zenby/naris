@@ -1,9 +1,10 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { SignInUserDto } from './dto/sign-in-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class UserService {
@@ -14,17 +15,28 @@ export class UserService {
     const userByLogin = await this.userRepository.findOne({ where: { login: createUserDto.login } });
 
     if (userByEmail || userByLogin) {
-      return new HttpException('Email or login has already been taken', HttpStatus.UNPROCESSABLE_ENTITY);
+      return new UnprocessableEntityException('Email or login has already been taken');
     }
 
     const newUser = new UserEntity();
 
     Object.assign(newUser, createUserDto);
 
+    const errors = await validate(newUser);
+
+    if (errors?.length > 0) {
+      const errorsString = errors.reduce<string[]>((acc, val) => {
+        acc.push(Object.values(val.constraints).join(';'));
+        return acc;
+      }, []);
+
+      return new UnprocessableEntityException(errorsString.join(';'));
+    }
+
     return await this.userRepository.save(newUser);
   }
 
-  async findByLogin(signInUserDto: SignInUserDto): Promise<UserEntity | Error> {
+  async findByLogin(signInUserDto: LoginUserDto): Promise<UserEntity | Error> {
     const user = await this.userRepository.findOne({ where: { login: signInUserDto.login } });
 
     if (!user) {

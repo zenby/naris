@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { SignInUserDto } from '../user/dto/sign-in-user.dto';
+import { LoginUserDto } from '../user/dto/sign-in-user.dto';
 
 const createUserDto: CreateUserDto = {
   login: 'test login',
@@ -27,7 +27,7 @@ describe('AuthController', () => {
             createUser: jest.fn().mockImplementation((createUserDto: CreateUserDto) => ({ id: 1, ...createUserDto })),
             getComparedUser: jest
               .fn()
-              .mockImplementation((signInUserDto: SignInUserDto) => ({ id: 1, ...signInUserDto })),
+              .mockImplementation((signInUserDto: LoginUserDto) => ({ id: 1, ...signInUserDto })),
           },
         },
       ],

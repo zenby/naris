@@ -30,25 +30,20 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { User } from '../common/decorators/user.decorator';
 import { UserEntity } from '../user/user.entity';
 import { Configuration } from '../config/config';
-import { SignInUserDto } from '../user/dto/sign-in-user.dto';
+import { LoginUserDto } from '../user/dto/login-user.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { responseSchema } from './doc/response.schema';
 import { accessTokenSchema } from './doc/access_token.schema';
-import { UserService } from '../user/user.service';
 import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
-import { error } from '@ant-design/icons-angular';
 import { responseErrorSchema } from './doc/response-error.schema';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly userService: UserService,
-    private readonly configService: ConfigService
-  ) {}
+  constructor(private readonly authService: AuthService, private readonly configService: ConfigService) {}
 
   logger = new Logger(AuthController.name);
+  internalErrorMessage = 'Something went wrong. Try it later';
 
   @Get('access_token')
   @UseGuards(JwtAuthGuard)
@@ -79,23 +74,15 @@ export class AuthController {
   @ApiNotFoundResponse({ schema: responseErrorSchema('User with login ... not found') })
   @ApiUnauthorizedResponse({ schema: responseErrorSchema('Invalid password') })
   async signIn(
-    @Body() signInUserDto: SignInUserDto,
+    @Body() signInUserDto: LoginUserDto,
     @Res({ passthrough: true }) response: Response
   ): Promise<HttpJsonResult<string>> {
     try {
-      const user = await this.userService.findByLogin(signInUserDto);
+      const token = await this.authService.signIn(signInUserDto);
 
-      if (user instanceof Error) {
-        return this.authService.generateError(user.message);
+      if (token instanceof Error) {
+        return { status: HttpJsonStatus.Error, items: [token.message] };
       }
-
-      const isPasswordsMatch = await this.authService.compareUsersByPassword(signInUserDto, user);
-
-      if (isPasswordsMatch instanceof Error) {
-        return this.authService.generateError(isPasswordsMatch.message);
-      }
-
-      const token = await this.authService.getRefreshToken(user);
 
       const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
       response.cookie(cookieName, token, { httpOnly: true });
@@ -103,7 +90,8 @@ export class AuthController {
       return { status: HttpJsonStatus.Ok, items: [] };
     } catch (e) {
       this.logger.error(e);
-      throw e;
+
+      throw new InternalServerErrorException(this.internalErrorMessage);
     }
   }
 
@@ -126,19 +114,19 @@ export class AuthController {
   @ApiInternalServerErrorResponse({ schema: responseErrorSchema('Something went wrong. Try it later') })
   async signUp(@Body() createUserDto: CreateUserDto): Promise<HttpJsonResult<string>> {
     try {
-      const user = await this.userService.createUser(createUserDto);
+      const user = await this.authService.signUp(createUserDto);
 
       if (user instanceof Error) {
-        return this.authService.generateError(user.message);
+        if (user.message.includes(';')) {
+          return { status: HttpJsonStatus.Error, items: user.message.split(';') };
+        }
+
+        return { status: HttpJsonStatus.Error, items: [user.message] };
       }
 
       return { status: HttpJsonStatus.Ok, items: [] };
     } catch (e) {
       this.logger.error(e);
-
-      if (typeof e === 'object' && !Object.keys(e).length) {
-        throw new InternalServerErrorException('Something went wrong. Try it later');
-      }
 
       const isHttpException = typeof e.status === 'number';
 
@@ -146,7 +134,7 @@ export class AuthController {
         throw new HttpException(e.message, e.status);
       }
 
-      throw new Error(e.message);
+      throw new InternalServerErrorException(this.internalErrorMessage);
     }
   }
 }

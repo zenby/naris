@@ -6,7 +6,7 @@ export const responseErrorSchema = (message: string) => ({
   properties: {
     status: {
       type: 'string',
-      example: 'ok',
+      example: 'error',
     },
     items: {
       type: 'array',

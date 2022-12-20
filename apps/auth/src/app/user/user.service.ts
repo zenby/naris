@@ -5,19 +5,13 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { validate } from 'class-validator';
+import { ValidationErrorHelper } from '../common/helpers/validation-error.helper';
 
 @Injectable()
 export class UserService {
   constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity | Error> {
-    const userByEmail = await this.userRepository.findOne({ where: { email: createUserDto.email } });
-    const userByLogin = await this.userRepository.findOne({ where: { login: createUserDto.login } });
-
-    if (userByEmail || userByLogin) {
-      return new UnprocessableEntityException('Email or login has already been taken');
-    }
-
     const newUser = new UserEntity();
 
     Object.assign(newUser, createUserDto);
@@ -25,15 +19,12 @@ export class UserService {
     const errors = await validate(newUser);
 
     if (errors?.length > 0) {
-      const errorsString = errors.reduce<string[]>((acc, val) => {
-        acc.push(Object.values(val.constraints).join(';'));
-        return acc;
-      }, []);
-
-      return new UnprocessableEntityException(errorsString.join(';'));
+      return new UnprocessableEntityException(ValidationErrorHelper.errorsToString(errors));
     }
 
-    return await this.userRepository.save(newUser);
+    return await this.userRepository.save(newUser).catch(() => {
+      return new UnprocessableEntityException(`User with email ${newUser.email} has been already exist`);
+    });
   }
 
   async findByLogin(signInUserDto: LoginUserDto): Promise<UserEntity | Error> {

@@ -36,6 +36,7 @@ import { responseSchema } from './doc/response.schema';
 import { accessTokenSchema } from './doc/access_token.schema';
 import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
 import { responseErrorSchema } from './doc/response-error.schema';
+import { ValidationErrorHelper } from '../common/helpers/validation-error.helper';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -118,7 +119,7 @@ export class AuthController {
 
       if (user instanceof Error) {
         if (user.message.includes(';')) {
-          return { status: HttpJsonStatus.Error, items: user.message.split(';') };
+          return { status: HttpJsonStatus.Error, items: ValidationErrorHelper.stringToArray(user.message) };
         }
 
         return { status: HttpJsonStatus.Error, items: [user.message] };

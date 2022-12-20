@@ -1,7 +1,8 @@
-import { ArgumentMetadata, HttpException, HttpStatus, PipeTransform, ValidationError } from '@nestjs/common';
+import { ArgumentMetadata, HttpException, HttpStatus, PipeTransform } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { HttpJsonStatus } from '../types/http-json-result.interface';
+import { ValidationErrorHelper } from '../helpers/validation-error.helper';
 
 export class BackendValidationPipe implements PipeTransform {
   async transform(value: any, metadata: ArgumentMetadata) {
@@ -18,15 +19,8 @@ export class BackendValidationPipe implements PipeTransform {
     }
 
     throw new HttpException(
-      { status: HttpJsonStatus.Error, items: this.formatErrors(errors) },
+      { status: HttpJsonStatus.Error, items: ValidationErrorHelper.formatErrors(errors) },
       HttpStatus.UNPROCESSABLE_ENTITY
     );
-  }
-
-  formatErrors(errors: ValidationError[]) {
-    return errors.reduce((acc, error) => {
-      acc = Object.values(error.constraints);
-      return acc;
-    }, []);
   }
 }

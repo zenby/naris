@@ -12,7 +12,7 @@ export class UserEntity {
   @ApiProperty()
   @IsNotEmpty()
   @IsEmail()
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @ApiProperty()

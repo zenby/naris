@@ -13,7 +13,7 @@ export const accessTokenSchema = {
       items: {
         type: 'object',
         properties: {
-          token: {
+          accessToken: {
             type: 'string',
             example:
               'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJFbWFpbCI6ImJhckBmb28uY29tIiwiaWF0IjoxNjcxMDQ4MTM5LCJleHAiOjE2NzEwNDkwMzl9.KxmfyXvZ5KLJBP5UeQwpeSA1_ZNYLwo_pZ5VrSRLZ2w',

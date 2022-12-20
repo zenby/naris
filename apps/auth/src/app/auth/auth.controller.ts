@@ -50,7 +50,7 @@ export class AuthController {
 
   logger = new Logger(AuthController.name);
 
-  @Get('/access_token')
+  @Get('access_token')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Get access token',
@@ -58,11 +58,11 @@ export class AuthController {
   })
   @ApiOkResponse({ schema: accessTokenSchema })
   @ApiResponse({ status: HttpStatus.FORBIDDEN })
-  async getAccessToken(@User() user: UserEntity): Promise<HttpJsonResult<{ token: string }>> {
+  async getAccessToken(@User() user: UserEntity): Promise<HttpJsonResult<{ accessToken: string }>> {
     try {
       const accessToken = await this.authService.getAccessToken(user);
 
-      return { status: HttpJsonStatus.Ok, items: [{ token: accessToken }] };
+      return { status: HttpJsonStatus.Ok, items: [{ accessToken: accessToken }] };
     } catch (e) {
       this.logger.error(e);
       throw e;

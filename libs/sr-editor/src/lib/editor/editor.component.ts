@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BlockService } from '../block.service';
+import { BlockService } from '../services/block.service';
 import { DelimitEvent, EMPTY_WORKBOOK, TextBlock, WorkbookModel } from '../interfaces/document.model';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DelimitEvent, TextBlock } from './interfaces/document.model';
+import { DelimitEvent, TextBlock } from '../interfaces/document.model';
 
 @Injectable()
 export class BlockService {

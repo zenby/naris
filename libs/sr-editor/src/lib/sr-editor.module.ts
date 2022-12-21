@@ -9,6 +9,7 @@ import { BlockTestComponent } from './blocks/block-test/block-test.component';
 import { TypeFormatPipe } from './pipes/type-format.pipe';
 import { BooleanToStringPipe } from './pipes/boolean-to-string.pipe';
 import { BlockService } from './block.service';
+import { CodeBlockComponent } from './blocks/code-block/code-block.component';
 
 @NgModule({
   imports: [CommonModule, MarkdownModule.forRoot(), FormsModule],
@@ -19,6 +20,7 @@ import { BlockService } from './block.service';
     BlockTestComponent,
     TypeFormatPipe,
     BooleanToStringPipe,
+    CodeBlockComponent,
   ],
   providers: [BlockService],
   exports: [EditorComponent],

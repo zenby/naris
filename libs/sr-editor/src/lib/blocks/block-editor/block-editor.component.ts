@@ -68,6 +68,10 @@ export class BlockEditorComponent {
       this.textBlock.type = 'test';
     }
 
+    if ($event.altKey && $event.code === 'Digit3') {
+      this.textBlock.type = 'code';
+    }
+
     if ($event.code === 'Escape') {
       this.isEdit = false;
     }

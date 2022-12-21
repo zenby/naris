@@ -13,6 +13,7 @@ export class TypeFormatPipe implements PipeTransform {
     const formats: FormatsType = {
       markdown: 'MD',
       test: 'TST',
+      code: 'CODE',
     };
     return formats[format] ?? '';
   }

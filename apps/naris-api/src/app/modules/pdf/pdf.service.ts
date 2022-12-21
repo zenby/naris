@@ -3,8 +3,8 @@ import {mdToPdf} from 'md-to-pdf'
 
 @Injectable()
 export class PDFService {
-    async create(content: string, dataCallback: (arg: Buffer) => void) {
+    async convert(content: string): Promise<Buffer> {
        const pdf = await mdToPdf({content})
-       dataCallback(pdf.content)
+       return pdf.content
     }
 }

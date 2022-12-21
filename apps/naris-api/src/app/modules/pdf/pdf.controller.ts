@@ -10,12 +10,9 @@ export class PdfController {
     @Header('Content-Type', 'application/pdf')
     @Header('Content-Disposition', 'attachment')
     @HttpCode(200)
-    async getPdf(@Body() md: {Content: string}, @Res() res: Response) {
-      res.setHeader('Content-Type', 'application/pdf');
-
-      this.PDFService.create(md.Content, (pdf: Buffer) => {
-        res.write(pdf)
-        res.end()
-      })
+    async getPdf(@Body() md: {content: string}, @Res() res: Response) {
+      const pdfBuffer = await this.PDFService.convert(md.content);
+      res.write(pdfBuffer)
+      res.end()
     }
 }

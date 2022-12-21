@@ -11,6 +11,7 @@ import { BooleanToStringPipe } from './pipes/boolean-to-string.pipe';
 import { BlockService } from './block.service';
 import { CodeBlockComponent } from './blocks/code-block/code-block.component';
 import { MarkdownBlockComponent } from './blocks/markdown-block/markdown-block.component';
+import { CodeBlockService } from './code-block.service';
 
 @NgModule({
   imports: [CommonModule, MarkdownModule.forRoot(), FormsModule],
@@ -24,7 +25,7 @@ import { MarkdownBlockComponent } from './blocks/markdown-block/markdown-block.c
     TextareaAutoresizeDirective,
     TypeFormatPipe,
   ],
-  providers: [BlockService],
+  providers: [BlockService, CodeBlockService],
   exports: [EditorComponent],
 })
 export class SrEditorModule {}

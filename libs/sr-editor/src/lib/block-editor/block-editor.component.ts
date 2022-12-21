@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { DelimitEvent, TextBlock } from '../../interfaces/document.model';
+import { DelimitEvent, TextBlock } from '../interfaces/document.model';
 
 @Component({
   selector: 'soer-block-editor',

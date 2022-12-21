@@ -5,7 +5,7 @@ import { BlockEditorComponent } from './block-editor/block-editor.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { FormsModule } from '@angular/forms';
 import { TextareaAutoresizeDirective } from './textarea-autoresize.directive';
-import { BlockTestComponent } from './blocks/block-test/block-test.component';
+import { TestBlockComponent } from './blocks/test-block/test-block.component';
 import { TypeFormatPipe } from './pipes/type-format.pipe';
 import { BooleanToStringPipe } from './pipes/boolean-to-string.pipe';
 import { BlockService } from './block.service';
@@ -17,7 +17,7 @@ import { CodeBlockComponent } from './blocks/code-block/code-block.component';
     EditorComponent,
     BlockEditorComponent,
     TextareaAutoresizeDirective,
-    BlockTestComponent,
+    TestBlockComponent,
     TypeFormatPipe,
     BooleanToStringPipe,
     CodeBlockComponent,

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BlockTestComponent } from './block-test.component';
+import { TestBlockComponent } from './test-block.component';
 
-describe('BlockTestComponent', () => {
-  let component: BlockTestComponent;
-  let fixture: ComponentFixture<BlockTestComponent>;
+describe('TestBlockComponent', () => {
+  let component: TestBlockComponent;
+  let fixture: ComponentFixture<TestBlockComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BlockTestComponent],
+      declarations: [TestBlockComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(BlockTestComponent);
+    fixture = TestBed.createComponent(TestBlockComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

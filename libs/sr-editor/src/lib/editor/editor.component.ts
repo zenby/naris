@@ -7,7 +7,6 @@ import { DelimitEvent, EMPTY_WORKBOOK, TextBlock, WorkbookModel } from '../inter
 @Component({
   selector: 'soer-editor',
   templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.scss'],
 })
 export class EditorComponent {
   @Input() document: WorkbookModel = EMPTY_WORKBOOK;

@@ -6,7 +6,7 @@
   <div (click)="onSelectBlock()" class="edit">
     <ng-container *ngIf="isEdit">
       <textarea
-        class="markdown-block"
+        class="block-editor"
         [(ngModel)]="textBlock.text"
         (blur)="onEndEdit()"
         (ngModelChange)="textChange($event)"
@@ -22,12 +22,10 @@
     </ng-container>
 
     <ng-container *ngIf="!isEdit">
-      <div class="markdown-block" (click)="isEdit = true">
+      <div class="block-editor" (click)="isEdit = true">
         <ng-container [ngSwitch]="textBlock.type">
           <ng-container *ngSwitchCase="'markdown'">
-            <markdown *ngIf="textBlock.text; else HelpText">
-              {{ textBlock.text }}
-            </markdown>
+            <soer-markdown-block [text]="textBlock.text"></soer-markdown-block>
           </ng-container>
 
           <ng-container *ngSwitchCase="'test'">
@@ -42,7 +40,3 @@
     </ng-container>
   </div>
 </div>
-
-<ng-template #HelpText>
-  <p class="help">Нажмите по этой области для вставки текста</p>
-</ng-template>

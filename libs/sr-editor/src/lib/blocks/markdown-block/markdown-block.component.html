@@ -1,7 +1,7 @@
-<markdown *ngIf="text; else HelpText">
+<markdown *ngIf="text; else empty">
   {{ text }}
 </markdown>
 
-<ng-template #HelpText>
+<ng-template #empty>
   <p class="help">Нажмите по этой области для вставки текста</p>
 </ng-template>

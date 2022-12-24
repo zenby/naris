@@ -1,6 +1,6 @@
 export type CodeLanguage = 'javascript' | 'typescript';
 
-type CodeExecutionLevel = 'result' | 'level' | 'error';
+type CodeExecutionLevel = 'result' | 'log' | 'error';
 
 export type CodeExecutionResult = {
   level: CodeExecutionLevel;

@@ -115,7 +115,6 @@ export class ListAbstractePageComponent implements OnInit {
   }
 
   workbookDownload(workbook: WorkbookModel): void {
-    debugger
     this.bus$.publish(new CommandConvertMdToPdf({...this.workbookId, key: {wid: 'document/convertor/mdtopdf'}}, workbook));
   }
 

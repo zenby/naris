@@ -29,7 +29,6 @@ export class PdfConverterService {
     private downloadFile(data:any, owner: any, params: any) {
         this.queryCreate({content: data}, owner, params)
         .subscribe((res: any)=>{
-        debugger
         let url = window.URL.createObjectURL(new Blob([res], {type: 'application/pdf'}));
             let a = document.createElement('a');
             document.body.appendChild(a);
@@ -41,15 +40,17 @@ export class PdfConverterService {
             a.remove();
         })
     }
-    private getMd(data: any) {
-        return data.blocks[0].text
+    private getStringMd(data: any): string {
+        return data.blocks.reduce( (acc: string, block: { text: string; }) => {
+            return acc + '  \n' + block.text 
+        }, '')
     }
 
     public createPdf(msg: BusMessage | BusError): Promise<any> | void {
         if (msg instanceof BusError || !isCRUDBusEmitter(msg.owner)) {
             return Promise.resolve({status: ERROR, items: []});
         }
-        const md = this.getMd(msg.payload)
+        const md = this.getStringMd(msg.payload)
         this.downloadFile(md, msg.owner, msg.params)
     }
 }

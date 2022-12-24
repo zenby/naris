@@ -1,19 +1,32 @@
 /// <reference lib="webworker" />
 
-addEventListener('message', ({ data }) => {
+addEventListener('message', async ({ data }) => {
   const originalLog = console.log;
 
   console.log = function (...args: unknown[]) {
-    args.forEach((arg) => postMessage({ level: 'log', data: stringifyData(arg) }));
+    args.forEach((arg) => postMessage({ level: 'log', data: stringifyValue(arg) }));
     originalLog.apply(console, args);
   };
 
-  const result: string = eval(`(function(){${data}})()`);
+  let result: unknown = eval(`(function(){${data}})()`);
+  if (result instanceof Promise) {
+    result = await result;
+  }
+
   postMessage({ level: 'result', data: result });
 
   console.log = originalLog;
 });
 
-function stringifyData(value: unknown): string {
-  return JSON.stringify(value, undefined, 2);
+function stringifyValue(value: unknown): string {
+  if (typeof value === 'string') {
+    return `"${value}"`;
+  }
+
+  if (typeof value === 'object') {
+    const temp = JSON.stringify(value, undefined, undefined);
+    return temp.length < 80 ? temp : JSON.stringify(value, undefined, 2);
+  }
+
+  return String(value);
 }

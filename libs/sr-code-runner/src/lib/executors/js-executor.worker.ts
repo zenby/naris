@@ -2,20 +2,23 @@
 
 addEventListener('message', async ({ data }) => {
   const originalLog = console.log;
+  try {
+    console.log = function (...args: unknown[]) {
+      args.forEach((arg) => postMessage({ level: 'log', data: stringifyValue(arg) }));
+      originalLog.apply(console, args);
+    };
 
-  console.log = function (...args: unknown[]) {
-    args.forEach((arg) => postMessage({ level: 'log', data: stringifyValue(arg) }));
-    originalLog.apply(console, args);
-  };
+    let result: unknown = eval(`(function(){${data}})()`);
+    if (result instanceof Promise) {
+      result = await result;
+    }
 
-  let result: unknown = eval(`(function(){${data}})()`);
-  if (result instanceof Promise) {
-    result = await result;
+    postMessage({ level: 'result', data: result });
+  } catch (error) {
+    postMessage({ level: 'error', data: error });
+  } finally {
+    console.log = originalLog;
   }
-
-  postMessage({ level: 'result', data: result });
-
-  console.log = originalLog;
 });
 
 function stringifyValue(value: unknown): string {

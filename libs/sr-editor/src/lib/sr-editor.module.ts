@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CodeRunnerModule } from '@soer/sr-code-runner';
 import { MarkdownModule } from 'ngx-markdown';
 import { BlockEditorComponent } from './block-editor/block-editor.component';
 import { CodeBlockComponent } from './blocks/code-block/code-block.component';
@@ -14,7 +15,7 @@ import { CodeBlockService } from './services/code-block.service';
 import { TextareaAutoresizeDirective } from './textarea-autoresize.directive';
 
 @NgModule({
-  imports: [CommonModule, MarkdownModule.forRoot(), FormsModule],
+  imports: [CommonModule, MarkdownModule.forRoot(), FormsModule, CodeRunnerModule],
   declarations: [
     BlockEditorComponent,
     BooleanToStringPipe,

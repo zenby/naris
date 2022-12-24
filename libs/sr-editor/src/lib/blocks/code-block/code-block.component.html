@@ -1,1 +1,5 @@
-<p>{{ text }}</p>
+<ng-container *ngIf="codeResult$ | async as results; else loading">
+  <pre *ngFor="let log of results">{{ log.level }}: {{ log.data }}</pre>
+</ng-container>
+
+<ng-template #loading> Загружаем код </ng-template>

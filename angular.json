@@ -168,7 +168,8 @@
               }
             ],
             "styles": ["./node_modules/ng-zorro-antd/ng-zorro-antd.min.css", "apps/naris/src/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -232,7 +233,8 @@
           "outputs": ["coverage/apps/naris"],
           "options": {
             "jestConfig": "apps/naris/jest.config.js",
-            "passWithNoTests": true
+            "passWithNoTests": true,
+            "webWorkerTsConfig": "tsconfig.worker.json"
           }
         },
         "storybook": {
@@ -513,6 +515,29 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/sr-editor/**/*.ts", "libs/sr-editor/**/*.html"]
+          }
+        }
+      },
+      "tags": []
+    },
+    "sr-code-runner": {
+      "projectType": "library",
+      "root": "libs/sr-code-runner",
+      "sourceRoot": "libs/sr-code-runner/src",
+      "prefix": "soer",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/sr-code-runner"],
+          "options": {
+            "jestConfig": "libs/sr-code-runner/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/sr-code-runner/**/*.ts", "libs/sr-code-runner/**/*.html"]
           }
         }
       },

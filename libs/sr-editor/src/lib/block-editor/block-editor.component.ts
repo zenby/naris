@@ -34,7 +34,7 @@ export class BlockEditorComponent {
   textChange(changedText: string) {
     this.markdownTextChange.emit(changedText);
 
-    if (this.blockDelimeter && changedText.includes(this.blockDelimeter)) {
+    if (this.textBlock.type === 'markdown' && this.blockDelimeter && changedText.includes(this.blockDelimeter)) {
       this.delimitBlock.emit({ text: changedText, type: this.textBlock.type });
     }
   }

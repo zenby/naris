@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MixedBusModule, MixedBusService } from '@soer/mixed-bus';
 import { AuthInterceptor, AUTH_ID, SrAuthModule } from '@soer/sr-auth';
-import { DataStoreService, SrDTOModule, StoreCrudService } from '@soer/sr-dto';
+import { DataStoreService, SrDTOModule, StoreCrudService, PdfConverterService } from '@soer/sr-dto';
 import { SrUrlBuilderModule, UrlBuilderService } from '@soer/sr-url-builder';
 import { NZ_I18N, ru_RU } from 'ng-zorro-antd/i18n';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -60,13 +60,14 @@ registerLocaleData(ru);
     {
       provide: APP_INITIALIZER,
       multi: true,
-      deps: [UrlBuilderService, MixedBusService, DataStoreService, StoreCrudService],
+      deps: [UrlBuilderService, MixedBusService, DataStoreService, StoreCrudService, PdfConverterService],
       useFactory:
         (
           UrlBuilderService: UrlBuilderService,
           MixedBusService: MixedBusService,
           DataStoreService: DataStoreService,
-          StoreCrudService: StoreCrudService
+          StoreCrudService: StoreCrudService,
+          PdfConverterService: PdfConverterService,
         ) =>
         () =>
           null,

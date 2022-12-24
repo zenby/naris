@@ -2,7 +2,7 @@ import { PreloaderService } from './../../../../services/preloader.service';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
-import { CommandDelete, CommandDownload, CommandEdit, CommandNew, CommandView, DataStoreService, DtoPack } from '@soer/sr-dto';
+import { CommandConvertMdToPdf, CommandDelete, CommandEdit, CommandNew, CommandView, DataStoreService, DtoPack } from '@soer/sr-dto';
 import { WorkbookModel } from '@soer/sr-editor';
 import { Observable, finalize } from 'rxjs';
 import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
@@ -116,7 +116,7 @@ export class ListAbstractePageComponent implements OnInit {
 
   workbookDownload(workbook: WorkbookModel): void {
     debugger
-    this.bus$.publish(new CommandDownload({...this.workbookId, key: {wid: 'creator/pdf'}}, workbook));
+    this.bus$.publish(new CommandConvertMdToPdf({...this.workbookId, key: {wid: 'document/convertor/mdtopdf'}}, workbook));
   }
 
   createWorkbook(): void {

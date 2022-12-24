@@ -1,7 +1,7 @@
 import { Body, Controller, Header, HttpCode, Post, Res } from '@nestjs/common';
 import {Response} from 'express'
 import { PDFService } from './pdf.service'
-@Controller('creator/pdf')
+@Controller('document/convertor/MdToPdf')
 export class PdfController {
     constructor(private readonly PDFService: PDFService){
 

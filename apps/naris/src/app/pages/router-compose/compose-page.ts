@@ -4,8 +4,6 @@ import { BusEmitter, BusError, BusMessage, isBusMessage, MixedBusService } from 
 import {
   ChangeDataEvent,
   CommandCancel,
-  CommandCreate,
-  CommandDownload,
   CommandEdit,
   CommandNew,
   CommandRead,
@@ -109,7 +107,6 @@ export abstract class ComposePage {
       this.bus$.of(CommandNew).subscribe(this.onNewSchema.bind(this)),
       this.bus$.of(CommandEdit).subscribe(this.onEditSchema.bind(this)),
       this.bus$.of(CommandView).subscribe(this.onViewSchema.bind(this)),
-      this.bus$.of(CommandDownload).subscribe(this.onDownloadSchema.bind(this)),
     ];
   }
 
@@ -147,33 +144,6 @@ export abstract class ComposePage {
     }
     this.router.navigate(['edit', data.payload.id], { relativeTo: this.findActivatedRoute(this.route) });
   }
-  onDownloadSchema(data: BusMessage | BusError): void {
-    console.log('BusMessage', data)
-    if (data instanceof BusError) {
-      return;
-    }
-    //не уверен, что тут можно вызывать команду
-    this.bus$.publish(
-      new CommandCreate(data.owner, convertToJsonDTO(data.payload, ['id']), { afterCommandDoneRedirectTo: ['.'] })
-    );
-    // тут необходимо разобраться где должна быть эта логика
-    // this.http?.post('http://localhost:3200/api/creator/pdf', {
-    //   Content: data.payload.blocks[0].text
-    // }, {responseType: 'arraybuffer'})
-    // .subscribe((res: any)=>{
-    //   debugger
-    //   let url = window.URL.createObjectURL(new Blob([res], {type: 'application/pdf'}));
-    //     let a = document.createElement('a');
-    //     document.body.appendChild(a);
-    //     a.setAttribute('style', 'display: none');
-    //     a.href = url;
-    //     a.download = res.filename;
-    //     a.click();
-    //     window.URL.revokeObjectURL(url);
-    //     a.remove();
-    // })
-  }
- 
   onViewSchema(data: BusMessage | BusError): void {
     if (data instanceof BusError) {
       return;

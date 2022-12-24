@@ -30,7 +30,7 @@ export class CommandAction extends BusCommand {}
 export class CommandNew extends BusCommand {}
 export class CommandEdit extends BusCommand {}
 export class CommandView extends BusCommand {}
-export class CommandDownload extends BusCommand {}
+export class CommandConvertMdToPdf extends BusCommand {}
 export class CommandCancel extends BusCommand {}
 
 export class CommandRead extends BusCommand {}

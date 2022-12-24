@@ -11,7 +11,7 @@ export const CODE_EXECUTOR_TOKEN: InjectionToken<CodeExecutor> = new InjectionTo
   providers: [
     CodeRunnerService,
     { provide: CODE_EXECUTOR_TOKEN, useClass: JsExecutorService, multi: true },
-    // если нужно расширить другим языком, например Typescript
+    // если нужно расширить другим языком
     // { provide: CODE_EXECUTOR_TOKEN, useClass: TsExecutorService, multi: true },
   ],
 })

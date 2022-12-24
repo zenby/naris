@@ -21,14 +21,21 @@
 }
 
 .edit {
-  width: 100%;
+  width: calc(100% - 70px);
 
   @media screen and (max-width: 768px) {
-    margin-top: 10px;
+    width: 100%;
+    margin-bottom: 10px;
   }
 }
 
 .info {
+  min-width: 60px;
+  text-align: right;
   white-space: nowrap;
   margin-right: 10px;
+
+  @media screen and (max-width: 768px) {
+    text-align: left;
+  }
 }

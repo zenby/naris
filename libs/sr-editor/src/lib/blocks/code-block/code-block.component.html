@@ -1,5 +1,14 @@
-<ng-container *ngIf="codeResult$ | async as results; else loading">
-  <pre *ngFor="let log of results">{{ log.level }}: {{ log.data }}</pre>
+<ng-container *ngIf="codeResult$ | async as output; else loading">
+  <article class="code-block">
+    <div class="code-block-section">
+      <h4>Исходный код:</h4>
+      <pre>{{ text }}</pre>
+    </div>
+    <div class="code-block-section">
+      <h4>Результат выполнения:</h4>
+      <pre><span *ngFor="let log of output" [ngClass]="{ log: log.level === 'log', error: log.level === 'error', result: log.level === 'result' }">{{ log.data }} <br/></span></pre>
+    </div>
+  </article>
 </ng-container>
 
-<ng-template #loading> Загружаем код </ng-template>
+<ng-template #loading>Загружаем код</ng-template>

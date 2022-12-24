@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { fromEvent, map, merge, Observable, throwError } from 'rxjs';
+import { finalize, fromEvent, map, merge, Observable, take, throwError } from 'rxjs';
 import { CodeExecutionResult, CodeLanguage } from '../code-runner.model';
 import { CodeExecutor } from './code-executor.interface';
+
+const EXECUTION_RESULTS_LIMIT = 100;
 
 @Injectable()
 export class JsExecutorService implements CodeExecutor {
@@ -13,7 +15,7 @@ export class JsExecutorService implements CodeExecutor {
     if (typeof Worker !== 'undefined') {
       return this.executeJavascriptCode(code);
     } else {
-      return throwError(() => new Error('Ваш браузер не поддерживает наш код'));
+      return throwError(() => new Error('Ваш браузер не позволяет запустить код'));
     }
   }
 
@@ -23,6 +25,7 @@ export class JsExecutorService implements CodeExecutor {
 
   private executeJavascriptCode(code: string): Observable<CodeExecutionResult> {
     this.worker = new Worker(new URL('./js-executor.worker', import.meta.url));
+
     const resultObservable$ = fromEvent<MessageEvent<CodeExecutionResult>>(this.worker, 'message').pipe(
       map(({ data }) => data)
     );
@@ -30,6 +33,12 @@ export class JsExecutorService implements CodeExecutor {
       map(({ message }) => ({ level: 'error', data: message } as CodeExecutionResult))
     );
     this.worker.postMessage(code);
-    return merge(resultObservable$, errorObservable$);
+
+    return merge(resultObservable$, errorObservable$).pipe(
+      // ограничим вывод лимитом в 100 "событий"
+      take(EXECUTION_RESULTS_LIMIT),
+      // если событий больше лимита, то завершим вывод результата
+      finalize(() => this.worker?.terminate())
+    );
   }
 }

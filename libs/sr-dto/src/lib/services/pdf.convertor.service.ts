@@ -20,7 +20,6 @@ export class PdfConverterService {
     ) {
         const wnd = (window as any);
         wnd.store$ = this;
-        console.log('Start RESTfull CRUD events service');
         bus$.of(CommandConvertMdToPdf).subscribe(this.createPdf.bind(this));
     }
     protected queryCreate(data: any, owner: CRUDBusEmitter, routeParams: any): Observable<DtoPack<any>> {

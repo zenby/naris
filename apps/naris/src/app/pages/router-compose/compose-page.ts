@@ -16,7 +16,6 @@ import {
 } from '@soer/sr-dto';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subscription } from 'rxjs';
-import { convertToJsonDTO } from '../../api/json.dto.helpers';
 
 export abstract class ComposePage {
   protected subscriptions: Subscription[] = [];

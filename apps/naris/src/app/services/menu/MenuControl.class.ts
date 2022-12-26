@@ -1,7 +1,7 @@
 import { EventEmitter } from '@angular/core';
-import { IMenuControl } from './menu.interfaces';
+import { FireEvent, IMenuControl } from './menu.interfaces';
 
 export class MenuControl implements IMenuControl {
-  public fire: EventEmitter<Record<string, any>> = new EventEmitter<Record<string, any>>();
+  public fire: EventEmitter<FireEvent> = new EventEmitter<FireEvent>();
   constructor(public title: string, public icon: string, public cb: () => void) {}
 }

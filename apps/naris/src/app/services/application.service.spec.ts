@@ -4,7 +4,6 @@ import { AuthService } from '@soer/sr-auth';
 import { DataStoreService } from '@soer/sr-dto';
 
 import { ApplicationService } from './application.service';
-import { MAIN_MENU } from './menu/menu.const';
 import { MenuControl } from './menu/MenuControl.class';
 
 describe('ApplicationService', () => {

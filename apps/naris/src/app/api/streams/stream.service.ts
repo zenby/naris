@@ -10,7 +10,8 @@ export class StreamService implements Resolve<VideoModel> {
   constructor(private http: HttpClient) {}
 
   getStreams(): Observable<VideoModel> {
-    return this.http.get<VideoModel>(environment.assetsUrl + 'streams.json');
+    // return this.http.get<VideoModel>(environment.assetsUrl + 'streams.json');
+    return this.http.get<VideoModel>(`${environment.host}/api/kinescope/streams`);
   }
   resolve(): Observable<VideoModel> {
     return this.getStreams();

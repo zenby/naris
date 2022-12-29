@@ -3,7 +3,7 @@ import { DelimitEvent, TextBlock } from './interfaces/document.model';
 
 @Injectable()
 export class BlockService {
-  public readonly blocksDelimiter = '\n\n';
+  public readonly blocksDelimiter = '\n\n\n';
 
   delimitBlock(
     delimitData: DelimitEvent,

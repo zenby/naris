@@ -143,7 +143,6 @@ export abstract class ComposePage {
     }
     this.router.navigate(['edit', data.payload.id], { relativeTo: this.findActivatedRoute(this.route) });
   }
-
   onViewSchema(data: BusMessage | BusError): void {
     if (data instanceof BusError) {
       return;

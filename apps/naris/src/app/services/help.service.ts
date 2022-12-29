@@ -4,7 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class HelpService {
-  public go: any = {};
+  public go: Record<string, () => void> = {};
+
   constructor() {
     const wnd = window as any;
     wnd.help = this;
@@ -13,7 +14,6 @@ export class HelpService {
 
   me() {
     console.log(`
-
       Дополнительные возможности NARIS из консоли:
         - help.me - данная подсказка
         - go.[path] - переход на указанный path

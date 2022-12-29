@@ -3,16 +3,16 @@
   class="menu-container"
   [ngClass]="{ 'mobile-menu': isMobile, 'desktop-menu': !isMobile }"
 >
-  <div class="main-menu">
+  <div class="main-menu" *ngIf="!isOpenControlPanel">
     <button *ngIf="isMobile" nz-button nzSize="large" nzType="primary" (click)="openMenu()">
       <i nz-icon nzType="menu" nzTheme="outline"></i>
     </button>
 
-    <ul class="menu-drop " [class.menu-drop__close]="!isMenuOpen" (click)="openMenu()">
+    <ul class="menu-drop" [class.menu-drop__close]="!isMenuOpen" (click)="openMenu()">
       <ng-container *ngFor="let item of applicationMenu">
         <li *ngIf="item.link" nzType="link" [routerLink]="item.link">
           <i class="menu-drop__item-icon" nz-icon nzType="{{ item.icon }}" nzTheme="twotone"></i>{{ item.title }}
-          <img  *ngIf="item.isPro" class="menu-drop__img-pro" src="/assets/favicons/favicon-194x194.png" width="16"/>
+          <img *ngIf="item.isPro" class="menu-drop__img-pro" src="/assets/favicons/favicon-194x194.png" width="16" />
         </li>
         <li *ngFor="let childItem of item.children" nzType="link" [routerLink]="childItem.link">
           <i
@@ -21,14 +21,20 @@
             nz-icon
             nzType="{{ childItem.icon }}"
             nzTheme="outline"
-          ></i>{{ childItem.title }}
-          <img *ngIf="childItem.isPro" class="menu-drop__img-pro" src="/assets/favicons/favicon-194x194.png" width="16"/>
+          ></i
+          >{{ childItem.title }}
+          <img
+            *ngIf="childItem.isPro"
+            class="menu-drop__img-pro"
+            src="/assets/favicons/favicon-194x194.png"
+            width="16"
+          />
         </li>
       </ng-container>
-        <li *ngIf="userInfo.role === 'GUEST'">
-          <a [routerLink]="['/', 'pages', 'pay']">Улучшить уровень</a>
-        </li>
-        <li><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>
+      <li *ngIf="userInfo.role === 'GUEST'">
+        <a [routerLink]="['/', 'pages', 'pay']">Улучшить уровень</a>
+      </li>
+      <li><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>
       <li (click)="logout.next(true)">Выход</li>
     </ul>
 
@@ -45,7 +51,7 @@
 
   <div class="controls" *ngIf="controls">
     <div class="control" *ngFor="let control of controls">
-      <button nz-button nzSize="large" nzShape="circle" (click)="control.cb()">
+      <button nz-button nzSize="large" nzShape="circle" (click)="controlPanel(control)">
         <i nz-icon [nzType]="control.icon" nzTheme="outline"></i>
       </button>
     </div>

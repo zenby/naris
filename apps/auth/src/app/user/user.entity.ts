@@ -1,5 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { genSalt, hash } from 'bcrypt';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -8,6 +10,24 @@ export class UserEntity {
   id: number;
 
   @ApiProperty()
-  @Column()
+  @IsNotEmpty()
+  @IsEmail()
+  @Column({ unique: true })
   email: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @Column()
+  login: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @Column()
+  password: string;
+
+  @BeforeInsert()
+  async hashPassword() {
+    const salt = await genSalt();
+    this.password = await hash(this.password, salt);
+  }
 }

@@ -1,5 +1,7 @@
 import { EventEmitter } from '@angular/core';
 
+export type FireEvent = Record<string, any>;
+
 export interface MenuItem {
   title: string;
   icon: string;
@@ -10,7 +12,7 @@ export interface MenuItem {
 export type MenuTree = MenuItem[];
 
 export interface IMenuControl {
-  fire: EventEmitter<Record<string, any>>;
+  fire: EventEmitter<FireEvent>;
   title: string;
   icon: string;
   cb: () => void;

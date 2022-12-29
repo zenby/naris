@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JsonModule } from './json/json.module';
+import { PdfModule } from './modules/pdf/pdf.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { JsonModule } from './json/json.module';
       inject: [ConfigService],
     }),
     JsonModule,
+    PdfModule,
   ],
   controllers: [AppController],
   providers: [AppService],

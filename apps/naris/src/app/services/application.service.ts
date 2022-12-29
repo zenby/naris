@@ -1,12 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
 import { BusEmitter } from '@soer/mixed-bus';
 import { AuthService, JWTModel } from '@soer/sr-auth';
-import { DataStoreService, extractDtoPackFromBus } from '@soer/sr-dto';
-import { DtoPack } from 'libs/sr-dto/src/lib/interfaces/dto.pack.interface';
+import { DataStoreService, DtoPack, extractDtoPackFromBus } from '@soer/sr-dto';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { UserModel } from './application.models';
 import { MAIN_MENU } from './menu/menu.const';
-import { ApplicationMenu, IMenuControl } from './menu/menu.interfaces';
+import { IMenuControl } from './menu/menu.interfaces';
 import { MenuControl } from './menu/MenuControl.class';
 
 @Injectable({

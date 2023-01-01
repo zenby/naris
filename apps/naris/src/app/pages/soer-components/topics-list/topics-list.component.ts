@@ -1,13 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'soer-topics-list',
   templateUrl: './topics-list.component.html',
   styleUrls: ['./topics-list.component.scss'],
 })
-export class TopicsListComponent implements OnInit {
+export class TopicsListComponent {
   @Input() topics: { overview: string; title: string }[] = [];
-  constructor() {}
-
-  ngOnInit(): void {}
 }

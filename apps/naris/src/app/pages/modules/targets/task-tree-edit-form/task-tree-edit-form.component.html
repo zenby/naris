@@ -24,12 +24,12 @@
           *ngFor="let task of activeTarget.tasks; let ind = index"
           [nzDot]="task.progress === 100 ? complete : working"
         >
-          <sr-text-edit
+          <soer-inline-text-edit
             *ngIf="editTaskByIndex === ind"
-            [(srText)]="task.title"
+            [(text)]="task.title"
             (ok)="onSaveTask(target, $event)"
             (cancel)="onCancelEdit($event)"
-          ></sr-text-edit>
+          ></soer-inline-text-edit>
           <nz-row *ngIf="editTaskByIndex !== ind">
             <nz-col nzFlex="1">
               <p class="task-item">{{ task.title }}</p>

@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 export abstract class ComposePage {
   protected subscriptions: Subscription[] = [];
   public popup = false;
-  private updateSID: any = 0;
+  private updateSID: NodeJS.Timer | null = null;
 
   render = () => console.log(Math.random());
 
@@ -46,7 +46,7 @@ export abstract class ComposePage {
       this.bus$.of(ChangeDataEvent).subscribe(() => {
         if (this.updateSID) {
           clearTimeout(this.updateSID);
-          this.updateSID = 0;
+          this.updateSID = null;
         }
         this.updateSID = setTimeout(() => {
           this.cdp.detectChanges();

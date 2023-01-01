@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'soer-overlay',
   templateUrl: './overlay.component.html',
@@ -9,8 +9,8 @@ export class OverlayComponent {
   // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() readonly close = new EventEmitter<void>();
 
-  clickOnOverlay(event: any): void {
-    if (event.target.id === 'overlay') {
+  clickOnOverlay(event: MouseEvent): void {
+    if ((event?.target as HTMLDivElement).id === 'overlay') {
       this.close.emit();
     }
   }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@soer/sr-auth';
 
 @Component({
   selector: 'soer-auth',

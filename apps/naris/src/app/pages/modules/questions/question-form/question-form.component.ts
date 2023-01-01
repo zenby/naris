@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { convertToJsonDTO } from '../../../../api/json.dto.helpers';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
-import { CommandCreate, CommandUpdate, DataStoreService } from '@soer/sr-dto';
+import { CommandCreate, CommandUpdate } from '@soer/sr-dto';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

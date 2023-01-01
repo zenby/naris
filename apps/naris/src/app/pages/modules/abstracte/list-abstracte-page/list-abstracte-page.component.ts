@@ -1,8 +1,16 @@
 import { PreloaderService } from './../../../../services/preloader.service';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
-import { CommandConvertMdToPdf, CommandDelete, CommandEdit, CommandNew, CommandView, DataStoreService, DtoPack } from '@soer/sr-dto';
+import {
+  CommandConvertMdToPdf,
+  CommandDelete,
+  CommandEdit,
+  CommandNew,
+  CommandView,
+  DataStoreService,
+  DtoPack,
+} from '@soer/sr-dto';
 import { WorkbookModel } from '@soer/sr-editor';
 import { Observable, finalize } from 'rxjs';
 import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
@@ -76,7 +84,7 @@ export class ListAbstractePageComponent implements OnInit {
     private bus$: MixedBusService,
     private store$: DataStoreService,
     private route: ActivatedRoute,
-    private preloaderService: PreloaderService,
+    private preloaderService: PreloaderService
   ) {
     this.name = this.route.snapshot.data['header'].title;
 
@@ -85,7 +93,6 @@ export class ListAbstractePageComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.loadData();
   }
 
@@ -95,7 +102,6 @@ export class ListAbstractePageComponent implements OnInit {
   }
 
   private loadWorkbookInfo(): void {
-
     this.workbook$ = parseJsonDTOPack<WorkbookModel>(
       this.store$.of(this.workbooksId).pipe(finalize(() => this.preloaderService.hideLoader())),
       'workbooks'
@@ -115,7 +121,9 @@ export class ListAbstractePageComponent implements OnInit {
   }
 
   workbookDownload(workbook: WorkbookModel): void {
-    this.bus$.publish(new CommandConvertMdToPdf({...this.workbookId, key: {wid: 'document/convertor/mdtopdf'}}, workbook));
+    this.bus$.publish(
+      new CommandConvertMdToPdf({ ...this.workbookId, key: { wid: 'document/convertor/mdtopdf' } }, workbook)
+    );
   }
 
   createWorkbook(): void {

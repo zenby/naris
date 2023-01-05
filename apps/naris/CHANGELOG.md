@@ -2,6 +2,24 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.1.0...naris-0.2.0) (2023-01-05)
+
+
+### Features
+
+* Добавлен сервис для конвертации md в pdf ([b0a0a05](https://gitlog.ru:2222/Naris/soermono/commit/b0a0a05c60f34d74916d6494a1190a5b0fe2a69a))
+* Добавлена кнопка для скачивания конспекта ([fb8c35e](https://gitlog.ru:2222/Naris/soermono/commit/fb8c35eb4ea8191f1ee952ad43a971f9cfe0ea77))
+* **control-buttons:** add logic open control panel and add a  background color control buttons ([f4ae61f](https://gitlog.ru:2222/Naris/soermono/commit/f4ae61fc464f8195036d699296f4b1227584551a))
+* migrate from vimeo to kinescope ([d794add](https://gitlog.ru:2222/Naris/soermono/commit/d794addc372a28ee0bc39c67c1011d17ff99111d))
+* **storybook:** add mobile menu in storybook ([d4f0173](https://gitlog.ru:2222/Naris/soermono/commit/d4f01739fe8083389d1204d46fb4d0a42c7806fa))
+
+
+### Bug Fixes
+
+* Исправлено добавление ([b49fe5f](https://gitlog.ru:2222/Naris/soermono/commit/b49fe5f7def7f2b53aee0094dc5f37c139d7f45d))
+* Удалены неиспользуемые строки ([ebbbcaa](https://gitlog.ru:2222/Naris/soermono/commit/ebbbcaa7d214807a176b0ab2a5e2f31cf4c576fc))
+* **mobile-menu:** fix error of the max-width mobile menu ([ff523d4](https://gitlog.ru:2222/Naris/soermono/commit/ff523d470f32b3413fc42913586e850b93c2ab6f))
+
 ## 0.1.0 (2022-12-15)
 
 

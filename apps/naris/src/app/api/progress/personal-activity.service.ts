@@ -67,7 +67,6 @@ export class PersonalActivityService {
 
   private notDefined<VideoIdModel>(value: VideoIdModel | null | undefined): value is VideoIdModel {
     if (value === null || value === undefined) return false;
-    const testDummy: VideoIdModel = value;
     return true;
   }
 

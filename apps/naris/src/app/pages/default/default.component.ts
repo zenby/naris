@@ -1,13 +1,12 @@
-import { query } from '@angular/animations';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { ANY_SERVICE, BusEmitter, BusError, MixedBusService } from '@soer/mixed-bus';
-import { CommandAction, CommandNew, DataStoreService, OK } from '@soer/sr-dto';
+import { BusEmitter, BusError, MixedBusService } from '@soer/mixed-bus';
+import { DataStoreService } from '@soer/sr-dto';
 import { NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
 import { NzSiderComponent } from 'ng-zorro-antd/layout';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { PersonalActivityService } from '../../api/progress/personal-activity.service';
 import { Visibility } from '../../api/targets/target.interface';
 import { ApplicationService } from '../../services/application.service';
@@ -47,7 +46,7 @@ export class DefaultComponent implements OnInit, OnDestroy {
     private store$: DataStoreService,
     private message: NzMessageService,
     private breakpointService: NzBreakpointService,
-    private personalActivtiy: PersonalActivityService
+    private personalActivity: PersonalActivityService
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +66,7 @@ export class DefaultComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub: any) => sub.unsubscribe());
+    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
   logout(): void {
@@ -128,10 +127,6 @@ export class DefaultComponent implements OnInit, OnDestroy {
     if (sider.matchBreakPoint) {
       sider.setCollapsed(true);
     }
-  }
-
-  showOverlay(status: any): void {
-    this.isShowOverlay = status;
   }
 
   onClose(): void {

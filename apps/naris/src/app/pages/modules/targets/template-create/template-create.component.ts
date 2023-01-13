@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
 import {
   CommandCreate,
@@ -8,7 +8,7 @@ import {
   SerializedJsonModel,
 } from '@soer/sr-dto';
 import { EmptyTarget, TargetModel, TemplateModel } from '../../../../api/targets/target.interface';
-import { last, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { target2template } from '../targets.helpers';
 import { convertToJsonDTO } from '../../../../api/json.dto.helpers';

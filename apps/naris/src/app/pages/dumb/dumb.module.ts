@@ -7,7 +7,6 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { UnderDevelopmentComponent } from './under-development/under-development.component';
-import { SrTextEditComponent } from './sr-text-edit/sr-text-edit.component';
 import { RouterModule } from '@angular/router';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NoContentComponent } from './no-content/no-content.component';
@@ -17,17 +16,10 @@ import { NoContentComponent } from './no-content/no-content.component';
     OverlayComponent,
     AccessDeniedComponent,
     UnderDevelopmentComponent,
-    SrTextEditComponent,
     NoContentComponent,
     PreloaderComponent,
   ],
   imports: [CommonModule, NzIconModule, NzResultModule, NzButtonModule, RouterModule, NzSpinModule],
-  exports: [
-    OverlayComponent,
-    AccessDeniedComponent,
-    UnderDevelopmentComponent,
-    SrTextEditComponent,
-    PreloaderComponent,
-  ],
+  exports: [OverlayComponent, AccessDeniedComponent, UnderDevelopmentComponent, PreloaderComponent],
 })
 export class DumbModule {}

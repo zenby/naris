@@ -40,7 +40,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
-import { AimsTreeModule } from '@soer/soer-components';
+import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
 
 @NgModule({
   declarations: [
@@ -86,6 +86,7 @@ import { AimsTreeModule } from '@soer/soer-components';
     DumbModule,
     RouterModule,
     SrDTOModule,
+    InlineEditorModule,
 
     AimsTreeModule,
   ],

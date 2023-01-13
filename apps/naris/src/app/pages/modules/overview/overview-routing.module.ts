@@ -6,7 +6,6 @@ import { WorkshopsService } from '../../../api/workshops/workshops.service';
 import { ComposeIcontabsPageComponent } from '../../router-compose/compose-icontabs-page/compose-icontabs-page.component';
 import { InfoComponent } from './info/info.component';
 import { MetricsComponent } from './metrics/metrics.component';
-import { OverviewComponent } from './overview.component';
 
 const routes: Routes = [
   {

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
 import { CommandDelete } from '@soer/sr-dto';

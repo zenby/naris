@@ -2,7 +2,7 @@ import { Component, Input, AfterViewInit, OnDestroy, ChangeDetectionStrategy } f
 import { VideoPlayerService } from '../video-player.service';
 import { KinescopePlayer } from './kinescope-player.model';
 
-const SCRIPT_URL = 'https://player.kinescope.io/v2.84.1/iframe.player.js';
+const SCRIPT_URL = 'https://player.kinescope.io/latest/iframe.player.js';
 
 @Component({
   selector: 'soer-kinescope-player',

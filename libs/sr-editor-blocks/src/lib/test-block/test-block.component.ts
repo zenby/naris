@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BasicBlockComponent } from '../basic-block.component';
 
 @Component({
@@ -6,14 +6,9 @@ import { BasicBlockComponent } from '../basic-block.component';
   templateUrl: './test-block.component.html',
   styleUrls: ['./test-block.component.scss'],
 })
-export class TestBlockComponent implements OnInit, BasicBlockComponent {
-  @Input() text = '';
-
-  question = '';
-  answers: { answer: string; correct: boolean }[] = [];
-
-  ngOnInit(): void {
-    const blocks = this.text.split('\n\n');
+export class TestBlockComponent implements BasicBlockComponent {
+  @Input() set text(value: string) {
+    const blocks = value.split('\n\n');
     const answersText = blocks.pop();
     const question = blocks.join('\n\n');
 
@@ -27,4 +22,7 @@ export class TestBlockComponent implements OnInit, BasicBlockComponent {
 
     this.question = question;
   }
+
+  question = '';
+  answers: { answer: string; correct: boolean }[] = [];
 }

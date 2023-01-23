@@ -1,6 +1,6 @@
-<markdown *ngIf="text; else empty">
-  {{ text }}
-</markdown>
+<ng-container *ngIf="text; else empty">
+  <markdown [data]="text"></markdown>
+</ng-container>
 
 <ng-template #empty>
   <p class="help">Нажмите по этой области для вставки текста</p>

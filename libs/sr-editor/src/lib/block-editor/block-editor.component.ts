@@ -1,6 +1,8 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
+  ComponentRef,
   ElementRef,
   EventEmitter,
   Inject,
@@ -39,6 +41,8 @@ export class BlockEditorComponent implements AfterViewInit {
   @Output() delimitBlock = new EventEmitter<DelimitEvent>();
 
   @ViewChild('editComponent', { static: true, read: ViewContainerRef }) editComponent!: ViewContainerRef;
+
+  componentRef: ComponentRef<BasicBlockComponent> | null = null;
 
   constructor(@Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry) {}
 
@@ -99,13 +103,14 @@ export class BlockEditorComponent implements AfterViewInit {
   onEndEdit(): void {
     this.isEdit = false;
     this.endEdit.next(this.localIndex);
+    if (this.componentRef) {
+      this.componentRef.instance.text = this.textBlock.text;
+    }
   }
 
   private renderComponentForEditMode(): void {
-    if (this.textBlock.type !== 'presentation') {
-      const component = this.editorBlocksRegistry[this.textBlock.type];
-      const componentRef = this.editComponent.createComponent<BasicBlockComponent>(component);
-      componentRef.instance.text = this.textBlock.text;
-    }
+    const component = this.editorBlocksRegistry[this.textBlock.type];
+    this.componentRef = this.editComponent.createComponent<BasicBlockComponent>(component);
+    this.componentRef.instance.text = this.textBlock.text;
   }
 }

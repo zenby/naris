@@ -12,6 +12,7 @@ export const EDITOR_BLOCKS_REGISTRY_TOKEN = Symbol('EDITOR_BLOCKS_REGISTRY_TOKEN
 
 const editorBlocksRegistry: EditorBlocksRegistry = {
   markdown: MarkdownBlockComponent,
+  presentation: MarkdownBlockComponent,
   test: TestBlockComponent,
   code: CodeBlockComponent,
 };

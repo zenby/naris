@@ -1,5 +1,7 @@
 export type TextBlockType = 'markdown' | 'test' | 'presentation' | 'code';
 
+export type ExtendedTextBlockTypes = Exclude<TextBlockType, 'presentation'>;
+
 export interface TextBlock {
   type: TextBlockType;
   text: string;

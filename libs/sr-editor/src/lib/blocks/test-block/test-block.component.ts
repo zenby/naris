@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { BasicBlockComponent } from '../basic-block.component';
 
 @Component({
   selector: 'soer-test-block',
   templateUrl: './test-block.component.html',
   styleUrls: ['./test-block.component.scss'],
 })
-export class TestBlockComponent implements OnInit {
+export class TestBlockComponent implements OnInit, BasicBlockComponent {
   @Input() text = '';
 
   question = '';

@@ -21,22 +21,8 @@
       </p>
     </ng-container>
 
-    <ng-container *ngIf="!isEdit">
-      <div class="block-editor" (click)="isEdit = true">
-        <ng-container [ngSwitch]="textBlock.type">
-          <ng-container *ngSwitchCase="'markdown'">
-            <soer-markdown-block [text]="textBlock.text"></soer-markdown-block>
-          </ng-container>
-
-          <ng-container *ngSwitchCase="'test'">
-            <soer-test-block [text]="textBlock.text"></soer-test-block>
-          </ng-container>
-
-          <ng-container *ngSwitchCase="'code'">
-            <soer-code-block [text]="textBlock.text"></soer-code-block>
-          </ng-container>
-        </ng-container>
-      </div>
-    </ng-container>
+    <div class="block-editor" (click)="isEdit = true" [ngStyle]="{ display: isEdit ? 'none' : 'block' }">
+      <ng-template #editComponent></ng-template>
+    </div>
   </div>
 </div>

@@ -1,12 +1,31 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { DelimitEvent, TextBlock } from '../interfaces/document.model';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
+import { CodeBlockComponent } from '../blocks/code-block/code-block.component';
+import { MarkdownBlockComponent } from '../blocks/markdown-block/markdown-block.component';
+import { TestBlockComponent } from '../blocks/test-block/test-block.component';
+import { DelimitEvent, ExtendedTextBlockTypes, TextBlock } from '../interfaces/document.model';
+import { BasicBlockComponent, BasicBlockComponentType } from '../blocks/basic-block.component';
+
+const extendedTextBlockComponentsMap: Record<ExtendedTextBlockTypes, BasicBlockComponentType> = {
+  markdown: MarkdownBlockComponent,
+  test: TestBlockComponent,
+  code: CodeBlockComponent,
+};
 
 @Component({
   selector: 'soer-block-editor',
   templateUrl: './block-editor.component.html',
   styleUrls: ['./block-editor.component.scss'],
 })
-export class BlockEditorComponent {
+export class BlockEditorComponent implements AfterViewInit {
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
 
   @ViewChild('edit') set editRef(ref: ElementRef) {
@@ -26,6 +45,12 @@ export class BlockEditorComponent {
   @Output() setActive = new EventEmitter<number>();
   @Output() markdownTextChange = new EventEmitter<string>();
   @Output() delimitBlock = new EventEmitter<DelimitEvent>();
+
+  @ViewChild('editComponent', { static: true, read: ViewContainerRef }) editComponent!: ViewContainerRef;
+
+  ngAfterViewInit(): void {
+    this.renderComponentForEditMode();
+  }
 
   onSelectBlock(): void {
     this.setActive.next(this.localIndex);
@@ -80,5 +105,13 @@ export class BlockEditorComponent {
   onEndEdit(): void {
     this.isEdit = false;
     this.endEdit.next(this.localIndex);
+  }
+
+  private renderComponentForEditMode(): void {
+    if (this.textBlock.type !== 'presentation') {
+      const component = extendedTextBlockComponentsMap[this.textBlock.type];
+      const componentRef = this.editComponent.createComponent<BasicBlockComponent>(component);
+      componentRef.instance.text = this.textBlock.text;
+    }
   }
 }

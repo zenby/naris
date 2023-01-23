@@ -4,29 +4,23 @@ import { FormsModule } from '@angular/forms';
 import { CodeRunnerModule } from '@soer/sr-code-runner';
 import { MarkdownModule } from 'ngx-markdown';
 import { BlockEditorComponent } from './block-editor/block-editor.component';
-import { CodeBlockComponent } from './blocks/code-block/code-block.component';
-import { MarkdownBlockComponent } from './blocks/markdown-block/markdown-block.component';
-import { TestBlockComponent } from './blocks/test-block/test-block.component';
 import { EditorComponent } from './editor/editor.component';
 import { BooleanToStringPipe } from './pipes/boolean-to-string.pipe';
 import { TypeFormatPipe } from './pipes/type-format.pipe';
 import { BlockService } from './services/block.service';
-import { CodeBlockService } from './services/code-block.service';
 import { TextareaAutoresizeDirective } from './textarea-autoresize.directive';
+import { SrEditorBlocksModule } from '@soer/sr-editor-blocks';
 
 @NgModule({
-  imports: [CommonModule, MarkdownModule.forRoot(), FormsModule, CodeRunnerModule],
+  imports: [CommonModule, MarkdownModule.forRoot(), FormsModule, CodeRunnerModule, SrEditorBlocksModule],
   declarations: [
     BlockEditorComponent,
     BooleanToStringPipe,
-    CodeBlockComponent,
     EditorComponent,
-    MarkdownBlockComponent,
-    TestBlockComponent,
     TextareaAutoresizeDirective,
     TypeFormatPipe,
   ],
-  providers: [BlockService, CodeBlockService],
+  providers: [BlockService],
   exports: [EditorComponent],
 })
 export class SrEditorModule {}

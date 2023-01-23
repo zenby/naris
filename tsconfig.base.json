@@ -18,9 +18,10 @@
       "@soer/mixed-bus": ["libs/mixed-bus/src/index.ts"],
       "@soer/soer-components": ["libs/soer-components/src/index.ts"],
       "@soer/sr-auth": ["libs/sr-auth/src/index.ts"],
+      "@soer/sr-code-runner": ["libs/sr-code-runner/src/index.ts"],
       "@soer/sr-dto": ["libs/sr-dto/src/index.ts"],
       "@soer/sr-editor": ["libs/sr-editor/src/index.ts"],
-      "@soer/sr-code-runner": ["libs/sr-code-runner/src/index.ts"],
+      "@soer/sr-editor-blocks": ["libs/sr-editor-blocks/src/index.ts"],
       "@soer/sr-local-storage": ["libs/sr-local-storage/src/index.ts"],
       "@soer/sr-url-builder": ["libs/sr-url-builder/src/index.ts"]
     }

@@ -8,11 +8,14 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { CodeBlockComponent } from '../blocks/code-block/code-block.component';
-import { MarkdownBlockComponent } from '../blocks/markdown-block/markdown-block.component';
-import { TestBlockComponent } from '../blocks/test-block/test-block.component';
+import {
+  MarkdownBlockComponent,
+  TestBlockComponent,
+  CodeBlockComponent,
+  BasicBlockComponent,
+  BasicBlockComponentType,
+} from '@soer/sr-editor-blocks';
 import { DelimitEvent, ExtendedTextBlockTypes, TextBlock } from '../interfaces/document.model';
-import { BasicBlockComponent, BasicBlockComponentType } from '../blocks/basic-block.component';
 
 const extendedTextBlockComponentsMap: Record<ExtendedTextBlockTypes, BasicBlockComponentType> = {
   markdown: MarkdownBlockComponent,

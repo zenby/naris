@@ -3,25 +3,14 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   Output,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import {
-  MarkdownBlockComponent,
-  TestBlockComponent,
-  CodeBlockComponent,
-  BasicBlockComponent,
-  BasicBlockComponentType,
-} from '@soer/sr-editor-blocks';
-import { DelimitEvent, ExtendedTextBlockTypes, TextBlock } from '../interfaces/document.model';
-
-const extendedTextBlockComponentsMap: Record<ExtendedTextBlockTypes, BasicBlockComponentType> = {
-  markdown: MarkdownBlockComponent,
-  test: TestBlockComponent,
-  code: CodeBlockComponent,
-};
+import { BasicBlockComponent, EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '@soer/sr-editor-blocks';
+import { DelimitEvent, TextBlock } from '../interfaces/document.model';
 
 @Component({
   selector: 'soer-block-editor',
@@ -50,6 +39,8 @@ export class BlockEditorComponent implements AfterViewInit {
   @Output() delimitBlock = new EventEmitter<DelimitEvent>();
 
   @ViewChild('editComponent', { static: true, read: ViewContainerRef }) editComponent!: ViewContainerRef;
+
+  constructor(@Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry) {}
 
   ngAfterViewInit(): void {
     this.renderComponentForEditMode();
@@ -112,7 +103,7 @@ export class BlockEditorComponent implements AfterViewInit {
 
   private renderComponentForEditMode(): void {
     if (this.textBlock.type !== 'presentation') {
-      const component = extendedTextBlockComponentsMap[this.textBlock.type];
+      const component = this.editorBlocksRegistry[this.textBlock.type];
       const componentRef = this.editComponent.createComponent<BasicBlockComponent>(component);
       componentRef.instance.text = this.textBlock.text;
     }

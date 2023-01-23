@@ -6,9 +6,24 @@ import { TestBlockComponent } from './test-block/test-block.component';
 import { SrCodeBlockModule } from './code-block/code-block.module';
 import { SrMarkdownBlockModule } from './markdown-block/markdown-block.module';
 import { SrTestBlockModule } from './test-block/test-block.module';
+import { EditorBlocksRegistry } from './editor-blocks.model';
+
+export const EDITOR_BLOCKS_REGISTRY_TOKEN = Symbol('EDITOR_BLOCKS_REGISTRY_TOKEN');
+
+const editorBlocksRegistry: EditorBlocksRegistry = {
+  markdown: MarkdownBlockComponent,
+  test: TestBlockComponent,
+  code: CodeBlockComponent,
+};
 
 @NgModule({
   imports: [CommonModule, SrCodeBlockModule, SrMarkdownBlockModule, SrTestBlockModule],
   exports: [CodeBlockComponent, MarkdownBlockComponent, TestBlockComponent],
+  providers: [
+    {
+      provide: EDITOR_BLOCKS_REGISTRY_TOKEN,
+      useValue: editorBlocksRegistry,
+    },
+  ],
 })
 export class SrEditorBlocksModule {}

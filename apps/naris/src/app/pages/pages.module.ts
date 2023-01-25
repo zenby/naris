@@ -15,6 +15,7 @@ import { AbstracteModule } from './modules/abstracte/abstracte.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
 import { ComposeVideoPlayerComponent } from './modules/compose-video-player/compose-video-player.component';
 import { OverviewModule } from './modules/overview/overview.module';
+import { EditorBlocksModule } from './modules/editor-blocks-module/editor-blocks.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { QuestionsModule } from './modules/questions/questions.module';
 import { RoadmapComponent } from './modules/roadmap/roadmap.component';
@@ -36,6 +37,7 @@ import { RouterComposeModule } from './router-compose/router-compose.module';
     NzModalModule,
     TargetsModule,
     OverviewModule,
+    EditorBlocksModule,
     AbstracteModule,
     PaymentModule,
     CertificateModule,

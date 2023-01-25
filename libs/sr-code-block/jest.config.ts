@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'sr-editor-blocks',
+  displayName: 'sr-code-block',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -9,7 +9,7 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/libs/sr-editor-blocks',
+  coverageDirectory: '../../coverage/libs/sr-code-block',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

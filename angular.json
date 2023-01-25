@@ -473,6 +473,29 @@
       },
       "tags": []
     },
+    "sr-code-block": {
+      "projectType": "library",
+      "root": "libs/sr-code-block",
+      "sourceRoot": "libs/sr-code-block/src",
+      "prefix": "soer",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/sr-code-block"],
+          "options": {
+            "jestConfig": "libs/sr-code-block/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/sr-code-block/**/*.ts", "libs/sr-code-block/**/*.html"]
+          }
+        }
+      },
+      "tags": []
+    },
     "sr-code-runner": {
       "projectType": "library",
       "root": "libs/sr-code-runner",
@@ -543,29 +566,6 @@
       },
       "tags": []
     },
-    "sr-editor-blocks": {
-      "projectType": "library",
-      "root": "libs/sr-editor-blocks",
-      "sourceRoot": "libs/sr-editor-blocks/src",
-      "prefix": "soer",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/sr-editor-blocks"],
-          "options": {
-            "jestConfig": "libs/sr-editor-blocks/jest.config.ts",
-            "passWithNoTests": true
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/sr-editor-blocks/**/*.ts", "libs/sr-editor-blocks/**/*.html"]
-          }
-        }
-      },
-      "tags": []
-    },
     "sr-local-storage": {
       "projectType": "library",
       "root": "libs/sr-local-storage",
@@ -584,6 +584,52 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/sr-local-storage/**/*.ts", "libs/sr-local-storage/**/*.html"]
+          }
+        }
+      },
+      "tags": []
+    },
+    "sr-markdown-block": {
+      "projectType": "library",
+      "root": "libs/sr-markdown-block",
+      "sourceRoot": "libs/sr-markdown-block/src",
+      "prefix": "soer",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/sr-markdown-block"],
+          "options": {
+            "jestConfig": "libs/sr-markdown-block/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/sr-markdown-block/**/*.ts", "libs/sr-markdown-block/**/*.html"]
+          }
+        }
+      },
+      "tags": []
+    },
+    "sr-test-block": {
+      "projectType": "library",
+      "root": "libs/sr-test-block",
+      "sourceRoot": "libs/sr-test-block/src",
+      "prefix": "soer",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/sr-test-block"],
+          "options": {
+            "jestConfig": "libs/sr-test-block/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/sr-test-block/**/*.ts", "libs/sr-test-block/**/*.html"]
           }
         }
       },

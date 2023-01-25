@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ComponentRef,
   ElementRef,
@@ -11,7 +10,8 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { BasicBlockComponent, EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '@soer/sr-editor-blocks';
+import { BasicBlockComponent } from '../interfaces/basic-block.model';
+import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../interfaces/editor-blocks-registry.model';
 import { DelimitEvent, TextBlock } from '../interfaces/document.model';
 
 @Component({
@@ -112,5 +112,6 @@ export class BlockEditorComponent implements AfterViewInit {
     const component = this.editorBlocksRegistry[this.textBlock.type];
     this.componentRef = this.editComponent.createComponent<BasicBlockComponent>(component);
     this.componentRef.instance.text = this.textBlock.text;
+    this.componentRef.changeDetectorRef.detectChanges();
   }
 }

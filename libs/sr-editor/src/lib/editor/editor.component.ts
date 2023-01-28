@@ -1,23 +1,20 @@
 import { Location } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlockService } from '../services/block.service';
 import { DelimitEvent, EMPTY_WORKBOOK, TextBlock, WorkbookModel } from '../interfaces/document.model';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'soer-editor',
   templateUrl: './editor.component.html',
 })
-export class EditorComponent implements OnDestroy {
+export class EditorComponent {
   @Input() document: WorkbookModel = EMPTY_WORKBOOK;
   @Output() save = new EventEmitter<WorkbookModel>();
 
   public previewFlag = false;
   public editIndex = -1;
   public blocksDelimiter = this.blockService.blocksDelimiter;
-
-  destroyed$: Subject<void> = new Subject();
 
   constructor(
     private cdp: ChangeDetectorRef,
@@ -26,7 +23,7 @@ export class EditorComponent implements OnDestroy {
     private router: Router,
     private blockService: BlockService
   ) {
-    this.route.queryParams.pipe(takeUntil(this.destroyed$)).subscribe((params) => {
+    this.route.queryParams.subscribe((params) => {
       if (params['action'] === 'save') {
         this.save.next(this.document);
       }
@@ -49,11 +46,6 @@ export class EditorComponent implements OnDestroy {
       this.previewFlag = params['preview'] === 'true';
       this.cdp.markForCheck();
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 
   setActive(activeBlock: number) {
@@ -96,7 +88,7 @@ export class EditorComponent implements OnDestroy {
     this._location.back();
   }
 
-  delimitBlock(delimitData: DelimitEvent) {
+  delimitBLock(delimitData: DelimitEvent) {
     const { blocks, activeBlockIndex } = this.blockService.delimitBlock(
       delimitData,
       this.document.blocks,

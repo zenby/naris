@@ -9,9 +9,10 @@ import { BooleanToStringPipe } from './pipes/boolean-to-string.pipe';
 import { TypeFormatPipe } from './pipes/type-format.pipe';
 import { BlockService } from './services/block.service';
 import { TextareaAutoresizeDirective } from './textarea-autoresize.directive';
+import { SrEditorBlocksModule } from '@soer/sr-editor-blocks';
 
 @NgModule({
-  imports: [CommonModule, MarkdownModule.forRoot(), FormsModule],
+  imports: [CommonModule, MarkdownModule.forRoot(), FormsModule, SrEditorBlocksModule],
   declarations: [
     BlockEditorComponent,
     BooleanToStringPipe,

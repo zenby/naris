@@ -22,6 +22,7 @@ import { StreamsComponent } from './modules/streams/streams.component';
 import { TargetsModule } from './modules/targets/targets.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { RouterComposeModule } from './router-compose/router-compose.module';
+import { EditorBlocksModule } from './modules/editor-blocks/editor-blocks.module';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { RouterComposeModule } from './router-compose/router-compose.module';
     OverviewModule,
     AbstracteModule,
     PaymentModule,
+    EditorBlocksModule,
     CertificateModule,
     SrDTOModule,
     NzModalModule,

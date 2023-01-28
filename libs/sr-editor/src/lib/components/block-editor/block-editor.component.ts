@@ -10,9 +10,9 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { BasicBlockComponent } from '../interfaces/basic-block.model';
-import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../interfaces/editor-blocks-registry.model';
-import { DelimitEvent, TextBlock } from '../interfaces/document.model';
+import { BasicBlockComponent } from '../basic-block.component';
+import { DelimitEvent, TextBlock } from '../../interfaces/document.model';
+import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor-blocks-config';
 
 @Component({
   selector: 'soer-block-editor',

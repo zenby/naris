@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CodeRunnerService, CodeExecutionResult } from '@soer/sr-code-runner';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
-import { BasicBlockComponent } from '../basic-block.component';
 
 @Component({
   selector: 'soer-code-block',
@@ -9,7 +8,7 @@ import { BasicBlockComponent } from '../basic-block.component';
   styleUrls: ['./code-block.component.scss'],
   providers: [CodeRunnerService],
 })
-export class CodeBlockComponent implements OnInit, OnDestroy, BasicBlockComponent {
+export class CodeBlockComponent implements OnInit, OnDestroy {
   @Input() text = '';
 
   codeResult$ = new BehaviorSubject<CodeExecutionResult[]>([]);

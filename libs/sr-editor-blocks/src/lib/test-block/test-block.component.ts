@@ -1,12 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { BasicBlockComponent } from '../basic-block.component';
 
 @Component({
   selector: 'soer-test-block',
   templateUrl: './test-block.component.html',
   styleUrls: ['./test-block.component.scss'],
 })
-export class TestBlockComponent implements BasicBlockComponent {
+export class TestBlockComponent {
   @Input() set text(value: string) {
     const blocks = value.split('\n\n');
     const answersText = blocks.pop();

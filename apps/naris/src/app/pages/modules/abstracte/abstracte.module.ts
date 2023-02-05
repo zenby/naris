@@ -18,7 +18,6 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { MarkdownModule } from 'ngx-markdown';
 import { DumbModule } from '../../dumb/dumb.module';
-import { SoerComponentsModule } from '../../soer-components/soer-components.module';
 import { EditAbstracteFormComponent } from './edit-abstracte-form/edit-abstracte-form.component';
 import { EditAbstractePageComponent } from './edit-abstracte-page/edit-abstracte-page.component';
 import { ListAbstractePageComponent } from './list-abstracte-page/list-abstracte-page.component';
@@ -52,7 +51,6 @@ import { ViewAbstractePageComponent } from './view-abstracte-page/view-abstracte
     RouterModule,
     MarkdownModule.forRoot(),
     SrDTOModule,
-    SoerComponentsModule,
     SrEditorModule,
   ],
 })

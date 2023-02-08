@@ -32,6 +32,7 @@ describe('PdfController', () => {
 
     jest.spyOn(pdfService, 'convert').mockImplementation(() => Promise.reject('PDF exception'));
     pdfController.getPdf(requestMock, responseMock).catch((error) => {
+      expect(pdfService.convert).toBeCalledWith(requestMock.content);
       expect(error).toBeInstanceOf(HttpException);
       done();
     });
@@ -47,6 +48,9 @@ describe('PdfController', () => {
     } as unknown as Response;
 
     jest.spyOn(pdfService, 'convert').mockImplementation(async () => mockPdf);
-    expect(await pdfController.getPdf(requestMock, responseMock)).toEqual(responseMock.end());
+    await pdfController.getPdf(requestMock, responseMock);
+
+    expect(pdfService.convert).toBeCalledWith(requestMock.content);
+    expect(responseMock.write).toBeCalledWith(mockPdf);
   });
 });

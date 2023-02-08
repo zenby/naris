@@ -56,10 +56,6 @@ export class BlockEditorComponent implements AfterViewInit {
 
   textChange(changedText: string) {
     this.markdownTextChange.emit(changedText);
-
-    if (this.textBlock.type === 'markdown' && this.blockDelimeter && changedText.includes(this.blockDelimeter)) {
-      this.delimitBlock.emit({ text: changedText, type: this.textBlock.type });
-    }
   }
 
   command($event: KeyboardEvent): void {

@@ -27,6 +27,10 @@ export class EditorComponent {
       if (params['action'] === 'save') {
         this.save.next(this.document);
       }
+      if (params['action'] === 'format') {
+        this.router.navigate([], { relativeTo: this.route, queryParams: {} });
+        this.delimitBLock(this.document.blocks[this.editIndex]);
+      }
       if (params['action'] === 'add') {
         this.router.navigate([], { relativeTo: this.route, queryParams: {} });
         this.addBlockMarkdown(this.editIndex);

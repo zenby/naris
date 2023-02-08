@@ -37,6 +37,12 @@ const routes: Routes = [
               },
               controls: [
                 {
+                  title: 'Форматировать',
+                  path: ['.'],
+                  action: 'format',
+                  icon: 'scissor',
+                },
+                {
                   title: 'Добавить',
                   path: ['.'],
                   action: 'add',
@@ -88,6 +94,12 @@ const routes: Routes = [
                 subtitle: 'помощь в осмыслении материалов по программированию',
               },
               controls: [
+                {
+                  title: 'Форматировать',
+                  path: ['.'],
+                  action: 'format',
+                  icon: 'scissor',
+                },
                 {
                   title: 'Добавить',
                   path: ['.'],

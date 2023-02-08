@@ -23,34 +23,30 @@ describe('PdfController', () => {
   });
 
   it('should return exception', (done) => {
-    const requestMock = { content: 'pdf' };
-    const responseMock = {
-      status: jest.fn().mockImplementation().mockReturnValue(HttpStatus.OK),
-      write: jest.fn().mockImplementation(),
-      end: jest.fn((x) => x),
-    } as unknown as Response;
+    const requestMock = { content: 'pdfParams' };
+    const responseMock = {} as unknown as Response;
 
     jest.spyOn(pdfService, 'convert').mockImplementation(() => Promise.reject('PDF exception'));
     pdfController.getPdf(requestMock, responseMock).catch((error) => {
       expect(pdfService.convert).toBeCalledWith(requestMock.content);
       expect(error).toBeInstanceOf(HttpException);
+      expect(error.status).toEqual(HttpStatus.BAD_REQUEST);
       done();
     });
   });
 
   it('should return pdf success', async () => {
-    const mockPdf = Buffer.from([]);
-    const requestMock = { content: 'pdf' };
+    const pdfMock = Buffer.from([]);
+    const requestMock = { content: 'pdfParams' };
     const responseMock = {
-      status: jest.fn().mockImplementation().mockReturnValue(HttpStatus.OK),
-      write: jest.fn().mockImplementation().mockReturnValue(mockPdf),
-      end: jest.fn((x) => x),
+      write: jest.fn(),
+      end: jest.fn(),
     } as unknown as Response;
 
-    jest.spyOn(pdfService, 'convert').mockImplementation(async () => mockPdf);
+    jest.spyOn(pdfService, 'convert').mockImplementation(async () => pdfMock);
     await pdfController.getPdf(requestMock, responseMock);
 
     expect(pdfService.convert).toBeCalledWith(requestMock.content);
-    expect(responseMock.write).toBeCalledWith(mockPdf);
+    expect(responseMock.write).toBeCalledWith(pdfMock);
   });
 });

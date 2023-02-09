@@ -6,7 +6,7 @@ import { configurationFactory, typeOrmFactory } from './config/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JsonModule } from './json/json.module';
+import { JsonModule } from './modules/json/json.module';
 import { PdfModule } from './modules/pdf/pdf.module';
 
 @Module({

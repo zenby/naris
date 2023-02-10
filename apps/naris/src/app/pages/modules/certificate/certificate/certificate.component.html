@@ -23,7 +23,7 @@
             <b>
               <span [ngSwitch]="certObject.status">
                 <span *ngSwitchDefault>не могу определить статус</span>
-                <span *ngSwitchCase="'pending'"></span>
+                <span *ngSwitchCase="'pending'">В ожидании</span>
                 <span *ngSwitchCase="'new'" style="color: green">Новый</span>
                 <span *ngSwitchCase="'inuse'" style="color: red">Уже использован</span>
               </span>

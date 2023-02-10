@@ -53,3 +53,48 @@ const Template: Story<CertificateComponent> = (args: CertificateComponent) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {};
+
+export const Success = Template.bind({});
+Success.args = {
+  certObject: {
+    role: 'PRO',
+    status: 'succeeded',
+    exp: Date.now(),
+  },
+};
+
+export const Pending = Template.bind({});
+Pending.args = {
+  certObject: {
+    role: 'PRO',
+    status: 'pending',
+    exp: Date.now(),
+  },
+};
+
+export const New = Template.bind({});
+New.args = {
+  certObject: {
+    role: 'PRO',
+    status: 'new',
+    exp: Date.now(),
+  },
+};
+
+export const Undefined = Template.bind({});
+Undefined.args = {
+  certObject: {
+    role: 'PRO',
+    status: 'undefined',
+    exp: Date.now(),
+  },
+};
+
+export const Inuse = Template.bind({});
+Inuse.args = {
+  certObject: {
+    role: 'PRO',
+    status: 'inuse',
+    exp: Date.now(),
+  },
+};

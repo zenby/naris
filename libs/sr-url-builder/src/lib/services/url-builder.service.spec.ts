@@ -27,13 +27,13 @@ describe('UrlBuilderService', () => {
   });
 
   describe('build()', () => {
-    it('should returns string with apiRoot value when method was called without arguments', () => {
+    it('should return string with apiRoot value when method was called without arguments', () => {
       const buildedUrl = service.build();
 
       expect(buildedUrl).toBe(`${API_ROOT}`);
     });
 
-    it('should returns string with apiRoot + apiSuffix when method was called with only apiSuffix argument', () => {
+    it('should return string with apiRoot + apiSuffix when method was called with only apiSuffix argument', () => {
       const buildedUrl = service.build('v2/json/activity');
 
       expect(buildedUrl).toBe(`${API_ROOT}v2/json/activity`);

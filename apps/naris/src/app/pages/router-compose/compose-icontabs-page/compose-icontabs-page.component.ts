@@ -4,14 +4,7 @@ import { MixedBusService } from '@soer/mixed-bus';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { BehaviorSubject } from 'rxjs';
 import { ComposePage } from '../compose-page';
-
-interface IconTab {
-  title: string;
-  icon?: string;
-  path: string[];
-  iconText?: string;
-  componentName?: string;
-}
+import { IconTab } from './compose-icontabs-page.model';
 
 @Component({
   selector: 'soer-compose-icontabs-page',

@@ -43,39 +43,29 @@ export class ComposeIcontabsPageComponent extends ComposePage implements OnInit,
 
   prepareTabs(): void {
     this.route.routeConfig?.children?.forEach((child) => {
-      if (child.data?.['header']) {
+      const childHeader = child.data?.['header'];
+
+      if (childHeader) {
         const newPath = child.path === undefined || child.path === '' ? '.' : child.path;
-        if (!child.data?.['header']?.['cantBeTab']) {
+
+        if (!childHeader?.['cantBeTab']) {
           const tab: IconTab = {
             componentName: child.component?.name,
-            title: child.data?.['header'].title,
-            icon: child.data?.['header'].icon,
-            iconText: child.data?.['header'].iconText || '',
+            title: childHeader.title,
+            icon: childHeader.icon,
+            iconText: childHeader.iconText || '',
             path: [newPath],
           };
+
           this.tabs.push(tab);
         }
       }
     });
   }
 
-  activateTab(data: any): void {
-    const findActiveTitle = (r: ActivatedRoute): string[] => {
-      let result: string[] = [];
-      if (r.snapshot.routeConfig?.path) {
-        result.push(r.snapshot.routeConfig?.path);
-      }
-      if (r.children.length > 0) {
-        for (let i = 0; i < r.children.length; i++) {
-          const childTitles = findActiveTitle(r.children[i]);
-          result = [...result, ...childTitles];
-        }
-      }
-      return result;
-    };
-
+  activateTab(event: Event): void {
     const [activeRoute] = this.route.children;
-    const path = findActiveTitle(this.route).pop() || '';
+    const path = this.findActiveTitle(this.route).pop() || '';
 
     if (activeRoute) {
       const activeTab = this.tabs.find((tab) => tab.path && tab.path.includes(path)) || {
@@ -83,7 +73,29 @@ export class ComposeIcontabsPageComponent extends ComposePage implements OnInit,
         icon: '',
         path: [],
       };
+
       setTimeout(() => this.active$.next(activeTab), 0);
     }
+  }
+
+  isTabDisabled(activeTab: IconTab, tab: IconTab) {
+    return activeTab.path.length > 0 && activeTab.path.join('') === tab.path.join('');
+  }
+
+  private findActiveTitle(r: ActivatedRoute): string[] {
+    let result: string[] = [];
+
+    if (r.snapshot.routeConfig?.path) {
+      result.push(r.snapshot.routeConfig?.path);
+    }
+
+    if (r.children.length > 0) {
+      for (let i = 0; i < r.children.length; i++) {
+        const childTitles = this.findActiveTitle(r.children[i]);
+        result = [...result, ...childTitles];
+      }
+    }
+
+    return result;
   }
 }

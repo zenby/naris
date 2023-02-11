@@ -91,4 +91,15 @@ describe('EditAbstracteFormComponent', () => {
       });
     });
   });
+
+  it('should be save event dispatched', () => {
+    const workbook = fakeWorkbook();
+    component.workbook = workbook;
+    jest.spyOn(component.save, 'next');
+
+    route.setQueryParams({ action: 'save' });
+    fixture.detectChanges();
+
+    expect(component.save.next).toBeCalledWith(workbook);
+  });
 });

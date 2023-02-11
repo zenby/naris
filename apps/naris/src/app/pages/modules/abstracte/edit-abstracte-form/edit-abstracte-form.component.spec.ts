@@ -1,17 +1,28 @@
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY_WORKBOOK, TextBlockType, WorkbookModel } from '@soer/sr-editor';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReplaySubject } from 'rxjs';
 import { faker } from '@faker-js/faker';
 
 import { EditAbstracteFormComponent } from './edit-abstracte-form.component';
 
 describe('EditAbstracteFormComponent', () => {
+  const subject = new ReplaySubject<Params>();
+  const activatedRouteStub = {
+    queryParams: subject.asObservable(),
+    setQueryParams: (params: Params) => {
+      subject.next(params);
+    },
+  };
+
   let component: EditAbstracteFormComponent;
   let fixture: ComponentFixture<EditAbstracteFormComponent>;
   let router: Router;
-  let route: ActivatedRoute;
+  let route: typeof activatedRouteStub;
 
   function fakeWorkbook(): WorkbookModel {
     return {
@@ -32,13 +43,19 @@ describe('EditAbstracteFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EditAbstracteFormComponent, SoerEditorStubComponent],
-      imports: [RouterTestingModule.withRoutes([])],
+      imports: [RouterTestingModule.withRoutes([]), NzFormModule, FormsModule, ReactiveFormsModule],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: activatedRouteStub,
+        },
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditAbstracteFormComponent);
     router = TestBed.inject(Router);
-    route = TestBed.inject(ActivatedRoute);
+    route = TestBed.inject(ActivatedRoute) as unknown as typeof activatedRouteStub;
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -52,8 +69,12 @@ describe('EditAbstracteFormComponent', () => {
 
     beforeEach(async () => {
       component.workbook = workbook;
-      component.previewFlag = true;
+      route.setQueryParams({ preview: 'true' });
       fixture.detectChanges();
+    });
+
+    it('should prewiewFlag assert true', async () => {
+      expect(component.previewFlag).toBe(true);
     });
 
     it('should not be displayed soer-editor', async () => {
@@ -69,7 +90,5 @@ describe('EditAbstracteFormComponent', () => {
         ).not.toBeNull();
       });
     });
-
   });
-
 });

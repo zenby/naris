@@ -15,7 +15,6 @@ import { SrDTOModule } from '@soer/sr-dto';
   declarations: [CertificateComponent],
   imports: [
     CommonModule,
-    CommonModule,
     NzButtonModule,
     NzAlertModule,
     NzDividerModule,

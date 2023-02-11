@@ -22,10 +22,6 @@ describe('UrlBuilderService', () => {
     service = TestBed.inject(UrlBuilderService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   describe('build()', () => {
     it('should return string with apiRoot value when method was called without arguments', () => {
       const buildedUrl = service.build();

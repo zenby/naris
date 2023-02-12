@@ -11,7 +11,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { BasicBlockComponent } from '../basic-block.component';
-import { DelimitEvent, TextBlock } from '../../interfaces/document.model';
+import { TextBlock } from '../../interfaces/document.model';
 import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor-blocks-config';
 
 @Component({
@@ -38,7 +38,6 @@ export class BlockEditorComponent implements AfterViewInit {
   @Output() moveDown = new EventEmitter<number>();
   @Output() setActive = new EventEmitter<number>();
   @Output() markdownTextChange = new EventEmitter<string>();
-  @Output() delimitBlock = new EventEmitter<DelimitEvent>();
 
   @ViewChild('editComponent', { static: true, read: ViewContainerRef }) editComponent!: ViewContainerRef;
 

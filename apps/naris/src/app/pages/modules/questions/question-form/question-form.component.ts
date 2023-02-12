@@ -14,7 +14,7 @@ export class QuestionFormComponent {
   @Output() submitForm: EventEmitter<any> = new EventEmitter();
   form: UntypedFormGroup;
 
-  textareaMaxLength: number = 1512;
+  questionMaxLength: number = 1512;
 
   constructor(
     @Inject('question') private questionId: BusEmitter,
@@ -29,7 +29,7 @@ export class QuestionFormComponent {
     });
     this.form = this.formBuilder.group({
       id: [null],
-      question: [null, [Validators.maxLength(this.textareaMaxLength)]],
+      question: [null, [Validators.maxLength(this.questionMaxLength)]],
     });
   }
 

@@ -1,4 +1,21 @@
 /* eslint-disable */
+
+const fixForImportMetaError = {
+  diagnostics: {
+    ignoreCodes: [1343],
+  },
+  astTransformers: {
+    before: [
+      {
+        path: 'ts-jest-mock-import-meta',
+        // for testing `import.meta`
+        // metaObject properties can be replaced here
+        // options: { metaObjectReplacement: { url: 'https://www.url.com' } },
+      },
+    ],
+  },
+};
+
 export default {
   displayName: 'sr-code-runner',
   preset: '../../jest.preset.js',
@@ -7,6 +24,7 @@ export default {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
       stringifyContentPathRegex: '\\.(html|svg)$',
+      ...fixForImportMetaError,
     },
   },
   coverageDirectory: '../../coverage/libs/sr-code-runner',

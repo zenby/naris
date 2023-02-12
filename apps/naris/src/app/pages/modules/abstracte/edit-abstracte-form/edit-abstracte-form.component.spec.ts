@@ -115,4 +115,28 @@ describe('EditAbstracteFormComponent', () => {
       expect(fixture.nativeElement.querySelector('markdown')).toBeNull();
     });
   });
+
+  describe('workbook question input', () => {
+    const workbook = fakeWorkbook();
+
+    beforeEach(() => {
+      component.workbook = workbook;
+      fixture.detectChanges();
+    });
+
+    it('should be displayed workbook question', () => {
+      expect(fixture.nativeElement.querySelector('input').value).toBe(workbook.question);
+    });
+
+    it('should changed workbook question', () => {
+      const question = faker.random.words(4);
+      const questionInput = fixture.nativeElement.querySelector('input');
+
+      questionInput.value = question;
+      questionInput.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+
+      expect(component.workbook.question).toBe(question);
+    });
+  });
 });

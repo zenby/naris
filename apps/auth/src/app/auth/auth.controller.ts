@@ -61,7 +61,8 @@ export class AuthController {
       return { status: HttpJsonStatus.Ok, items: [{ accessToken: accessToken }] };
     } catch (e) {
       this.logger.error(e);
-      throw e;
+
+      throw new InternalServerErrorException(this.internalErrorMessage);
     }
   }
 
@@ -100,11 +101,17 @@ export class AuthController {
   @ApiOperation({ summary: 'Logout', description: 'The cookie with the refresh_token is destroyed' })
   @ApiOkResponse({ schema: responseSchema })
   async signOut(@Res({ passthrough: true }) response: Response): Promise<HttpJsonResult<never>> {
-    const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
+    try {
+      const {cookieName} = this.configService.get<Configuration['jwt']>('jwt');
 
-    response.clearCookie(cookieName);
+      response.clearCookie(cookieName);
 
-    return { status: HttpJsonStatus.Ok, items: [] };
+      return {status: HttpJsonStatus.Ok, items: []};
+    } catch (e) {
+      this.logger.error(e);
+
+      throw new InternalServerErrorException(this.internalErrorMessage);
+    }
   }
 
   @Post('signup')

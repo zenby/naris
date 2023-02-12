@@ -5,23 +5,31 @@ import { moduleMetadata, Story, Meta } from '@storybook/angular';
 import { DefaultComponent } from './default.component';
 import { ANY_SERVICE } from '@soer/mixed-bus';
 import { SrAuthModule } from '@soer/sr-auth';
-import { ApplicationService } from '../../services/application.service';
 import { DemoNgZorroAntdModule } from '../demo.module';
 import { PersonalActivityService } from '../../api/progress/personal-activity.service';
-import { SrDTOModule } from '@soer/sr-dto';
-import { MAIN_MENU } from './menu.const';
+import { DataStoreService, SrDTOModule } from '@soer/sr-dto';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { of } from 'rxjs';
 
-const mockApplicationService = {
-    user$: {
-        "email": null,
-        "firstName": null,
-        "lastName": null,
-        "role": "GUEST",
-        "expired": null,
-        "namespaces": []
-    },
-    mainMenu: MAIN_MENU
+const dataStoreServiceMock = {
+  of: (manifestId: any) => {
+    return of({
+      owner: manifestId,
+      payload: {
+        "status": "ok",
+        "items": [
+          {
+            "email": null,
+            "firstName": null,
+            "lastName": null,
+            "role": "GUEST",
+            "expired": null,
+            "namespaces": []
+          }
+        ]
+      },
+    });
+  }
 };
 
 export default {
@@ -39,16 +47,16 @@ export default {
           useValue: '/',
         },
         {
-          provide: ApplicationService,
-          useValue: mockApplicationService
-        },
-        {
           provide: ActivatedRoute,
           useValue: {}
         },
         {
           provide: PersonalActivityService,
           useValue: {}
+        },
+        {
+          provide: DataStoreService,
+          useValue: dataStoreServiceMock
         },
         {
           provide: ActivatedRoute,

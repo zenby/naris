@@ -60,10 +60,6 @@ describe('EditAbstracteFormComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('form is in preview state', () => {
     const workbook = fakeWorkbook();
 

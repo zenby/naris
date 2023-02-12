@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, UntypedFormBuilder } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { ActivatedRoute } from '@angular/router';
 import { ANY_SERVICE } from '@soer/mixed-bus';
 import { of } from 'rxjs';
@@ -12,10 +14,14 @@ describe('QuestionFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NzFormModule,
+        NzInputModule,
+      ],
       declarations: [QuestionFormComponent],
       providers: [
-        FormBuilder,
-        UntypedFormBuilder,
         { provide: 'questions', useValue: ANY_SERVICE },
         { provide: 'question', useValue: ANY_SERVICE },
         { provide: ActivatedRoute,

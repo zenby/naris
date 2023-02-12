@@ -37,7 +37,7 @@ describe('EditAbstracteFormComponent', () => {
 
   @Component({ selector: 'soer-editor', template: `` })
   class SoerEditorStubComponent {
-    @Input() workbook: WorkbookModel = EMPTY_WORKBOOK;
+    @Input() document: WorkbookModel = EMPTY_WORKBOOK;
   }
 
   beforeEach(async () => {
@@ -97,5 +97,22 @@ describe('EditAbstracteFormComponent', () => {
     fixture.detectChanges();
 
     expect(component.save.next).toBeCalledWith(workbook);
+  });
+
+  describe('form is in edited state', () => {
+    const workbook = fakeWorkbook();
+
+    beforeEach(async () => {
+      component.workbook = workbook;
+      fixture.detectChanges();
+    });
+
+    it('should be displayed soer-editor', async () => {
+      expect(fixture.nativeElement.querySelector('soer-editor')).not.toBeNull();
+    });
+
+    it('should not be displayed markdown blocks', async () => {
+      expect(fixture.nativeElement.querySelector('markdown')).toBeNull();
+    });
   });
 });

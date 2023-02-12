@@ -73,11 +73,11 @@ describe('EditAbstracteFormComponent', () => {
       expect(component.previewFlag).toBe(true);
     });
 
-    it('should not be displayed soer-editor', async () => {
+    it('should not displayed soer-editor', async () => {
       expect(fixture.nativeElement.querySelector('soer-editor')).toBeNull();
     });
 
-    it('should be contained markdown blocks with workbook blocks text', async () => {
+    it('should contained markdown blocks with workbook blocks text', async () => {
       workbook.blocks.forEach((block) => {
         expect(
           fixture.debugElement.query(
@@ -88,7 +88,7 @@ describe('EditAbstracteFormComponent', () => {
     });
   });
 
-  it('should be save event dispatched', () => {
+  it('should save event dispatched', () => {
     const workbook = fakeWorkbook();
     component.workbook = workbook;
     jest.spyOn(component.save, 'next');
@@ -107,7 +107,7 @@ describe('EditAbstracteFormComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should be displayed soer-editor', async () => {
+    it('should displayed soer-editor', async () => {
       expect(fixture.nativeElement.querySelector('soer-editor')).not.toBeNull();
     });
 
@@ -124,7 +124,7 @@ describe('EditAbstracteFormComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should be displayed workbook question', () => {
+    it('should displayed workbook question', () => {
       expect(fixture.nativeElement.querySelector('input').value).toBe(workbook.question);
     });
 

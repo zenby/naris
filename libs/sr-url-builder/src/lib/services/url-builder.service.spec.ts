@@ -22,7 +22,7 @@ describe('UrlBuilderService', () => {
     service = TestBed.inject(UrlBuilderService);
   });
 
-  describe('build()', () => {
+  describe('build', () => {
     it('should return string with apiRoot value when method was called without arguments', () => {
       const buildedUrl = service.build();
 

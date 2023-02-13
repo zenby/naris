@@ -34,6 +34,7 @@
       <li *ngIf="userInfo.role === 'GUEST'">
         <a [routerLink]="['/', 'pages', 'pay']">Улучшить уровень</a>
       </li>
+      <li><a [routerLink]="['/', 'pages', 'account']">Личный кабинет</a></li>
       <li><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>
       <li (click)="logout.next(true)">Выход</li>
     </ul>

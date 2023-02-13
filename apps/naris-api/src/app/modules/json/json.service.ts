@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateJsonDto } from './dto/create-json.dto';
-import { HttpJsonResponse, HttpJsonStatus } from '../common/types/http-json-response.interface';
+import { HttpJsonResponse, HttpJsonStatus } from '../../common/types/http-json-response.interface';
 import { UpdateJsonDto } from './dto/update-json.dto';
 
 @Injectable()

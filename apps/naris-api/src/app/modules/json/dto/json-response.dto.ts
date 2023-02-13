@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { HttpJsonStatus } from '../../common/types/http-json-response.interface';
+import { HttpJsonStatus } from '../../../common/types/http-json-response.interface';
 import { JsonEntity } from '../json.entity';
 
 export class JsonResponseDto {

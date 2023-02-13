@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { JsonService } from './json.service';
 import { JsonEntity } from './json.entity';
 import { CreateJsonDto } from './dto/create-json.dto';
-import { HttpJsonResponse, HttpJsonStatus } from '../common/types/http-json-response.interface';
+import { HttpJsonResponse, HttpJsonStatus } from '../../common/types/http-json-response.interface';
 import { UpdateJsonDto } from './dto/update-json.dto';
 import { JsonParams } from './types/json-params.type';
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';

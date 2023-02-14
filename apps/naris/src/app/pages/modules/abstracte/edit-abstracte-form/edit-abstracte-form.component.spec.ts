@@ -1,8 +1,8 @@
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EMPTY_WORKBOOK, TextBlockType, WorkbookModel } from '@soer/sr-editor';
+import { EMPTY_WORKBOOK, WorkbookModel } from '@soer/sr-editor';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReplaySubject } from 'rxjs';
@@ -21,8 +21,8 @@ describe('EditAbstracteFormComponent', () => {
 
   let component: EditAbstracteFormComponent;
   let fixture: ComponentFixture<EditAbstracteFormComponent>;
-  let router: Router;
   let route: typeof activatedRouteStub;
+  let workbook: WorkbookModel;
 
   @Component({ selector: 'soer-editor', template: `` })
   class SoerEditorStubComponent {
@@ -43,19 +43,16 @@ describe('EditAbstracteFormComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditAbstracteFormComponent);
-    router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute) as unknown as typeof activatedRouteStub;
     component = fixture.componentInstance;
+    workbook = createFakeWorkbook();
+    component.workbook = workbook;
     fixture.detectChanges();
   });
 
   describe('form is in preview state', () => {
-    const workbook = createFakeWorkbook();
-
-    beforeEach(async () => {
-      component.workbook = workbook;
+    beforeEach(() => {
       route.setQueryParams({ preview: 'true' });
-      fixture.detectChanges();
     });
 
     it('should prewiewFlag assert true', async () => {
@@ -78,8 +75,6 @@ describe('EditAbstracteFormComponent', () => {
   });
 
   it('should save event dispatched', () => {
-    const workbook = createFakeWorkbook();
-    component.workbook = workbook;
     jest.spyOn(component.save, 'next');
 
     route.setQueryParams({ action: 'save' });
@@ -89,13 +84,6 @@ describe('EditAbstracteFormComponent', () => {
   });
 
   describe('form is in edited state', () => {
-    const workbook = createFakeWorkbook();
-
-    beforeEach(async () => {
-      component.workbook = workbook;
-      fixture.detectChanges();
-    });
-
     it('should display soer-editor', async () => {
       expect(fixture.nativeElement.querySelector('soer-editor')).not.toBeNull();
     });
@@ -106,13 +94,6 @@ describe('EditAbstracteFormComponent', () => {
   });
 
   describe('workbook question input', () => {
-    const workbook = createFakeWorkbook();
-
-    beforeEach(() => {
-      component.workbook = workbook;
-      fixture.detectChanges();
-    });
-
     it('should display workbook question', () => {
       expect(fixture.nativeElement.querySelector('input').value).toBe(workbook.question);
     });

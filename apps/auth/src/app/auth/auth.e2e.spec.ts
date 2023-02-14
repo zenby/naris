@@ -58,7 +58,7 @@ describe('Auth e2e-test', () => {
     request = supertest(app.getHttpServer());
   });
   describe('POST /auth/signin', () => {
-    it('recive access and refresh token', async () => {
+    it('should signin user when pass valid credentials', async () => {
       const validCredentials: LoginUserDto = {
         login: 'validLogin',
         password: 'validPassword',
@@ -79,7 +79,7 @@ describe('Auth e2e-test', () => {
           expect(body.status).toBe(HttpJsonStatus.Ok);
         });
     });
-    it('get error if pass invalid credentials', async () => {
+    it('should return error when pass invalid credentials', async () => {
       const invalidCredentials: LoginUserDto = {
         login: 'invalidLogin',
         password: 'invalidPassword',
@@ -97,7 +97,7 @@ describe('Auth e2e-test', () => {
     });
   });
   describe('POST /auth/signup', () => {
-    it('user successfully created', async () => {
+    it('should create user when pass valid data', async () => {
       const validDto: CreateUserDto = {
         email: 'email@example.com',
         login: 'login',
@@ -114,7 +114,7 @@ describe('Auth e2e-test', () => {
           expect(body.status).toBe(HttpJsonStatus.Ok);
         });
     });
-    it('get error if pass invalid data ', async () => {
+    it('should return error when pass invalid data ', async () => {
       const invalidDto: CreateUserDto = {
         email: 'email@example.com',
         login: 'login',

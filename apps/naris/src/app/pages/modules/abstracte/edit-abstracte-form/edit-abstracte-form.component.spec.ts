@@ -73,11 +73,11 @@ describe('EditAbstracteFormComponent', () => {
       expect(component.previewFlag).toBe(true);
     });
 
-    it('should not displayed soer-editor', async () => {
+    it('should not display soer-editor', async () => {
       expect(fixture.nativeElement.querySelector('soer-editor')).toBeNull();
     });
 
-    it('should contained markdown blocks with workbook blocks text', async () => {
+    it('should contain markdown blocks with workbook blocks text', async () => {
       workbook.blocks.forEach((block) => {
         expect(
           fixture.debugElement.query(
@@ -107,11 +107,11 @@ describe('EditAbstracteFormComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should displayed soer-editor', async () => {
+    it('should display soer-editor', async () => {
       expect(fixture.nativeElement.querySelector('soer-editor')).not.toBeNull();
     });
 
-    it('should not be displayed markdown blocks', async () => {
+    it('should not display markdown blocks', async () => {
       expect(fixture.nativeElement.querySelector('markdown')).toBeNull();
     });
   });
@@ -124,11 +124,11 @@ describe('EditAbstracteFormComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should displayed workbook question', () => {
+    it('should display workbook question', () => {
       expect(fixture.nativeElement.querySelector('input').value).toBe(workbook.question);
     });
 
-    it('should changed workbook question', () => {
+    it('should change workbook question', () => {
       const question = faker.random.words(4);
       const questionInput = fixture.nativeElement.querySelector('input');
 

@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 import { ComposeIcontabsPageComponent } from './compose-icontabs-page.component';
 
@@ -8,6 +10,7 @@ describe('ComposeIcontabsPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule, NzMessageModule],
       declarations: [ComposeIcontabsPageComponent],
     }).compileComponents();
 

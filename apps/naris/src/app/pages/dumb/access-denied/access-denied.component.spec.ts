@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NzResultModule } from 'ng-zorro-antd/result';
 
 import { AccessDeniedComponent } from './access-denied.component';
 
@@ -8,6 +10,7 @@ describe('AccessDeniedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule, NzResultModule],
       declarations: [AccessDeniedComponent],
     }).compileComponents();
   });

@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { AuthComponent } from './auth.component';
 
@@ -8,6 +10,7 @@ describe('AuthComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule, NzSpinModule],
       declarations: [AuthComponent],
     }).compileComponents();
 

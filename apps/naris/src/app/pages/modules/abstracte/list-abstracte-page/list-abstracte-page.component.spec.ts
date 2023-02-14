@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ANY_SERVICE, MixedBusModule } from '@soer/mixed-bus';
 import { SrDTOModule } from '@soer/sr-dto';
 import { ApplicationService } from '../../../../services/application.service';
+import { DumbModule } from '../../../dumb/dumb.module';
 
 import { ListAbstractePageComponent } from './list-abstracte-page.component';
 
@@ -12,9 +15,22 @@ describe('ListAbstractePageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ListAbstractePageComponent],
-      imports: [MixedBusModule, SrDTOModule],
+      imports: [RouterTestingModule, DumbModule, MixedBusModule, SrDTOModule],
       providers: [
         { provide: ApplicationService, useValue: {} },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              data: {
+                header: {
+                  title: 'Title',
+                },
+                workbooks: {},
+              },
+            },
+          },
+        },
         { provide: 'workbooks', useValue: ANY_SERVICE },
         { provide: 'workbook', useValue: ANY_SERVICE },
       ],

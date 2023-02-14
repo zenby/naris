@@ -18,6 +18,7 @@ export default {
       See https://github.com/uuidjs/uuid/issues/451
     */
     uuid: require.resolve('uuid'),
+    '^typeorm$': require.resolve('typeorm'),
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/auth',

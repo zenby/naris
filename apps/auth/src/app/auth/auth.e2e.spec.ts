@@ -4,17 +4,12 @@ import * as supertest from 'supertest';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/config';
-import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from '../common/strategies/jwt.strategy';
-import { UserService } from '../user/user.service';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { UserEntity } from '../user/user.entity';
 import { Repository } from 'typeorm';
 import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { AuthModule } from './auth.module';
 
 describe('Auth e2e-test', () => {
   let app: INestApplication;
@@ -30,26 +25,19 @@ describe('Auth e2e-test', () => {
         jwtSecret: 'secret',
       })),
     };
+
     const moduleRef = await Test.createTestingModule({
-      imports: [PassportModule.register({ defaultStrategy: 'jwt' }), JwtModule.register({})],
-      providers: [
-        AuthService,
-        JwtStrategy,
-        UserService,
-        {
-          provide: ConfigService,
-          useValue: configMock,
-        },
-        {
-          provide: getRepositoryToken(UserEntity),
-          useValue: {
-            findOne: jest.fn(),
+      imports: [AuthModule],
+    })
+      .useMocker((token) => {
+        if (token == ConfigService) return configMock;
+        if (token == getRepositoryToken(UserEntity))
+          return {
             save: jest.fn(),
-          },
-        },
-      ],
-      controllers: [AuthController],
-    }).compile();
+            findOne: jest.fn(),
+          };
+      })
+      .compile();
 
     app = moduleRef.createNestApplication();
     await app.init();

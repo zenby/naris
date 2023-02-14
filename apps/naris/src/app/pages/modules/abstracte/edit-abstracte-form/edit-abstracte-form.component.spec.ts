@@ -24,17 +24,6 @@ describe('EditAbstracteFormComponent', () => {
   let router: Router;
   let route: typeof activatedRouteStub;
 
-  function fakeWorkbook(): WorkbookModel {
-    return {
-      id: Number.parseInt(faker.random.numeric()),
-      question: faker.random.words(3),
-      blocks: [
-        { text: faker.random.words(2), type: 'markdown' as TextBlockType },
-        { text: faker.random.words(5), type: 'markdown' as TextBlockType },
-      ],
-    };
-  }
-
   @Component({ selector: 'soer-editor', template: `` })
   class SoerEditorStubComponent {
     @Input() document: WorkbookModel = EMPTY_WORKBOOK;
@@ -61,7 +50,7 @@ describe('EditAbstracteFormComponent', () => {
   });
 
   describe('form is in preview state', () => {
-    const workbook = fakeWorkbook();
+    const workbook = createFakeWorkbook();
 
     beforeEach(async () => {
       component.workbook = workbook;
@@ -89,7 +78,7 @@ describe('EditAbstracteFormComponent', () => {
   });
 
   it('should save event dispatched', () => {
-    const workbook = fakeWorkbook();
+    const workbook = createFakeWorkbook();
     component.workbook = workbook;
     jest.spyOn(component.save, 'next');
 
@@ -100,7 +89,7 @@ describe('EditAbstracteFormComponent', () => {
   });
 
   describe('form is in edited state', () => {
-    const workbook = fakeWorkbook();
+    const workbook = createFakeWorkbook();
 
     beforeEach(async () => {
       component.workbook = workbook;
@@ -117,7 +106,7 @@ describe('EditAbstracteFormComponent', () => {
   });
 
   describe('workbook question input', () => {
-    const workbook = fakeWorkbook();
+    const workbook = createFakeWorkbook();
 
     beforeEach(() => {
       component.workbook = workbook;
@@ -140,3 +129,14 @@ describe('EditAbstracteFormComponent', () => {
     });
   });
 });
+
+function createFakeWorkbook(): WorkbookModel {
+  return {
+    id: Number.parseInt(faker.random.numeric()),
+    question: faker.random.words(3),
+    blocks: [
+      { text: faker.random.words(2), type: 'markdown' },
+      { text: faker.random.words(5), type: 'markdown' },
+    ],
+  };
+}

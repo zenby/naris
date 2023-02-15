@@ -45,7 +45,7 @@ export class MetricsComponent {
 
     const countVideosIn = (videos: VideoModel[], watchedVideos: VideoIdModel[]): { items: { length: number } } => {
       const onlyIds = watchedVideos.map((video) => video.videoId);
-      const onlyWatchedVideos = videos.filter((video) => onlyIds.includes(video.vimeo_id || video.youtube_id || ''));
+      const onlyWatchedVideos = videos.filter((video) => onlyIds.includes(video.vimeo_id || video.youtube_id || video.kinescope_id || ''));
       const length = onlyWatchedVideos.reduce(
         (acc: number, item) => acc + (item.children ? item.children.length : 1),
         0

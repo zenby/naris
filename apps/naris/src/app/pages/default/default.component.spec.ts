@@ -5,8 +5,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { SrDTOModule } from '@soer/sr-dto';
 import { ANY_SERVICE } from '@soer/mixed-bus';
+import { PersonalActivity } from '../../api/progress/personal-activity.service';
 
 class MockNzMessageService {}
+const EMPTY_ACTIVITY: PersonalActivity = {
+  watched: {
+    videos: [],
+  },
+};
+
 describe('DefaultComponent', () => {
   let component: DefaultComponent;
   let fixture: ComponentFixture<DefaultComponent>;
@@ -20,6 +27,7 @@ describe('DefaultComponent', () => {
         { provide: 'issues', useValue: ANY_SERVICE },
         { provide: 'AuthService', useValue: {} },
         { provide: 'AuthServiceConfig', useValue: {} },
+        { provide: 'activity', useValue: EMPTY_ACTIVITY },
         { provide: NzMessageService, useClass: MockNzMessageService },
       ],
     }).compileComponents();

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NzResultModule } from 'ng-zorro-antd/result';
 
 import { UnderDevelopmentComponent } from './under-development.component';
 
@@ -8,6 +9,7 @@ describe('UnderDevelopmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [NzResultModule],
       declarations: [UnderDevelopmentComponent],
     }).compileComponents();
   });

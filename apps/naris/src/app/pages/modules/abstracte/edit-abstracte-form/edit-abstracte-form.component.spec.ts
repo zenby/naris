@@ -10,6 +10,9 @@ import { faker } from '@faker-js/faker';
 
 import { EditAbstracteFormComponent } from './edit-abstracte-form.component';
 
+@Component({ selector: 'soer-mock-component' })
+class MockComponent {}
+
 describe('EditAbstracteFormComponent', () => {
   const subject = new ReplaySubject<Params>();
   const activatedRouteStub = {

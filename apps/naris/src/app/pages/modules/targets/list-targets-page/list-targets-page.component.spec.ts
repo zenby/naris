@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ANY_SERVICE } from '@soer/mixed-bus';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 import { ListTargetsPageComponent } from './list-targets-page.component';
 
@@ -9,6 +11,7 @@ describe('ListTargetsPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+        imports: [NzEmptyModule, RouterTestingModule],
       declarations: [ListTargetsPageComponent],
       providers: [
         { provide: 'target', useValue: ANY_SERVICE },

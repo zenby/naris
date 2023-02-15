@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ANY_SERVICE } from '@soer/mixed-bus';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzListModule } from 'ng-zorro-antd/list';
 import { of } from 'rxjs';
 
 import { ListTemplatesPageComponent } from './list-templates-page.component';
@@ -13,7 +15,7 @@ describe('ListTemplatesPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ListTemplatesPageComponent],
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, NzEmptyModule, NzListModule],
       providers: [
         { provide: ActivatedRoute, useValue: { snapshot: { data: { templates: ANY_SERVICE } } } },
         { provide: 'target', useValue: ANY_SERVICE },

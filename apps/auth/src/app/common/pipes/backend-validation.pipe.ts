@@ -1,7 +1,7 @@
 import { ArgumentMetadata, HttpException, HttpStatus, PipeTransform } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
-import { HttpJsonStatus } from '../types/http-json-result.interface';
+import { HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { ValidationErrorHelper } from '../helpers/validation-error.helper';
 
 export class BackendValidationPipe implements PipeTransform {

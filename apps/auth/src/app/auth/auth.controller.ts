@@ -25,7 +25,8 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
-import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
+import {HttpJsonResult, HttpJsonStatus} from '@soer/sr-common-interfaces'
+
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { User } from '../common/decorators/user.decorator';
 import { UserEntity } from '../user/user.entity';

@@ -5,7 +5,7 @@ import { ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation } from '@nestjs/
 import { join } from 'path';
 import { setFilenameHelper } from './helpers/set-filename.helper';
 import { UploadService } from './upload.service';
-import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
+import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 
 import { uploadResponseSchema } from './doc/upload-response.schema';
 import { uploadBodySchema } from './doc/upload-body.schema';

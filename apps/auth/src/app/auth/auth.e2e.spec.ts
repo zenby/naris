@@ -7,7 +7,7 @@ import { Configuration } from '../config/config';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { UserEntity } from '../user/user.entity';
 import { Repository } from 'typeorm';
-import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
+import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { AuthModule } from './auth.module';
 

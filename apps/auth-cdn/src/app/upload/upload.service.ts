@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
+import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 
 @Injectable()
 export class UploadService {

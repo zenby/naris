@@ -496,6 +496,29 @@
       },
       "tags": []
     },
+    "sr-common-interfaces": {
+      "root": "libs/sr-common-interfaces",
+      "sourceRoot": "libs/sr-common-interfaces/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/sr-common-interfaces/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/sr-common-interfaces"],
+          "options": {
+            "jestConfig": "libs/sr-common-interfaces/jest.config.ts",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "sr-dto": {
       "$schema": "../../node_modules/nx/schemas/project-schema.json",
       "projectType": "library",

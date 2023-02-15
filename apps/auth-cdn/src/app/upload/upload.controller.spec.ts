@@ -1,6 +1,6 @@
 import { UploadController } from './upload.controller';
 import { UploadService } from './upload.service';
-import { HttpJsonResult, HttpJsonStatus } from '../common/types/http-json-result.interface';
+import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { Readable } from 'stream';
 
 describe('UploadController', () => {

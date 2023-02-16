@@ -624,6 +624,7 @@
             "outputDir": "dist/storybook/sr-storybook-host",
             "configDir": "libs/sr-storybook-host/.storybook",
             "browserTarget": "sr-storybook-host:build-storybook",
+            "styles": ["./node_modules/ng-zorro-antd/ng-zorro-antd.min.css", "apps/naris/src/styles.scss"],
             "compodoc": false
           },
           "configurations": {

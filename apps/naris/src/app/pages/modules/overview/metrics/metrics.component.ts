@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 import { BusEmitter, BusMessage } from '@soer/mixed-bus';
 import { DataStoreService, DtoPack } from '@soer/sr-dto';
 import { WorkbookModel } from '@soer/sr-editor';
@@ -11,41 +11,52 @@ import { QuestionModel } from '../../../../api/questions/question.model';
 import { VideoModel } from '../../../../api/streams/stream.model';
 import { TargetModel } from '../../../../api/targets/target.interface';
 
+type ListItem = { items: { length: number } };
+
+type Metric = {
+  title: string;
+  list$: Observable<ListItem>;
+  icon: string;
+  url: string;
+  suffix?: string;
+};
+
 @Component({
   selector: 'soer-metrics',
   templateUrl: './metrics.component.html',
   styleUrls: ['./metrics.component.scss'],
 })
 export class MetricsComponent {
-  workbook$: Observable<DtoPack<WorkbookModel>>;
-  question$: Observable<DtoPack<QuestionModel>>;
-  target$: Observable<DtoPack<TargetModel>>;
-  public metrics: { list$: Observable<any>; [key: string]: any }[];
-  data;
+  public metrics: Metric[];
+  public target$: Observable<DtoPack<TargetModel>>;
+  private workbook$: Observable<DtoPack<WorkbookModel>>;
+  private question$: Observable<DtoPack<QuestionModel>>;
+  private data: Data;
+
   constructor(
     private route: ActivatedRoute,
-    @Inject('workbooks') private workbooksId: BusEmitter,
-    @Inject('targets') private targetsId: BusEmitter,
-    @Inject('questions') private questionsId: BusEmitter,
-    public personalActivity: PersonalActivityService,
+    @Inject('workbooks') private workbooksIdEmitter: BusEmitter,
+    @Inject('targets') private targetsIdEmitter: BusEmitter,
+    @Inject('questions') private questionsIdEmitter: BusEmitter,
+    private personalActivity: PersonalActivityService,
     private store$: DataStoreService
   ) {
     this.data = this.route.snapshot.data;
-    this.workbook$ = parseJsonDTOPack<WorkbookModel>(this.store$.of(this.workbooksId), 'workbooks');
-    this.target$ = parseJsonDTOPack<TargetModel>(this.store$.of(this.targetsId), 'targets');
-    this.question$ = this.store$.of(this.questionsId).pipe(
-      map<BusMessage, DtoPack<QuestionModel>>((data) => {
-        return data.payload;
-      })
-    );
+    this.workbook$ = parseJsonDTOPack<WorkbookModel>(this.store$.of(this.workbooksIdEmitter), 'workbooks');
+    this.target$ = parseJsonDTOPack<TargetModel>(this.store$.of(this.targetsIdEmitter), 'targets');
+    this.question$ = this.store$
+      .of(this.questionsIdEmitter)
+      .pipe(map<BusMessage, DtoPack<QuestionModel>>((data) => data.payload));
 
     const videosFlatMap = (videos: VideoModel[]): VideoModel[] => {
       return videos.reduce((acc: VideoModel[], item: VideoModel) => [...acc, ...(item.children || [])], []);
     };
 
-    const countVideosIn = (videos: VideoModel[], watchedVideos: VideoIdModel[]): { items: { length: number } } => {
+    const countVideosIn = (videos: VideoModel[], watchedVideos: VideoIdModel[]): ListItem => {
       const onlyIds = watchedVideos.map((video) => video.videoId);
-      const onlyWatchedVideos = videos.filter((video) => onlyIds.includes(video.vimeo_id || video.youtube_id || video.kinescope_id || ''));
+      const onlyWatchedVideos = videos.filter((video) =>
+        onlyIds.includes(video.vimeo_id || video.youtube_id || video.kinescope_id || '')
+      );
       const length = onlyWatchedVideos.reduce(
         (acc: number, item) => acc + (item.children ? item.children.length : 1),
         0
@@ -88,14 +99,14 @@ export class MetricsComponent {
       },
       {
         title: 'Книга',
-        list$: of({ items: { length: '57' } }),
+        list$: of({ items: { length: 57 } }),
         suffix: '%',
         icon: 'book',
         url: '#!/pages/book',
       },
       {
         title: 'Исходники',
-        list$: of({ items: { length: '6' } }),
+        list$: of({ items: { length: 6 } }),
         icon: 'field-binary',
         url: '#!/pages/sources',
       },

@@ -5,7 +5,7 @@ import { DemoNgZorroAntdModule } from '../../demo.module';
 import { HttpClientModule } from '@angular/common/http';
 
 export default {
-  title: 'mobile-menu',
+  title: 'MobileMenuComponent',
   component: MobileMenuComponent,
   decorators: [
     moduleMetadata({

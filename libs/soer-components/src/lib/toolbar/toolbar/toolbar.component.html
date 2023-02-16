@@ -1,11 +1,14 @@
 <div class="toolbar">
-<ng-container *ngFor="let actionName of actions">
-<button nz-button
-nzType="default"
-[nzDanger]="actionName === 'delete'"
-[nzSize]="size"
-nzShape="circle"
-(click)="action.emit(actionName)"
-><i nz-icon [nzType]="actionName" nzTheme="outline"></i></button>
-</ng-container>
+  <ng-container *ngFor="let actionName of actions">
+    <button
+      nz-button
+      nzType="default"
+      [nzDanger]="actionName === 'delete'"
+      [nzSize]="size"
+      nzShape="circle"
+      (click)="action.emit(actionName)"
+    >
+      <i nz-icon [nzType]="actionName" nzTheme="outline"></i>
+    </button>
+  </ng-container>
 </div>

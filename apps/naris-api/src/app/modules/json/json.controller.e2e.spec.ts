@@ -77,66 +77,66 @@ describe('Auth e2e-test', () => {
         .send({ jsonString })
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
     });
+  });
 
-    describe('GET /json/:documentGroup/:documentId', () => {
-      it('should find document when the document is in the repository', () => {
-        const documentId = '123';
-        const documentGroup = 'test-document-group';
-        const document = {};
+  describe('GET /json/:documentGroup/:documentId', () => {
+    it('should find document when the document is in the repository', () => {
+      const documentId = '123';
+      const documentGroup = 'test-document-group';
+      const document = {};
 
-        jest.spyOn(jsonRepositoryMock, 'findOne').mockImplementationOnce((options) => {
-          if (options.where.id == documentId && options.where.group == documentGroup) return document;
-        });
-
-        return request
-          .get(`/json/${documentGroup}/${documentId}`)
-          .expect({ status: HttpJsonStatus.Ok, items: [document] });
+      jest.spyOn(jsonRepositoryMock, 'findOne').mockImplementationOnce((options) => {
+        if (options.where.id == documentId && options.where.group == documentGroup) return document;
       });
+
+      return request
+        .get(`/json/${documentGroup}/${documentId}`)
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
     });
+  });
 
-    describe('PUT /json/:documentGroup/:documentId', () => {
-      it('should update document when pass stored document id', () => {
-        const documentId = '123';
-        const documentGroup = 'test-document-group';
-        const jsonToUpdate = '{"title":"Это обновленный документ .http"}';
+  describe('PUT /json/:documentGroup/:documentId', () => {
+    it('should update document when pass stored document id', () => {
+      const documentId = '123';
+      const documentGroup = 'test-document-group';
+      const jsonToUpdate = '{"title":"Это обновленный документ .http"}';
 
-        let storedDocument = { json: '{"title":"Это старый документ .http"}' };
-        jest.spyOn(jsonRepositoryMock, 'findOne').mockImplementationOnce((options) => {
-          if (options.where.id == documentId && options.where.group == documentGroup) return storedDocument;
-        });
-
-        jest.spyOn(jsonRepositoryMock, 'save').mockImplementationOnce((newDocument) => (storedDocument = newDocument));
-
-        return request
-          .put(`/json/${documentGroup}/${documentId}`)
-          .send({ json: jsonToUpdate })
-          .expect({ status: HttpJsonStatus.Ok, items: [storedDocument] })
-          .then(() => {
-            expect(storedDocument.json).toBe(jsonToUpdate);
-          });
+      let storedDocument = { json: '{"title":"Это старый документ .http"}' };
+      jest.spyOn(jsonRepositoryMock, 'findOne').mockImplementationOnce((options) => {
+        if (options.where.id == documentId && options.where.group == documentGroup) return storedDocument;
       });
+
+      jest.spyOn(jsonRepositoryMock, 'save').mockImplementationOnce((newDocument) => (storedDocument = newDocument));
+
+      return request
+        .put(`/json/${documentGroup}/${documentId}`)
+        .send({ json: jsonToUpdate })
+        .expect({ status: HttpJsonStatus.Ok, items: [storedDocument] })
+        .then(() => {
+          expect(storedDocument.json).toBe(jsonToUpdate);
+        });
     });
+  });
 
-    describe('DELETE /json/:documentGroup/:documentId', () => {
-      it('should delete document when pass stored document id', () => {
-        const documentId = '123';
-        const documentGroup = 'test-document-group';
+  describe('DELETE /json/:documentGroup/:documentId', () => {
+    it('should delete document when pass stored document id', () => {
+      const documentId = '123';
+      const documentGroup = 'test-document-group';
 
-        let storedDocument = { json: '{"title":"Документ .http"}' };
-        jest.spyOn(jsonRepositoryMock, 'findOne').mockImplementationOnce((options) => {
-          if (options.where.id == documentId && options.where.group == documentGroup) return storedDocument;
-        });
-        jest.spyOn(jsonRepositoryMock, 'delete').mockImplementationOnce((options) => {
-          if (options.id == documentId) storedDocument = null;
-        });
-
-        return request
-          .delete(`/json/${documentGroup}/${documentId}`)
-          .expect({ status: HttpJsonStatus.Ok, items: [] })
-          .then(() => {
-            expect(storedDocument).toBeNull();
-          });
+      let storedDocument = { json: '{"title":"Документ .http"}' };
+      jest.spyOn(jsonRepositoryMock, 'findOne').mockImplementationOnce((options) => {
+        if (options.where.id == documentId && options.where.group == documentGroup) return storedDocument;
       });
+      jest.spyOn(jsonRepositoryMock, 'delete').mockImplementationOnce((options) => {
+        if (options.id == documentId) storedDocument = null;
+      });
+
+      return request
+        .delete(`/json/${documentGroup}/${documentId}`)
+        .expect({ status: HttpJsonStatus.Ok, items: [] })
+        .then(() => {
+          expect(storedDocument).toBeNull();
+        });
     });
   });
 });

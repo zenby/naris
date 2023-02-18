@@ -3,8 +3,6 @@ import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
 
 import { Test } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { JsonEntity } from './json.entity';
 import { HttpJsonStatus } from '../../common/types/http-json-response.interface';
 import { DataSource } from 'typeorm';
 

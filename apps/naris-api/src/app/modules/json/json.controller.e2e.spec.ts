@@ -6,12 +6,24 @@ import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
 import { HttpJsonStatus } from '../../common/types/http-json-response.interface';
+import { DataSource } from 'typeorm';
 
 const jsonRepositoryMock = {
   find: jest.fn(),
   save: jest.fn(),
   findOne: jest.fn(),
   delete: jest.fn(),
+};
+
+// https://gitlog.ru/Naris/soermono/issues/164
+const dataSourceMockHack = {
+  entityMetadatas: {
+    find: jest.fn(),
+  },
+  options: {
+    type: jest.fn(),
+  },
+  getRepository: () => jsonRepositoryMock,
 };
 
 describe('Auth e2e-test', () => {
@@ -23,7 +35,7 @@ describe('Auth e2e-test', () => {
       imports: [JsonModule],
     })
       .useMocker((token) => {
-        if (token == getRepositoryToken(JsonEntity)) return jsonRepositoryMock;
+        if (token == DataSource) return dataSourceMockHack;
       })
       .compile();
 

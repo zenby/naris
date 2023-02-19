@@ -67,7 +67,7 @@ If applied, this commit will *remove deprecated methods*
 
 > refactor/[что затронули]/[номер задачи]
 > 
-> test/[auth-service]/#108
+> test/[auth-service]/#108  
 > refactor/[auth-controller]/#109
   
 #### Политика слияния [Semi-linear merge](https://devblogs.microsoft.com/devops/pull-requests-with-rebase/)

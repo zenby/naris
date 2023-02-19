@@ -8,6 +8,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { ActivatedRoute } from '@angular/router';
 import { faker } from '@faker-js/faker';
 import { IconTab } from './compose-icontabs-page.model';
+import { skip } from 'rxjs';
 
 const getMockHeaderData = () => ({
   title: faker.datatype.string(),
@@ -38,6 +39,12 @@ const getMockRouteConfig = (path: string = '', childrenAmount: number = 2, child
     children: [...generatedChildren, ...children],
   };
 };
+
+const getMockActivatedRoute = (data?: Record<string, unknown>) => ({
+  snapshot: { routeConfig: {} },
+  children: [],
+  ...data,
+});
 
 class MockNzMessageService {}
 
@@ -82,7 +89,7 @@ describe('ComposeIcontabsPageComponent', () => {
       return routeConfig;
     }
 
-    it('Tabs should be initialized according to ActivatedRoute config', () => {
+    it('Tabs must be initialized according to ActivatedRoute config', () => {
       const routeConfig = setup();
 
       const tabs = routeConfig.children.map((child) => ({
@@ -98,23 +105,77 @@ describe('ComposeIcontabsPageComponent', () => {
   });
 
   describe('activateTab', () => {
-    it('active$ should contain null when route children is empty', () => {
+    function setup(shouldFindByPath = false) {
+      const routeConfig = getMockRouteConfig();
+
+      TestBed.overrideProvider(ActivatedRoute, {
+        useValue: {
+          routeConfig,
+          snapshot: shouldFindByPath ? { routeConfig: { path: routeConfig.children[0].path } } : { routeConfig },
+          children: [getMockActivatedRoute()],
+        },
+      });
+
+      componentSetup();
+
+      return routeConfig;
+    }
+
+    it('active$ must contain null when route children is empty', () => {
       component.active$.subscribe((active) => {
         expect(active).toEqual(null);
       });
     });
+
+    it('active$ must contain empty icon tab when route path does not match with tabs paths', (done) => {
+      setup();
+
+      jest.useFakeTimers();
+
+      component.activateTab();
+
+      component.active$.pipe(skip(1)).subscribe((active) => {
+        expect(active).toEqual({ componentName: undefined, title: '', icon: '', path: [] });
+        done();
+      });
+
+      jest.runAllTimers();
+    });
+
+    it('active$ must contain specific icon tab when route path matched with tabs path', (done) => {
+      const routeConfig = setup(true);
+
+      const headerData = routeConfig.children[0].data.header;
+
+      jest.useFakeTimers();
+
+      component.activateTab();
+
+      component.active$.pipe(skip(1)).subscribe((active) => {
+        expect(active).toEqual({
+          componentName: undefined,
+          title: headerData.title,
+          icon: headerData.icon,
+          iconText: headerData.iconText,
+          path: [routeConfig.children[0].path],
+        });
+        done();
+      });
+
+      jest.runAllTimers();
+    });
   });
 
   describe('isTabDisabled', () => {
-    it('Should return false if activeTab path is empty', () => {
+    it('Must return false if activeTab path is empty', () => {
       expect(component.isTabDisabled(getMockIconTab(0), getMockIconTab())).toBeFalsy();
     });
 
-    it('Should return false if activeTab path does not match with testing tab', () => {
+    it('Must return false if activeTab path does not match with testing tab', () => {
       expect(component.isTabDisabled(getMockIconTab(), getMockIconTab())).toBeFalsy();
     });
 
-    it('Should return true if activeTab path matches with testing tab', () => {
+    it('Must return true if activeTab path matches with testing tab', () => {
       const activeTab = getMockIconTab();
       const testingTab = getMockIconTab();
       testingTab.path = activeTab.path.slice();

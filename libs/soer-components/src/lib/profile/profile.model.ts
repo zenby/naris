@@ -7,7 +7,6 @@ export enum Role {
 
 export interface ProfileModel {
   email: string;
-  firstName: string;
-  lastName: string;
+  fullname: string;
   role: Role;
 }

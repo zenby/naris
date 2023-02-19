@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProfileView } from '../profile-view';
 import { ProfileDataService } from '../services/profile-data.service';
+import { ProfileModel } from '@soer/soer-components';
 
 @Component({
   selector: 'soer-profile-page',
@@ -10,7 +10,7 @@ import { ProfileDataService } from '../services/profile-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfilePageComponent {
-  public profile$: Observable<ProfileView>;
+  public profile$: Observable<ProfileModel>;
 
   constructor(private profileDataService: ProfileDataService) {
     this.profile$ = this.profileDataService.profile$;

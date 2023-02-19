@@ -5,3 +5,4 @@ export * from './lib/soer-components.module';
 export * from './lib/todo';
 export * from './lib/video-player/video-player.module';
 export * from './lib/video-player/video-source.model';
+export * from './lib/profile';

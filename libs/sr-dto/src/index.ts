@@ -7,3 +7,4 @@ export * from './lib/services/pdf.convertor.service';
 export * from './lib/bus-messages/bus.messages';
 export * from './lib/dto.helpers';
 export * from './lib/interfaces/serialize-json.model';
+export * from './lib/interfaces/profile.dto';

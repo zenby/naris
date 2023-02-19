@@ -23,7 +23,7 @@ import { TargetsModule } from './modules/targets/targets.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { RouterComposeModule } from './router-compose/router-compose.module';
 import { EditorBlocksModule } from './modules/editor-blocks/editor-blocks.module';
-import { AccountModule } from './modules/account/account.module';
+import { AccountPageModule } from './modules/account-page/account-page.module';
 
 @NgModule({
   imports: [
@@ -45,7 +45,7 @@ import { AccountModule } from './modules/account/account.module';
     SrDTOModule,
     NzModalModule,
     VideoPlayerModule,
-    AccountModule,
+    AccountPageModule,
   ],
   declarations: [
     MobileMenuComponent,

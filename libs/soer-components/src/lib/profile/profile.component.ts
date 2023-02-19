@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ProfileView } from '../profile-view';
+import { ProfileModel } from './profile.model';
 
 @Component({
   selector: 'soer-profile',
@@ -8,5 +8,5 @@ import { ProfileView } from '../profile-view';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileComponent {
-  @Input() profile: ProfileView;
+  @Input() profile!: ProfileModel;
 }

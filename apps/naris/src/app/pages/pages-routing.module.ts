@@ -14,7 +14,7 @@ import { CertificateComponent } from './modules/certificate/certificate/certific
 import { ComposeVideoPlayerComponent } from './modules/compose-video-player/compose-video-player.component';
 import { OverviewRoutingModule } from './modules/overview/overview-routing.module';
 import { PayFormComponent } from './modules/payment/pay-form/pay-form.component';
-import { ProfilePageComponent } from './modules/account/profile-page/profile-page.component';
+import { ProfilePageComponent } from './modules/account-page/profile-page/profile-page.component';
 import { QuestionKey } from './modules/questions/questions.const';
 import { QuestionsRoutingModule } from './modules/questions/questions.routing.module';
 import { RoadmapComponent } from './modules/roadmap/roadmap.component';

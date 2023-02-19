@@ -1,4 +1,4 @@
-import { Role } from './role';
+import { Role } from '@soer/soer-components';
 
 export interface ProfileDto {
   email: string;

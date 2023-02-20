@@ -17,7 +17,7 @@ export default {
       because Jest does not support package.json.exports.
       See https://github.com/uuidjs/uuid/issues/451
     */
-    uuid: require.resolve('uuid'),
+    '^uuid$': require.resolve('uuid'),
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/naris-api',

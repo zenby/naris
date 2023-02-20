@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JsonModule } from './modules/json/json.module';
 import { PdfModule } from './modules/pdf/pdf.module';
+import { ImagesModule } from './modules/images/images.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PdfModule } from './modules/pdf/pdf.module';
     }),
     JsonModule,
     PdfModule,
+    ImagesModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -49,6 +49,7 @@
     "helmet": "^6.0.1",
     "jsonwebtoken": "^8.5.1",
     "md-to-pdf": "^5.2.0",
+    "multer": "^1.4.5-lts.1",
     "mysql2": "^2.3.3",
     "ng-zorro-antd": "^14.1.0",
     "ngx-markdown": "^14.0.0",
@@ -58,6 +59,7 @@
     "rxjs": "^7.5.5",
     "tslib": "^2.4.0",
     "typeorm": "^0.3.11",
+    "uuid": "^9.0.0",
     "zone.js": "^0.11.6"
   },
   "devDependencies": {
@@ -95,6 +97,7 @@
     "@types/multer": "^1.4.7",
     "@types/node": "^18.0.0",
     "@types/passport-jwt": "^3.0.7",
+    "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.24.0",
     "@typescript-eslint/parser": "^5.24.0",
     "cypress": "9.7.0",

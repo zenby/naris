@@ -14,7 +14,7 @@ const getMockHeaderData = () => ({
   title: faker.datatype.string(),
   subtitle: faker.datatype.string(),
   icon: faker.datatype.string(),
-  iconText: faker.datatype.boolean() ? faker.datatype.string : '',
+  iconText: faker.datatype.boolean() ? faker.datatype.string() : '',
 });
 
 const getMockIconTab = (pathLength = 1): IconTab => ({
@@ -75,7 +75,7 @@ describe('ComposeIcontabsPageComponent', () => {
   });
 
   describe('prepareTabs', () => {
-    function setup() {
+    it('Tabs should be initialized according to ActivatedRoute config', () => {
       const routeConfig = getMockRouteConfig();
 
       TestBed.overrideProvider(ActivatedRoute, {
@@ -85,12 +85,6 @@ describe('ComposeIcontabsPageComponent', () => {
       });
 
       componentSetup();
-
-      return routeConfig;
-    }
-
-    it('Tabs must be initialized according to ActivatedRoute config', () => {
-      const routeConfig = setup();
 
       const tabs = routeConfig.children.map((child) => ({
         componentName: undefined,
@@ -105,7 +99,15 @@ describe('ComposeIcontabsPageComponent', () => {
   });
 
   describe('activateTab', () => {
-    function setup(shouldFindByPath = false) {
+    it('active$ should contain null when route children is empty', () => {
+      component.active$.subscribe((active) => {
+        expect(active).toEqual(null);
+      });
+    });
+
+    it('active$ should contain empty icon tab when route path does not match with tabs paths', (done) => {
+      const shouldFindByPath = false;
+
       const routeConfig = getMockRouteConfig();
 
       TestBed.overrideProvider(ActivatedRoute, {
@@ -118,36 +120,30 @@ describe('ComposeIcontabsPageComponent', () => {
 
       componentSetup();
 
-      return routeConfig;
-    }
-
-    it('active$ must contain null when route children is empty', () => {
-      component.active$.subscribe((active) => {
-        expect(active).toEqual(null);
-      });
-    });
-
-    it('active$ must contain empty icon tab when route path does not match with tabs paths', (done) => {
-      setup();
-
-      jest.useFakeTimers();
-
       component.activateTab();
 
       component.active$.pipe(skip(1)).subscribe((active) => {
         expect(active).toEqual({ componentName: undefined, title: '', icon: '', path: [] });
         done();
       });
-
-      jest.runAllTimers();
     });
 
-    it('active$ must contain specific icon tab when route path matched with tabs path', (done) => {
-      const routeConfig = setup(true);
+    it('active$ should contain specific icon tab when route path matched with tabs path', (done) => {
+      const shouldFindByPath = true;
+
+      const routeConfig = getMockRouteConfig();
+
+      TestBed.overrideProvider(ActivatedRoute, {
+        useValue: {
+          routeConfig,
+          snapshot: shouldFindByPath ? { routeConfig: { path: routeConfig.children[0].path } } : { routeConfig },
+          children: [getMockActivatedRoute()],
+        },
+      });
+
+      componentSetup();
 
       const headerData = routeConfig.children[0].data.header;
-
-      jest.useFakeTimers();
 
       component.activateTab();
 
@@ -161,21 +157,19 @@ describe('ComposeIcontabsPageComponent', () => {
         });
         done();
       });
-
-      jest.runAllTimers();
     });
   });
 
   describe('isTabDisabled', () => {
-    it('Must return false if activeTab path is empty', () => {
+    it('Should return false if activeTab path is empty', () => {
       expect(component.isTabDisabled(getMockIconTab(0), getMockIconTab())).toBeFalsy();
     });
 
-    it('Must return false if activeTab path does not match with testing tab', () => {
+    it('Should return false if activeTab path does not match with testing tab', () => {
       expect(component.isTabDisabled(getMockIconTab(), getMockIconTab())).toBeFalsy();
     });
 
-    it('Must return true if activeTab path matches with testing tab', () => {
+    it('Should return true if activeTab path matches with testing tab', () => {
       const activeTab = getMockIconTab();
       const testingTab = getMockIconTab();
       testingTab.path = activeTab.path.slice();

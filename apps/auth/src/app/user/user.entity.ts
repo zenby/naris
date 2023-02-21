@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {BeforeInsert, Column, Entity, Generated, PrimaryGeneratedColumn} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { genSalt, hash } from 'bcrypt';
 import { IsEmail, IsNotEmpty } from 'class-validator';
@@ -24,6 +24,12 @@ export class UserEntity {
   @IsNotEmpty()
   @Column()
   password: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @Column()
+  @Generated("uuid")
+  uuid: string;
 
   @BeforeInsert()
   async hashPassword() {

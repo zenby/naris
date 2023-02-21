@@ -10,16 +10,20 @@ export const MANIFEST = 'manifest';
 
 @Injectable()
 export class ProfileDataService {
-  public profile$: Observable<ProfileModel>;
+  public get profile$(): Observable<ProfileModel> {
+    return this.selectProfile$();
+  }
   
   constructor(
     @Inject(MANIFEST) private readonly manifestId: BusEmitter,
     private readonly store$: DataStoreService,
-  ) {
-    this.profile$ = extractDtoPackFromBus<ProfileDto>(this.store$.of(this.manifestId)).pipe(
+  ) {}
+
+  public selectProfile$(): Observable<ProfileModel> {
+    return extractDtoPackFromBus<ProfileDto>(this.store$.of(this.manifestId)).pipe(
         filter(({ status }: DtoPack<ProfileDto>) => status === OK),
         map(({ items }: DtoPack<ProfileDto>) => mapProfileDtoToModel(items[0])),
         take(1),
     )
-  }  
+  }
 }

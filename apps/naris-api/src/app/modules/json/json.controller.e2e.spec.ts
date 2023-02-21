@@ -95,26 +95,22 @@ describe('JsonModule e2e-test', () => {
 
   describe('PUT /json/:documentGroup/:documentId', () => {
     it('should update document when pass stored document id', async () => {
-      const documentId = faker.datatype.number();
-      const documentGroup = faker.lorem.word();
+      const documentToUpdate = createFakeDocument();
+      const { id, group } = documentToUpdate;
       const jsonToUpdate = faker.lorem.text();
 
-      let storedDocument = createFakeDocument();
-      storedDocument.id = documentId;
-      storedDocument.group = documentGroup;
+      const updatedDocument = { ...documentToUpdate, json: jsonToUpdate };
 
-      // Воспроизводим ожидаемое поведение репозитория для добавления надежности тесту.
-      jsonRepositoryMock.findOne.mockReturnValueOnce(storedDocument);
-      jsonRepositoryMock.save.mockImplementationOnce((newDocument) => (storedDocument = newDocument));
+      jsonRepositoryMock.findOne.mockReturnValueOnce(documentToUpdate);
+      jsonRepositoryMock.save.mockImplementationOnce((newDocument) => Object.assign({}, newDocument));
 
       await request
-        .put(`/json/${documentGroup}/${documentId}`)
+        .put(`/json/${group}/${id}`)
         .send({ json: jsonToUpdate })
-        .expect({ status: HttpJsonStatus.Ok, items: [storedDocument] });
+        .expect({ status: HttpJsonStatus.Ok, items: [updatedDocument] });
 
-      expect(storedDocument.json).toBe(jsonToUpdate);
-      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: documentId, group: documentGroup } });
-      expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ ...storedDocument, json: jsonToUpdate });
+      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id, group } });
+      expect(jsonRepositoryMock.save).toHaveBeenCalledWith(updatedDocument);
     });
   });
 

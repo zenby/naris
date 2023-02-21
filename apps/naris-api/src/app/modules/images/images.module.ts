@@ -8,7 +8,7 @@ import * as Path from 'node:path';
 import * as fs from 'node:fs/promises';
 import { MAX_IMAGE_FILE_SIZE_MB } from './constants';
 
-function imageStorageBuilder(path: string, maxFileSizeMB = MAX_IMAGE_FILE_SIZE_MB) {
+export function imageStorageBuilder(path: string, maxFileSizeMB = MAX_IMAGE_FILE_SIZE_MB) {
   const limits = {
     fileSize: maxFileSizeMB * 1024 * 1024,
   };

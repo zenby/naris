@@ -1,0 +1,38 @@
+.soer-tile {
+  &.normal {
+    background-color: #73d13d;
+
+    .soer-tile {
+      &__content,
+      &__title {
+          color: #FFF;
+      }
+    }
+  }
+
+  &.warning {
+    background-color: #FFFF99;
+
+    .soer-tile {
+      &__content,
+      &__title {
+          color: #4c3b03;
+      }
+    }
+  }
+
+  &.critical {
+    background-color: #FF4D4F;
+
+    .soer-tile {
+      &__content,
+      &__title {
+          color: #FFF;
+      }
+    }
+  }
+
+  &.none {
+    background-color: #FFF;
+  }
+}

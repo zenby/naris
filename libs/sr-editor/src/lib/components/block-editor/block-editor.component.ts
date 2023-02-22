@@ -59,23 +59,37 @@ export class BlockEditorComponent implements AfterViewInit {
 
   command($event: KeyboardEvent): void {
     if ($event.altKey && $event.code === 'Enter') {
-      this.endEdit.next(this.localIndex);
-      this.isEdit = false;
+      this.stopEdit();
       this.addBlock.next(this.localIndex);
     }
 
     if ($event.altKey && $event.code === 'Backspace') {
-      this.endEdit.next(this.localIndex);
-      this.isEdit = false;
+      this.stopEdit();
       this.removeBlock.next(this.localIndex);
     }
 
     if ($event.altKey && $event.code === 'ArrowUp') {
       this.moveUp.next(this.localIndex);
+
+      return;
+    }
+
+    if ($event.code === 'ArrowUp') {
+      if (this.getIsFirstLine($event)) {
+        this.setActivePrevious();
+      }
     }
 
     if ($event.altKey && $event.code === 'ArrowDown') {
       this.moveDown.next(this.localIndex);
+
+      return;
+    }
+
+    if ($event.code === 'ArrowDown') {
+      if (this.getIsLastLine($event)) {
+        this.setActiveNext();
+      }
     }
 
     if ($event.altKey && $event.code === 'Digit1') {
@@ -95,9 +109,45 @@ export class BlockEditorComponent implements AfterViewInit {
     }
   }
 
-  onEndEdit(): void {
-    this.isEdit = false;
+  stopEdit() {
     this.endEdit.next(this.localIndex);
+    this.isEdit = false;
+  }
+
+  setActivePrevious() {
+    this.stopEdit();
+    this.setActive.next(this.localIndex - 1);
+  }
+
+  setActiveNext() {
+    this.stopEdit();
+    this.setActive.next(this.localIndex + 1);
+  }
+
+  getIsFirstLine($event: KeyboardEvent) {
+    return this.getLineNumberWhereCursorIs($event) === 1;
+  }
+
+  getIsLastLine($event: KeyboardEvent) {
+    return this.getLineNumberWhereCursorIs($event) === this.getCountOfLines(this.textBlock.text);
+  }
+
+  getLineNumberWhereCursorIs($event: KeyboardEvent) {
+    // @ts-ignore
+    let cursorPosition = $event.target?.selectionStart;
+    let textBeforeCursor = this.textBlock.text.substring(0, cursorPosition);
+
+    return this.getCountOfLines(textBeforeCursor);
+  }
+
+  getCountOfLines(text: string) {
+    let lineBreakRegExp = new RegExp(/\r\n|\r|\n/gm);
+
+    return text.split(lineBreakRegExp).length;
+  }
+
+  onEndEdit(): void {
+    this.stopEdit();
     if (this.componentRef) {
       this.componentRef.instance.text = this.textBlock.text;
     }

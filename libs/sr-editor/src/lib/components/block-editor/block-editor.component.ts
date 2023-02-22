@@ -74,6 +74,12 @@ export class BlockEditorComponent implements AfterViewInit {
       return;
     }
 
+    if ($event.ctrlKey && $event.code === 'ArrowUp') {
+      this.setActivePrevious();
+
+      return;
+    }
+
     if ($event.code === 'ArrowUp') {
       if (this.getIsFirstLine($event)) {
         this.setActivePrevious();
@@ -82,6 +88,12 @@ export class BlockEditorComponent implements AfterViewInit {
 
     if ($event.altKey && $event.code === 'ArrowDown') {
       this.moveDown.next(this.localIndex);
+
+      return;
+    }
+
+    if ($event.ctrlKey && $event.code === 'ArrowDown') {
+      this.setActiveNext();
 
       return;
     }

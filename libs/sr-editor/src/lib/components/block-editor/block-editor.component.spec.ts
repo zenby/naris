@@ -42,6 +42,64 @@ describe('BlockEditorComponent', () => {
       jest.resetAllMocks();
     });
 
+    describe('Ctrl + ArrowUp event', () => {
+      beforeEach(() => {
+        jest.spyOn(component, 'setActivePrevious');
+      });
+
+      it('should call setActivePrevious', () => {
+        const eventStub = {
+          code: 'ArrowUp',
+          ctrlKey: true,
+        } as unknown as KeyboardEvent;
+
+        component.command(eventStub);
+
+        expect(component.setActivePrevious).toBeCalled();
+      });
+
+      it('should not call setActivePrevious because it is without ctrl', () => {
+        const eventStub = {
+          code: 'ArrowUp',
+          ctrlKey: false,
+        } as unknown as KeyboardEvent;
+        jest.spyOn(component, 'getIsFirstLine').mockReturnValue(false);
+
+        component.command(eventStub);
+
+        expect(component.setActivePrevious).not.toBeCalled();
+      });
+    });
+
+    describe('Ctrl + ArrowDown event', () => {
+      beforeEach(() => {
+        jest.spyOn(component, 'setActiveNext');
+      });
+
+      it('should call setActiveNext', () => {
+        const eventStub = {
+          code: 'ArrowDown',
+          ctrlKey: true,
+        } as unknown as KeyboardEvent;
+
+        component.command(eventStub);
+
+        expect(component.setActiveNext).toBeCalled();
+      });
+
+      it('should not call setActiveNext because because it is without ctrl', () => {
+        const eventStub = {
+          code: 'ArrowDown',
+          ctrlKey: false,
+        } as unknown as KeyboardEvent;
+        jest.spyOn(component, 'getIsLastLine').mockReturnValue(false);
+
+        component.command(eventStub);
+
+        expect(component.setActiveNext).not.toBeCalled();
+      });
+    });
+
     describe('ArrowUp event', () => {
       let getIsFirstLineStub: jest.SpyInstance;
       const eventStub = {

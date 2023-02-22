@@ -59,13 +59,13 @@ describe('BlockEditorComponent', () => {
       });
 
       it('should not call setActivePrevious because it is without ctrl', () => {
-        const eventStub = {
+        const falseEventStub = {
           code: 'ArrowUp',
           ctrlKey: false,
         } as unknown as KeyboardEvent;
         jest.spyOn(component, 'getIsFirstLine').mockReturnValue(false);
 
-        component.command(eventStub);
+        component.command(falseEventStub);
 
         expect(component.setActivePrevious).not.toBeCalled();
       });
@@ -88,13 +88,13 @@ describe('BlockEditorComponent', () => {
       });
 
       it('should not call setActiveNext because because it is without ctrl', () => {
-        const eventStub = {
+        const falseEventStub = {
           code: 'ArrowDown',
           ctrlKey: false,
         } as unknown as KeyboardEvent;
         jest.spyOn(component, 'getIsLastLine').mockReturnValue(false);
 
-        component.command(eventStub);
+        component.command(falseEventStub);
 
         expect(component.setActiveNext).not.toBeCalled();
       });

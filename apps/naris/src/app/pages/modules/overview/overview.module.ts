@@ -11,6 +11,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { TileModule } from '@soer/soer-components';
 import { ByRoutePathResolver } from '../../../api/by-route-path.resolver';
 import { StreamService } from '../../../api/streams/stream.service';
 import { TasksResolver } from '../../../api/tasks/tasks.resolver';
@@ -24,6 +25,7 @@ import { InfoComponent } from './info/info.component';
   declarations: [OverviewComponent, MetricsComponent, InfoComponent],
   imports: [
     CommonModule,
+    TileModule,
     FormsModule,
     NzFormModule,
     RouterModule,

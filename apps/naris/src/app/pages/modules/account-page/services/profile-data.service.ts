@@ -24,6 +24,6 @@ export class ProfileDataService {
         filter(({ status }: DtoPack<ProfileDto>) => status === OK),
         map(({ items }: DtoPack<ProfileDto>) => mapProfileDtoToModel(items[0])),
         take(1),
-    )
+    );
   }
 }

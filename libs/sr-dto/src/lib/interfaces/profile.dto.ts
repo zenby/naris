@@ -5,6 +5,6 @@ export interface ProfileDto {
   expired: string;
   firstName: string | null;
   lastName: string | null;
-  namespaces: any[];
+  namespaces: unknown[];
   role: Role;
 }

@@ -15,12 +15,12 @@ export class ProfileDataService {
   }
   
   constructor(
-    @Inject(MANIFEST) private readonly manifestId: BusEmitter,
+    @Inject(MANIFEST) private readonly manifestIdEmitter: BusEmitter,
     private readonly store$: DataStoreService,
   ) {}
 
   public selectProfile$(): Observable<ProfileModel> {
-    return extractDtoPackFromBus<ProfileDto>(this.store$.of(this.manifestId)).pipe(
+    return extractDtoPackFromBus<ProfileDto>(this.store$.of(this.manifestIdEmitter)).pipe(
         filter(({ status }: DtoPack<ProfileDto>) => status === OK),
         map(({ items }: DtoPack<ProfileDto>) => mapProfileDtoToModel(items[0])),
         take(1),

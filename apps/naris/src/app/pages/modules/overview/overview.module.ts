@@ -20,9 +20,10 @@ import { WorkshopsService } from '../../../api/workshops/workshops.service';
 import { OverviewComponent } from './overview.component';
 import { MetricsComponent } from './metrics/metrics.component';
 import { InfoComponent } from './info/info.component';
+import { TargetsListComponent } from './metrics/targets-list/targets-list.component';
 
 @NgModule({
-  declarations: [OverviewComponent, MetricsComponent, InfoComponent],
+  declarations: [OverviewComponent, MetricsComponent, TargetsListComponent, InfoComponent],
   imports: [
     CommonModule,
     TileModule,

@@ -10,6 +10,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { WebFile } from './files-list.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AccessDeniedModule } from '../access-denied/access-denied.module';
 
 // import { DumbModule } from '../../dumb/dumb.module';
 
@@ -30,6 +31,7 @@ describe('FilesListComponent', () => {
         NzGridModule,
         NzIconModule,
         OverlayModule,
+        AccessDeniedModule,
         BrowserAnimationsModule.withConfig({ disableAnimations: true }),
         /*DumbModule*/
       ],

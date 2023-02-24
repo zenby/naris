@@ -8,6 +8,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { FilesListComponent } from './files-list.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { AccessDeniedModule } from '../access-denied/access-denied.module';
 
 export default {
   title: 'FilesListComponent',
@@ -22,6 +23,7 @@ export default {
         NzIconModule,
         HttpClientModule,
         OverlayModule,
+        AccessDeniedModule,
       ],
       providers: [NzMessageService],
     }),
@@ -60,9 +62,4 @@ Primary.args = {
       icon: 'lock',
     },
   ],
-};
-
-export const Empty = Template.bind({});
-Empty.args = {
-  webFiles: [],
 };

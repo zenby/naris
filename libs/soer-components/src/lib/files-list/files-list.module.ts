@@ -6,9 +6,10 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { FilesListComponent } from './files-list.component';
+import { AccessDeniedModule } from '../access-denied/access-denied.module';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, NzCardModule, NzTagModule, NzGridModule, NzIconModule],
+  imports: [CommonModule, RouterModule, NzCardModule, NzTagModule, NzGridModule, NzIconModule, AccessDeniedModule],
   declarations: [FilesListComponent],
   exports: [FilesListComponent],
 })

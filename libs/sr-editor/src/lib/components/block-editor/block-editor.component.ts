@@ -80,10 +80,8 @@ export class BlockEditorComponent implements AfterViewInit {
       return;
     }
 
-    if (event.code === 'ArrowUp') {
-      if (this.getIsFirstLine(event)) {
+    if (event.code === 'ArrowUp' && this.getIsFirstLine(event)) {
         this.setActivePrevious();
-      }
     }
 
     if (event.altKey && event.code === 'ArrowDown') {
@@ -98,10 +96,8 @@ export class BlockEditorComponent implements AfterViewInit {
       return;
     }
 
-    if (event.code === 'ArrowDown') {
-      if (this.getIsLastLine(event)) {
+    if (event.code === 'ArrowDown' && this.getIsLastLine(event)) {
         this.setActiveNext();
-      }
     }
 
     if (event.altKey && event.code === 'Digit1') {

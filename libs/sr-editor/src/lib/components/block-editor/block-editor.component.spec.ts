@@ -30,7 +30,7 @@ describe('BlockEditorComponent', () => {
           text: '',
         },
         changeDetectorRef: {
-          detectChanges: () => {},
+          detectChanges: jest.fn(),
         },
       }),
     } as unknown as ViewContainerRef;
@@ -129,7 +129,7 @@ describe('BlockEditorComponent', () => {
 
       it('should not call setActivePrevious because is not ArrowUp event', () => {
         getIsFirstLineStub.mockReturnValue(true);
-        let falseEventStub = {
+        const falseEventStub = {
           code: 'ArrowLeft',
         } as unknown as KeyboardEvent;
 
@@ -168,7 +168,7 @@ describe('BlockEditorComponent', () => {
 
       it('should not call setActiveNext because is not ArrowDown event', () => {
         getIsLastLineStub.mockReturnValue(false);
-        let falseEventStub = {
+        const falseEventStub = {
           code: 'ArrowLeft',
         } as unknown as KeyboardEvent;
 

@@ -81,7 +81,7 @@ export class BlockEditorComponent implements AfterViewInit {
     }
 
     if (event.code === 'ArrowUp' && this.getIsFirstLine(event)) {
-        this.setActivePrevious();
+      this.setActivePrevious();
     }
 
     if (event.altKey && event.code === 'ArrowDown') {
@@ -97,7 +97,7 @@ export class BlockEditorComponent implements AfterViewInit {
     }
 
     if (event.code === 'ArrowDown' && this.getIsLastLine(event)) {
-        this.setActiveNext();
+      this.setActiveNext();
     }
 
     if (event.altKey && event.code === 'Digit1') {
@@ -141,15 +141,14 @@ export class BlockEditorComponent implements AfterViewInit {
   }
 
   getLineNumberWhereCursorIs(event: KeyboardEvent) {
-    // @ts-ignore
-    let cursorPosition = event.target?.selectionStart;
-    let textBeforeCursor = this.textBlock.text.substring(0, cursorPosition);
+    const cursorPosition = (event.target as HTMLInputElement).selectionStart || 0;
+    const textBeforeCursor = this.textBlock.text.substring(0, cursorPosition);
 
     return this.getCountOfLines(textBeforeCursor);
   }
 
   getCountOfLines(text: string) {
-    let lineBreakRegExp = new RegExp(/\r\n|\r|\n/gm);
+    const lineBreakRegExp = new RegExp(/\r\n|\r|\n/gm);
 
     return text.split(lineBreakRegExp).length;
   }

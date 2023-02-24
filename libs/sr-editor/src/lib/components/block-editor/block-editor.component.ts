@@ -57,66 +57,66 @@ export class BlockEditorComponent implements AfterViewInit {
     this.markdownTextChange.emit(changedText);
   }
 
-  command($event: KeyboardEvent): void {
-    if ($event.altKey && $event.code === 'Enter') {
+  command(event: KeyboardEvent): void {
+    if (event.altKey && event.code === 'Enter') {
       this.stopEdit();
       this.addBlock.next(this.localIndex);
     }
 
-    if ($event.altKey && $event.code === 'Backspace') {
+    if (event.altKey && event.code === 'Backspace') {
       this.stopEdit();
       this.removeBlock.next(this.localIndex);
     }
 
-    if ($event.altKey && $event.code === 'ArrowUp') {
+    if (event.altKey && event.code === 'ArrowUp') {
       this.moveUp.next(this.localIndex);
 
       return;
     }
 
-    if ($event.ctrlKey && $event.code === 'ArrowUp') {
+    if (event.ctrlKey && event.code === 'ArrowUp') {
       this.setActivePrevious();
 
       return;
     }
 
-    if ($event.code === 'ArrowUp') {
-      if (this.getIsFirstLine($event)) {
+    if (event.code === 'ArrowUp') {
+      if (this.getIsFirstLine(event)) {
         this.setActivePrevious();
       }
     }
 
-    if ($event.altKey && $event.code === 'ArrowDown') {
+    if (event.altKey && event.code === 'ArrowDown') {
       this.moveDown.next(this.localIndex);
 
       return;
     }
 
-    if ($event.ctrlKey && $event.code === 'ArrowDown') {
+    if (event.ctrlKey && event.code === 'ArrowDown') {
       this.setActiveNext();
 
       return;
     }
 
-    if ($event.code === 'ArrowDown') {
-      if (this.getIsLastLine($event)) {
+    if (event.code === 'ArrowDown') {
+      if (this.getIsLastLine(event)) {
         this.setActiveNext();
       }
     }
 
-    if ($event.altKey && $event.code === 'Digit1') {
+    if (event.altKey && event.code === 'Digit1') {
       this.textBlock.type = 'markdown';
     }
 
-    if ($event.altKey && $event.code === 'Digit2') {
+    if (event.altKey && event.code === 'Digit2') {
       this.textBlock.type = 'test';
     }
 
-    if ($event.altKey && $event.code === 'Digit3') {
+    if (event.altKey && event.code === 'Digit3') {
       this.textBlock.type = 'code';
     }
 
-    if ($event.code === 'Escape') {
+    if (event.code === 'Escape') {
       this.isEdit = false;
     }
   }
@@ -136,17 +136,17 @@ export class BlockEditorComponent implements AfterViewInit {
     this.setActive.next(this.localIndex + 1);
   }
 
-  getIsFirstLine($event: KeyboardEvent) {
-    return this.getLineNumberWhereCursorIs($event) === 1;
+  getIsFirstLine(event: KeyboardEvent) {
+    return this.getLineNumberWhereCursorIs(event) === 1;
   }
 
-  getIsLastLine($event: KeyboardEvent) {
-    return this.getLineNumberWhereCursorIs($event) === this.getCountOfLines(this.textBlock.text);
+  getIsLastLine(event: KeyboardEvent) {
+    return this.getLineNumberWhereCursorIs(event) === this.getCountOfLines(this.textBlock.text);
   }
 
-  getLineNumberWhereCursorIs($event: KeyboardEvent) {
+  getLineNumberWhereCursorIs(event: KeyboardEvent) {
     // @ts-ignore
-    let cursorPosition = $event.target?.selectionStart;
+    let cursorPosition = event.target?.selectionStart;
     let textBeforeCursor = this.textBlock.text.substring(0, cursorPosition);
 
     return this.getCountOfLines(textBeforeCursor);

@@ -113,7 +113,7 @@ export class BlockEditorComponent implements AfterViewInit {
     }
 
     if (event.code === 'Escape') {
-      this.isEdit = false;
+      this.stopEdit();
     }
   }
 

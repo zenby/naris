@@ -21,9 +21,10 @@ import { OverviewComponent } from './overview.component';
 import { MetricsComponent } from './metrics/metrics.component';
 import { InfoComponent } from './info/info.component';
 import { TargetsListComponent } from './metrics/targets-list/targets-list.component';
+import { MetricsListComponent } from './metrics/metrics-list/metrics-list.component';
 
 @NgModule({
-  declarations: [OverviewComponent, MetricsComponent, TargetsListComponent, InfoComponent],
+  declarations: [OverviewComponent, MetricsComponent, MetricsListComponent, TargetsListComponent, InfoComponent],
   imports: [
     CommonModule,
     TileModule,

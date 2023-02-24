@@ -5,25 +5,10 @@
   ></soer-targets-list>
 </ng-container>
 <nz-divider nzText="Метрики" nzOrientation="left"></nz-divider>
-<div nz-row [nzGutter]="[24, 24]" class="metrics">
-  <ng-container *ngIf="metrics | async as metricsAwaited; else loading">
-    <ng-container *ngFor="let metric of metricsAwaited">
-      <nz-col class="metric-level" nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="6">
-        <a [href]="metric['url']">
-          <soer-tile
-            [tile]="{
-              title: metric['title'],
-              suffix: metric['suffix'],
-              status: 'none',
-              value: metric['value']
-            }"
-          ></soer-tile>
-          <ng-template #prefixTpl><i nz-icon [nzType]="metric['icon']"></i></ng-template>
-        </a>
-      </nz-col>
-    </ng-container>
-  </ng-container>
-</div>
+<soer-metrics-list
+  *ngIf="metrics | async as metricsAwaited; else loading"
+  [metrics]="metricsAwaited"
+></soer-metrics-list>
 
 <ng-template #aimIcon><p style="text-align: center">посмотреть</p></ng-template>
 <ng-template #loading><nz-spin></nz-spin></ng-template>

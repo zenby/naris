@@ -1,0 +1,17 @@
+<div nz-row [nzGutter]="[24, 24]" class="metrics">
+  <ng-container *ngFor="let metric of metrics">
+    <nz-col class="metric-level" nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="6">
+      <a [href]="metric['url']">
+        <soer-tile
+          [tile]="{
+            title: metric['title'],
+            suffix: metric['suffix'],
+            status: 'none',
+            value: metric['value']
+          }"
+        ></soer-tile>
+        <ng-template #prefixTpl><i nz-icon [nzType]="metric['icon']"></i></ng-template>
+      </a>
+    </nz-col>
+  </ng-container>
+</div>

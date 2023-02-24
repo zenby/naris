@@ -117,7 +117,11 @@ export class BlockEditorComponent implements AfterViewInit {
     }
   }
 
-  stopEdit() {
+  onEndEdit(): void {
+    this.stopEdit();
+  }
+
+  private stopEdit() {
     this.endEdit.next(this.localIndex);
     this.isEdit = false;
     if (this.componentRef) {
@@ -125,39 +129,35 @@ export class BlockEditorComponent implements AfterViewInit {
     }
   }
 
-  setActivePrevious() {
+  private setActivePrevious() {
     this.stopEdit();
     this.setActive.next(this.localIndex - 1);
   }
 
-  setActiveNext() {
+  private setActiveNext() {
     this.stopEdit();
     this.setActive.next(this.localIndex + 1);
   }
 
-  getIsFirstLine(event: KeyboardEvent) {
+  private getIsFirstLine(event: KeyboardEvent) {
     return this.getLineNumberWhereCursorIs(event) === 1;
   }
 
-  getIsLastLine(event: KeyboardEvent) {
+  private getIsLastLine(event: KeyboardEvent) {
     return this.getLineNumberWhereCursorIs(event) === this.getCountOfLines(this.textBlock.text);
   }
 
-  getLineNumberWhereCursorIs(event: KeyboardEvent) {
-    const cursorPosition = (event.target as HTMLInputElement).selectionStart || 0;
+  private getLineNumberWhereCursorIs(event: KeyboardEvent) {
+    const cursorPosition = (event.target as HTMLInputElement)?.selectionStart || 0;
     const textBeforeCursor = this.textBlock.text.substring(0, cursorPosition);
 
     return this.getCountOfLines(textBeforeCursor);
   }
 
-  getCountOfLines(text: string) {
+  private getCountOfLines(text: string) {
     const lineBreakRegExp = new RegExp(/\r\n|\r|\n/gm);
 
     return text.split(lineBreakRegExp).length;
-  }
-
-  onEndEdit(): void {
-    this.stopEdit();
   }
 
   private renderComponentForEditMode(): void {

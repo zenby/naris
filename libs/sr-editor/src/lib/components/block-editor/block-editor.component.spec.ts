@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ViewContainerRef, ComponentRef } from '@angular/core';
 import { faker } from '@faker-js/faker';
 import { EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor-blocks-config';
 import { TypeFormatPipe } from '../../pipes/type-format.pipe';
 import { BooleanToStringPipe } from '../../pipes/boolean-to-string.pipe';
+import { BasicBlockComponent } from '../basic-block.component';
+import { TextBlock } from '../../interfaces/document.model';
 
 import { BlockEditorComponent } from './block-editor.component';
-import { ViewContainerRef } from '@angular/core';
 
 describe('BlockEditorComponent', () => {
   let component: BlockEditorComponent;
@@ -38,292 +40,221 @@ describe('BlockEditorComponent', () => {
   });
 
   describe('command', () => {
+    beforeEach(() => {
+      component.localIndex = Number.parseInt(faker.random.numeric());
+      component.isEdit = true;
+      component.componentRef = createFakeComponentRef();
+      component.textBlock = createFakeTextBlock();
+      jest.spyOn(component.setActive, 'next');
+      jest.spyOn(component.endEdit, 'next');
+    });
+
     afterEach(() => {
       jest.resetAllMocks();
     });
 
     describe('Ctrl + ArrowUp event', () => {
+      const multiLineText = createMultiLineText();
+      const cursorPosition = getSecondLineCursorPosition(multiLineText);
+
       beforeEach(() => {
-        jest.spyOn(component, 'setActivePrevious');
+        component.textBlock.text = multiLineText;
       });
 
-      it('should call setActivePrevious', () => {
+      it('should set active previous', () => {
         const eventStub = {
-          code: 'ArrowUp',
+          ...createFakeEvent('ArrowUp', cursorPosition),
           ctrlKey: true,
         } as unknown as KeyboardEvent;
 
         component.command(eventStub);
 
-        expect(component.setActivePrevious).toBeCalled();
+        itShouldStopEdit();
+        itShouldSetActivePrevious();
       });
 
-      it('should not call setActivePrevious because it is without ctrl', () => {
+      it('should not set active previous because it is without ctrl', () => {
         const falseEventStub = {
-          code: 'ArrowUp',
+          ...createFakeEvent('ArrowUp', cursorPosition),
           ctrlKey: false,
         } as unknown as KeyboardEvent;
-        jest.spyOn(component, 'getIsFirstLine').mockReturnValue(false);
 
         component.command(falseEventStub);
 
-        expect(component.setActivePrevious).not.toBeCalled();
+        itShouldNotStopEdit();
+        itShouldNotDispatcheSetActiveEvent();
       });
     });
 
     describe('Ctrl + ArrowDown event', () => {
+      const multiLineText = createMultiLineText();
+      const cursorPosition = getSecondLineCursorPosition(multiLineText);
+
       beforeEach(() => {
-        jest.spyOn(component, 'setActiveNext');
+        component.textBlock.text = multiLineText;
       });
 
-      it('should call setActiveNext', () => {
+      it('should set active next', () => {
         const eventStub = {
-          code: 'ArrowDown',
+          ...createFakeEvent('ArrowDown', cursorPosition),
           ctrlKey: true,
         } as unknown as KeyboardEvent;
 
         component.command(eventStub);
 
-        expect(component.setActiveNext).toBeCalled();
+        itShouldStopEdit();
+        itShouldSetActiveNext();
       });
 
-      it('should not call setActiveNext because because it is without ctrl', () => {
+      it('should not set active next because because it is without ctrl', () => {
         const falseEventStub = {
-          code: 'ArrowDown',
+          ...createFakeEvent('ArrowDown', cursorPosition),
           ctrlKey: false,
         } as unknown as KeyboardEvent;
-        jest.spyOn(component, 'getIsLastLine').mockReturnValue(false);
 
         component.command(falseEventStub);
 
-        expect(component.setActiveNext).not.toBeCalled();
+        itShouldNotStopEdit();
+        itShouldNotDispatcheSetActiveEvent();
       });
     });
 
     describe('ArrowUp event', () => {
-      let getIsFirstLineStub: jest.SpyInstance;
-      const eventStub = {
-        code: 'ArrowUp',
-      } as unknown as KeyboardEvent;
-
-      beforeEach(() => {
-        getIsFirstLineStub = jest.spyOn(component, 'getIsFirstLine');
-        jest.spyOn(component, 'setActivePrevious');
-      });
-
-      it('should call setActivePrevious', () => {
-        getIsFirstLineStub.mockReturnValue(true);
+      it('should set active previous', () => {
+        const cursorPosition = 0;
+        const eventStub = createFakeEvent('ArrowUp', cursorPosition);
 
         component.command(eventStub);
 
-        expect(component.setActivePrevious).toBeCalled();
+        itShouldStopEdit();
+        itShouldSetActivePrevious();
       });
 
-      it('should not call setActivePrevious because is not first line', () => {
-        getIsFirstLineStub.mockReturnValue(false);
+      it.each(getMultiLineTextProvider())(
+        'should not set active previous because is not first line with line break symbol: $lineBreakSymbol',
+        ({ multiLineText }) => {
+          component.textBlock.text = multiLineText;
+          const cursorPosition = multiLineText.length;
+          const eventStub = createFakeEvent('ArrowUp', cursorPosition);
 
-        component.command(eventStub);
+          component.command(eventStub);
 
-        expect(component.setActivePrevious).not.toBeCalled();
-      });
+          itShouldNotStopEdit();
+          itShouldNotDispatcheSetActiveEvent();
+        }
+      );
 
-      it('should not call setActivePrevious because is not ArrowUp event', () => {
-        getIsFirstLineStub.mockReturnValue(true);
-        const falseEventStub = {
-          code: 'ArrowLeft',
-        } as unknown as KeyboardEvent;
+      it('should not set active previous because is not ArrowUp event', () => {
+        const falseEventStub = createFakeEvent('ArrowLeft', 0);
 
         component.command(falseEventStub);
 
-        expect(component.setActivePrevious).not.toBeCalled();
+        itShouldNotStopEdit();
+        itShouldNotDispatcheSetActiveEvent();
       });
     });
 
     describe('ArrowDown event', () => {
-      let getIsLastLineStub: jest.SpyInstance;
-      const eventStub = {
-        code: 'ArrowDown',
-      } as unknown as KeyboardEvent;
+      it.each(getMultiLineTextProvider())(
+        'should set active next with line break symbol: $lineBreakSymbol',
+        ({ multiLineText }) => {
+          component.textBlock.text = multiLineText;
+          const cursorPosition = multiLineText.length;
+          const eventStub = createFakeEvent('ArrowDown', cursorPosition);
 
-      beforeEach(() => {
-        getIsLastLineStub = jest.spyOn(component, 'getIsLastLine');
-        jest.spyOn(component, 'setActiveNext');
-      });
+          component.command(eventStub);
 
-      it('should call setActiveNext', () => {
-        getIsLastLineStub.mockReturnValue(true);
+          itShouldStopEdit();
+          itShouldSetActiveNext();
+        }
+      );
 
-        component.command(eventStub);
+      it.each(getMultiLineTextProvider())(
+        'should not set active next because is not last line with line break symbol: $lineBreakSymbol',
+        ({ lineBreakSymbol, multiLineText }) => {
+          component.textBlock.text = multiLineText;
+          const cursorPosition = multiLineText.indexOf(lineBreakSymbol) + 1;
+          const eventStub = createFakeEvent('ArrowDown', cursorPosition);
 
-        expect(component.setActiveNext).toBeCalled();
-      });
+          component.command(eventStub);
 
-      it('should not call setActiveNext because is not last line', () => {
-        getIsLastLineStub.mockReturnValue(false);
+          itShouldNotStopEdit();
+          itShouldNotDispatcheSetActiveEvent();
+        }
+      );
 
-        component.command(eventStub);
-
-        expect(component.setActiveNext).not.toBeCalled();
-      });
-
-      it('should not call setActiveNext because is not ArrowDown event', () => {
-        getIsLastLineStub.mockReturnValue(false);
-        const falseEventStub = {
-          code: 'ArrowLeft',
-        } as unknown as KeyboardEvent;
+      it('should not set active next because is not ArrowDown event', () => {
+        const falseEventStub = createFakeEvent('ArrowLeft', 0);
 
         component.command(falseEventStub);
 
-        expect(component.setActiveNext).not.toBeCalled();
+        itShouldNotStopEdit();
+        itShouldNotDispatcheSetActiveEvent();
       });
     });
-  });
 
-  describe('stopEdit', () => {
-    it('should endEdit event dispatched', () => {
-      const localIndex = Number.parseInt(faker.random.numeric());
-      component.localIndex = localIndex;
-      jest.spyOn(component.endEdit, 'next');
+    function createMultiLineText() {
+      return faker.random.words(5).replaceAll(' ', '\n');
+    }
 
-      component.stopEdit();
+    function getSecondLineCursorPosition(multiLineText: string) {
+      return multiLineText.indexOf('\n', multiLineText.indexOf('\n') + 3);
+    }
 
-      expect(component.endEdit.next).toBeCalledWith(localIndex);
-    });
-
-    it('should set isEdit is false', () => {
-      component.isEdit = true;
-
-      component.stopEdit();
-
-      expect(component.isEdit).toBe(false);
-    });
-  });
-
-  describe('setActivePrevious', () => {
-    it('should call stopEdit', () => {
-      jest.spyOn(component, 'stopEdit');
-
-      component.setActivePrevious();
-
-      expect(component.stopEdit).toBeCalled();
-    });
-
-    it('should setActive event dispatched', () => {
-      const localIndex = Number.parseInt(faker.random.numeric());
-      component.localIndex = localIndex;
-      jest.spyOn(component.setActive, 'next');
-
-      component.setActivePrevious();
-
-      expect(component.setActive.next).toBeCalledWith(localIndex - 1);
-    });
-  });
-
-  describe('setActiveNext', () => {
-    it('should call stopEdit', () => {
-      jest.spyOn(component, 'stopEdit');
-
-      component.setActiveNext();
-
-      expect(component.stopEdit).toBeCalled();
-    });
-
-    it('should setActive event dispatched', () => {
-      const localIndex = Number.parseInt(faker.random.numeric());
-      component.localIndex = localIndex;
-      jest.spyOn(component.setActive, 'next');
-
-      component.setActiveNext();
-
-      expect(component.setActive.next).toBeCalledWith(localIndex + 1);
-    });
-  });
-
-  describe('getIsFirstLine', () => {
-    let getLineNumberWhereCursorIsStub: jest.SpyInstance;
-    const eventStub = {} as unknown as KeyboardEvent;
-
-    beforeEach(() => {
-      getLineNumberWhereCursorIsStub = jest.spyOn(component, 'getLineNumberWhereCursorIs');
-    });
-
-    afterEach(() => {
-      jest.resetAllMocks();
-    });
-
-    it('should first line', () => {
-      getLineNumberWhereCursorIsStub.mockReturnValue(1);
-
-      expect(component.getIsFirstLine(eventStub)).toBe(true);
-    });
-
-    it('should not first line', () => {
-      getLineNumberWhereCursorIsStub.mockReturnValue(2);
-
-      expect(component.getIsFirstLine(eventStub)).toBe(false);
-    });
-  });
-
-  describe('getIsLastLine', () => {
-    let getLineNumberWhereCursorIsStub: jest.SpyInstance;
-    let getCountOfLines: jest.SpyInstance;
-    const eventStub = {} as unknown as KeyboardEvent;
-
-    beforeEach(() => {
-      getLineNumberWhereCursorIsStub = jest.spyOn(component, 'getLineNumberWhereCursorIs');
-      getCountOfLines = jest.spyOn(component, 'getCountOfLines');
-    });
-
-    afterEach(() => {
-      jest.resetAllMocks();
-    });
-
-    it('should last line', () => {
-      getLineNumberWhereCursorIsStub.mockReturnValue(1);
-      getCountOfLines.mockReturnValue(1);
-
-      expect(component.getIsLastLine(eventStub)).toBe(true);
-    });
-
-    it('should not last line', () => {
-      getLineNumberWhereCursorIsStub.mockReturnValue(2);
-      getCountOfLines.mockReturnValue(1);
-
-      expect(component.getIsLastLine(eventStub)).toBe(false);
-    });
-  });
-
-  describe('getLineNumberWhereCursorIs', () => {
-    const someLongText = faker.lorem.words(30);
-    const textLength = someLongText.length;
-    const middleOfLine = Math.round(someLongText.length / 2);
-
-    it.each([
-      { cursorPosition: 0, expected: '' },
-      { cursorPosition: middleOfLine, expected: someLongText.substring(0, middleOfLine) },
-      { cursorPosition: textLength, expected: someLongText },
-    ])('should called getCountOfLines with text: $expected', ({ cursorPosition, expected }) => {
-      component.textBlock.text = someLongText;
-      const eventStub = {
+    function createFakeEvent(code: string, cursorPosition: number): KeyboardEvent {
+      return {
+        code,
         target: {
           selectionStart: cursorPosition,
         },
       } as unknown as KeyboardEvent;
-      jest.spyOn(component, 'getCountOfLines');
+    }
 
-      component.getLineNumberWhereCursorIs(eventStub);
+    function itShouldStopEdit() {
+      expect(component.endEdit.next).toBeCalledWith(component.localIndex);
+      expect(component.isEdit).toBe(false);
+      expect(component.componentRef?.instance?.text).toBe(component.textBlock.text);
+    }
 
-      expect(component.getCountOfLines).toBeCalledWith(expected);
-    });
-  });
+    function itShouldNotStopEdit() {
+      expect(component.endEdit.next).not.toBeCalled();
+      expect(component.isEdit).toBe(true);
+      expect(component.componentRef?.instance?.text).not.toBe(component.textBlock.text);
+    }
 
-  describe('getCountOfLines', () => {
-    it.each([
-      { lineBreakSymbol: '\\n', text: faker.random.words(2).replaceAll(' ', '\n'), expected: 2 },
-      { lineBreakSymbol: '\\r', text: faker.random.words(3).replaceAll(' ', '\r'), expected: 3 },
-      { lineBreakSymbol: '\\r\\n', text: faker.random.words(4).replaceAll(' ', '\r\n'), expected: 4 },
-    ])('should find $expected line in text with line break symbol is $lineBreakSymbol', ({ text, expected }) => {
-      expect(component.getCountOfLines(text)).toBe(expected);
-    });
+    function itShouldSetActivePrevious() {
+      expect(component.setActive.next).toBeCalledWith(component.localIndex - 1);
+    }
+
+    function itShouldSetActiveNext() {
+      expect(component.setActive.next).toBeCalledWith(component.localIndex + 1);
+    }
+
+    function itShouldNotDispatcheSetActiveEvent() {
+      expect(component.setActive.next).not.toBeCalled();
+    }
+
+    function getMultiLineTextProvider() {
+      return [
+        { lineBreakSymbol: '\\n', multiLineText: faker.random.words(2).replaceAll(' ', '\n') },
+        { lineBreakSymbol: '\\r', multiLineText: faker.random.words(3).replaceAll(' ', '\r') },
+        { lineBreakSymbol: '\\r\\n', multiLineText: faker.random.words(4).replaceAll(' ', '\r\n') },
+      ];
+    }
   });
 });
+
+function createFakeComponentRef(): ComponentRef<BasicBlockComponent> {
+  return {
+    instance: {
+      text: faker.random.words(5),
+    },
+  } as unknown as ComponentRef<BasicBlockComponent>;
+}
+
+function createFakeTextBlock(): TextBlock {
+  return {
+    type: 'markdown',
+    text: faker.random.words(3),
+  };
+}

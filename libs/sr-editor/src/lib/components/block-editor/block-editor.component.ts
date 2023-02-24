@@ -120,6 +120,9 @@ export class BlockEditorComponent implements AfterViewInit {
   stopEdit() {
     this.endEdit.next(this.localIndex);
     this.isEdit = false;
+    if (this.componentRef) {
+      this.componentRef.instance.text = this.textBlock.text;
+    }
   }
 
   setActivePrevious() {
@@ -155,9 +158,6 @@ export class BlockEditorComponent implements AfterViewInit {
 
   onEndEdit(): void {
     this.stopEdit();
-    if (this.componentRef) {
-      this.componentRef.instance.text = this.textBlock.text;
-    }
   }
 
   private renderComponentForEditMode(): void {

@@ -6,13 +6,14 @@ import { StreamService } from '../api/streams/stream.service';
 import { TasksResolver } from '../api/tasks/tasks.resolver';
 import { WorkshopsService } from '../api/workshops/workshops.service';
 
-import { FilesListComponent } from './components/files-list/files-list.component';
+import { SourcesComponent } from './modules/sources/sources.component';
 import { NoContentComponent } from './dumb/no-content/no-content.component';
 import { AbstracteRoutingModule } from './modules/abstracte/abstracte-routing.module';
 import { WorkbookKey } from './modules/abstracte/abstracte.const';
 import { CertificateComponent } from './modules/certificate/certificate/certificate.component';
 import { ComposeVideoPlayerComponent } from './modules/compose-video-player/compose-video-player.component';
 import { OverviewRoutingModule } from './modules/overview/overview-routing.module';
+// import { OverviewComponent } from './modules/overview/overview.component';
 import { PayFormComponent } from './modules/payment/pay-form/pay-form.component';
 import { ProfilePageComponent } from './modules/account-page/profile-page/profile-page.component';
 import { QuestionKey } from './modules/questions/questions.const';
@@ -94,7 +95,7 @@ const routes: Routes = [
   },
   {
     path: 'sources',
-    component: FilesListComponent,
+    component: SourcesComponent,
     data: { header: { title: 'Исходники проектов', subtitle: '' } },
     resolve: {
       webfiles: ByRoutePathResolver,

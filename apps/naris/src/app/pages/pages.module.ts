@@ -6,7 +6,6 @@ import { SrDTOModule } from '@soer/sr-dto';
 import { VideoPlayerModule } from '@soer/soer-components';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { IconsProviderModule } from '../../icons-provider.module';
-import { FilesListComponent } from './components/files-list/files-list.component';
 import { DefaultComponent } from './default/default.component';
 import { MobileMenuComponent } from './default/mobile-menu/mobile-menu.component';
 import { DemoNgZorroAntdModule } from './demo.module';
@@ -24,6 +23,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { RouterComposeModule } from './router-compose/router-compose.module';
 import { EditorBlocksModule } from './modules/editor-blocks/editor-blocks.module';
 import { AccountPageModule } from './modules/account-page/account-page.module';
+import { SourcesModule } from './modules/sources/sources.module';
 
 @NgModule({
   imports: [
@@ -46,6 +46,7 @@ import { AccountPageModule } from './modules/account-page/account-page.module';
     NzModalModule,
     VideoPlayerModule,
     AccountPageModule,
+    SourcesModule,
   ],
   declarations: [
     MobileMenuComponent,
@@ -53,7 +54,6 @@ import { AccountPageModule } from './modules/account-page/account-page.module';
     StreamsComponent,
     RoadmapComponent,
     ComposeVideoPlayerComponent,
-    FilesListComponent,
   ],
   exports: [RouterComposeModule],
 })

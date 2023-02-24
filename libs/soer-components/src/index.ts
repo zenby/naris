@@ -6,3 +6,5 @@ export * from './lib/todo';
 export * from './lib/video-player/video-player.module';
 export * from './lib/video-player/video-source.model';
 export * from './lib/profile';
+export * from './lib/files-list/files-list.module';
+export * from './lib/files-list/files-list.model';

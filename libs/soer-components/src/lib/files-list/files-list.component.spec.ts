@@ -62,7 +62,10 @@ describe('FilesListComponent', () => {
     fixture.detectChanges();
 
     const cards: HTMLDivElement[] = fixture.nativeElement.querySelectorAll('.video-info');
+    const accessDenied = fixture.nativeElement.querySelector('soer-access-denied');
+
     expect(cards.length).toEqual(0);
+    expect(accessDenied).toBeTruthy();
   });
 
   describe('download', () => {

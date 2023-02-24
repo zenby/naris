@@ -2,7 +2,7 @@
   <div nz-row [nzGutter]="[24, 24]" class="steps metrics">
     <ng-container *ngIf="targets.status === 'ok' && targets.items.length > 0; else createFromTemplate">
       <ng-container *ngFor="let target of targets.items">
-        <nz-col class="metric-level" nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="6">
+        <nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="6">
           <a [routerLink]="['/', 'pages', 'targets', 'filter', target.id]">
             <soer-tile
               [tile]="{
@@ -17,7 +17,7 @@
       </ng-container>
     </ng-container>
     <ng-template #createFromTemplate>
-      <nz-col class="metric-level" nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="6">
+      <nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="6">
         <a [routerLink]="['/', 'pages', 'targets', 'templates', 'public']">
           <soer-tile
           [tile]="{

@@ -36,3 +36,18 @@
     background-color: #FFF;
   }
 }
+
+.metric-level {
+  border: 1px solid #f3f3f3;
+  padding: 0.5rem;
+  border-radius: 10px;
+
+  &:hover {
+    border: 1px solid #a0a0a0;
+  }
+
+  & .ant-statistic-content {
+    text-align: center;
+    font-size: 3rem;
+  }
+}

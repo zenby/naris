@@ -12,8 +12,6 @@ import { WebFile } from './files-list.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccessDeniedModule } from '../access-denied/access-denied.module';
 
-// import { DumbModule } from '../../dumb/dumb.module';
-
 import { FilesListComponent } from './files-list.component';
 
 describe('FilesListComponent', () => {
@@ -33,7 +31,6 @@ describe('FilesListComponent', () => {
         OverlayModule,
         AccessDeniedModule,
         BrowserAnimationsModule.withConfig({ disableAnimations: true }),
-        /*DumbModule*/
       ],
       providers: [NzMessageService],
     }).compileComponents();

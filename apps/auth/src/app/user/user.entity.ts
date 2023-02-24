@@ -26,7 +26,6 @@ export class UserEntity {
   password: string;
 
   @ApiProperty()
-  @IsNotEmpty()
   @Column()
   @Generated("uuid")
   uuid: string;

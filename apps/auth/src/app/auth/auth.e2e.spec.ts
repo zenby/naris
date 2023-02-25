@@ -65,15 +65,16 @@ describe('Auth e2e-test', () => {
 
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(existsUser);
 
-      return request
+      const response = await request
         .post('/auth/signin')
         .send(validCredentials)
-        .expect('Set-Cookie', new RegExp(`${config.cookieName}=.*; HttpOnly`))
-        .then((response) => {
-          const body: HttpJsonResult<string> = response.body;
-          expect(body.status).toBe(HttpJsonStatus.Ok);
-        });
+        .expect('Set-Cookie', new RegExp(`${config.cookieName}=.*; HttpOnly`));
+
+      const body: HttpJsonResult<string> = response.body;
+
+      expect(body.status).toBe(HttpJsonStatus.Ok);
     });
+
     it('should return error when pass invalid credentials', async () => {
       const invalidCredentials: LoginUserDto = {
         login: 'invalidLogin',
@@ -82,13 +83,10 @@ describe('Auth e2e-test', () => {
 
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(null);
 
-      return request
-        .post('/auth/signin')
-        .send(invalidCredentials)
-        .then((response) => {
-          const body: HttpJsonResult<string> = response.body;
-          expect(body.status).toBe(HttpJsonStatus.Error);
-        });
+      const response = await request.post('/auth/signin').send(invalidCredentials);
+      const body: HttpJsonResult<string> = response.body;
+
+      expect(body.status).toBe(HttpJsonStatus.Error);
     });
   });
 
@@ -102,14 +100,12 @@ describe('Auth e2e-test', () => {
 
       jest.spyOn(userRepo, 'save').mockResolvedValueOnce(null);
 
-      return request
-        .post('/auth/signup')
-        .send(validDto)
-        .then((response) => {
-          const body: HttpJsonResult<string> = response.body;
-          expect(body.status).toBe(HttpJsonStatus.Ok);
-        });
+      const response = await request.post('/auth/signup').send(validDto);
+      const body: HttpJsonResult<string> = response.body;
+
+      expect(body.status).toBe(HttpJsonStatus.Ok);
     });
+
     it('should return error when pass invalid data ', async () => {
       const invalidDto: CreateUserDto = {
         email: 'email@example.com',
@@ -119,13 +115,10 @@ describe('Auth e2e-test', () => {
 
       jest.spyOn(userRepo, 'save').mockRejectedValueOnce('Error');
 
-      return request
-        .post('/auth/signup')
-        .send(invalidDto)
-        .then((response) => {
-          const body: HttpJsonResult<string> = response.body;
-          expect(body.status).toBe(HttpJsonStatus.Error);
-        });
+      const response = await request.post('/auth/signup').send(invalidDto);
+      const body: HttpJsonResult<string> = response.body;
+
+      expect(body.status).toBe(HttpJsonStatus.Error);
     });
   });
 
@@ -143,23 +136,23 @@ describe('Auth e2e-test', () => {
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(existsUser);
     });
 
-    it('should generate access token when pass valid refresh token', () => {
-      return request
-        .get('/auth/access_token')
-        .set('Cookie', [generateRefreshToken()])
-        .then((response) => {
-          const body: HttpJsonResult<{ accessToken: string }> = response.body;
-          expect(body.status).toBe(HttpJsonStatus.Ok);
-          const accessToken = body.items[0]?.accessToken;
-          expect(accessToken).toBeDefined();
-        });
+    it('should generate access token when pass valid refresh token', async () => {
+      const response = await request.get('/auth/access_token').set('Cookie', [generateRefreshToken()]).expect(200);
+      const body: HttpJsonResult<{ accessToken: string }> = response.body;
+      const accessToken = body.items[0]?.accessToken;
+
+      expect(body.status).toBe(HttpJsonStatus.Ok);
+      expect(accessToken).toBeDefined();
     });
-    it('should return 401 error when pass old refresh token', () => {
+
+    it('should return 401 error when pass old refresh token', async () => {
       const expired10MinAgo = -10 * 60;
-      return request.get('/auth/access_token').set('Cookie', generateRefreshToken(expired10MinAgo)).expect(401);
+
+      await request.get('/auth/access_token').set('Cookie', generateRefreshToken(expired10MinAgo)).expect(401);
     });
-    it('should return 401 error when no pass refresh token', () => {
-      return request.get('/auth/access_token').expect(401);
+
+    it('should return 401 error when no pass refresh token', async () => {
+      await request.get('/auth/access_token').expect(401);
     });
   });
 });

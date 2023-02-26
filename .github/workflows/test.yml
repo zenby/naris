@@ -1,4 +1,4 @@
-name: Test
+name: CI
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
       - ci-latest
 
 jobs:
-  test:
+  ci-check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

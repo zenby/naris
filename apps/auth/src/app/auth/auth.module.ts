@@ -5,10 +5,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from '../common/strategies/jwt.strategy';
 import { UserService } from '../user/user.service';
+import { YandexStrategy } from '../common/strategies/yandex.strategy';
 
 @Module({
   imports: [PassportModule.register({ defaultStrategy: 'jwt' }), JwtModule.register({})],
-  providers: [AuthService, JwtStrategy, UserService],
+  providers: [AuthService, JwtStrategy, YandexStrategy, UserService],
   controllers: [AuthController],
 })
 export class AuthModule {}

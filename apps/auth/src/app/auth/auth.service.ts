@@ -17,17 +17,9 @@ export class AuthService {
     private readonly userService: UserService
   ) {}
 
-  async signIn(signInUserDto: LoginUserDto): Promise<string | Error> {
-    const user = await this.userService.findByLogin(signInUserDto.login);
-
+  async signIn(user: UserEntity | Error): Promise<string | Error> {
     if (user instanceof Error) {
       return user;
-    }
-
-    const isPasswordsMatch = await this.compareUsersByPassword(signInUserDto, user);
-
-    if (isPasswordsMatch instanceof Error) {
-      return isPasswordsMatch;
     }
 
     return await this.getRefreshToken(user);
@@ -81,4 +73,21 @@ export class AuthService {
       throw error;
     }
   }
+
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.userService.findByLogin({ login: username, password }) as UserEntity;
+
+    if (user instanceof Error) {
+      return user;
+    }
+
+    const isPasswordsMatch = await this.compareUsersByPassword({ login: username, password }, user);
+
+    if (isPasswordsMatch instanceof Error) {
+      return isPasswordsMatch;
+    }
+
+    return user;
+  }
+
 }

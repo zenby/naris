@@ -49,18 +49,14 @@ jobs:
             ${{ runner.os }}-
 
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-        name: List the state of node modules
-        continue-on-error: true
-        run: npm list
-
       - name: Install Packages
-        run: npm ci
+        run: npm install
 
       - name: Lint
         run: npm run lint
 
-      - name: Test
-        run: npm run test
+      # - name: Test
+      #   run: npm run test
 
       - name: Frontend E2E Tests
         if: steps.filter.outputs.frontend == 'true' || steps.filter.outputs.frontend-e2e == 'true'

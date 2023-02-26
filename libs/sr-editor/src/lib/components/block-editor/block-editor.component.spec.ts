@@ -40,6 +40,12 @@ describe('BlockEditorComponent', () => {
   });
 
   describe('command', () => {
+    const multilineTextProviders = [
+      { lineBreakSymbol: '\\n', multiLineText: faker.random.words(2).replaceAll(' ', '\n') },
+      { lineBreakSymbol: '\\r', multiLineText: faker.random.words(3).replaceAll(' ', '\r') },
+      { lineBreakSymbol: '\\r\\n', multiLineText: faker.random.words(4).replaceAll(' ', '\r\n') },
+    ];
+
     beforeEach(() => {
       component.localIndex = Number.parseInt(faker.random.numeric());
       component.isEdit = true;
@@ -137,7 +143,7 @@ describe('BlockEditorComponent', () => {
         expectShouldSetActivePrevious(component);
       });
 
-      it.each(getMultiLineTextProvider())(
+      it.each(multilineTextProviders)(
         'should not set active previous because is not first line with line break symbol: $lineBreakSymbol',
         ({ multiLineText }) => {
           component.textBlock.text = multiLineText;
@@ -168,7 +174,7 @@ describe('BlockEditorComponent', () => {
     });
 
     describe('ArrowDown event', () => {
-      it.each(getMultiLineTextProvider())(
+      it.each(multilineTextProviders)(
         'should set active next with line break symbol: $lineBreakSymbol',
         ({ multiLineText }) => {
           component.textBlock.text = multiLineText;
@@ -185,7 +191,7 @@ describe('BlockEditorComponent', () => {
         }
       );
 
-      it.each(getMultiLineTextProvider())(
+      it.each(multilineTextProviders)(
         'should not set active next because is not last line with line break symbol: $lineBreakSymbol',
         ({ lineBreakSymbol, multiLineText }) => {
           component.textBlock.text = multiLineText;
@@ -261,14 +267,6 @@ describe('BlockEditorComponent', () => {
 
     function expectShouldNotDispatchSetActiveEvent(component: BlockEditorComponent) {
       expect(component.setActive.next).not.toBeCalled();
-    }
-
-    function getMultiLineTextProvider() {
-      return [
-        { lineBreakSymbol: '\\n', multiLineText: faker.random.words(2).replaceAll(' ', '\n') },
-        { lineBreakSymbol: '\\r', multiLineText: faker.random.words(3).replaceAll(' ', '\r') },
-        { lineBreakSymbol: '\\r\\n', multiLineText: faker.random.words(4).replaceAll(' ', '\r\n') },
-      ];
     }
   });
 });

@@ -70,8 +70,8 @@ describe('BlockEditorComponent', () => {
 
         component.command(event);
 
-        itShouldStopEdit();
-        itShouldSetActivePrevious();
+        expectShouldStopEdit(component);
+        expectShouldSetActivePrevious(component);
       });
 
       it('should not set active previous because it is without ctrl', () => {
@@ -83,8 +83,8 @@ describe('BlockEditorComponent', () => {
 
         component.command(event);
 
-        itShouldNotStopEdit();
-        itShouldNotDispatcheSetActiveEvent();
+        expectShouldNotStopEdit(component);
+        expectShouldNotDispatchSetActiveEvent(component);
       });
     });
 
@@ -105,8 +105,8 @@ describe('BlockEditorComponent', () => {
 
         component.command(event);
 
-        itShouldStopEdit();
-        itShouldSetActiveNext();
+        expectShouldStopEdit(component);
+        expectShouldSetActiveNext(component);
       });
 
       it('should not set active next because because it is without ctrl', () => {
@@ -118,8 +118,8 @@ describe('BlockEditorComponent', () => {
 
         component.command(event);
 
-        itShouldNotStopEdit();
-        itShouldNotDispatcheSetActiveEvent();
+        expectShouldNotStopEdit(component);
+        expectShouldNotDispatchSetActiveEvent(component);
       });
     });
 
@@ -133,8 +133,8 @@ describe('BlockEditorComponent', () => {
 
         component.command(event);
 
-        itShouldStopEdit();
-        itShouldSetActivePrevious();
+        expectShouldStopEdit(component);
+        expectShouldSetActivePrevious(component);
       });
 
       it.each(getMultiLineTextProvider())(
@@ -149,8 +149,8 @@ describe('BlockEditorComponent', () => {
 
           component.command(event);
 
-          itShouldNotStopEdit();
-          itShouldNotDispatcheSetActiveEvent();
+          expectShouldNotStopEdit(component);
+          expectShouldNotDispatchSetActiveEvent(component);
         }
       );
 
@@ -162,8 +162,8 @@ describe('BlockEditorComponent', () => {
 
         component.command(event);
 
-        itShouldNotStopEdit();
-        itShouldNotDispatcheSetActiveEvent();
+        expectShouldNotStopEdit(component);
+        expectShouldNotDispatchSetActiveEvent(component);
       });
     });
 
@@ -180,8 +180,8 @@ describe('BlockEditorComponent', () => {
 
           component.command(event);
 
-          itShouldStopEdit();
-          itShouldSetActiveNext();
+          expectShouldStopEdit(component);
+          expectShouldSetActiveNext(component);
         }
       );
 
@@ -197,8 +197,8 @@ describe('BlockEditorComponent', () => {
 
           component.command(event);
 
-          itShouldNotStopEdit();
-          itShouldNotDispatcheSetActiveEvent();
+          expectShouldNotStopEdit(component);
+          expectShouldNotDispatchSetActiveEvent(component);
         }
       );
 
@@ -210,8 +210,8 @@ describe('BlockEditorComponent', () => {
 
         component.command(event);
 
-        itShouldNotStopEdit();
-        itShouldNotDispatcheSetActiveEvent();
+        expectShouldNotStopEdit(component);
+        expectShouldNotDispatchSetActiveEvent(component);
       });
     });
 
@@ -239,27 +239,27 @@ describe('BlockEditorComponent', () => {
       } as unknown as KeyboardEvent;
     }
 
-    function itShouldStopEdit() {
+    function expectShouldStopEdit(component: BlockEditorComponent) {
       expect(component.endEdit.next).toBeCalledWith(component.localIndex);
       expect(component.isEdit).toBe(false);
       expect(component.componentRef?.instance?.text).toBe(component.textBlock.text);
     }
 
-    function itShouldNotStopEdit() {
+    function expectShouldNotStopEdit(component: BlockEditorComponent) {
       expect(component.endEdit.next).not.toBeCalled();
       expect(component.isEdit).toBe(true);
       expect(component.componentRef?.instance?.text).not.toBe(component.textBlock.text);
     }
 
-    function itShouldSetActivePrevious() {
+    function expectShouldSetActivePrevious(component: BlockEditorComponent) {
       expect(component.setActive.next).toBeCalledWith(component.localIndex - 1);
     }
 
-    function itShouldSetActiveNext() {
+    function expectShouldSetActiveNext(component: BlockEditorComponent) {
       expect(component.setActive.next).toBeCalledWith(component.localIndex + 1);
     }
 
-    function itShouldNotDispatcheSetActiveEvent() {
+    function expectShouldNotDispatchSetActiveEvent(component: BlockEditorComponent) {
       expect(component.setActive.next).not.toBeCalled();
     }
 

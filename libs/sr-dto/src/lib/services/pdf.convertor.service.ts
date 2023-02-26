@@ -29,8 +29,8 @@ export class PdfConverterService {
     private downloadFile(data: string, owner: CRUDBusEmitter, params: BusMessageParams = {}) {
         this.queryCreate({content: data}, owner, params)
         .subscribe((res)=>{
-        let url = window.URL.createObjectURL(new Blob([res], {type: 'application/pdf'}));
-            let a = document.createElement('a');
+        const url = window.URL.createObjectURL(new Blob([res], {type: 'application/pdf'}));
+            const a = document.createElement('a');
             document.body.appendChild(a);
             a.setAttribute('style', 'display: none');
             a.href = url;

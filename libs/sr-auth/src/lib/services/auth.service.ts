@@ -47,6 +47,10 @@ export class AuthService {
     this.bus$.publish(new ChangeDataEvent(this.options, { status: OK, items: [this.extractAndParseJWT(n)] }));
   }
 
+  public updateToken(token: string): void {
+    localStorage.setItem(TOKEN_KEY, token);
+  }
+
   private checkIsAuth(): boolean {
     const token: string | null = localStorage.getItem(TOKEN_KEY);
 

@@ -74,14 +74,14 @@ export class AuthService {
     }
   }
 
-  async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.userService.findByLogin({ login: username, password }) as UserEntity;
+  async validateUser(signInUserDto: LoginUserDto): Promise<any> {
+    const user = await this.userService.findByLogin(signInUserDto);
 
     if (user instanceof Error) {
       return user;
     }
 
-    const isPasswordsMatch = await this.compareUsersByPassword({ login: username, password }, user);
+    const isPasswordsMatch = await this.compareUsersByPassword(signInUserDto, user);
 
     if (isPasswordsMatch instanceof Error) {
       return isPasswordsMatch;

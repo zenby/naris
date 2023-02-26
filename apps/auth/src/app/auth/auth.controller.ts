@@ -9,7 +9,7 @@ import {
   Post,
   Res,
   UnauthorizedException,
-  Request,
+  Req,
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
@@ -82,7 +82,7 @@ export class AuthController {
   @ApiNotFoundResponse({ schema: responseErrorSchema('User with login ... not found') })
   @ApiUnauthorizedResponse({ schema: responseErrorSchema('Invalid password') })
   async signIn(
-    @Request() req,
+    @Req() req,
     @Res({ passthrough: true }) response: Response
   ): Promise<HttpJsonResult<string>> {
     try {

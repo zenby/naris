@@ -19,7 +19,7 @@ describe('BlockEditorComponent', () => {
       providers: [
         {
           provide: EDITOR_BLOCKS_REGISTRY_TOKEN,
-          useValue: [] as unknown,
+          useValue: {} as unknown,
         },
       ],
     }).compileComponents();
@@ -62,24 +62,26 @@ describe('BlockEditorComponent', () => {
       });
 
       it('should set active previous', () => {
-        const eventStub = {
-          ...createFakeEvent('ArrowUp', cursorPosition),
+        const event = createKeyboardEvent({
+          code: 'ArrowUp',
+          cursorPosition,
           ctrlKey: true,
-        } as unknown as KeyboardEvent;
+        });
 
-        component.command(eventStub);
+        component.command(event);
 
         itShouldStopEdit();
         itShouldSetActivePrevious();
       });
 
       it('should not set active previous because it is without ctrl', () => {
-        const falseEventStub = {
-          ...createFakeEvent('ArrowUp', cursorPosition),
+        const event = createKeyboardEvent({
+          code: 'ArrowUp',
+          cursorPosition,
           ctrlKey: false,
-        } as unknown as KeyboardEvent;
+        });
 
-        component.command(falseEventStub);
+        component.command(event);
 
         itShouldNotStopEdit();
         itShouldNotDispatcheSetActiveEvent();
@@ -95,24 +97,26 @@ describe('BlockEditorComponent', () => {
       });
 
       it('should set active next', () => {
-        const eventStub = {
-          ...createFakeEvent('ArrowDown', cursorPosition),
+        const event = createKeyboardEvent({
+          code: 'ArrowDown',
+          cursorPosition,
           ctrlKey: true,
-        } as unknown as KeyboardEvent;
+        });
 
-        component.command(eventStub);
+        component.command(event);
 
         itShouldStopEdit();
         itShouldSetActiveNext();
       });
 
       it('should not set active next because because it is without ctrl', () => {
-        const falseEventStub = {
-          ...createFakeEvent('ArrowDown', cursorPosition),
+        const event = createKeyboardEvent({
+          code: 'ArrowDown',
+          cursorPosition,
           ctrlKey: false,
-        } as unknown as KeyboardEvent;
+        });
 
-        component.command(falseEventStub);
+        component.command(event);
 
         itShouldNotStopEdit();
         itShouldNotDispatcheSetActiveEvent();
@@ -122,9 +126,12 @@ describe('BlockEditorComponent', () => {
     describe('ArrowUp event', () => {
       it('should set active previous', () => {
         const cursorPosition = 0;
-        const eventStub = createFakeEvent('ArrowUp', cursorPosition);
+        const event = createKeyboardEvent({
+          code: 'ArrowUp',
+          cursorPosition,
+        });
 
-        component.command(eventStub);
+        component.command(event);
 
         itShouldStopEdit();
         itShouldSetActivePrevious();
@@ -135,9 +142,12 @@ describe('BlockEditorComponent', () => {
         ({ multiLineText }) => {
           component.textBlock.text = multiLineText;
           const cursorPosition = multiLineText.length;
-          const eventStub = createFakeEvent('ArrowUp', cursorPosition);
+          const event = createKeyboardEvent({
+            code: 'ArrowUp',
+            cursorPosition,
+          });
 
-          component.command(eventStub);
+          component.command(event);
 
           itShouldNotStopEdit();
           itShouldNotDispatcheSetActiveEvent();
@@ -145,9 +155,12 @@ describe('BlockEditorComponent', () => {
       );
 
       it('should not set active previous because is not ArrowUp event', () => {
-        const falseEventStub = createFakeEvent('ArrowLeft', 0);
+        const event = createKeyboardEvent({
+          code: 'ArrowLeft',
+          cursorPosition: 0,
+        });
 
-        component.command(falseEventStub);
+        component.command(event);
 
         itShouldNotStopEdit();
         itShouldNotDispatcheSetActiveEvent();
@@ -160,9 +173,12 @@ describe('BlockEditorComponent', () => {
         ({ multiLineText }) => {
           component.textBlock.text = multiLineText;
           const cursorPosition = multiLineText.length;
-          const eventStub = createFakeEvent('ArrowDown', cursorPosition);
+          const event = createKeyboardEvent({
+            code: 'ArrowDown',
+            cursorPosition,
+          });
 
-          component.command(eventStub);
+          component.command(event);
 
           itShouldStopEdit();
           itShouldSetActiveNext();
@@ -174,9 +190,12 @@ describe('BlockEditorComponent', () => {
         ({ lineBreakSymbol, multiLineText }) => {
           component.textBlock.text = multiLineText;
           const cursorPosition = multiLineText.indexOf(lineBreakSymbol) + 1;
-          const eventStub = createFakeEvent('ArrowDown', cursorPosition);
+          const event = createKeyboardEvent({
+            code: 'ArrowDown',
+            cursorPosition,
+          });
 
-          component.command(eventStub);
+          component.command(event);
 
           itShouldNotStopEdit();
           itShouldNotDispatcheSetActiveEvent();
@@ -184,9 +203,12 @@ describe('BlockEditorComponent', () => {
       );
 
       it('should not set active next because is not ArrowDown event', () => {
-        const falseEventStub = createFakeEvent('ArrowLeft', 0);
+        const event = createKeyboardEvent({
+          code: 'ArrowLeft',
+          cursorPosition: 0,
+        });
 
-        component.command(falseEventStub);
+        component.command(event);
 
         itShouldNotStopEdit();
         itShouldNotDispatcheSetActiveEvent();
@@ -201,12 +223,19 @@ describe('BlockEditorComponent', () => {
       return multiLineText.indexOf('\n', multiLineText.indexOf('\n') + 3);
     }
 
-    function createFakeEvent(code: string, cursorPosition: number): KeyboardEvent {
+    function createKeyboardEvent({
+      code,
+      cursorPosition = 0,
+      ctrlKey = false,
+    }: {
+      code: string;
+      cursorPosition?: number;
+      ctrlKey?: boolean;
+    }) {
       return {
         code,
-        target: {
-          selectionStart: cursorPosition,
-        },
+        ctrlKey,
+        target: { selectionStart: cursorPosition },
       } as unknown as KeyboardEvent;
     }
 

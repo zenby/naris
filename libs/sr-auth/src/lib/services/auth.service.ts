@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { BusEvent, MixedBusService } from '@soer/mixed-bus';
+import { MixedBusService } from '@soer/mixed-bus';
 import { ChangeDataEvent, OK } from '@soer/sr-dto';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthEmitter } from '../interfaces/auth-options.interface';

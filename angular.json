@@ -234,6 +234,8 @@
           "options": {
             "jestConfig": "apps/naris/jest.config.js",
             "passWithNoTests": true,
+            "runInBand": true,
+            "silent": true,
             "webWorkerTsConfig": "tsconfig.worker.json"
           }
         },

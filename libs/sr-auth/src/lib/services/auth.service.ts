@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthEmitter } from '../interfaces/auth-options.interface';
 import { EmptyJWTModel } from '../interfaces/jwt.models';
 
-const TOKEN = 'token';
+const TOKEN_KEY = 'token';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +39,7 @@ export class AuthService {
   public set token(n: string | null) {
     this._token = n;
 
-    n !== null ? localStorage.setItem(TOKEN, n) : localStorage.removeItem(TOKEN);
+    n !== null ? localStorage.setItem(TOKEN_KEY, n) : localStorage.removeItem(TOKEN_KEY);
 
     this.decodeJWT(n);
     this.tokenUpdate$.next(n);
@@ -48,7 +48,7 @@ export class AuthService {
   }
 
   private checkIsAuth(): boolean {
-    const token: string | null = localStorage.getItem(TOKEN);
+    const token: string | null = localStorage.getItem(TOKEN_KEY);
 
     this.token = this.isTokenValid(token) ? token : null;
 

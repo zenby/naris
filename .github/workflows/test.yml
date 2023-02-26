@@ -30,3 +30,6 @@ jobs:
 
       - name: Test
         run: npm run test
+
+      - name: E2E Tests
+        run: npx nx run naris-e2e:e2e

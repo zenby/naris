@@ -4,7 +4,7 @@ import { BusEvent, MixedBusService } from '@soer/mixed-bus';
 import { ChangeDataEvent, OK } from '@soer/sr-dto';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthEmitter } from '../interfaces/auth-options.interface';
-import { JWTModel } from '../interfaces/jwt.models';
+import { EmptyJWTModel } from '../interfaces/jwt.models';
 
 const TOKEN = 'token';
 
@@ -16,7 +16,7 @@ export class AuthService {
 
   public tokenUpdate$ = new BehaviorSubject<string | null>(null);
 
-  private decodedJSON: JWTModel = { id: -1, email: '', role: 'GUEST', iat: 0, exp: 0 };
+  private decodedJSON = EmptyJWTModel;
 
   private _token: string | null = '';
 
@@ -99,7 +99,7 @@ export class AuthService {
   }
 
   decodeJWT(jwt: string | null): void {
-    this.decodedJSON = this.extractAndParseJWT(jwt) || { id: -1, email: '', role: 'GUEST', iat: 0, exp: 0 };
+    this.decodedJSON = this.extractAndParseJWT(jwt) || EmptyJWTModel;
   }
 
   getEmail(): string {

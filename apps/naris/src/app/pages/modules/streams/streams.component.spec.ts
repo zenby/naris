@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AccessDeniedModule } from '@soer/soer-components';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { DumbModule } from '../../dumb/dumb.module';
 
@@ -13,7 +14,7 @@ describe('StreamsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [StreamsComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, DumbModule, NzGridModule],
+      imports: [HttpClientTestingModule, RouterTestingModule, DumbModule, NzGridModule, AccessDeniedModule],
     }).compileComponents();
   });
 

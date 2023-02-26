@@ -52,6 +52,9 @@ jobs:
         if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         run: npm install
 
+      - name: log
+        run: 'ls'
+
       - name: Lint
         run: npm run lint
 

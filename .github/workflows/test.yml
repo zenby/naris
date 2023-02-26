@@ -48,8 +48,8 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
       - name: Install Packages
+        if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         run: npm install
 
       - name: Lint

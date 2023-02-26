@@ -6,6 +6,7 @@ import { TypeFormatPipe } from '../../pipes/type-format.pipe';
 import { BooleanToStringPipe } from '../../pipes/boolean-to-string.pipe';
 import { BasicBlockComponent } from '../basic-block.component';
 import { TextBlock } from '../../interfaces/document.model';
+import { FormsModule } from '@angular/forms';
 
 import { BlockEditorComponent } from './block-editor.component';
 
@@ -15,6 +16,7 @@ describe('BlockEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [FormsModule],
       declarations: [BlockEditorComponent, TypeFormatPipe, BooleanToStringPipe],
       providers: [
         {
@@ -57,6 +59,18 @@ describe('BlockEditorComponent', () => {
 
     afterEach(() => {
       jest.resetAllMocks();
+    });
+
+    it('should call command handler', () => {
+      component.isEdit = true;
+      fixture.detectChanges();
+      const textarea = fixture.nativeElement.querySelector('textarea');
+      const event = new KeyboardEvent('keydown');
+      jest.spyOn(component, 'command');
+
+      textarea.dispatchEvent(event);
+
+      expect(component.command).toBeCalledWith(event);
     });
 
     describe('Ctrl + ArrowUp event', () => {

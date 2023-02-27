@@ -2,6 +2,7 @@
   *ngFor="let block of document.blocks; index as bIndex"
   [textBlock]="block"
   [isEdit]="isBlockEditable(bIndex)"
+  [countOfBlocksInDocument]="document.blocks.length"
   [localIndex]="bIndex"
   [blockDelimeter]="blocksDelimiter"
   (setActive)="setActive($event)"

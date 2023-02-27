@@ -29,6 +29,7 @@ export class BlockEditorComponent implements AfterViewInit {
   }
   @Input() localIndex = -1;
   @Input() isEdit = false;
+  @Input() countOfBlocksInDocument = 0;
   @Input() blockDelimeter: string | undefined;
 
   @Output() addBlock = new EventEmitter<number>();
@@ -75,13 +76,13 @@ export class BlockEditorComponent implements AfterViewInit {
     }
 
     if (event.ctrlKey && event.code === 'ArrowUp') {
-      this.setActivePrevious();
+      this.setActivePreviousIfAvailable();
 
       return;
     }
 
     if (event.code === 'ArrowUp' && this.getIsFirstLine(event)) {
-      this.setActivePrevious();
+      this.setActivePreviousIfAvailable();
     }
 
     if (event.altKey && event.code === 'ArrowDown') {
@@ -91,13 +92,13 @@ export class BlockEditorComponent implements AfterViewInit {
     }
 
     if (event.ctrlKey && event.code === 'ArrowDown') {
-      this.setActiveNext();
+      this.setActiveNextIfAvailable();
 
       return;
     }
 
     if (event.code === 'ArrowDown' && this.getIsLastLine(event)) {
-      this.setActiveNext();
+      this.setActiveNextIfAvailable();
     }
 
     if (event.altKey && event.code === 'Digit1') {
@@ -129,14 +130,26 @@ export class BlockEditorComponent implements AfterViewInit {
     }
   }
 
-  private setActivePrevious() {
-    this.stopEdit();
-    this.setActive.next(this.localIndex - 1);
+  private setActivePreviousIfAvailable() {
+    if (this.getIsCanSetActivePrevious()) {
+      this.stopEdit();
+      this.setActive.next(this.localIndex - 1);
+    }
   }
 
-  private setActiveNext() {
-    this.stopEdit();
-    this.setActive.next(this.localIndex + 1);
+  private getIsCanSetActivePrevious() {
+    return this.localIndex > 0;
+  }
+
+  private setActiveNextIfAvailable() {
+    if (this.getIsCanSetActiveNext()) {
+      this.stopEdit();
+      this.setActive.next(this.localIndex + 1);
+    }
+  }
+
+  private getIsCanSetActiveNext() {
+    return this.localIndex + 1 < this.countOfBlocksInDocument;
   }
 
   private getIsFirstLine(event: KeyboardEvent) {

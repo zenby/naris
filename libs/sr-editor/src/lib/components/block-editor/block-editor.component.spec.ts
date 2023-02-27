@@ -49,7 +49,6 @@ describe('BlockEditorComponent', () => {
     ];
 
     beforeEach(() => {
-      component.localIndex = Number.parseInt(faker.random.numeric());
       component.isEdit = true;
       component.componentRef = createFakeComponentRef();
       component.textBlock = createFakeTextBlock();
@@ -79,6 +78,8 @@ describe('BlockEditorComponent', () => {
 
       beforeEach(() => {
         component.textBlock.text = multiLineText;
+        component.countOfBlocksInDocument = 2;
+        component.localIndex = 1;
       });
 
       it('should set active previous', () => {
@@ -106,6 +107,20 @@ describe('BlockEditorComponent', () => {
         expectShouldNotStopEdit(component);
         expectShouldNotDispatchSetActiveEvent(component);
       });
+
+      it('should not set active previous because it is first block in document', () => {
+        const event = createKeyboardEvent({
+          code: 'ArrowUp',
+          cursorPosition,
+          ctrlKey: true,
+        });
+        component.localIndex = 0;
+
+        component.command(event);
+
+        expectShouldNotStopEdit(component);
+        expectShouldNotDispatchSetActiveEvent(component);
+      });
     });
 
     describe('Ctrl + ArrowDown event', () => {
@@ -114,6 +129,8 @@ describe('BlockEditorComponent', () => {
 
       beforeEach(() => {
         component.textBlock.text = multiLineText;
+        component.countOfBlocksInDocument = 2;
+        component.localIndex = 0;
       });
 
       it('should set active next', () => {
@@ -141,9 +158,29 @@ describe('BlockEditorComponent', () => {
         expectShouldNotStopEdit(component);
         expectShouldNotDispatchSetActiveEvent(component);
       });
+
+      it('should not set active next because it is last block in document', () => {
+        const event = createKeyboardEvent({
+          code: 'ArrowDown',
+          cursorPosition,
+          ctrlKey: true,
+        });
+        component.countOfBlocksInDocument = 2;
+        component.localIndex = 1;
+
+        component.command(event);
+
+        expectShouldNotStopEdit(component);
+        expectShouldNotDispatchSetActiveEvent(component);
+      });
     });
 
     describe('ArrowUp event', () => {
+      beforeEach(() => {
+        component.countOfBlocksInDocument = 2;
+        component.localIndex = 1;
+      });
+
       it('should set active previous', () => {
         const cursorPosition = 0;
         const event = createKeyboardEvent({
@@ -188,6 +225,11 @@ describe('BlockEditorComponent', () => {
     });
 
     describe('ArrowDown event', () => {
+      beforeEach(() => {
+        component.countOfBlocksInDocument = 2;
+        component.localIndex = 0;
+      });
+
       it.each(multilineTextProviders)(
         'should set active next with line break symbol: $lineBreakSymbol',
         ({ multiLineText }) => {

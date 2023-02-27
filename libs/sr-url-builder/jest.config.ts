@@ -1,5 +1,6 @@
+/* eslint-disable */
 module.exports = {
-  displayName: 'sr-dto',
+  displayName: 'sr-url-builder',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -8,7 +9,7 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/libs/sr-dto',
+  coverageDirectory: '../../coverage/libs/sr-url-builder',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

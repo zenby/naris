@@ -1,5 +1,6 @@
+/* eslint-disable */
 module.exports = {
-  displayName: 'naris',
+  displayName: 'mixed-bus',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -8,7 +9,7 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/apps/naris',
+  coverageDirectory: '../../coverage/libs/mixed-bus',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

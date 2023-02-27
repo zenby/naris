@@ -1,0 +1,41 @@
+{
+  "name": "naris-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/naris-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/naris-e2e/cypress.json",
+        "devServerTarget": "naris:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "naris:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "apps/naris-e2e/**/*.{js,ts}"
+        ]
+      }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional"
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": [
+    "naris"
+  ]
+}

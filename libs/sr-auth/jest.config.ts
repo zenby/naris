@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = {
   displayName: 'sr-auth',
   preset: '../../jest.preset.js',

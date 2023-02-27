@@ -17,7 +17,7 @@
     "typeorm:create": "npm run typeorm migration:create -n",
     "typeorm:run": "npm run typeorm migration:run",
     "typeorm:revert": "npm run typeorm migration:revert",
-    "prepare": "husky install && chmod +x .husky/*"
+    "prepare": "node -e \"try { require('husky').install(); require('fs').chmodSync('.husky/*', 0755); } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\""
   },
   "private": true,
   "dependencies": {

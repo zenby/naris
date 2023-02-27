@@ -3,7 +3,7 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestj
 import { ImagesService } from './images.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { MAX_IMAGE_FILE_SIZE_MB} from './constants'
-import { saveImagesBodySchema } from './swagger.schemes'
+import { uploadImagesBodySchema } from './docs/upload-images-body.schema'
 
 @ApiTags('Images')
 @Controller('images')
@@ -14,7 +14,7 @@ export class ImagesController {
   @UseInterceptors(FilesInterceptor('files'))
   @HttpCode(201)
   @ApiConsumes('multipart/form-data')
-  @ApiBody(saveImagesBodySchema)
+  @ApiBody(uploadImagesBodySchema )
   @ApiOperation({ summary: 'Upload Images', description: `max file size: ${MAX_IMAGE_FILE_SIZE_MB}Mb. Allowed mimeTypes: 'image/*'` })
   @ApiResponse({
     status: 201,

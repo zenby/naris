@@ -12,8 +12,8 @@ export function imageStorageBuilder(folderPath: string, maxFileSizeMB = MAX_IMAG
 
   const fileFilter: MulterOptions['fileFilter'] = (_req, file, cb) => {
     const regex = new RegExp('^image/', 'i');
-    if (regex.test(file.mimetype)) cb(null, true);
-    else cb(null, false);
+    const isImageFile = regex.test(file.mimetype);
+    cb(null, isImageFile);
   };
 
   const storage = diskStorage({

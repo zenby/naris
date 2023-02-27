@@ -1,6 +1,6 @@
 import { ApiBodyOptions } from '@nestjs/swagger';
 
-export const saveImagesBodySchema: ApiBodyOptions = {
+export const uploadImagesBodySchema: ApiBodyOptions = {
   schema: {
     type: 'object',
     properties: {

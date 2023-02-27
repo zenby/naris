@@ -131,25 +131,16 @@ export class BlockEditorComponent implements AfterViewInit {
   }
 
   private setActivePreviousIfAvailable() {
-    if (this.getIsCanSetActivePrevious()) {
-      this.stopEdit();
-      this.setActive.next(this.localIndex - 1);
-    }
-  }
-
-  private getIsCanSetActivePrevious() {
-    return this.localIndex > 0;
+    if (this.localIndex <= 0) return;
+    this.stopEdit();
+    this.setActive.next(this.localIndex - 1);
   }
 
   private setActiveNextIfAvailable() {
-    if (this.getIsCanSetActiveNext()) {
-      this.stopEdit();
-      this.setActive.next(this.localIndex + 1);
-    }
-  }
+    if (this.localIndex + 1 === this.blocksLength) return;
 
-  private getIsCanSetActiveNext() {
-    return this.localIndex + 1 < this.blocksLength;
+    this.stopEdit();
+    this.setActive.next(this.localIndex + 1);
   }
 
   private getIsFirstLine(event: KeyboardEvent) {

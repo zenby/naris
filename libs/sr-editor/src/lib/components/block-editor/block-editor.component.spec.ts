@@ -78,7 +78,7 @@ describe('BlockEditorComponent', () => {
 
       beforeEach(() => {
         component.textBlock.text = multiLineText;
-        component.countOfBlocksInDocument = 2;
+        component.blocksLength = 2;
         component.localIndex = 1;
       });
 
@@ -129,7 +129,7 @@ describe('BlockEditorComponent', () => {
 
       beforeEach(() => {
         component.textBlock.text = multiLineText;
-        component.countOfBlocksInDocument = 2;
+        component.blocksLength = 2;
         component.localIndex = 0;
       });
 
@@ -165,7 +165,7 @@ describe('BlockEditorComponent', () => {
           cursorPosition,
           ctrlKey: true,
         });
-        component.countOfBlocksInDocument = 2;
+        component.blocksLength = 2;
         component.localIndex = 1;
 
         component.command(event);
@@ -177,7 +177,7 @@ describe('BlockEditorComponent', () => {
 
     describe('ArrowUp event', () => {
       beforeEach(() => {
-        component.countOfBlocksInDocument = 2;
+        component.blocksLength = 2;
         component.localIndex = 1;
       });
 
@@ -226,7 +226,7 @@ describe('BlockEditorComponent', () => {
 
     describe('ArrowDown event', () => {
       beforeEach(() => {
-        component.countOfBlocksInDocument = 2;
+        component.blocksLength = 2;
         component.localIndex = 0;
       });
 

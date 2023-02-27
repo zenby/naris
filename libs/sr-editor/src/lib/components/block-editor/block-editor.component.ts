@@ -29,7 +29,7 @@ export class BlockEditorComponent implements AfterViewInit {
   }
   @Input() localIndex = -1;
   @Input() isEdit = false;
-  @Input() countOfBlocksInDocument = 0;
+  @Input() blocksLength = 0;
   @Input() blockDelimeter: string | undefined;
 
   @Output() addBlock = new EventEmitter<number>();
@@ -149,7 +149,7 @@ export class BlockEditorComponent implements AfterViewInit {
   }
 
   private getIsCanSetActiveNext() {
-    return this.localIndex + 1 < this.countOfBlocksInDocument;
+    return this.localIndex + 1 < this.blocksLength;
   }
 
   private getIsFirstLine(event: KeyboardEvent) {

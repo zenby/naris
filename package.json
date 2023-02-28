@@ -112,6 +112,7 @@
     "jest-environment-jsdom": "^28.1.1",
     "jest-preset-angular": "^12.1.0",
     "prettier": "2.6.2",
+    "supertest": "^6.3.3",
     "ts-jest": "^28.0.5",
     "ts-jest-mock-import-meta": "^1.0.0",
     "ts-node": "~10.8.0",

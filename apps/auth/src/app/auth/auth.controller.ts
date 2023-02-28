@@ -6,9 +6,9 @@ import {
   InternalServerErrorException,
   Logger,
   Post,
-  Req,
   Res,
   UnauthorizedException,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -33,7 +33,9 @@ import { accessTokenSchema } from './doc/access_token.schema';
 import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
 import { responseErrorSchema } from './doc/response-error.schema';
 import { ValidationErrorHelper } from '../common/helpers/validation-error.helper';
-import { Request } from 'express';
+import { User } from '../common/decorators/user.decorator';
+import { UserEntity } from '../user/user.entity';
+import { RefreshCookieGuard } from '../common/guards/refreshCookie.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -51,18 +53,11 @@ export class AuthController {
   @ApiUnauthorizedResponse({
     description: 'Invalid or empty refresh token',
   })
+  @UseGuards(RefreshCookieGuard)
   @Get('access_token')
-  async getAccessToken(@Req() request: Request): Promise<HttpJsonResult<{ accessToken: string }>> {
+  async getAccessToken(@User() user: UserEntity): Promise<HttpJsonResult<{ accessToken: string }>> {
     try {
-      const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
-
-      const refreshToken = request?.cookies?.[cookieName];
-      if (!refreshToken) throw new UnauthorizedException();
-
-      const verifiedPayloadOrError = await this.authService.getVerifiedUserByRefreshToken(refreshToken);
-      if (verifiedPayloadOrError instanceof Error) throw new UnauthorizedException();
-
-      const accessToken = await this.authService.getAccessToken(verifiedPayloadOrError);
+      const accessToken = await this.authService.getAccessToken(user);
 
       return { status: HttpJsonStatus.Ok, items: [{ accessToken }] };
     } catch (e) {

@@ -59,7 +59,7 @@ export class AuthController {
       const refreshToken = request?.cookies?.[cookieName];
       if (!refreshToken) throw new UnauthorizedException();
 
-      const verifiedPayloadOrError = await this.authService.getVerifiedRefreshTokenPayload(refreshToken);
+      const verifiedPayloadOrError = await this.authService.getVerifiedUserByRefreshToken(refreshToken);
       if (verifiedPayloadOrError instanceof Error) throw new UnauthorizedException();
 
       const accessToken = await this.authService.getAccessToken(verifiedPayloadOrError);

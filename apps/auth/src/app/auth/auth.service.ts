@@ -8,7 +8,6 @@ import { compare } from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { TokenExpiredError } from 'jsonwebtoken';
-import { JwtPayload } from './jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -38,10 +37,10 @@ export class AuthService {
     return await this.userService.createUser(createUserDto);
   }
 
-  async getAccessToken(jwtPayload: JwtPayload): Promise<string> {
+  async getAccessToken(user: UserEntity): Promise<string> {
     const { jwtSecret: secret, expiresInAccess: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
 
-    return this.jwtService.signAsync({ id: jwtPayload.id, email: jwtPayload.email }, { secret, expiresIn });
+    return this.jwtService.signAsync({ id: user.id, email: user.email }, { secret, expiresIn });
   }
 
   async getRefreshToken(user: UserEntity): Promise<string> {
@@ -60,7 +59,7 @@ export class AuthService {
     return true;
   }
 
-  async getVerifiedRefreshTokenPayload(refreshToken: string): Promise<JwtPayload | Error> {
+  async getVerifiedUserByRefreshToken(refreshToken: string): Promise<UserEntity | Error> {
     try {
       const { jwtSecret: secret, expiresInRefresh: maxAge } = this.configService.get<Configuration['jwt']>('jwt');
 
@@ -75,7 +74,7 @@ export class AuthService {
       });
       if (userOrError instanceof Error) return userOrError;
 
-      return { id: userId, email: userEmail };
+      return userOrError;
     } catch (error) {
       if (error instanceof TokenExpiredError) return error;
 

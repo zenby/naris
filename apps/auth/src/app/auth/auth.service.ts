@@ -40,7 +40,7 @@ export class AuthService {
   async getAccessToken(user: UserEntity): Promise<string> {
     const { jwtSecret: secret, expiresInAccess: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
 
-    return this.jwtService.signAsync({ id: user.id, email: user.email }, { secret, expiresIn });
+    return this.jwtService.signAsync({ id: user.id, uuid: user.uuid, email: user.email }, { secret, expiresIn });
   }
 
   async getRefreshToken(user: UserEntity): Promise<string> {

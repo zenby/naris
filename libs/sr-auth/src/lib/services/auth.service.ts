@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { MixedBusService } from '@soer/mixed-bus';
 import { ChangeDataEvent, OK } from '@soer/sr-dto';
+import { LocalStorageService } from '@soer/sr-local-storage';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthEmitter } from '../interfaces/auth-options.interface';
 import { EmptyJWTModel } from '../interfaces/jwt.models';
@@ -23,7 +24,8 @@ export class AuthService {
   constructor(
     @Inject('AuthServiceConfig') private options: AuthEmitter,
     private bus$: MixedBusService,
-    private http: HttpClient
+    private http: HttpClient,
+    private localStorageService: LocalStorageService
   ) {
     this.checkIsAuth();
   }
@@ -39,7 +41,7 @@ export class AuthService {
   public set token(n: string | null) {
     this._token = n;
 
-    n !== null ? localStorage.setItem(TOKEN_KEY, n) : localStorage.removeItem(TOKEN_KEY);
+    n !== null ? this.localStorageService.setValue(TOKEN_KEY, n) : this.localStorageService.removeValue(TOKEN_KEY);
 
     this.decodeJWT(n);
     this.tokenUpdate$.next(n);
@@ -48,11 +50,11 @@ export class AuthService {
   }
 
   public updateToken(token: string): void {
-    localStorage.setItem(TOKEN_KEY, token);
+    this.localStorageService.setValue(TOKEN_KEY, token);
   }
 
   private checkIsAuth(): boolean {
-    const token: string | null = localStorage.getItem(TOKEN_KEY);
+    const token: string | null = this.localStorageService.getValue(TOKEN_KEY);
 
     this.token = this.isTokenValid(token) ? token : null;
 

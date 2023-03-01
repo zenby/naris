@@ -2,8 +2,9 @@ import { Controller, HttpCode, HttpException, HttpStatus, Post, UseInterceptors,
 import { ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ImagesService } from './images.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { MAX_IMAGE_FILE_SIZE_MB} from './constants'
+import { MAX_IMAGE_FILE_SIZE_MB} from '../../config/images_constants'
 import { uploadImagesBodySchema } from './docs/upload-images-body.schema'
+import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 
 @ApiTags('Images')
 @Controller('images')
@@ -24,10 +25,10 @@ export class ImagesController {
   saveImages(
     @UploadedFiles()
     files: Express.Multer.File[]
-  ) {
+  ):HttpJsonResult<string> {
     try {
       const paths: string[] = this.imagesService.getPathsToSavedImages(files);
-      return paths;
+      return { status: HttpJsonStatus.Ok, items: paths };
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }

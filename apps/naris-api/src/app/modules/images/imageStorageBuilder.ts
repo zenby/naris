@@ -3,7 +3,7 @@ import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
 import { diskStorage } from 'multer';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
-import { MAX_IMAGE_FILE_SIZE_MB } from './constants';
+import { MAX_IMAGE_FILE_SIZE_MB } from '../../config/images_constants';
 
 export function imageStorageBuilder(folderPath: string, maxFileSizeMB = MAX_IMAGE_FILE_SIZE_MB): MulterOptions {
   const limits: MulterOptions['limits'] = {

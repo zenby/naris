@@ -27,11 +27,11 @@ export class UserService {
     });
   }
 
-  async findByLogin(signInUserDto: LoginUserDto): Promise<UserEntity | Error> {
-    const user = await this.userRepository.findOne({ where: { login: signInUserDto.login } });
+  async findByLogin(login: string): Promise<UserEntity | Error> {
+    const user = await this.userRepository.findOne({ where: { login } });
 
     if (!user) {
-      return new NotFoundException(`User with login ${signInUserDto.login} not found`);
+      return new NotFoundException(`User with login ${login} not found`);
     }
 
     return user;

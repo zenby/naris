@@ -110,3 +110,7 @@ export const Primary = Template.bind({});
 Primary.args = {
   isMobileView: false
 };
+
+Primary.parameters = {
+  layout: 'fullscreen'
+}

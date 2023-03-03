@@ -3,11 +3,11 @@ import {
   Controller,
   Get,
   HttpException,
-  HttpStatus,
   InternalServerErrorException,
   Logger,
   Post,
   Res,
+  UnauthorizedException,
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
@@ -18,18 +18,13 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
-import {HttpJsonResult, HttpJsonStatus} from '@soer/sr-common-interfaces'
-
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { User } from '../common/decorators/user.decorator';
-import { UserEntity } from '../user/user.entity';
+import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { Configuration } from '../config/config';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
@@ -38,6 +33,9 @@ import { accessTokenSchema } from './doc/access_token.schema';
 import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
 import { responseErrorSchema } from './doc/response-error.schema';
 import { ValidationErrorHelper } from '../common/helpers/validation-error.helper';
+import { User } from '../common/decorators/user.decorator';
+import { UserEntity } from '../user/user.entity';
+import { RefreshCookieGuard } from '../common/guards/refreshCookie.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -47,20 +45,24 @@ export class AuthController {
   logger = new Logger(AuthController.name);
   internalErrorMessage = 'Something went wrong. Try it later';
 
-  @Get('access_token')
-  @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Get access token',
     description: 'Requires cookie with token, returns JWT access token',
   })
   @ApiOkResponse({ schema: accessTokenSchema })
-  @ApiResponse({ status: HttpStatus.FORBIDDEN })
+  @ApiUnauthorizedResponse({
+    description: 'Invalid or empty refresh token',
+  })
+  @UseGuards(RefreshCookieGuard)
+  @Get('access_token')
   async getAccessToken(@User() user: UserEntity): Promise<HttpJsonResult<{ accessToken: string }>> {
     try {
       const accessToken = await this.authService.getAccessToken(user);
 
-      return { status: HttpJsonStatus.Ok, items: [{ accessToken: accessToken }] };
+      return { status: HttpJsonStatus.Ok, items: [{ accessToken }] };
     } catch (e) {
+      if (e instanceof UnauthorizedException) throw e;
+
       this.logger.error(e);
 
       throw new InternalServerErrorException(this.internalErrorMessage);
@@ -103,11 +105,11 @@ export class AuthController {
   @ApiOkResponse({ schema: responseSchema })
   async signOut(@Res({ passthrough: true }) response: Response): Promise<HttpJsonResult<never>> {
     try {
-      const {cookieName} = this.configService.get<Configuration['jwt']>('jwt');
+      const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
 
       response.clearCookie(cookieName);
 
-      return {status: HttpJsonStatus.Ok, items: []};
+      return { status: HttpJsonStatus.Ok, items: [] };
     } catch (e) {
       this.logger.error(e);
 

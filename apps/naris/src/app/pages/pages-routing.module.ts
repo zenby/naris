@@ -6,21 +6,23 @@ import { StreamService } from '../api/streams/stream.service';
 import { TasksResolver } from '../api/tasks/tasks.resolver';
 import { WorkshopsService } from '../api/workshops/workshops.service';
 
-import { FilesListComponent } from './components/files-list/files-list.component';
+import { SourcesComponent } from './modules/sources/sources.component';
 import { NoContentComponent } from './dumb/no-content/no-content.component';
 import { AbstracteRoutingModule } from './modules/abstracte/abstracte-routing.module';
 import { WorkbookKey } from './modules/abstracte/abstracte.const';
 import { CertificateComponent } from './modules/certificate/certificate/certificate.component';
 import { ComposeVideoPlayerComponent } from './modules/compose-video-player/compose-video-player.component';
 import { OverviewRoutingModule } from './modules/overview/overview-routing.module';
-import { OverviewComponent } from './modules/overview/overview.component';
+// import { OverviewComponent } from './modules/overview/overview.component';
 import { PayFormComponent } from './modules/payment/pay-form/pay-form.component';
+import { ProfilePageComponent } from './modules/account-page/profile-page/profile-page.component';
 import { QuestionKey } from './modules/questions/questions.const';
 import { QuestionsRoutingModule } from './modules/questions/questions.routing.module';
 import { RoadmapComponent } from './modules/roadmap/roadmap.component';
 import { StreamsComponent } from './modules/streams/streams.component';
 import { TargetsRoutingModule } from './modules/targets/targets-routing.module';
 import { TargetKey, TemplateKey } from './modules/targets/targets.const';
+import { ComposeTabPageComponent } from './router-compose/compose-tab-page/compose-tab-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'prefix' },
@@ -93,11 +95,26 @@ const routes: Routes = [
   },
   {
     path: 'sources',
-    component: FilesListComponent,
+    component: SourcesComponent,
     data: { header: { title: 'Исходники проектов', subtitle: '' } },
     resolve: {
       webfiles: ByRoutePathResolver,
     },
+  },
+  {
+    path: 'account',
+    component: ComposeTabPageComponent,
+    data: { header: { title: 'Личный кабинет', subtitle: 'данные пользователя' } },
+    children: [
+      { path: '', redirectTo: 'profile', pathMatch: 'full' },
+      {
+        path: 'profile',
+        data: {
+          header: { title: 'Профиль', subtitle: 'основная информация' },
+        },
+        component: ProfilePageComponent,
+      },
+    ],
   },
 ];
 

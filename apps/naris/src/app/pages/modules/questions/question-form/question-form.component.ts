@@ -14,7 +14,7 @@ export class QuestionFormComponent {
   @Output() submitForm: EventEmitter<any> = new EventEmitter();
   form: UntypedFormGroup;
 
-  questionMaxLength: number = 1512;
+  questionMaxLength = 1512;
 
   constructor(
     @Inject('question') private questionId: BusEmitter,

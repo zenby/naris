@@ -1,4 +1,4 @@
-#### Conventional commits
+## Conventional commits
 
 Коммиты делаем малыми шагами, используя Conventional Commits.
 Язык для комментариев En или Ru.
@@ -8,7 +8,7 @@
  [optional body]  
  [optional footer(s)]  
 
-##### type
+### type
 
 Для автоматизированной обработки важно чтобы типы были стандартизированы, их можно расширять, но базовый набор содержит следующие: feat:, fix:, build:, chore:, ci:, docs:, style:, refactor:, perf:, test:;  
   
@@ -23,7 +23,7 @@
 *test* - изменения затрагивающие тесты и не влияющие на функциональность  
 *chore* - изменение, не подпадающее под перечисленные категории   
 
-##### description 
+### description 
 
 Хочу особо подчеркнуть одно важное правило: хорошее примечание к коммиту должно заканчивать следующее предложение: 
 «После применения данного коммита будет {{ текст вашего примечания }}». Например:
@@ -48,7 +48,7 @@ If applied, this commit will *remove deprecated methods*
 > 
 > *feat: добавлен сервис для конвертации md в pdf* - «После применения данного коммита будет Добавлен сервис для конвертации md в pdf»  
 
-#### План коммитов для фронтенд
+## План коммитов для фронтенд
 При добавлении новой фичи, план коммитов такой:
 
 1. Сначала делаем "простые" компоненты, которые зависят от входных параметров и содержат верстку, вносим их в сторибук;
@@ -59,7 +59,7 @@ If applied, this commit will *remove deprecated methods*
 6. Делаем коммит "feat: create page [...]"
 7. Вносим исправления в меню и дефолтные страницы
 8. Делаем коммит "feat: modify default [...]"
-#### Ветвление
+## Ветвление
 
 Что касается ветвления, придерживаемся подхода GitHub Flow. Прочитать можно на [SOER Media](https://s0er.ru/documents/workbook/3185) и [habr](https://habr.com/ru/post/346066/).
 
@@ -70,7 +70,7 @@ If applied, this commit will *remove deprecated methods*
 > test/[auth-service]/#108  
 > refactor/[auth-controller]/#109
   
-#### Политика слияния [Semi-linear merge](https://devblogs.microsoft.com/devops/pull-requests-with-rebase/)
+## Политика слияния [Semi-linear merge](https://devblogs.microsoft.com/devops/pull-requests-with-rebase/)
 
 ![semi linear](https://devblogs.microsoft.com/devops/wp-content/uploads/sites/6/2019/04/semilinear-1.gif)
 
@@ -80,7 +80,7 @@ If applied, this commit will *remove deprecated methods*
    
 Сочетает в себе лучшие из двух миров: отдельные коммиты сохраняются, чтобы мы могли видеть, как равивалась работа, но вместо простого ребейза у нас создается мерж коммит, чтобы мы могли увидеть начало и конец работы в каждом PR.
 
-##### Полезные ссылки:
+## Полезные ссылки:
 [SOER Media](https://s0er.ru/documents/workbook/3185)  
 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)  
 [How to Write a Git Commit Message](https://cbea.ms/git-commit/)  

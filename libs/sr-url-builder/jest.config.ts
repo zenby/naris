@@ -1,4 +1,3 @@
-/* eslint-disable */
 module.exports = {
   displayName: 'sr-url-builder',
   preset: '../../jest.preset.js',

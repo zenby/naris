@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'payment',
   preset: '../../jest.preset.js',

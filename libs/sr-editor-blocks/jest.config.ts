@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'sr-editor-blocks',
   preset: '../../jest.preset.js',

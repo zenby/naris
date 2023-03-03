@@ -1,4 +1,3 @@
-/* eslint-disable */
 module.exports = {
   displayName: 'sr-dto',
   preset: '../../jest.preset.js',

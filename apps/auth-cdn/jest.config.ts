@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'auth-cdn',
   preset: '../../jest.preset.js',

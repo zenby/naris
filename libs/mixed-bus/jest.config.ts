@@ -1,4 +1,3 @@
-/* eslint-disable */
 module.exports = {
   displayName: 'mixed-bus',
   preset: '../../jest.preset.js',

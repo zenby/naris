@@ -1,13 +1,11 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { BusEmitter, BusError, MixedBusService } from '@soer/mixed-bus';
-import { DataStoreService } from '@soer/sr-dto';
+import { BusError, MixedBusService } from '@soer/mixed-bus';
 import { NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
 import { NzSiderComponent } from 'ng-zorro-antd/layout';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { PersonalActivityService } from '../../api/progress/personal-activity.service';
 import { Visibility } from '../../api/targets/target.interface';
 import { ApplicationService } from '../../services/application.service';
 import { IMenuControl } from '../../services/menu/menu.interfaces';
@@ -38,15 +36,12 @@ export class DefaultComponent implements OnInit, OnDestroy {
   menuItems = MAIN_MENU;
 
   constructor(
-    @Inject('issues') private issuesId: BusEmitter,
     public app: ApplicationService,
     private router: Router,
     private route: ActivatedRoute,
     private bus$: MixedBusService,
-    private store$: DataStoreService,
     private message: NzMessageService,
     private breakpointService: NzBreakpointService,
-    private personalActivity: PersonalActivityService
   ) {}
 
   ngOnInit(): void {
@@ -127,9 +122,5 @@ export class DefaultComponent implements OnInit, OnDestroy {
     if (sider.matchBreakPoint) {
       sider.setCollapsed(true);
     }
-  }
-
-  onClose(): void {
-    console.log('CLOSE!!!');
   }
 }

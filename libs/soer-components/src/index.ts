@@ -11,4 +11,6 @@ export * from './lib/files-list/files-list.module';
 export * from './lib/files-list/files-list.model';
 export * from './lib/access-denied/access-denied.module';
 export * from './lib/under-development/under-development.module';
+export * from './lib/no-content/no-content.module';
+export * from './lib/no-content/no-content.component';
 export * from './lib/overlay/overlay.module';

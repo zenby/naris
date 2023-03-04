@@ -10,6 +10,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { ComposeIcontabsPageComponent } from './compose-icontabs-page/compose-icontabs-page.component';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { OverlayModule } from '@soer/soer-components';
 
 @NgModule({
   declarations: [ComposeOnePageComponent, ComposeTabPageComponent, ComposeIcontabsPageComponent],
@@ -22,6 +23,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     RouterModule,
     NzIconModule,
     NzButtonModule,
+    OverlayModule,
   ],
   exports: [[ComposeOnePageComponent, ComposeTabPageComponent, ComposeIcontabsPageComponent]],
 })

@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SrDTOModule } from '@soer/sr-dto';
+import { NoContentComponent } from '@soer/soer-components';
 import { ByRoutePathResolver } from '../api/by-route-path.resolver';
 import { StreamService } from '../api/streams/stream.service';
 import { WorkshopsService } from '../api/workshops/workshops.service';
 
 import { SourcesComponent } from './modules/sources/sources.component';
-import { NoContentComponent } from './dumb/no-content/no-content.component';
 import { AbstracteRoutingModule } from './modules/abstracte/abstracte-routing.module';
 import { WorkbookKey } from './modules/abstracte/abstracte.const';
 import { CertificateComponent } from './modules/certificate/certificate/certificate.component';

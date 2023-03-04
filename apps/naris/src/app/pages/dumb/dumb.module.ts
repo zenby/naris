@@ -6,20 +6,20 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { RouterModule } from '@angular/router';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NoContentComponent } from './no-content/no-content.component';
-import { AccessDeniedModule, OverlayModule } from '@soer/soer-components';
+import { AccessDeniedModule, OverlayModule, NoContentModule } from '@soer/soer-components';
 
 @NgModule({
-  declarations: [NoContentComponent, PreloaderComponent],
+  declarations: [PreloaderComponent],
   imports: [
+    AccessDeniedModule,
     CommonModule,
+    NoContentModule,
+    NzButtonModule,
     NzIconModule,
     NzResultModule,
-    NzButtonModule,
-    RouterModule,
     NzSpinModule,
-    AccessDeniedModule,
     OverlayModule,
+    RouterModule,
   ],
   exports: [PreloaderComponent],
 })

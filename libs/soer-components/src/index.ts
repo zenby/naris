@@ -10,3 +10,4 @@ export * from './lib/profile';
 export * from './lib/files-list/files-list.module';
 export * from './lib/files-list/files-list.model';
 export * from './lib/access-denied/access-denied.module';
+export * from './lib/under-development/under-development.module';

@@ -1,24 +1,22 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { moduleMetadata, Story, Meta } from '@storybook/angular';
 import { DefaultComponent } from './default.component';
 import { ANY_SERVICE, BusMessage } from '@soer/mixed-bus';
 import { JWTModel, SrAuthModule } from '@soer/sr-auth';
 import { DemoNgZorroAntdModule } from '../demo.module';
 import { PersonalActivityService } from '../../api/progress/personal-activity.service';
-import { DataStoreService, DtoPack, extractDtoPackFromBus, SrDTOModule } from '@soer/sr-dto';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DataStoreService, extractDtoPackFromBus, SrDTOModule } from '@soer/sr-dto';
 import { of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MobileMenuComponent } from './mobile-menu/mobile-menu.component';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApplicationService } from '../../services/application.service';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 const dataStoreServiceMock = {
   of: (manifestId?: any): Observable<BusMessage> => {
@@ -26,15 +24,15 @@ const dataStoreServiceMock = {
       owner: manifestId,
       params: {},
       payload: {
-        "status": "ok",
-        "items": [
+        'status': 'ok',
+        'items': [
           {
-            "email": "mock@gmail.com",
-            "firstName": "first name",
-            "lastName": "last name",
-            "role": "GUEST",
-            "expired": null,
-            "namespaces": []
+            'email': 'mock@gmail.com',
+            'firstName': 'first name',
+            'lastName': 'last name',
+            'role': 'PRO',
+            'expired': null,
+            'namespaces': []
           }
         ]
       },
@@ -44,17 +42,11 @@ const dataStoreServiceMock = {
 
 const applicationServiceMock = {
   user: {
-    id: "",
-    email: "",
-    role: ""
+    id: '',
+    email: '',
+    role: ''
   },
-  user$: extractDtoPackFromBus<JWTModel>(dataStoreServiceMock.of()).pipe(
-    tap(() => {
-      applicationServiceMock.user.id = "id";
-      applicationServiceMock.user.email = "email@gmail.com";
-      applicationServiceMock.user.role = "GUEST";
-    })
-  ),
+  user$: extractDtoPackFromBus<JWTModel>(dataStoreServiceMock.of())
 }
 
 export default {
@@ -62,7 +54,11 @@ export default {
   component: DefaultComponent,
   decorators: [
     moduleMetadata({
-      imports: [HttpClientModule, DemoNgZorroAntdModule, BrowserAnimationsModule, ScrollingModule, NoopAnimationsModule, NzLayoutModule, CommonModule, FormsModule, HttpClientTestingModule, RouterTestingModule, SrDTOModule, SrAuthModule],
+      imports: [
+        HttpClientModule, DemoNgZorroAntdModule, BrowserAnimationsModule,
+        NoopAnimationsModule, NzMenuModule, NzLayoutModule, CommonModule,
+        RouterTestingModule, SrDTOModule, SrAuthModule
+      ],
       declarations: [MobileMenuComponent],
       providers: [
         { provide: 'issues', useValue: ANY_SERVICE },

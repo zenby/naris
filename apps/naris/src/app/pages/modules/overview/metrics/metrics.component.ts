@@ -55,6 +55,7 @@ export class MetricsComponent {
       return length;
     };
 
+    // eslint-disable-next-line no-async-promise-executor
     this.metrics = new Promise(async (resolve) => {
       resolve([
         {

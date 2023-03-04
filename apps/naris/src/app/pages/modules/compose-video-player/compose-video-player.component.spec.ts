@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DumbModule } from '../../dumb/dumb.module';
+import { OverlayModule } from '@soer/soer-components';
 
 import { ComposeVideoPlayerComponent } from './compose-video-player.component';
 
@@ -12,7 +12,7 @@ describe('ComposeVideoPlayerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ComposeVideoPlayerComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, DumbModule],
+      imports: [HttpClientTestingModule, RouterTestingModule, OverlayModule],
     }).compileComponents();
   });
 

@@ -1,3 +1,4 @@
+import { OverlayModule } from '@angular/cdk/overlay';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -7,15 +8,6 @@ import { DumbModule } from '../../dumb/dumb.module';
 
 import { ComposeTabPageComponent } from './compose-tab-page.component';
 
-class MockNzMessageService {
-  error(msg: string): void {
-    // empty
-  }
-
-  success(msg: string): void {
-    // empty
-  }
-}
 describe('ComposeTabPageComponent', () => {
   let component: ComposeTabPageComponent;
   let fixture: ComponentFixture<ComposeTabPageComponent>;
@@ -23,8 +15,8 @@ describe('ComposeTabPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ComposeTabPageComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, NzTabsModule, DumbModule],
-      providers: [{ provide: NzMessageService, useClass: MockNzMessageService }],
+      imports: [HttpClientTestingModule, RouterTestingModule, NzTabsModule, DumbModule, OverlayModule],
+      providers: [NzMessageService],
     }).compileComponents();
   });
 

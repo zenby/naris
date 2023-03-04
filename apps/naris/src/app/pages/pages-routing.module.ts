@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { SrDTOModule } from '@soer/sr-dto';
 import { ByRoutePathResolver } from '../api/by-route-path.resolver';
 import { StreamService } from '../api/streams/stream.service';
-import { TasksResolver } from '../api/tasks/tasks.resolver';
 import { WorkshopsService } from '../api/workshops/workshops.service';
 
 import { SourcesComponent } from './modules/sources/sources.component';
@@ -180,7 +179,7 @@ const routes: Routes = [
     AbstracteRoutingModule,
     OverviewRoutingModule,
   ],
-  providers: [TasksResolver, StreamService, WorkshopsService, ByRoutePathResolver],
+  providers: [StreamService, WorkshopsService, ByRoutePathResolver],
   exports: [RouterModule],
 })
 export class PagesRoutingModule {}

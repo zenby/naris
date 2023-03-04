@@ -6,14 +6,14 @@ import { environment } from '../../../environments/environment';
 import { VideoModel } from '../streams/stream.model';
 
 @Injectable()
-export class WorkshopsService implements Resolve<any> {
+export class WorkshopsService implements Resolve<VideoModel> {
   constructor(private http: HttpClient) {}
 
-  getWorkshops(): Observable<any> {
+  getWorkshops(): Observable<VideoModel> {
     return this.http.get<VideoModel>(`${environment.host}/api/kinescope/workshops`);
     //return this.http.get<any>(environment.assetsUrl + 'workshops.json');
   }
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+  resolve(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<VideoModel> {
     return this.getWorkshops();
   }
 }

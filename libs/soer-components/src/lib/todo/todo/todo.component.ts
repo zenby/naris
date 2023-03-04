@@ -1,16 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'soer-todo',
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoComponent {
   @Input() label = '';
   @Input() checked = false;
   @Input() disabled = false;
-  
+
   public isUndo = false;
   @Output() update: EventEmitter<boolean> = new EventEmitter<boolean>();
 

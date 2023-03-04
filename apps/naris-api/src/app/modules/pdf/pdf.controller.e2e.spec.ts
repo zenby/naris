@@ -25,13 +25,9 @@ describe('PdfModule e2e-test', () => {
     it('should return the PDF file received from the passed content string', async () => {
       await supertest(app.getHttpServer())
         .post('/document/convertor/MdToPdf')
-        .send({ content: randomMd() })
+        .send({ content: faker.lorem.word() })
         .expect(HttpStatus.OK)
         .expect('Content-Type', 'application/pdf');
     });
   });
 });
-
-function randomMd() {
-  return faker.lorem.word();
-}

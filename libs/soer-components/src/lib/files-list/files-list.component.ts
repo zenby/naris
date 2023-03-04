@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { environment } from '../../../../environments/environment';
+import { Component, Input } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 type WebFile = {
@@ -17,20 +15,17 @@ type WebFile = {
   templateUrl: './files-list.component.html',
   styleUrls: ['./files-list.component.scss'],
 })
-export class FilesListComponent implements OnInit {
-  webFiles: WebFile[] = [];
+export class FilesListComponent {
+  @Input() webFiles: WebFile[] = [];
+  @Input() assetsUrl = '';
 
-  constructor(private route: ActivatedRoute, private message: NzMessageService) {}
+  constructor(private message: NzMessageService) {}
 
-  ngOnInit(): void {
-    this.webFiles = this.route.snapshot.data['webfiles'];
-  }
-
-  url(file: string, level: string): string {
+  getUrl(file: string, level: string): string {
     if (file.match(/^http[s]?:/)) {
       return file;
     }
-    return `${environment.assetsUrl}${level}/${file}`;
+    return `${this.assetsUrl}${level}/${file}`;
   }
 
   download(event: Event, file: WebFile): void {

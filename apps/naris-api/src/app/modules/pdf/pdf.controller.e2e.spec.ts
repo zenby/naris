@@ -1,16 +1,16 @@
-import { PdfModule } from "./pdf.module";
-import {HttpStatus, INestApplication} from "@nestjs/common";
-import * as supertest from "supertest";
+import { PdfModule } from './pdf.module';
+import { HttpStatus, INestApplication } from '@nestjs/common';
+import * as supertest from 'supertest';
 
-import {Test, TestingModule} from '@nestjs/testing';
-import {faker} from "@faker-js/faker";
+import { Test, TestingModule } from '@nestjs/testing';
+import { faker } from '@faker-js/faker';
 
 describe('PdfModule e2e-test', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-     imports: [PdfModule]
+      imports: [PdfModule],
     }).compile();
 
     app = module.createNestApplication();
@@ -22,20 +22,16 @@ describe('PdfModule e2e-test', () => {
   });
 
   describe('POST /document/convertor/MdToPdf', () => {
-    it('should return a response with buffer type', async () => {
-      const pdfBuffer = createFakePDFBuffer();
-
+    it('should return the PDF file received from the passed content string', async () => {
       await supertest(app.getHttpServer())
         .post('/document/convertor/MdToPdf')
-        .send({content: pdfBuffer.content})
+        .send({ content: randomMd() })
         .expect(HttpStatus.OK)
-        .responseType("Buffer")
-    })
-  })
+        .expect('Content-Type', 'application/pdf');
+    });
+  });
 });
 
-function createFakePDFBuffer() {
-  return {
-    content: faker.lorem.word(),
-  };
+function randomMd() {
+  return faker.lorem.word();
 }

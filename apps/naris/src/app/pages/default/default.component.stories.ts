@@ -24,30 +24,30 @@ const dataStoreServiceMock = {
       owner: manifestId,
       params: {},
       payload: {
-        'status': 'ok',
-        'items': [
+        status: 'ok',
+        items: [
           {
-            'email': 'mock@gmail.com',
-            'firstName': 'first name',
-            'lastName': 'last name',
-            'role': 'PRO',
-            'expired': null,
-            'namespaces': []
-          }
-        ]
+            email: 'mock@gmail.com',
+            firstName: 'first name',
+            lastName: 'last name',
+            role: 'PRO',
+            expired: null,
+            namespaces: [],
+          },
+        ],
       },
     });
-  }
+  },
 };
 
 const applicationServiceMock = {
   user: {
     id: '',
     email: '',
-    role: ''
+    role: '',
   },
-  user$: extractDtoPackFromBus<JWTModel>(dataStoreServiceMock.of())
-}
+  user$: extractDtoPackFromBus<JWTModel>(dataStoreServiceMock.of()),
+};
 
 export default {
   title: 'DefaultComponent',
@@ -55,9 +55,16 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [
-        HttpClientModule, DemoNgZorroAntdModule, BrowserAnimationsModule,
-        NoopAnimationsModule, NzMenuModule, NzLayoutModule, CommonModule,
-        RouterTestingModule, SrDTOModule, SrAuthModule
+        HttpClientModule,
+        DemoNgZorroAntdModule,
+        BrowserAnimationsModule,
+        NoopAnimationsModule,
+        NzMenuModule,
+        NzLayoutModule,
+        CommonModule,
+        RouterTestingModule,
+        SrDTOModule,
+        SrAuthModule,
       ],
       declarations: [MobileMenuComponent],
       providers: [
@@ -68,16 +75,14 @@ export default {
           provide: APP_BASE_HREF,
           useValue: '/',
         },
-        {  provide: ApplicationService,
-          useValue: applicationServiceMock
-        },
+        { provide: ApplicationService, useValue: applicationServiceMock },
         {
           provide: PersonalActivityService,
-          useValue: {}
+          useValue: {},
         },
         {
           provide: DataStoreService,
-          useValue: dataStoreServiceMock
+          useValue: dataStoreServiceMock,
         },
         {
           provide: ActivatedRoute,
@@ -85,12 +90,12 @@ export default {
             children: [],
             snapshot: {
               data: {
-                'header': {
-                  'title': 'title',
-                  'subtitle': 'subtitle'
-                }
-              }
-            }
+                header: {
+                  title: 'title',
+                  subtitle: 'subtitle',
+                },
+              },
+            },
           },
         },
       ],
@@ -104,9 +109,9 @@ const Template: Story<DefaultComponent> = (args: DefaultComponent) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-  isMobileView: false
+  isMobileView: false,
 };
 
 Primary.parameters = {
-  layout: 'fullscreen'
-}
+  layout: 'fullscreen',
+};

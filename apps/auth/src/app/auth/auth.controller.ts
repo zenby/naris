@@ -82,11 +82,11 @@ export class AuthController {
   @ApiNotFoundResponse({ schema: responseErrorSchema('User with login ... not found') })
   @ApiUnauthorizedResponse({ schema: responseErrorSchema('Invalid password') })
   async signIn(
-    @Req() req,
+    @Req() { user },
     @Res({ passthrough: true }) response: Response
   ): Promise<HttpJsonResult<string>> {
     try {
-      const refreshToken = await this.authService.signIn(req.user);
+      const refreshToken = await this.authService.getRefreshToken(user);
 
       if (refreshToken instanceof Error) {
         return { status: HttpJsonStatus.Error, items: [refreshToken.message] };

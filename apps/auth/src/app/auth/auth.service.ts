@@ -17,14 +17,6 @@ export class AuthService {
     private readonly userService: UserService
   ) {}
 
-  async signIn(user: UserEntity | Error): Promise<string | Error> {
-    if (user instanceof Error) {
-      return user;
-    }
-
-    return await this.getRefreshToken(user);
-  }
-
   async signUp(createUserDto: CreateUserDto) {
     return await this.userService.createUser(createUserDto);
   }
@@ -35,7 +27,11 @@ export class AuthService {
     return this.jwtService.signAsync({ id: user.id, uuid: user.uuid, email: user.email }, { secret, expiresIn });
   }
 
-  async getRefreshToken(user: UserEntity): Promise<string> {
+  async getRefreshToken(user: UserEntity): Promise<string | Error> {
+    if (user instanceof Error) {
+      return user;
+    }
+
     const { jwtSecret: secret, expiresInRefresh: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
 
     return await this.jwtService.signAsync({ userId: user.id, userEmail: user.email }, { secret, expiresIn });

@@ -9,7 +9,6 @@ import { IconsProviderModule } from '../../icons-provider.module';
 import { DefaultComponent } from './default/default.component';
 import { MobileMenuComponent } from './default/mobile-menu/mobile-menu.component';
 import { DemoNgZorroAntdModule } from './demo.module';
-import { DumbModule } from './dumb/dumb.module';
 import { AbstracteModule } from './modules/abstracte/abstracte.module';
 import { CertificateModule } from './modules/certificate/certificate.module';
 import { ComposeVideoPlayerComponent } from './modules/compose-video-player/compose-video-player.component';
@@ -28,7 +27,6 @@ import { SourcesModule } from './modules/sources/sources.module';
 @NgModule({
   imports: [
     CommonModule,
-    DumbModule,
     AccessDeniedModule,
     PagesRoutingModule,
     FormsModule,

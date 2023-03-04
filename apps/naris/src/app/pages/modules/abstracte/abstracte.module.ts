@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { PreloaderModule } from '@soer/soer-components';
 import { SrDTOModule } from '@soer/sr-dto';
 import { SrEditorModule } from '@soer/sr-editor';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
@@ -17,7 +18,6 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { MarkdownModule } from 'ngx-markdown';
-import { DumbModule } from '../../dumb/dumb.module';
 import { EditAbstracteFormComponent } from './edit-abstracte-form/edit-abstracte-form.component';
 import { EditAbstractePageComponent } from './edit-abstracte-page/edit-abstracte-page.component';
 import { ListAbstractePageComponent } from './list-abstracte-page/list-abstracte-page.component';
@@ -31,6 +31,7 @@ import { ViewAbstractePageComponent } from './view-abstracte-page/view-abstracte
     EditAbstracteFormComponent,
   ],
   imports: [
+    PreloaderModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -47,7 +48,6 @@ import { ViewAbstractePageComponent } from './view-abstracte-page/view-abstracte
     NzFormModule,
     NzInputModule,
     NzPopconfirmModule,
-    DumbModule,
     RouterModule,
     MarkdownModule.forRoot(),
     SrDTOModule,

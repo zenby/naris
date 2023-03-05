@@ -1,6 +1,8 @@
+import { compare } from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+
 import { Configuration } from '../config/config';
 import { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
@@ -56,5 +58,32 @@ export class AuthService {
 
       throw error;
     }
+  }
+
+
+  async validateUser(login: string, password: string): Promise<any> {
+    const user = await this.userService.findByLogin(login);
+
+    if (user instanceof Error) {
+      return user;
+    }
+
+    const isPasswordsMatch = await this.compareUsersByPassword(password , user);
+
+    if (isPasswordsMatch instanceof Error) {
+      return isPasswordsMatch;
+    }
+
+    return user;
+  }
+
+  async compareUsersByPassword(password, userFromDb: UserEntity): Promise<boolean | Error> {
+    const isPasswordsMatch = await compare(password, userFromDb.password);
+
+    if (!isPasswordsMatch) {
+      return new UnauthorizedException('Invalid password');
+    }
+
+    return true;
   }
 }

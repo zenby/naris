@@ -27,7 +27,7 @@ export class AuthService {
     return this.jwtService.signAsync({ id: user.id, uuid: user.uuid, email: user.email }, { secret, expiresIn });
   }
 
-  async getRefreshToken(user: UserEntity): Promise<string | Error> {
+  async getRefreshToken(user: UserEntity | Error): Promise<string | Error> {
     if (user instanceof Error) {
       return user;
     }
@@ -60,8 +60,7 @@ export class AuthService {
     }
   }
 
-
-  async validateUser(login: string, password: string): Promise<any> {
+  async validateUser(login: string, password: string): Promise<UserEntity | Error> {
     const user = await this.userService.findByLogin(login);
 
     if (user instanceof Error) {

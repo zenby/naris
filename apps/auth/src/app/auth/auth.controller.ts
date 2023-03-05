@@ -81,7 +81,7 @@ export class AuthController {
   @ApiNotFoundResponse({ schema: responseErrorSchema('User with login ... not found') })
   @ApiUnauthorizedResponse({ schema: responseErrorSchema('Invalid password') })
   async signIn(
-    @User() user,
+    @User() user: UserEntity | Error,
     @Res({ passthrough: true }) response: Response
   ): Promise<HttpJsonResult<string>> {
     try {

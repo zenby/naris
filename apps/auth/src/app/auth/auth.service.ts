@@ -57,4 +57,13 @@ export class AuthService {
 
     return true;
   }
+
+  async authByOID(email: string): Promise<UserEntity | Error> {
+    const user = await this.userService.findByEmail(email);
+    if (user instanceof UserEntity) return user;
+    const login = email.split('@')[0];
+    const newUserDto: CreateUserDto = {login: login, email: email, password: ''};
+    return await this.userService.createUser(newUserDto)
+  }
+
 }

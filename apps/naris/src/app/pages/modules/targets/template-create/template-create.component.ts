@@ -38,7 +38,7 @@ export class TemplateCreateComponent {
     );
   }
 
-  createTemplate(title: any, overview: any, template: TemplateModel): void {
+  createTemplate(title: HTMLInputElement, overview: HTMLTextAreaElement, template: TemplateModel): void {
     template.title = title.value;
     template.overview = overview.value;
 

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { provideProtractorTestingSupport } from '@angular/platform-browser';
 import { AimModel, EMPTY_AIM } from '../interfaces/aim.model';
 
 @Component({

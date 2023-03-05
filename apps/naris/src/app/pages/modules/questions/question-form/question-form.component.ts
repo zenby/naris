@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { convertToJsonDTO } from '../../../../api/json.dto.helpers';
+import { ActivatedRoute } from '@angular/router';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
 import { CommandCreate, CommandUpdate } from '@soer/sr-dto';
-import { ActivatedRoute } from '@angular/router';
+import { convertToJsonDTO } from '../../../../api/json.dto.helpers';
 
 @Component({
   selector: 'soer-question-form',
@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./question-form.component.scss'],
 })
 export class QuestionFormComponent {
-  @Output() submitForm: EventEmitter<any> = new EventEmitter();
+  @Output() submitForm: EventEmitter<SubmitEvent> = new EventEmitter();
   form: UntypedFormGroup;
 
   questionMaxLength = 1512;

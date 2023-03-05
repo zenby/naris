@@ -14,7 +14,6 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { TileModule } from '@soer/soer-components';
 import { ByRoutePathResolver } from '../../../api/by-route-path.resolver';
 import { StreamService } from '../../../api/streams/stream.service';
-import { TasksResolver } from '../../../api/tasks/tasks.resolver';
 import { WorkshopsService } from '../../../api/workshops/workshops.service';
 
 import { OverviewComponent } from './overview.component';
@@ -40,7 +39,7 @@ import { MetricsListComponent } from './metrics/metrics-list/metrics-list.compon
     NzGridModule,
     NzTypographyModule,
   ],
-  providers: [TasksResolver, StreamService, WorkshopsService, ByRoutePathResolver],
+  providers: [StreamService, WorkshopsService, ByRoutePathResolver],
   exports: [],
 })
 export class OverviewModule {}

@@ -1,5 +1,10 @@
 # Монорепозиторий Soer Open Source
 
+[![CI](https://github.com/zenby/naris/actions/workflows/test.yml/badge.svg)](https://github.com/zenby/naris/actions/workflows/test.yml)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/78542e1b-51fe-4d2c-a604-a36e75306933/deploy-status)](https://app.netlify.com/sites/lovely-flan-99671a/deploys)
+
+---
+
 Репозиторий создан для организации совместной разработки участников проекта soer.pro
 
 ### Install

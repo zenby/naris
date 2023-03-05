@@ -38,6 +38,7 @@ import { accessTokenSchema } from './doc/access_token.schema';
 import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
 import { responseErrorSchema } from './doc/response-error.schema';
 import { ValidationErrorHelper } from '../common/helpers/validation-error.helper';
+import { YandexAuthGuard } from '../common/guards/yandex-auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -145,5 +146,21 @@ export class AuthController {
 
       throw new InternalServerErrorException(this.internalErrorMessage);
     }
+  }
+
+  @Get('yandex/signin')
+  @UseGuards(YandexAuthGuard)
+  async yandexSignIn(){
+    return;
+  }
+
+  @Get('yandex/callback')
+  @UseGuards(YandexAuthGuard)
+  async yandexCallback(@User() user: UserEntity, @Res({passthrough: true}) response: Response): Promise<HttpJsonResult<string>>  {
+    const refreshToken = await this.authService.getRefreshToken(user);
+    const {cookieName} = this.configService.get<Configuration['jwt']>('jwt');
+    // sameSite & secure  for firefox https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
+    response.cookie(cookieName, refreshToken, { httpOnly: true, sameSite: 'none', secure: true });
+    return {status: HttpJsonStatus.Ok, items: []};
   }
 }

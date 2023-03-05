@@ -1,4 +1,18 @@
 /* eslint-disable */
+
+const fixForImportMetaError = {
+  diagnostics: {
+    ignoreCodes: [1343],
+  },
+  astTransformers: {
+    before: [
+      {
+        path: 'ts-jest-mock-import-meta',
+      },
+    ],
+  },
+};
+
 export default {
   displayName: 'sr-editor-blocks',
   preset: '../../jest.preset.js',
@@ -7,6 +21,7 @@ export default {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
       stringifyContentPathRegex: '\\.(html|svg)$',
+      ...fixForImportMetaError,
     },
   },
   coverageDirectory: '../../coverage/libs/sr-editor-blocks',

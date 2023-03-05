@@ -1,16 +1,17 @@
-import { TargetsListComponent } from "./targets-list.component";
-import { Story, Meta, moduleMetadata } from '@storybook/angular';
-import { TileModule } from "@soer/soer-components";
-import { NzGridModule } from "ng-zorro-antd/grid";
+import { RouterModule } from '@angular/router';
+import { TileModule } from '@soer/soer-components';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { TargetsListComponent } from './targets-list.component';
 
 export default {
   title: 'TargetsListComponent',
   component: TargetsListComponent,
   decorators: [
     moduleMetadata({
-      imports: [TileModule, NzGridModule]
-    })
-  ]
+      imports: [RouterModule.forRoot([], { useHash: true }), TileModule, NzGridModule],
+    }),
+  ],
 } as Meta<TargetsListComponent>;
 
 const Template: Story<TargetsListComponent> = (args: TargetsListComponent) => ({
@@ -35,15 +36,15 @@ Primary.args = {
         overview: '',
         progress: 48,
         tasks: [],
-      }
-    ]
-  }
+      },
+    ],
+  },
 };
 
 export const TargetsEmpty = Template.bind({});
 TargetsEmpty.args = {
   targets: {
     status: 'ok',
-    items: []
-  }
-}
+    items: [],
+  },
+};

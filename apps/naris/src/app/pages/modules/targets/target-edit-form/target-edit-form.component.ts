@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Inject, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, Input, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { convertToJsonDTO } from '../../../../api/json.dto.helpers';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 export class TargetEditFormComponent implements AfterViewInit {
   @Input() title = '';
   @Input() overview = '';
-  @ViewChild('titleElem') titleElem: any;
+  @ViewChild('titleElem') titleElem!: ElementRef;
 
   log = console.log;
   form: UntypedFormGroup;

@@ -3,15 +3,14 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { BusEmitter, BusMessage } from '@soer/mixed-bus';
 import { DataStoreService, DtoPack } from '@soer/sr-dto';
 import { WorkbookModel } from '@soer/sr-editor';
-import { Observable, of } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
+import { MetricModel } from '../../../../api/metrics/metric.model';
 import { PersonalActivityService, VideoIdModel } from '../../../../api/progress/personal-activity.service';
 import { QuestionModel } from '../../../../api/questions/question.model';
 import { VideoModel } from '../../../../api/streams/stream.model';
 import { TargetModel } from '../../../../api/targets/target.interface';
-import { firstValueFrom} from 'rxjs';
-import { MetricModel } from '../../../../api/metrics/metric.model';
 
 @Component({
   selector: 'soer-metrics',
@@ -56,6 +55,7 @@ export class MetricsComponent {
       return length;
     };
 
+    // eslint-disable-next-line no-async-promise-executor
     this.metrics = new Promise(async (resolve) => {
       resolve([
         {
@@ -102,6 +102,6 @@ export class MetricsComponent {
           url: '#!/pages/sources',
         },
       ]);
-    })
+    });
   }
 }

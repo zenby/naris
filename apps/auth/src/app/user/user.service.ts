@@ -27,6 +27,12 @@ export class UserService {
     });
   }
 
+  async createOAuthUser(email: string): Promise<UserEntity | Error> {
+    const login = email.split('@')[0];
+    const newUser: CreateUserDto = {login: login, email: email, password: ''};
+    return await this.createUser(newUser);
+  }
+
   async findByLogin(signInUserDto: LoginUserDto): Promise<UserEntity | Error> {
     const user = await this.userRepository.findOne({ where: { login: signInUserDto.login } });
 
@@ -46,4 +52,15 @@ export class UserService {
 
     return user;
   }
+
+  async findByEmail(email: string): Promise<UserEntity | Error> {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      return new NotFoundException(`User not found`);
+    }
+
+    return user;
+  }
+
 }

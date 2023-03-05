@@ -1,7 +1,7 @@
-import { PreloaderService } from './../../../../services/preloader.service';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
+import { PreloaderService } from '@soer/soer-components';
 import {
   CommandConvertMdToPdf,
   CommandDelete,

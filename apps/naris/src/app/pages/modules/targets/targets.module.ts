@@ -15,7 +15,6 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-import { DumbModule } from '../../dumb/dumb.module';
 import { ListTargetsPageComponent } from './list-targets-page/list-targets-page.component';
 import { ListTemplatesPageComponent } from './list-templates-page/list-templates-page.component';
 
@@ -81,7 +80,6 @@ import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
     NzSwitchModule,
     NzListModule,
     NzEmptyModule,
-    DumbModule,
     RouterModule,
     SrDTOModule,
     InlineEditorModule,

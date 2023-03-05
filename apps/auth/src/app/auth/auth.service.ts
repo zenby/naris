@@ -18,7 +18,7 @@ export class AuthService {
   ) {}
 
   async signIn(signInUserDto: LoginUserDto): Promise<string | Error> {
-    const user = await this.userService.findByLogin(signInUserDto);
+    const user = await this.userService.findByLogin(signInUserDto.login);
 
     if (user instanceof Error) {
       return user;

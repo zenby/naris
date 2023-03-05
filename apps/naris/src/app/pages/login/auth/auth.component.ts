@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '@soer/sr-auth';
 
 @Component({
   selector: 'soer-auth',
@@ -8,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AuthComponent implements OnInit {
   private jwt: string | null = null;
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private readonly authService: AuthService) {}
 
   ngOnInit(): void {
     this.jwt = this.route.snapshot.queryParams?.['jwt'] ?? null;
@@ -18,7 +19,7 @@ export class AuthComponent implements OnInit {
   checkJWT(token: string | null): void {
     if (token) {
       this.jwt = token;
-      localStorage.setItem('token', this.jwt);
+      this.authService.updateToken(this.jwt);
       this.redirectToHome();
       return;
     }

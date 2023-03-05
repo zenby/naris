@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PreloaderService } from './../../../services/preloader.service';
+import { PreloaderService } from './preloader.service';
 
 @Component({
   selector: 'soer-preloader',

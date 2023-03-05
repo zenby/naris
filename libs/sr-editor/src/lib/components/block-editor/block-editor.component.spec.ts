@@ -43,9 +43,9 @@ describe('BlockEditorComponent', () => {
 
   describe('command', () => {
     const multilineTextProviders = [
-      { lineBreakSymbol: '\\n', multiLineText: faker.random.words(2).replaceAll(' ', '\n') },
-      { lineBreakSymbol: '\\r', multiLineText: faker.random.words(3).replaceAll(' ', '\r') },
-      { lineBreakSymbol: '\\r\\n', multiLineText: faker.random.words(4).replaceAll(' ', '\r\n') },
+      { lineBreakSymbol: '\\n', multiLineText: faker.random.words(2).replace(/ /g, '\n') },
+      { lineBreakSymbol: '\\r', multiLineText: faker.random.words(3).replace(/ /g, '\r') },
+      { lineBreakSymbol: '\\r\\n', multiLineText: faker.random.words(4).replace(/ /g, '\r\n') },
     ];
 
     beforeEach(() => {
@@ -278,7 +278,7 @@ describe('BlockEditorComponent', () => {
     });
 
     function createMultiLineText() {
-      return faker.random.words(5).replaceAll(' ', '\n');
+      return faker.random.words(5).replace(/ /g, '\n');
     }
 
     function getSecondLineCursorPosition(multiLineText: string) {

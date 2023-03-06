@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { validate } from 'class-validator';
 import { ValidationErrorHelper } from '../common/helpers/validation-error.helper';
-import { CreateOpenIdUserDto } from './dto/create-open-id-user.dto';
+import { CreateUserOpenIdDto } from './dto/create-user-open-id.dto';
 
 @Injectable()
 export class UserService {
@@ -27,7 +27,7 @@ export class UserService {
     });
   }
 
-  async createOpenIdUser(createUserDto: CreateOpenIdUserDto): Promise<UserEntity | Error> {
+  async createUserByOpenId(createUserDto: CreateUserOpenIdDto): Promise<UserEntity | Error> {
     const newUser = new UserEntity();
 
     Object.assign(newUser, createUserDto);

@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import {
   Body,
   Controller,
@@ -22,11 +23,10 @@ import {
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { Response } from 'express';
+
 import { AuthService } from './auth.service';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { Configuration } from '../config/config';
-import { LoginUserDto } from '../user/dto/login-user.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { responseSchema } from './doc/response.schema';
 import { accessTokenSchema } from './doc/access_token.schema';
@@ -36,6 +36,7 @@ import { ValidationErrorHelper } from '../common/helpers/validation-error.helper
 import { User } from '../common/decorators/user.decorator';
 import { UserEntity } from '../user/user.entity';
 import { RefreshCookieGuard } from '../common/guards/refreshCookie.guard';
+import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -70,6 +71,7 @@ export class AuthController {
   }
 
   @Post('signin')
+  @UseGuards(LocalAuthGuard)
   @UsePipes(BackendValidationPipe)
   @ApiOperation({
     summary: 'Login',
@@ -79,11 +81,11 @@ export class AuthController {
   @ApiNotFoundResponse({ schema: responseErrorSchema('User with login ... not found') })
   @ApiUnauthorizedResponse({ schema: responseErrorSchema('Invalid password') })
   async signIn(
-    @Body() signInUserDto: LoginUserDto,
+    @User() user: UserEntity | Error,
     @Res({ passthrough: true }) response: Response
   ): Promise<HttpJsonResult<string>> {
     try {
-      const refreshToken = await this.authService.signIn(signInUserDto);
+      const refreshToken = await this.authService.getRefreshToken(user);
 
       if (refreshToken instanceof Error) {
         return { status: HttpJsonStatus.Error, items: [refreshToken.message] };

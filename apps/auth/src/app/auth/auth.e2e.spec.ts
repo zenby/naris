@@ -1,17 +1,18 @@
+import * as supertest from 'supertest';
+import * as cookieParser from 'cookie-parser';
+import * as jwt from 'jsonwebtoken';
+import { Repository } from 'typeorm';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import * as supertest from 'supertest';
-import { LoginUserDto } from '../user/dto/login-user.dto';
 import { ConfigService } from '@nestjs/config';
-import { Configuration } from '../config/config';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { UserEntity } from '../user/user.entity';
-import { Repository } from 'typeorm';
+
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
-import { CreateUserDto } from '../user/dto/create-user.dto';
 import { AuthModule } from './auth.module';
-import * as jwt from 'jsonwebtoken';
-import * as cookieParser from 'cookie-parser';
+import { LoginUserDto } from '../user/dto/login-user.dto';
+import { Configuration } from '../config/config';
+import { UserEntity } from '../user/user.entity';
+import { CreateUserDto } from '../user/dto/create-user.dto';
 
 describe('Auth e2e-test', () => {
   let app: INestApplication;

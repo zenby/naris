@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ANY_SERVICE, MixedBusModule } from '@soer/mixed-bus';
+import { PreloaderModule } from '@soer/soer-components';
 import { SrDTOModule } from '@soer/sr-dto';
 import { ApplicationService } from '../../../../services/application.service';
-import { DumbModule } from '../../../dumb/dumb.module';
 
 import { ListAbstractePageComponent } from './list-abstracte-page.component';
 
@@ -15,8 +15,9 @@ describe('ListAbstractePageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ListAbstractePageComponent],
-      imports: [RouterTestingModule, DumbModule, MixedBusModule, SrDTOModule],
+      imports: [RouterTestingModule, MixedBusModule, SrDTOModule],
       providers: [
+        PreloaderModule,
         { provide: ApplicationService, useValue: {} },
         {
           provide: ActivatedRoute,

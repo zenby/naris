@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { DumbModule } from '../../dumb/dumb.module';
 
 import { ComposeTabPageComponent } from './compose-tab-page.component';
 
@@ -15,7 +14,7 @@ describe('ComposeTabPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ComposeTabPageComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, NzTabsModule, DumbModule, OverlayModule],
+      imports: [HttpClientTestingModule, RouterTestingModule, NzTabsModule, OverlayModule],
       providers: [NzMessageService],
     }).compileComponents();
   });

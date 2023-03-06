@@ -1,4 +1,4 @@
-﻿import { Controller, Get, UseGuards, Logger, UsePipes, Res, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, UseGuards, Logger, UsePipes, Res, InternalServerErrorException } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
 import { GoogleAuthGuard } from '../common/guards/google-auth.guard';

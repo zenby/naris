@@ -4,16 +4,16 @@ import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
 import { GoogleAuthGuard } from '../common/guards/google-auth.guard';
 import { User } from '../common/decorators/user.decorator';
 import { ConfigService } from '@nestjs/config';
-import { AuthService } from '../auth/auth.service';
 import { UserEntity } from '../user/user.entity';
 import { Configuration } from '../config/config';
 import { Response } from 'express';
 import { HttpJsonStatus } from '@soer/sr-common-interfaces';
+import { AuthOpenIdService } from './auth.openid.service';
 
 @ApiTags('auth/login')
 @Controller('auth/login')
 export class AuthOpenIdController {
-  constructor(private readonly authService: AuthService, private readonly configService: ConfigService) {}
+  constructor(private readonly authService: AuthOpenIdService, private readonly configService: ConfigService) {}
 
   logger = new Logger(AuthOpenIdController.name);
   internalErrorMessage = 'Something went wrong. Try it later';
@@ -25,7 +25,9 @@ export class AuthOpenIdController {
     summary: 'Login in google',
     description: "Requires body { login, password }. Returns HTTP_ONLY cookie['refresh_token']",
   })
-  googleLogin() {}
+  googleLogin() {
+    return { status: HttpJsonStatus.Ok, items: [] };
+  }
 
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)

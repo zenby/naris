@@ -5,29 +5,12 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { validate } from 'class-validator';
 import { ValidationErrorHelper } from '../common/helpers/validation-error.helper';
-import { CreateUserOpenIdDto } from './dto/create-user-open-id.dto';
 
 @Injectable()
 export class UserService {
   constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity | Error> {
-    const newUser = new UserEntity();
-
-    Object.assign(newUser, createUserDto);
-
-    const errors = await validate(newUser);
-
-    if (errors?.length > 0) {
-      return new UnprocessableEntityException(ValidationErrorHelper.errorsToString(errors));
-    }
-
-    return await this.userRepository.save(newUser).catch(() => {
-      return new UnprocessableEntityException(`User with email ${newUser.email} has been already exist`);
-    });
-  }
-
-  async createUserByOpenId(createUserDto: CreateUserOpenIdDto): Promise<UserEntity | Error> {
     const newUser = new UserEntity();
 
     Object.assign(newUser, createUserDto);

@@ -3,8 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
-import { CreateUserOpenIdDto } from '../user/dto/create-user-open-id.dto';
 import { Configuration } from '../config/config';
+import { CreateUserDto } from '../user/dto/create-user.dto';
 
 @Injectable()
 export class AuthOpenIdService {
@@ -17,11 +17,13 @@ export class AuthOpenIdService {
   async authByOpenID(email: string): Promise<UserEntity | Error> {
     let user = await this.userService.findByEmail(email);
     if (user instanceof NotFoundException) {
-      const createUserDto: CreateUserOpenIdDto = {
+      const createUserDto: CreateUserDto = {
+        login: email,
         email: email,
+        password: '',
       };
 
-      user = await this.userService.createUserByOpenId(createUserDto);
+      user = await this.userService.createUser(createUserDto);
     }
 
     return user;

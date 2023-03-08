@@ -31,7 +31,7 @@ export class UserEntity {
 
   @BeforeInsert()
   async hashPassword() {
-    if (!this.password) return;
+    if (this.password === '') return;
     const salt = await genSalt();
     this.password = await hash(this.password, salt);
   }

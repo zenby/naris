@@ -17,3 +17,4 @@ export * from './lib/no-content/no-content.component';
 export * from './lib/overlay/overlay.module';
 export * from './lib/preloader/preloader.module';
 export * from './lib/preloader/preloader.service';
+export * from './lib/demo-ng-zorro-antd/demo-ng-zorro-antd.module';

@@ -1,8 +1,8 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { moduleMetadata, Story, Meta } from '@storybook/angular';
-import { DemoNgZorroAntdModule } from '../../../demo.module';
 import { InfoComponent } from './info.component';
+import {DemoNgZorroAntdModule} from "@soer/soer-components";
 
 export default {
   title: 'InfoComponent',

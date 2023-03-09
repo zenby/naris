@@ -8,7 +8,6 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { QuestionFormComponent } from './question-form/question-form.component';
 import { QuestionRulesComponent } from './question-rules/question-rules.component';
-import { DumbModule } from '../../dumb/dumb.module';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { RouterModule } from '@angular/router';
 import { ListQuestionsPageComponent } from './list-questions-page/list-questions-page.component';
@@ -60,7 +59,6 @@ import { AudioPlayerModule } from '@soer/soer-components';
     NzMessageModule,
     NzDrawerModule,
     NzTabsModule,
-    DumbModule,
     RouterModule,
     NzListModule,
     NzTypographyModule,

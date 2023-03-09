@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ANY_SERVICE } from '@soer/mixed-bus';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { DumbModule } from '../../../dumb/dumb.module';
 
 import { TaskEditFormComponent } from './task-edit-form.component';
 
@@ -14,7 +13,7 @@ describe('TaskEditFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TaskEditFormComponent],
-      imports: [RouterTestingModule, DumbModule, NzEmptyModule],
+      imports: [RouterTestingModule, NzEmptyModule],
       providers: [
         { provide: ActivatedRoute, useValue: { snapshot: { data: { target: ANY_SERVICE } } } },
         { provide: 'target', useValue: ANY_SERVICE },

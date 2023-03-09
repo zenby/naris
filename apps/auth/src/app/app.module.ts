@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { configurationFactory, typeOrmFactory } from './config/config';
 import { UserModule } from './user/user.module';
+import { AuthOpenIdModule } from './auth-openid/auth.openid.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UserModule } from './user/user.module';
       inject: [ConfigService],
     }),
     AuthModule,
+    AuthOpenIdModule,
     UserModule,
   ],
   controllers: [AppController],

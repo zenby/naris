@@ -2,6 +2,33 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.3.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.2.1...naris-0.3.0) (2023-03-07)
+
+
+### Features
+
+* add profile to storybook & update user fullname generating ([5255c14](https://gitlog.ru:2222/Naris/soermono/commit/5255c146e5513ae5cde719c6ebbd2befa60f4e6f))
+* **naris:** add account page ([ee05932](https://gitlog.ru:2222/Naris/soermono/commit/ee0593251974c9f75c868a6e58d2b8db476f0dd7))
+
+
+### Bug Fixes
+
+* added dataStore import ([c456dea](https://gitlog.ru:2222/Naris/soermono/commit/c456dea57327138ebef6e50fc43cdbd8cc44cacf))
+* errors in stories for targets-list component ([ee3d279](https://gitlog.ru:2222/Naris/soermono/commit/ee3d27993a235dff936d01bb9e49400c01fe2569))
+* fixed console errors by adding imports ([b27dc8b](https://gitlog.ru:2222/Naris/soermono/commit/b27dc8b25b6d1775dda7b4b14f5147982b16dbd2))
+* fixed console errors by adding imports ([bbf3a3a](https://gitlog.ru:2222/Naris/soermono/commit/bbf3a3aefe3ac317fe01ed65fcd894cfff7ac124))
+* linting errors ([1aa5fbc](https://gitlog.ru:2222/Naris/soermono/commit/1aa5fbc30414dba0e4344058c787836dddd3ff89))
+* **metrics:** fix countVideosIn function ([6063594](https://gitlog.ru:2222/Naris/soermono/commit/60635944c6b37bc19380a5b286f7fc4a5a3cf89b))
+* **metrics:** fix storybook errors ([3ccce93](https://gitlog.ru:2222/Naris/soermono/commit/3ccce93010b380d893a02bb37c471262023f9491))
+* **naris/account:** fix lint ([9e6b2f5](https://gitlog.ru:2222/Naris/soermono/commit/9e6b2f5981c1a018ed62820c609cbcf69493d68e))
+* validation discrepancy ([31f93bd](https://gitlog.ru:2222/Naris/soermono/commit/31f93bde5144b5e6a317d0b0b73f869e5b6b6529))
+* validation discrepancy ([8d8f33c](https://gitlog.ru:2222/Naris/soermono/commit/8d8f33cd0f5247059460eef1bdca181ca22d082b))
+
+
+### Reverts
+
+* Revert "refactor: move editor blocks to separate modules" ([26afc6e](https://gitlog.ru:2222/Naris/soermono/commit/26afc6ed04b09f656274b835aa4254d0f7eeef4c))
+
 ### [0.2.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.2.0...naris-0.2.1) (2023-01-22)
 
 ## [0.2.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.1.0...naris-0.2.0) (2023-01-05)

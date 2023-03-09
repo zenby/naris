@@ -3,7 +3,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { DumbModule } from '../../dumb/dumb.module';
 
 import { ComposeOnePageComponent } from './compose-one-page.component';
 
@@ -14,7 +13,7 @@ describe('ComposeOnePageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ComposeOnePageComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, DumbModule, OverlayModule],
+      imports: [HttpClientTestingModule, RouterTestingModule, OverlayModule],
       providers: [NzMessageService],
     }).compileComponents();
   });

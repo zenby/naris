@@ -1,7 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DumbModule } from '../../dumb/dumb.module';
+import { AccessDeniedModule } from '@soer/soer-components';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 import { RoadmapComponent } from './roadmap.component';
 
@@ -12,7 +13,7 @@ describe('RoadmapComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RoadmapComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, DumbModule],
+      imports: [HttpClientTestingModule, RouterTestingModule, NzDescriptionsModule, AccessDeniedModule],
     }).compileComponents();
   });
 

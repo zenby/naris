@@ -1,0 +1,34 @@
+<ng-container *ngIf="targets">
+  <div nz-row [nzGutter]="[24, 24]" class="steps metrics">
+    <ng-container *ngIf="targets.status === 'ok' && targets.items.length > 0; else createFromTemplate">
+      <ng-container *ngFor="let target of targets.items">
+        <nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="6">
+          <a [routerLink]="['/', 'pages', 'targets', 'filter', target.id]">
+            <soer-tile
+              [tile]="{
+                title: target['title'],
+                suffix: '%',
+                status: 'none',
+                value: target['progress']
+              }"
+            ></soer-tile>
+          </a>
+        </nz-col>
+      </ng-container>
+    </ng-container>
+    <ng-template #createFromTemplate>
+      <nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="6">
+        <a [routerLink]="['/', 'pages', 'targets', 'templates', 'public']">
+          <soer-tile
+          [tile]="{
+            title: 'У вас не создано ни одной цели. Нажмите здесь, чтобы создать из готовых шаблонов.',
+            suffix: '...',
+            status: 'warning',
+            value: ''
+          }"
+        ></soer-tile>
+        </a>
+      </nz-col>
+    </ng-template>
+  </div>
+</ng-container>

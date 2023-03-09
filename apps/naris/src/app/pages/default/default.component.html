@@ -74,6 +74,7 @@
             <li *ngIf="userInfo.role === 'GUEST' && isMobileView" nz-menu-item>
               <a [routerLink]="['/', 'pages', 'pay']">Улучшить уровень</a>
             </li>
+            <li nz-menu-item><a [routerLink]="['/', 'pages', 'account']">Личный кабинет</a></li>
             <li nz-menu-item><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>
             <li nz-menu-item><a [routerLink]="['/', 'pages', 'pay']">Платежи</a></li>
             <li (click)="logout()" nz-menu-item>Выход</li>

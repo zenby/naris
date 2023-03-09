@@ -1,0 +1,12 @@
+<div *ngIf="tile" class="ant-statistic bad metric-level soer-tile {{ tile['status'] }}">
+  <div class="ant-statistic-title soer-tile__title">{{ tile['title'] }}</div>
+  <div class="ant-statistic-content soer-tile__content">
+    <span class="ant-statistic-content-value">
+      <span class="ant-statistic-content-value-int ng-star-inserted">{{ tile['value'] }}</span>
+    </span>
+    <span
+      *ngIf="tile['suffix']"
+      class="ant-statistic-content-suffix ng-star-inserted"
+    >{{ tile['suffix'] }}</span>
+  </div>
+</div>

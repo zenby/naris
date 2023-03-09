@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'sr-editor-blocks',
   preset: '../../jest.preset.js',
@@ -7,6 +6,9 @@ export default {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
       stringifyContentPathRegex: '\\.(html|svg)$',
+      // fix for import.meta.url usage in jest
+      diagnostics: { ignoreCodes: [1343] },
+      astTransformers: { before: [{ path: 'ts-jest-mock-import-meta' }] },
     },
   },
   coverageDirectory: '../../coverage/libs/sr-editor-blocks',

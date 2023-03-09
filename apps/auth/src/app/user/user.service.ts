@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
 import { validate } from 'class-validator';
 import { ValidationErrorHelper } from '../common/helpers/validation-error.helper';
 
@@ -27,11 +26,21 @@ export class UserService {
     });
   }
 
-  async findByLogin(signInUserDto: LoginUserDto): Promise<UserEntity | Error> {
-    const user = await this.userRepository.findOne({ where: { login: signInUserDto.login } });
+  async findByLogin(login: string): Promise<UserEntity | Error> {
+    const user = await this.userRepository.findOne({ where: { login } });
 
     if (!user) {
-      return new NotFoundException(`User with login ${signInUserDto.login} not found`);
+      return new NotFoundException(`User with login ${login} not found`);
+    }
+
+    return user;
+  }
+
+  async findByEmail(email: string): Promise<UserEntity | Error> {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      return new NotFoundException(`User with email ${email} not found`);
     }
 
     return user;

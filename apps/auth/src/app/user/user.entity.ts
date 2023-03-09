@@ -21,7 +21,6 @@ export class UserEntity {
   login: string;
 
   @ApiProperty()
-  @IsNotEmpty()
   @Column()
   password: string;
 

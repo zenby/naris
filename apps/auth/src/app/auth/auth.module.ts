@@ -7,7 +7,6 @@ import { JwtStrategy } from '../common/strategies/jwt.strategy';
 import { LocalStrategy } from '../common/strategies/local.strategy';
 import { UserService } from '../user/user.service';
 import { RefreshCookieStrategy } from '../common/strategies/refreshCookie.strategy';
-import { YandexStrategy } from '../common/strategies/yandex.strategy';
 
 @Module({
   imports: [PassportModule.register({ defaultStrategy: 'jwt' }), JwtModule.register({})],
@@ -15,7 +14,6 @@ import { YandexStrategy } from '../common/strategies/yandex.strategy';
     AuthService,
     UserService,
     JwtStrategy, 
-    YandexStrategy,
     LocalStrategy,
     RefreshCookieStrategy
   ],

@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'sr-local-storage',
   preset: '../../jest.preset.js',

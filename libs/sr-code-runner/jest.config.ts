@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 const fixForImportMetaError = {
   diagnostics: {
     ignoreCodes: [1343],

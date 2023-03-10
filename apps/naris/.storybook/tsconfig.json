@@ -3,7 +3,13 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true
   },
-
-  "exclude": ["../**/*.spec.ts"],
-  "include": ["../src/**/*", "*.js", "./__mocks__/*"]
+  "exclude": [
+    "../**/*.spec.ts",
+    "jest.config.ts"
+  ],
+  "include": [
+    "../src/**/*",
+    "*.js",
+    "./__mocks__/*"
+  ]
 }

@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.3.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.3.0...naris-0.3.1) (2023-03-10)
+
+
+### Bug Fixes
+
+* removed unused eslint-disable in jest.config.ts ([373963d](https://gitlog.ru:2222/Naris/soermono/commit/373963d1fe77580e814fe30d4e70833fe1dac4d5))
+
 ## [0.3.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.2.1...naris-0.3.0) (2023-03-07)
 
 

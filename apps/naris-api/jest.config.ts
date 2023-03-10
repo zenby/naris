@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'naris-api',
   preset: '../../jest.preset.js',

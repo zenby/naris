@@ -42,7 +42,7 @@ describe('User service', () => {
 
       const resultUser = await userService.createUser(createUserDto);
 
-      expect(resultUser instanceof UserEntity).toBeTruthy;
+      expect(resultUser instanceof UserEntity).toBeTruthy();
       expect((resultUser as UserEntity).password).toEqual('');
     });
 
@@ -55,7 +55,7 @@ describe('User service', () => {
 
       const resultUser = await userService.createUser(createUserDto);
 
-      expect(resultUser instanceof UserEntity).toBeTruthy;
+      expect(resultUser instanceof UserEntity).toBeTruthy();
       expect((resultUser as UserEntity).password === '').toBeFalsy();
     });
   });

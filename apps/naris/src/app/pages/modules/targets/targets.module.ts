@@ -37,6 +37,7 @@ import { TemplateCreateComponent } from './template-create/template-create.compo
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { TargetDescriptionComponent } from './target-description/target-description.component';
 
 import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
 
@@ -52,6 +53,7 @@ import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
     CountOpenTasksPipe,
     CountClosedTasksPipe,
     TemplateCreateComponent,
+    TargetDescriptionComponent
   ],
   imports: [
     CommonModule,

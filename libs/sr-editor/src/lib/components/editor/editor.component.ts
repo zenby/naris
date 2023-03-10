@@ -68,6 +68,11 @@ export class EditorComponent {
       blocks[from] = tmp;
       this.activeIndex = -1;
       setTimeout(() => {
+        if (!this.isBlockEditable(to)) {
+          this.stopBlockEdit(from);
+          this.startBlockEdit(to);
+        }
+
         this.activeIndex = to;
         this.cdp.detectChanges();
       }, 10);
@@ -95,7 +100,7 @@ export class EditorComponent {
     this.stopBlockEdit(blockIndex);
 
     if (this.editIndexes.length) {
-      this.activeIndex = this.editIndexes[blockIndex] || this.editIndexes[blockIndex - 1]
+      this.activeIndex = this.editIndexes[blockIndex] || this.editIndexes[blockIndex - 1];
     }
   }
 

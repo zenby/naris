@@ -93,6 +93,10 @@ export class EditorComponent {
 
   onEndEdit(blockIndex: number) {
     this.stopBlockEdit(blockIndex);
+
+    if (this.editIndexes.length) {
+      this.activeIndex = this.editIndexes[blockIndex] || this.editIndexes[blockIndex - 1]
+    }
   }
 
   isBlockEditable(index: number): boolean {

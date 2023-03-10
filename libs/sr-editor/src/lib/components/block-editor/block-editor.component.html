@@ -2,7 +2,7 @@
   <div class="info">
     {{ textBlock.type | typeFormat }}
     {{ isEdit | booleanToString: ' [*]':' [ ]' }}
-    <br />
+
     <button
       *ngIf="isEdit"
       class="edit-button"

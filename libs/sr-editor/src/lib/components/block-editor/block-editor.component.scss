@@ -41,6 +41,11 @@
 }
 
 .edit-button {
-  position: relative;
-  top: 5px;
+  display: block;
+  margin: 5px 0 0 auto;
+
+  @media screen and (max-width: 768px) {
+    display: inline-block;
+    margin: 0 0 5px 5px;
+  }
 }

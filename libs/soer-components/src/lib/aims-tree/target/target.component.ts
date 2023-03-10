@@ -17,6 +17,7 @@ export class TargetComponent {
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() edit: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
+  @Output() description: EventEmitter<AimModel> = new EventEmitter<AimModel>();
 
   constructor(private targetService: TargetService) {}
 
@@ -39,6 +40,10 @@ export class TargetComponent {
 
   onDelete(aim: AimModel): void {
     this.targetService.factory(this.target).delete(aim);
+  }
+
+  onDescription() {
+    this.description.emit(this.target);
   }
 
   onAction(action: string): void {

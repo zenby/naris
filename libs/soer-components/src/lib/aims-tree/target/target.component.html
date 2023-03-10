@@ -18,19 +18,16 @@
         <a *ngIf="isEdit" nz-button nzType="link" (click)="onSave()"><i nz-icon [nzType]="'save'"></i></a>
     </div>
 
-  <div class="card_title">
-    <a [title]="target.title" nzType="link" (click)="onEdit()">{{ target.title }}</a>
-  </div>
-  <div class="card_progress">
-    <nz-progress [nzStrokeColor]="gradientColors" [nzPercent]="target.progress"></nz-progress>
-  </div>
-  <soer-aims-tree
-    [isEdit]="isEdit"
-    [tasks]="target.tasks"
-    (update)="check($event, target)"
-    (delete)="onDelete($event)"
-    (add)="onAddTo($event)"
-  ></soer-aims-tree>
+        <div class="card_title">
+                <a [title]="target.title" nzType="link" (click)="onEdit()">{{target.title}}</a>
+                <ng-container *ngIf="target.overview">
+                    <i class="description-icon" (click)="onDescription()" nz-icon nzType="info-circle" nzTheme="outline"></i>
+                </ng-container>
+        </div>
+        <div class="card_progress">
+            <nz-progress [nzStrokeColor]="gradientColors" [nzPercent]="target.progress"></nz-progress>
+        </div>
+        <soer-aims-tree [isEdit]="isEdit" [tasks]="target.tasks" (update)="check($event, target)" (delete)="onDelete($event)" (add)="onAddTo($event)"></soer-aims-tree>
 
   <div class="card_edit-toolbar">
     <soer-toolbar *ngIf="isEdit" [actions]="['plus']" (action)="onAction($event)" size="large"></soer-toolbar>

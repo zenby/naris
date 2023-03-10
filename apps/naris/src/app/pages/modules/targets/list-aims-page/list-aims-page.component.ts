@@ -86,4 +86,8 @@ export class ListAimsPageComponent implements OnInit {
   onEdit(target: AimModel): void {
     this.router.navigate(['/pages/targets', { outlets: { popup: ['target', 'edit', target.id] } }]);
   }
+
+  onDescription(target: AimModel) {
+    this.router.navigate(['/pages/targets', { outlets: { popup: ['target', target.id, 'description'] } }]);
+  }
 }

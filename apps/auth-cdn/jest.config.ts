@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'auth-cdn',
   preset: '../../jest.preset.js',
@@ -17,7 +16,7 @@ export default {
       because Jest does not support package.json.exports.
       See https://github.com/uuidjs/uuid/issues/451
     */
-    uuid: require.resolve('uuid'),
+    '^uuid$': require.resolve('uuid'),
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/auth-cdn',

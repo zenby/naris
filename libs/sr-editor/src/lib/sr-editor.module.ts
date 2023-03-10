@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { MarkdownModule } from 'ngx-markdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { BlockEditorComponent } from './components/block-editor/block-editor.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { BooleanToStringPipe } from './pipes/boolean-to-string.pipe';
@@ -11,7 +13,7 @@ import { BlockService } from './services/block.service';
 import { TextareaAutoresizeDirective } from './textarea-autoresize.directive';
 
 @NgModule({
-  imports: [CommonModule, MarkdownModule.forRoot(), FormsModule],
+  imports: [CommonModule, MarkdownModule.forRoot(), FormsModule, NzIconModule, NzButtonModule],
   declarations: [
     BlockEditorComponent,
     BooleanToStringPipe,

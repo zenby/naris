@@ -2,6 +2,19 @@
   <div class="info">
     {{ textBlock.type | typeFormat }}
     {{ isEdit | booleanToString: ' [*]':' [ ]' }}
+    <br />
+    <button
+      *ngIf="isEdit"
+      class="edit-button"
+      (click)="stopEdit()"
+      nz-button
+      nzTrigger="click"
+      nzType="default"
+      nzSize="small"
+      nzPlacement="bottomRight"
+    >
+      <i nz-icon nzType="edit"></i>
+    </button>
   </div>
   <div (click)="onSelectBlock()" class="edit">
     <ng-container *ngIf="isEdit">

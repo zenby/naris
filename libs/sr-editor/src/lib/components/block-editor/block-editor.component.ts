@@ -126,7 +126,7 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
     }
   }
 
-  private stopEdit() {
+  stopEdit() {
     this.endEdit.next(this.localIndex);
     this.isEdit = false;
     if (this.componentRef) {

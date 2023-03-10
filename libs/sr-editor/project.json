@@ -1,0 +1,29 @@
+{
+  "name": "sr-editor",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/sr-editor/src",
+  "prefix": "soer",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/libs/sr-editor"
+      ],
+      "options": {
+        "jestConfig": "libs/sr-editor/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/sr-editor/**/*.ts",
+          "libs/sr-editor/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

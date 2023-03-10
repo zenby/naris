@@ -1,0 +1,29 @@
+{
+  "name": "mixed-bus",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/mixed-bus/src",
+  "prefix": "soer",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/libs/mixed-bus"
+      ],
+      "options": {
+        "jestConfig": "libs/mixed-bus/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/mixed-bus/src/**/*.ts",
+          "libs/mixed-bus/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

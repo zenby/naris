@@ -1,0 +1,29 @@
+{
+  "name": "sr-auth",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/sr-auth/src",
+  "prefix": "soer",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/libs/sr-auth"
+      ],
+      "options": {
+        "jestConfig": "libs/sr-auth/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/sr-auth/src/**/*.ts",
+          "libs/sr-auth/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

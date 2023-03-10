@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'soer-components',
   preset: '../../jest.preset.js',

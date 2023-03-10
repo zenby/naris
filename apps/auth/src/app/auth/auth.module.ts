@@ -13,7 +13,7 @@ import { RefreshCookieStrategy } from '../common/strategies/refreshCookie.strate
   providers: [
     AuthService,
     UserService,
-    JwtStrategy, 
+    JwtStrategy,
     LocalStrategy,
     RefreshCookieStrategy
   ],

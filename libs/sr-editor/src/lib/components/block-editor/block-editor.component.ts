@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   Component,
   ComponentRef,
@@ -19,7 +20,7 @@ import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor
   templateUrl: './block-editor.component.html',
   styleUrls: ['./block-editor.component.scss'],
 })
-export class BlockEditorComponent implements AfterViewInit {
+export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
 
   @ViewChild('edit') set editRef(ref: ElementRef) {
@@ -27,8 +28,10 @@ export class BlockEditorComponent implements AfterViewInit {
       ref.nativeElement.focus();
     }
   }
+
   @Input() localIndex = -1;
   @Input() isEdit = false;
+  @Input() isActive = false;
   @Input() blocksLength = 0;
   @Input() blockDelimeter: string | undefined;
 
@@ -40,11 +43,18 @@ export class BlockEditorComponent implements AfterViewInit {
   @Output() setActive = new EventEmitter<number>();
   @Output() markdownTextChange = new EventEmitter<string>();
 
+  @ViewChild('edit') edit!: ElementRef;
   @ViewChild('editComponent', { static: true, read: ViewContainerRef }) editComponent!: ViewContainerRef;
 
   componentRef: ComponentRef<BasicBlockComponent> | null = null;
 
   constructor(@Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry) {}
+
+  ngAfterViewChecked(): void {
+    if (this.isActive && this.isEdit) {
+      this.edit.nativeElement.focus();
+    }
+  }
 
   ngAfterViewInit(): void {
     this.renderComponentForEditMode();
@@ -60,12 +70,10 @@ export class BlockEditorComponent implements AfterViewInit {
 
   command(event: KeyboardEvent): void {
     if (event.altKey && event.code === 'Enter') {
-      this.stopEdit();
       this.addBlock.next(this.localIndex);
     }
 
     if (event.altKey && event.code === 'Backspace') {
-      this.stopEdit();
       this.removeBlock.next(this.localIndex);
     }
 
@@ -118,10 +126,6 @@ export class BlockEditorComponent implements AfterViewInit {
     }
   }
 
-  onEndEdit(): void {
-    this.stopEdit();
-  }
-
   private stopEdit() {
     this.endEdit.next(this.localIndex);
     this.isEdit = false;
@@ -132,14 +136,13 @@ export class BlockEditorComponent implements AfterViewInit {
 
   private setActivePreviousIfAvailable() {
     if (this.localIndex <= 0) return;
-    this.stopEdit();
+  
     this.setActive.next(this.localIndex - 1);
   }
 
   private setActiveNextIfAvailable() {
     if (this.localIndex + 1 === this.blocksLength) return;
 
-    this.stopEdit();
     this.setActive.next(this.localIndex + 1);
   }
 

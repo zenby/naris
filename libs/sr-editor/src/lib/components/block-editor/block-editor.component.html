@@ -8,7 +8,6 @@
       <textarea
         class="block-editor"
         [(ngModel)]="textBlock.text"
-        (blur)="onEndEdit()"
         (ngModelChange)="textChange($event)"
         (keydown)="command($event)"
         #edit

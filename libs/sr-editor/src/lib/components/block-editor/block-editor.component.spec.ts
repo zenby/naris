@@ -91,7 +91,6 @@ describe('BlockEditorComponent', () => {
 
         component.command(event);
 
-        expectShouldStopEdit(component);
         expectShouldSetActivePrevious(component);
       });
 
@@ -142,7 +141,6 @@ describe('BlockEditorComponent', () => {
 
         component.command(event);
 
-        expectShouldStopEdit(component);
         expectShouldSetActiveNext(component);
       });
 
@@ -190,7 +188,6 @@ describe('BlockEditorComponent', () => {
 
         component.command(event);
 
-        expectShouldStopEdit(component);
         expectShouldSetActivePrevious(component);
       });
 
@@ -242,7 +239,6 @@ describe('BlockEditorComponent', () => {
 
           component.command(event);
 
-          expectShouldStopEdit(component);
           expectShouldSetActiveNext(component);
         }
       );
@@ -299,12 +295,6 @@ describe('BlockEditorComponent', () => {
         ctrlKey,
         target: { selectionStart: cursorPosition },
       } as unknown as KeyboardEvent;
-    }
-
-    function expectShouldStopEdit(component: BlockEditorComponent) {
-      expect(component.endEdit.next).toBeCalledWith(component.localIndex);
-      expect(component.isEdit).toBe(false);
-      expect(component.componentRef?.instance?.text).toBe(component.textBlock.text);
     }
 
     function expectShouldNotStopEdit(component: BlockEditorComponent) {

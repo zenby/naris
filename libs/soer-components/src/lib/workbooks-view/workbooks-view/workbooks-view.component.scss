@@ -1,0 +1,80 @@
+$item-border: 1px solid #f0f0f0;
+$icon-size-mobile: 32px;
+$icon-size: 48px;
+$hover-color: #1890ff;
+
+.item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-top: $item-border;
+  border-left: $item-border;
+  border-right: $item-border;
+  padding-left: 24px;
+  height: 56px;
+  align-items: center;
+
+  &:last-child {
+    border-bottom: $item-border;
+  }
+}
+
+.actions {
+  display: flex;
+  & > button {
+    padding: 0;
+    width: $icon-size-mobile;
+    height: $icon-size-mobile;
+
+    &:hover {
+      background: none;
+    }
+  }
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: $icon-size-mobile;
+  height: $icon-size-mobile;
+}
+
+
+.title,
+.icon {
+  transition: all 0.5s ease;
+}
+
+.title:hover,
+.icon:hover, {
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.icon:hover {
+  color: $hover-color;
+}
+
+.icon-error:hover {
+  color: darkred;
+}
+
+@media (min-width: 768px) {
+  .actions {
+    & > button {
+      width: $icon-size;
+      height: $icon-size;
+    }
+  }
+
+  .icon {
+    width: $icon-size;
+    height: $icon-size;
+  }
+}
+
+.empty-list {
+  text-align: center;
+}

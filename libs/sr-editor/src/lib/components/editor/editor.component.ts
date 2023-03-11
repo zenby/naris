@@ -14,8 +14,8 @@ export class EditorComponent {
 
   public previewFlag = false;
   public activeIndex = -1;
-  public editIndexes: number[] = [];
   public blocksDelimiter = this.blockService.blocksDelimiter;
+  private editingState: { [key: number]: boolean } = {};
 
   constructor(
     private cdp: ChangeDetectorRef,
@@ -84,6 +84,7 @@ export class EditorComponent {
     const left = this.document.blocks.slice(0, newBlockIndex);
     const right = this.document.blocks.slice(newBlockIndex);
     this.document.blocks = [...left, { text: '', type: 'markdown' }, ...right];
+    this.saveEditStateForSubsequentBlocksWhenInsertingBlock(from, right);
     this.startBlockEdit(newBlockIndex);
     this.activeIndex = newBlockIndex;
   }
@@ -98,14 +99,11 @@ export class EditorComponent {
 
   onEndEdit(blockIndex: number) {
     this.stopBlockEdit(blockIndex);
-
-    if (this.editIndexes.length) {
-      this.activeIndex = this.editIndexes[blockIndex] || this.editIndexes[blockIndex - 1];
-    }
+    this.activeIndex = this.findPreviousEditingBlock(blockIndex);
   }
 
   isBlockEditable(index: number): boolean {
-    return this.editIndexes.includes(index);
+    return this.editingState[index] ?? false;
   }
 
   isBlockActive(index: number) {
@@ -126,11 +124,37 @@ export class EditorComponent {
     this.activeIndex = activeBlockIndex;
   }
 
+  private saveEditStateForSubsequentBlocksWhenInsertingBlock(insertIndex: number, subsequentBlocks: TextBlock[]): void {
+    let index = subsequentBlocks.length;
+    while (index > 0) {
+      const oldIndex = insertIndex + index;
+      const newIndex = oldIndex + 1;
+      if (this.isBlockEditable(oldIndex)) {
+        this.startBlockEdit(newIndex);
+      } else {
+        this.stopBlockEdit(newIndex);
+      }
+      index--;
+    }
+  }
+
+  private findPreviousEditingBlock(blockIndex: number): number {
+    let index = blockIndex;
+    while (index > 0) {
+      if (this.isBlockEditable(index)) {
+        return index;
+      }
+      index--;
+    }
+
+    return index;
+  }
+
   private stopBlockEdit(blockIndex: number): void {
-    this.editIndexes = this.editIndexes.filter((index) => blockIndex !== index);
+    this.editingState[blockIndex] = false;
   }
 
   private startBlockEdit(blockIndex: number): void {
-    this.editIndexes.push(blockIndex);
+    this.editingState[blockIndex] = true;
   }
 }

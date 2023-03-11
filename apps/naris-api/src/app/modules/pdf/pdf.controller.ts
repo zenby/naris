@@ -1,6 +1,7 @@
-import { Body, Controller, Header, HttpCode, HttpException, HttpStatus, Post, Res } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Header, HttpCode, HttpException, HttpStatus, Post, Res, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { GetPdfDto } from './dto/getPdf.dto';
 import { PDFService } from './pdf.service';
 
@@ -10,6 +11,8 @@ export class PdfController {
   constructor(private readonly PDFService: PDFService) {}
 
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'attachment')
   @HttpCode(200)

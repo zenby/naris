@@ -5,6 +5,7 @@ export * from './lib/soer-components.module';
 export * from './lib/todo';
 export * from './lib/video-player/video-player.module';
 export * from './lib/tile/tile.module';
+export * from './lib/tile/tile.model';
 export * from './lib/video-player/video-source.model';
 export * from './lib/profile';
 export * from './lib/files-list/files-list.module';

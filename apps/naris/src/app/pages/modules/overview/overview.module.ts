@@ -21,9 +21,17 @@ import { MetricsComponent } from './metrics/metrics.component';
 import { InfoComponent } from './info/info.component';
 import { TargetsListComponent } from './metrics/targets-list/targets-list.component';
 import { MetricsListComponent } from './metrics/metrics-list/metrics-list.component';
+import { NumberToStatusPipe } from './metrics/targets-list/number-to-status.pipe';
 
 @NgModule({
-  declarations: [OverviewComponent, MetricsComponent, MetricsListComponent, TargetsListComponent, InfoComponent],
+  declarations: [
+    OverviewComponent,
+    MetricsComponent,
+    MetricsListComponent,
+    TargetsListComponent,
+    InfoComponent,
+    NumberToStatusPipe,
+  ],
   imports: [
     CommonModule,
     TileModule,

@@ -8,7 +8,7 @@
               [tile]="{
                 title: target['title'],
                 suffix: '%',
-                status: 'none',
+                status: target['progress'] | numberToStatus,
                 value: target['progress']
               }"
             ></soer-tile>

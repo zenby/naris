@@ -20,17 +20,15 @@ export class AuthComponent implements OnInit {
     if (token) {
       this.jwt = token;
       this.authService.updateToken(this.jwt);
-      this.redirectToHome();
-      return;
     }
-    this.redirectToLogin();
+    this.redirect();
   }
 
-  redirectToHome(): void {
-    this.router.navigate(['pages']);
-  }
-
-  redirectToLogin(): void {
-    this.router.navigate(['login']);
+  redirect(): void {
+    if (this.authService.isAuth) {
+      this.router.navigate(['pages']);
+      return;
+    } 
+      this.router.navigate(['login']);
   }
 }

@@ -1,9 +1,9 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { ConfigService } from '@nestjs/config';
+import { CommonConfig } from '@soer/sr-common-interfaces';
 
-export interface Configuration<T extends TypeOrmModuleOptions = any> {
-  port: number;
+export interface Configuration<T extends TypeOrmModuleOptions = any> extends CommonConfig {
   jwt: {
     jwtSecret: string;
     expiresInAccess: number | string;

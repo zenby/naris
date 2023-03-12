@@ -1,9 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { CommonConfig } from '@soer/sr-common-interfaces';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 
-export interface Config<T extends TypeOrmModuleOptions = any> {
-  port: number;
+export interface Config<T extends TypeOrmModuleOptions = any> extends CommonConfig {
   prefix: string;
   typeOrm: T;
   version: number;

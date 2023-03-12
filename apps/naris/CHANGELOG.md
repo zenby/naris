@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.3.2](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.3.1...naris-0.3.2) (2023-03-12)
+
+
+### Bug Fixes
+
+* problem with redirect after login ([a3e32c4](https://gitlog.ru:2222/Naris/soermono/commit/a3e32c46cb97651341a402561b4e41fa7df98cc9))
+
 ### [0.3.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.3.0...naris-0.3.1) (2023-03-10)
 
 

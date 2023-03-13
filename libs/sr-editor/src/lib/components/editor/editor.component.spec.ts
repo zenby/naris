@@ -160,6 +160,33 @@ describe('EditorComponent', () => {
       });
     });
   });
+
+  describe('onEndEdit', () => {
+    beforeEach(() => {
+      component.document = createFakeDocument();
+
+      component.setActive(2);
+    });
+
+    it('block should not be in editing state after end of edition', () => {
+      component.onEndEdit(2);
+
+      expect(component.isBlockEditable(2)).toBe(false);
+    });
+
+    it('should focus on the previous block', () => {
+      component.setActive(1);
+      component.onEndEdit(2);
+
+      expect(component.isBlockActive(1)).toBe(true);
+    });
+
+    it('should not autofocus, if the editor has no editable blocks', () => {
+      component.onEndEdit(2);
+
+      expect(component.activeIndex).toBe(0);
+    });
+  });
 });
 
 function createFakeDocument(): WorkbookModel {

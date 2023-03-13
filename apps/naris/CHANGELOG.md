@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.4.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.3.2...naris-0.4.0) (2023-03-13)
+
+
+### Features
+
+* **metrics:** add calculate status strategies ([72e7a26](https://gitlog.ru:2222/Naris/soermono/commit/72e7a264d79a95925d395e460190abd7ceda9142))
+* targets change color depenings on progress ([2323dd9](https://gitlog.ru:2222/Naris/soermono/commit/2323dd9e515290f095c639656a456774393af023))
+
 ### [0.3.2](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.3.1...naris-0.3.2) (2023-03-12)
 
 

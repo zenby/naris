@@ -116,6 +116,50 @@ describe('EditorComponent', () => {
       expect(component.isBlockEditable(4)).toBeTruthy();
     });
   });
+
+  describe('removeBlock', () => {
+    beforeEach(() => {
+      component.document = createFakeDocument();
+    });
+
+    it('should remove block, if more than 1', () => {
+      const countOfblocks = component.document.blocks.length;
+
+      component.removeBlock(1);
+
+      expect(component.document.blocks.length).toBe(countOfblocks - 1);
+    });
+
+    it('should not remove block, if only 1 left', () => {
+      component.document.blocks.splice(1);
+
+      const countOfblocks = component.document.blocks.length;
+
+      component.removeBlock(0);
+
+      expect(component.document.blocks.length).toBe(countOfblocks);
+    });
+
+    describe('check editing state after block removement', () => {
+      beforeEach(() => {
+        component.setActive(2);
+      });
+
+      it('active index should be on the previous block', () => {
+        const activeIndex = component.activeIndex;
+
+        component.removeBlock(2);
+
+        expect(component.activeIndex).toBe(activeIndex - 1);
+      });
+
+      it('block index should be removed from edit state', () => {
+        component.removeBlock(2);
+
+        expect(component.isBlockEditable(2)).toBe(false);
+      });
+    });
+  });
 });
 
 function createFakeDocument(): WorkbookModel {

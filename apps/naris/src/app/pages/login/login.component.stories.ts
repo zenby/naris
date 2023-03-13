@@ -1,9 +1,9 @@
 import { LoginComponent } from './login.component';
-import { Meta, moduleMetadata, Story } from "@storybook/angular";
-import {RouterModule} from "@angular/router";
-import {HttpClientModule} from "@angular/common/http";
-import {DemoNgZorroAntdModule} from "../demo.module";
-import {SrAuthModule} from '@soer/sr-auth';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { DemoNgZorroAntdModule } from '../demo.module';
+import { SrAuthModule } from '@soer/sr-auth';
 
 export default {
   title: 'LoginComponent',
@@ -11,11 +11,9 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [RouterModule.forRoot([], { useHash: true }), SrAuthModule, HttpClientModule, DemoNgZorroAntdModule],
-      providers: [
-        { provide: 'AuthServiceConfig', useValue: {} },
-      ]
-    })
-  ]
+      providers: [{ provide: 'AuthServiceConfig', useValue: {} }],
+    }),
+  ],
 } as Meta<LoginComponent>;
 
 const Template: Story<LoginComponent> = (args: LoginComponent) => ({

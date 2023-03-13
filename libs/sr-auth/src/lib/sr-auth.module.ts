@@ -6,9 +6,7 @@ import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   imports: [CommonModule],
-  providers: [
-    AuthService
-  ]
+  providers: [AuthService],
 })
 export class SrAuthModule {
   static forRoot(options: AuthEmitter): ModuleWithProviders<SrAuthModule> {
@@ -18,9 +16,9 @@ export class SrAuthModule {
         AuthGuard,
         {
           provide: 'AuthServiceConfig',
-          useValue: options
-        }
-      ]
-    }
-  }  
+          useValue: options,
+        },
+      ],
+    };
+  }
 }

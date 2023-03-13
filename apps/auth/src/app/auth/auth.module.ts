@@ -10,13 +10,7 @@ import { RefreshCookieStrategy } from '../common/strategies/refreshCookie.strate
 
 @Module({
   imports: [PassportModule.register({ defaultStrategy: 'jwt' }), JwtModule.register({})],
-  providers: [
-    AuthService,
-    UserService,
-    JwtStrategy,
-    LocalStrategy,
-    RefreshCookieStrategy
-  ],
+  providers: [AuthService, UserService, JwtStrategy, LocalStrategy, RefreshCookieStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

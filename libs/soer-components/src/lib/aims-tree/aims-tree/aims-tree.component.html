@@ -1,11 +1,9 @@
-    <ng-container *ngFor="let task of tasks; let index = index;">
-        <soer-aim-raw 
-            [isEdit]="isEdit"
-            [aim]="task"
-            (update)="update.emit($event)"
-            (delete)="delete.emit($event)"
-            (add)="add.emit($event)"
-        ></soer-aim-raw>
-    </ng-container>
-
-
+<ng-container *ngFor="let task of tasks; let index = index">
+  <soer-aim-raw
+    [isEdit]="isEdit"
+    [aim]="task"
+    (update)="update.emit($event)"
+    (delete)="delete.emit($event)"
+    (add)="add.emit($event)"
+  ></soer-aim-raw>
+</ng-container>

@@ -8,7 +8,7 @@ import { BusError, BusMessage, BusEmitter, IBus } from './interfaces/mixed-bus.i
  * использует сообщения типа BusMessage:
  *  - BusCommand используется для распространения управляющих команд
  *  - BusEvent используется для информирования о стадии выполнения команды
- * 
+ *
  * События и команды должны быть расширены в модулях, использующих MixedBus
  * ```
  *   export class DeleteStartEvent extends BusEvent {}
@@ -16,48 +16,46 @@ import { BusError, BusMessage, BusEmitter, IBus } from './interfaces/mixed-bus.i
  *   export class CommandNew extends BusCommand {}
  * ```
  */
-@Injectable(
-    {providedIn: 'root'}
-)
+@Injectable({ providedIn: 'root' })
 export class MixedBusService {
-    public bus$: Subject<IBus>;
+  public bus$: Subject<IBus>;
 
-    constructor(){
-        console.log('Mixed bus system start');
-        this.bus$ = new Subject<IBus>();
-    }
+  constructor() {
+    console.log('Mixed bus system start');
+    this.bus$ = new Subject<IBus>();
+  }
 
-    /**
-     * Публикует BusMessage в шине
-     * @param message  - BusMessage
-     */
-    public publish<T extends Record<string, unknown>>(message: BusMessage|BusError): void {
-        console.log('Publish =>', message.owner, message);
-        const channel = (message.constructor as any).name;
-        this.bus$.next({ channel, message });
-    }
+  /**
+   * Публикует BusMessage в шине
+   * @param message  - BusMessage
+   */
+  public publish<T extends Record<string, unknown>>(message: BusMessage | BusError): void {
+    console.log('Publish =>', message.owner, message);
+    const channel = (message.constructor as any).name;
+    this.bus$.next({ channel, message });
+  }
 
+  /**
+   * Подписка на все события и команды шины
+   * @returns Observable<IBus>
+   */
+  public all(): Observable<IBus> {
+    return this.bus$;
+  }
 
-    /**
-     * Подписка на все события и команды шины
-     * @returns Observable<IBus>
-     */
-    public all(): Observable<IBus> {
-        return this.bus$;
-    }
-
-    /**
-     * Выделение специфического сообщения из шины,
-     * с возможностью фильтрации по владельцам сообщения
-     * @param messageType <T>
-     * @param eventOwners BusEmitter[]
-     * @returns 
-     */
-    public of(messageType: unknown, eventOwners: BusEmitter[] = []): Observable<BusMessage|BusError> {
-        const channel = (messageType as any).name;
-        return this.bus$.pipe(
-            filter(m => m != null && m.channel === channel),
-            filter(m => eventOwners?.length > 0 ? eventOwners.map(o => o.sid).includes(m.message.owner.sid) : true),
-            map<IBus, BusMessage|BusError>(m => m.message));
-    }
+  /**
+   * Выделение специфического сообщения из шины,
+   * с возможностью фильтрации по владельцам сообщения
+   * @param messageType <T>
+   * @param eventOwners BusEmitter[]
+   * @returns
+   */
+  public of(messageType: unknown, eventOwners: BusEmitter[] = []): Observable<BusMessage | BusError> {
+    const channel = (messageType as any).name;
+    return this.bus$.pipe(
+      filter((m) => m != null && m.channel === channel),
+      filter((m) => (eventOwners?.length > 0 ? eventOwners.map((o) => o.sid).includes(m.message.owner.sid) : true)),
+      map<IBus, BusMessage | BusError>((m) => m.message)
+    );
+  }
 }

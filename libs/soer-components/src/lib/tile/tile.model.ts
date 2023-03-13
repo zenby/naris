@@ -1,4 +1,4 @@
-export type TileStatus = 'normal' | 'critical' | 'warning' | 'none'
+export type TileStatus = 'normal' | 'critical' | 'warning' | 'none';
 
 export interface TileModel {
   title: string;

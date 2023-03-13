@@ -67,7 +67,7 @@ registerLocaleData(ru);
           MixedBusService: MixedBusService,
           DataStoreService: DataStoreService,
           StoreCrudService: StoreCrudService,
-          PdfConverterService: PdfConverterService,
+          PdfConverterService: PdfConverterService
         ) =>
         () =>
           null,

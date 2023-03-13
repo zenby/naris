@@ -6,12 +6,11 @@ import { ChangeDataEvent } from '../bus-messages/bus.messages';
 import { INIT } from '@soer/sr-dto';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataStoreService {
-
   private dataTree$ = new Map();
-  constructor(private bus$: MixedBusService) { 
+  constructor(private bus$: MixedBusService) {
     console.log('Start datastore service...');
     this.bus$.of(ChangeDataEvent).subscribe(this.dataEmission.bind(this));
   }
@@ -30,7 +29,7 @@ export class DataStoreService {
     const keyData = schemaMap.get(schemaName);
     const key = JSON.stringify(owner.key);
     if (!keyData.has(key)) {
-      keyData.set(key, new BehaviorSubject<BusMessage>({owner, payload: {status: INIT, items: []}, params: {}}));
+      keyData.set(key, new BehaviorSubject<BusMessage>({ owner, payload: { status: INIT, items: [] }, params: {} }));
     }
     return keyData.get(key);
   }
@@ -38,9 +37,7 @@ export class DataStoreService {
   dataEmission(data: BusMessage | BusError): void {
     console.log('Update DataStore ==>>', data.owner, data);
     if (data instanceof ChangeDataEvent) {
-        this.of(data.owner).next(data);
+      this.of(data.owner).next(data);
     }
   }
-
-
 }

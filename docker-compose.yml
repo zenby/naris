@@ -1,0 +1,36 @@
+version: '3'
+services:
+  nx:
+    environment:
+    - NODE_ENV=development
+    - DATABASE_HOST=mariadb
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    depends_on:
+      - mariadb
+    links:
+      - mariadb
+    ports:
+     - 3100:3100
+     - 3400:3400
+     - 9229:9229
+    tty: true
+    volumes:
+     - ./apps:/app/apps
+     - ./libs:/app/libs
+     - ./package.json:/app/package.json
+    command: >
+            sh -c "npm run test && npx nx run-many --parallel --target=serve --projects=auth,auth-cdn"
+
+  mariadb:
+    image: "mariadb:latest"
+    restart: 'always'
+    environment:
+      MYSQL_ROOT_PASSWORD: "naris"
+      MYSQL_DATABASE: "naris"
+      MYSQL_USER: "naris"
+      MYSQL_PASSWORD: "naris"
+    ports:
+      - "3306:3306"

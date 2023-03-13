@@ -2,35 +2,30 @@ import { Injectable } from '@angular/core';
 import { TargetMiddleware } from './helpers/target.middleware';
 import { AimModel } from './interfaces/aim.model';
 
-
-
-
-
-
 function propagateProgress(target: AimModel, progress: number): void {
   if (target.tasks?.length > 0) {
-    target.tasks.forEach(task => propagateProgress(task, progress));
+    target.tasks.forEach((task) => propagateProgress(task, progress));
   }
   target.progress = progress;
 }
 
 function updateProgress(target: AimModel): void {
   if (target.tasks?.length > 0) {
-      target.tasks.forEach( task => updateProgress(task));
-      target.progress = calcProgress(target);
+    target.tasks.forEach((task) => updateProgress(task));
+    target.progress = calcProgress(target);
   }
 }
 
 function calcProgress(target: AimModel): number {
-  const value = target.tasks.reduce((r, v) => ({ total: r.total + 100, real: r.real + v.progress }), { total: 0, real: 0 });
-  return value.total > 0 ? Math.floor(value.real / value.total * 100) : 0;
+  const value = target.tasks.reduce((r, v) => ({ total: r.total + 100, real: r.real + v.progress }), {
+    total: 0,
+    real: 0,
+  });
+  return value.total > 0 ? Math.floor((value.real / value.total) * 100) : 0;
 }
-
 
 @Injectable()
 export class TargetService {
-
-
   factory(target: AimModel): TargetMiddleware {
     return new TargetMiddleware(target);
   }
@@ -40,5 +35,4 @@ export class TargetService {
     propagateProgress(task, progress);
     updateProgress(target);
   }
-
 }

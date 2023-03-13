@@ -5,35 +5,35 @@
     .soer-tile {
       &__content,
       &__title {
-          color: #FFF;
+        color: #fff;
       }
     }
   }
 
   &.warning {
-    background-color: #FFFF99;
+    background-color: #ffff99;
 
     .soer-tile {
       &__content,
       &__title {
-          color: #4c3b03;
+        color: #4c3b03;
       }
     }
   }
 
   &.critical {
-    background-color: #FF4D4F;
+    background-color: #ff4d4f;
 
     .soer-tile {
       &__content,
       &__title {
-          color: #FFF;
+        color: #fff;
       }
     }
   }
 
   &.none {
-    background-color: #FFF;
+    background-color: #fff;
   }
 }
 

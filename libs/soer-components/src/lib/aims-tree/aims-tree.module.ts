@@ -27,7 +27,7 @@ import { TargetComponent } from './target/target.component';
     NzGridModule,
     NzGridModule,
     NzTypographyModule,
-    InlineEditorModule
+    InlineEditorModule,
   ],
   providers: [TargetService],
   exports: [AimsTreeComponent, TargetComponent],

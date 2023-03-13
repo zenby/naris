@@ -2,9 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TileStatus } from '@soer/soer-components';
  
 @Pipe({
-    name: 'numberToStatus',
+    name: 'percentStatusStrategy',
 })
-export class NumberToStatusPipe implements PipeTransform {
+export class PercentStatusStrategyPipe implements PipeTransform {
   transform(value: number): TileStatus {
     if (value >= 1 && value < 10) {
         return 'critical';

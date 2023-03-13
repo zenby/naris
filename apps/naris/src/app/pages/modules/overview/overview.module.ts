@@ -21,7 +21,8 @@ import { MetricsComponent } from './metrics/metrics.component';
 import { InfoComponent } from './info/info.component';
 import { TargetsListComponent } from './metrics/targets-list/targets-list.component';
 import { MetricsListComponent } from './metrics/metrics-list/metrics-list.component';
-import { NumberToStatusPipe } from './metrics/targets-list/number-to-status.pipe';
+import { PercentStatusStrategyPipe } from './metrics/metrics-list/strategies/percent-status-strategy.pipe';
+import { CountStatusStrategyPipe } from './metrics/metrics-list/strategies/count-status-strategy.pipe';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { NumberToStatusPipe } from './metrics/targets-list/number-to-status.pipe
     MetricsListComponent,
     TargetsListComponent,
     InfoComponent,
-    NumberToStatusPipe,
+    PercentStatusStrategyPipe,
+    CountStatusStrategyPipe
   ],
   imports: [
     CommonModule,

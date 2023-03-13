@@ -9,7 +9,7 @@ export class JwtTestHelper {
     uuid: '11111111-1111-4111-9111-111111111111',
   };
 
-  constructor(public readonly secret: string = JwtTestHelper.defaultSecret) { }
+  constructor(public readonly secret: string = JwtTestHelper.defaultSecret) {}
 
   createJwt(payload: JwtPayload) {
     return JwtTestHelper.createJwt(payload, this.secret);

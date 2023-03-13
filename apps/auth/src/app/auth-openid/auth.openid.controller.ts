@@ -11,15 +11,15 @@ import { Response } from 'express';
 import { HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { AuthOpenIdService } from './auth.openid.service';
 
-@ApiTags('auth/login')
-@Controller('auth/login')
+@ApiTags('auth')
+@Controller('auth')
 export class AuthOpenIdController {
   constructor(private readonly authService: AuthOpenIdService, private readonly configService: ConfigService) {}
 
   logger = new Logger(AuthOpenIdController.name);
   internalErrorMessage = 'Something went wrong. Try it later';
 
-  @Get('google')
+  @Get('login/google')
   @UseGuards(GoogleAuthGuard)
   @UsePipes(BackendValidationPipe)
   @ApiOperation({
@@ -52,14 +52,14 @@ export class AuthOpenIdController {
     }
   }
 
-  @Get('yandex/signin')
+  @Get('login/yandex')
   @UseGuards(YandexAuthGuard)
   @UsePipes(BackendValidationPipe)
   @ApiOperation({
     summary: 'Login in yandex',
     description: 'Requires user. Redirects to yandex',
   })
-  async yandexSignIn() {
+  async yandexLogin() {
     return { status: HttpJsonStatus.Ok, items: [] };
   }
 

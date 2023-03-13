@@ -31,7 +31,7 @@ export function getTypeOrmConfig(): TypeOrmModuleOptions {
 
 export function configurationFactory(): Configuration {
   return {
-    port: process.env.PORT ? parseInt(process.env.PORT, 10) : 3100,
+    port: process.env.AUTH_BACK_PORT ? parseInt(process.env.AUTH_BACK_PORT, 10) : 3100,
     jwt: {
       jwtSecret: process.env.JWT_SECRET || 'Some random key here',
       expiresInAccess: setExpiresIn(process.env.EXP_ACCESS || 60 * 15), // 15 min

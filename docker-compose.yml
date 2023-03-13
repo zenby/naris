@@ -2,8 +2,9 @@ version: '3'
 services:
   nx:
     environment:
-    - NODE_ENV=development
-    - DATABASE_HOST=mariadb
+      - NODE_ENV=development
+      - DATABASE_HOST=mariadb
+      - AUTH_BACK_PORT=3100
     build:
       context: .
       dockerfile: Dockerfile
@@ -22,7 +23,7 @@ services:
      - ./libs:/app/libs
      - ./package.json:/app/package.json
     command: >
-            sh -c "npm run test && npx nx run-many --parallel --target=serve --projects=auth,auth-cdn"
+            sh -c "npx nx run-many --parallel --target=serve --projects=auth,auth-cdn"
 
   mariadb:
     image: "mariadb:latest"

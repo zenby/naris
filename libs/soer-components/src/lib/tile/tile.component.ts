@@ -1,5 +1,5 @@
-import { Component, Input } from "@angular/core";
-import { TileModel } from "./tile.model";
+import { Component, Input } from '@angular/core';
+import { TileModel } from './tile.model';
 
 @Component({
   selector: 'soer-tile',

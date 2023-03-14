@@ -5,9 +5,9 @@ import { AimModel } from '../interfaces/aim.model';
   selector: 'soer-aims-tree',
   templateUrl: './aims-tree.component.html',
   styleUrls: ['./aims-tree.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AimsTreeComponent  {
+export class AimsTreeComponent {
   @Input() isEdit = false;
   @Input() hideCompleted = false;
   @Input() tasks: AimModel[] = [];

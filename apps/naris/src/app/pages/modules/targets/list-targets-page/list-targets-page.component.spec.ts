@@ -11,7 +11,7 @@ describe('ListTargetsPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-        imports: [NzEmptyModule, RouterTestingModule],
+      imports: [NzEmptyModule, RouterTestingModule],
       declarations: [ListTargetsPageComponent],
       providers: [
         { provide: 'target', useValue: ANY_SERVICE },

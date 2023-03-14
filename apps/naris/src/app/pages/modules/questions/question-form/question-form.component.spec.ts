@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { ActivatedRoute } from '@angular/router';
@@ -14,20 +14,16 @@ describe('QuestionFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NzFormModule,
-        NzInputModule,
-      ],
+      imports: [FormsModule, ReactiveFormsModule, NzFormModule, NzInputModule],
       declarations: [QuestionFormComponent],
       providers: [
         { provide: 'questions', useValue: ANY_SERVICE },
         { provide: 'question', useValue: ANY_SERVICE },
-        { provide: ActivatedRoute,
+        {
+          provide: ActivatedRoute,
           useValue: {
-            queryParams: of({ action: 'save' })
-          }
+            queryParams: of({ action: 'save' }),
+          },
         },
       ],
     }).compileComponents();

@@ -67,7 +67,7 @@ export class AuthService {
       return user;
     }
 
-    const isPasswordsMatch = await this.compareUsersByPassword(password , user);
+    const isPasswordsMatch = await this.compareUsersByPassword(password, user);
 
     if (isPasswordsMatch instanceof Error) {
       return isPasswordsMatch;

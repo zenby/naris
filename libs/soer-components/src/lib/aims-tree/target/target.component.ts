@@ -6,13 +6,13 @@ import { TargetService } from '../target.service';
   selector: 'soer-target',
   templateUrl: './target.component.html',
   styleUrls: ['./target.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TargetComponent {
   public readonly gradientColors = { '0%': '#ff0000', '50%': '#ff0000', '75%': '#ff9900', '100%': '#0f0' };
 
   public isEdit = false;
- 
+
   @Input() target: AimModel = EMPTY_AIM;
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() edit: EventEmitter<AimModel> = new EventEmitter<AimModel>();
@@ -42,7 +42,7 @@ export class TargetComponent {
   }
 
   onAction(action: string): void {
-    switch(action) {
+    switch (action) {
       case 'plus':
         this.onAddTo(this.target);
         break;
@@ -51,5 +51,4 @@ export class TargetComponent {
         break;
     }
   }
-
 }

@@ -8,9 +8,8 @@ describe('AudioPlayerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AudioPlayerComponent ]
-    })
-    .compileComponents();
+      declarations: [AudioPlayerComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

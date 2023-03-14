@@ -2,6 +2,28 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.4.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.3.2...naris-0.4.0) (2023-03-13)
+
+
+### Features
+
+* **metrics:** add calculate status strategies ([72e7a26](https://gitlog.ru:2222/Naris/soermono/commit/72e7a264d79a95925d395e460190abd7ceda9142))
+* targets change color depenings on progress ([2323dd9](https://gitlog.ru:2222/Naris/soermono/commit/2323dd9e515290f095c639656a456774393af023))
+
+### [0.3.2](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.3.1...naris-0.3.2) (2023-03-12)
+
+
+### Bug Fixes
+
+* problem with redirect after login ([a3e32c4](https://gitlog.ru:2222/Naris/soermono/commit/a3e32c46cb97651341a402561b4e41fa7df98cc9))
+
+### [0.3.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.3.0...naris-0.3.1) (2023-03-10)
+
+
+### Bug Fixes
+
+* removed unused eslint-disable in jest.config.ts ([373963d](https://gitlog.ru:2222/Naris/soermono/commit/373963d1fe77580e814fe30d4e70833fe1dac4d5))
+
 ## [0.3.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.2.1...naris-0.3.0) (2023-03-07)
 
 

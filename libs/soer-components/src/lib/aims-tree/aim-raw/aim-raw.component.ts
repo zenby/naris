@@ -1,11 +1,19 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { AimModel, EMPTY_AIM } from '../interfaces/aim.model';
 
 @Component({
   selector: 'soer-aim-raw',
   templateUrl: './aim-raw.component.html',
   styleUrls: ['./aim-raw.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AimRawComponent implements OnChanges {
   public readonly gradientColors = { '0%': '#ff0000', '50%': '#ff0000', '75%': '#ff9900', '100%': '#0f0' };
@@ -19,9 +27,8 @@ export class AimRawComponent implements OnChanges {
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() expand: EventEmitter<boolean> = new EventEmitter<boolean>();
   doneProgress = 100;
-  actions = ['plus', 'edit', 'delete']
+  actions = ['plus', 'edit', 'delete'];
   inlineEditorActions = ['save', 'cancel'];
-
 
   ngOnChanges(data: SimpleChanges): void {
     if (data['aim']?.firstChange && this.isEdit) {
@@ -34,13 +41,13 @@ export class AimRawComponent implements OnChanges {
   }
 
   toolbarAction(action: string, task: AimModel): void {
-    switch(action) {
+    switch (action) {
       case 'edit':
-          this.isTitleEdit = !this.isTitleEdit;
+        this.isTitleEdit = !this.isTitleEdit;
         break;
       case 'plus':
-         this.isExpand = true;
-         this.add.emit(task)
+        this.isExpand = true;
+        this.add.emit(task);
         break;
       case 'delete':
         this.delete.emit(task);
@@ -48,7 +55,7 @@ export class AimRawComponent implements OnChanges {
     }
   }
 
-  updateTitle(newTitle: string): void  {
+  updateTitle(newTitle: string): void {
     if (newTitle === '') {
       if (this.aim.tasks.length > 0) {
         return;

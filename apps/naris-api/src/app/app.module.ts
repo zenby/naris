@@ -23,7 +23,7 @@ import { ImagesModule } from './modules/images/images.module';
     }),
     JsonModule,
     PdfModule,
-    ImagesModule
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

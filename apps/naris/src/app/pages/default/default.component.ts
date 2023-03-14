@@ -41,7 +41,7 @@ export class DefaultComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private bus$: MixedBusService,
     private message: NzMessageService,
-    private breakpointService: NzBreakpointService,
+    private breakpointService: NzBreakpointService
   ) {}
 
   ngOnInit(): void {

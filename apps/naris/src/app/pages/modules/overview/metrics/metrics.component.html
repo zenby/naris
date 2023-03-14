@@ -1,8 +1,6 @@
 <ng-container *ngIf="target$ | async as targets">
-  <nz-divider nzText="Следующий шаг" nzOrientation="left"></nz-divider>
-  <soer-targets-list
-    [targets]="targets"
-  ></soer-targets-list>
+  <nz-divider nzText="Достижения" nzOrientation="left"></nz-divider>
+  <soer-targets-list [targets]="targets"></soer-targets-list>
 </ng-container>
 <nz-divider nzText="Метрики" nzOrientation="left"></nz-divider>
 <soer-metrics-list

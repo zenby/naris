@@ -1,7 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { config } from 'dotenv';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity } from '../../user/user.entity';
 import { Profile } from 'passport';
 import { AuthOpenIdService } from '../../auth-openid/auth.openid.service';
@@ -19,23 +19,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
-  async validate(
-    accessToken: string,
-    refreshToken: string,
-    profile: Profile,
-    done: VerifyCallback
-  ): Promise<UserEntity | Error> {
+  async validate(_accessToken: string, _refreshToken: string, profile: Profile): Promise<UserEntity> {
     const { emails } = profile;
     const email = emails[0].value;
 
     const user = await this.authService.authByOpenID(email);
 
     if (user instanceof Error) {
-      done(user, undefined);
-      return user;
+      throw new HttpException('Authentithication error', HttpStatus.UNAUTHORIZED);
     }
 
-    done(null, user);
     return user;
   }
 }

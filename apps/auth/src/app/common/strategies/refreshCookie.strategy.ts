@@ -7,7 +7,7 @@ import { Configuration } from '../../config/config';
 import { UserEntity } from '../../user/user.entity';
 
 @Injectable()
-export class RefreshCookieStrategy extends PassportStrategy(Strategy) {
+export class RefreshCookieStrategy extends PassportStrategy(Strategy, 'cookie') {
   constructor(private readonly authService: AuthService, configService: ConfigService) {
     super({
       cookieName: configService.get<Configuration['jwt']>('jwt').cookieName,

@@ -13,17 +13,17 @@ export class ProfileDataService {
   public get profile$(): Observable<ProfileModel> {
     return this.selectProfile$();
   }
-  
+
   constructor(
     @Inject(MANIFEST) private readonly manifestIdEmitter: BusEmitter,
-    private readonly store$: DataStoreService,
+    private readonly store$: DataStoreService
   ) {}
 
   public selectProfile$(): Observable<ProfileModel> {
     return extractDtoPackFromBus<ProfileDto>(this.store$.of(this.manifestIdEmitter)).pipe(
-        filter(({ status }: DtoPack<ProfileDto>) => status === OK),
-        map(({ items }: DtoPack<ProfileDto>) => mapProfileDtoToModel(items[0])),
-        take(1),
+      filter(({ status }: DtoPack<ProfileDto>) => status === OK),
+      map(({ items }: DtoPack<ProfileDto>) => mapProfileDtoToModel(items[0])),
+      take(1)
     );
   }
 }

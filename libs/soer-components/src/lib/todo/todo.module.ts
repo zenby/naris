@@ -7,12 +7,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @NgModule({
   declarations: [TodoComponent],
-  imports: [
-    CommonModule,
-    NzIconModule,
-    NzButtonModule,
-    NzTypographyModule
-  ],
-  exports: [TodoComponent]
+  imports: [CommonModule, NzIconModule, NzButtonModule, NzTypographyModule],
+  exports: [TodoComponent],
 })
 export class TodoModule {}

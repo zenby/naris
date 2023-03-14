@@ -45,7 +45,7 @@ const applicationServiceMock = {
   },
   user$: extractDtoPackFromBus<JWTModel>(dataStoreServiceMock.of()),
   auth: {
-    logout: () => true
+    logout: () => true,
   },
 };
 

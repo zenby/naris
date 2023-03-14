@@ -1,7 +1,7 @@
 export interface UrlBuilderOptions {
-    apiRoot: string;
-  }
-  
+  apiRoot: string;
+}
+
 export interface UrlParam {
-    [key: string]: number|string;
+  [key: string]: number | string;
 }

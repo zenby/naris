@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 
 import { ComposeIcontabsPageComponent } from './compose-icontabs-page.component';
-import { RouterTestingModule } from '@angular/router/testing';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ActivatedRoute } from '@angular/router';
 import { faker } from '@faker-js/faker';
@@ -63,7 +62,6 @@ describe('ComposeIcontabsPageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, NzMessageModule],
       declarations: [ComposeIcontabsPageComponent],
-      imports: [RouterTestingModule],
       providers: [{ provide: NzMessageService, useClass: MockNzMessageService }],
     });
   });

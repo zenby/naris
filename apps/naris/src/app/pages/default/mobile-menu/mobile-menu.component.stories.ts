@@ -1,8 +1,8 @@
 import { MobileMenuComponent } from './mobile-menu.component';
 import { moduleMetadata, Story, Meta } from '@storybook/angular';
 import { MAIN_MENU } from '../../../services/menu/menu.const';
-import { DemoNgZorroAntdModule } from '../../demo.module';
 import { HttpClientModule } from '@angular/common/http';
+import {DemoNgZorroAntdModule} from "@soer/soer-components";
 
 export default {
   title: 'MobileMenuComponent',

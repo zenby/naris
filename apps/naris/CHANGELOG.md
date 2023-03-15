@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.5.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.4.0...naris-0.5.0) (2023-03-15)
+
+
+### Features
+
+* modify page list-abstact-page ([7dd373d](https://gitlog.ru:2222/Naris/soermono/commit/7dd373d2ec9f8f2c44597de771d52b30f8b23a5f))
+* move DemoNgZorroAntdModule to libs ([de648f6](https://gitlog.ru:2222/Naris/soermono/commit/de648f6155398e613528b7ff9b5e455c111d3d7a))
+
 ## [0.4.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.3.2...naris-0.4.0) (2023-03-13)
 
 

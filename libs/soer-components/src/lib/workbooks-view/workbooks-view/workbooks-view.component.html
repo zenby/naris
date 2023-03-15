@@ -1,0 +1,34 @@
+<ng-container *ngIf="workbooks.length; else emptylist">
+  <div>
+    <ng-container *ngFor="let workbook of workbooks">
+      <div class="item">
+        <div class="title" (click)="this.workbookView.emit(workbook)">{{ workbook.question }}</div>
+        <div class="actions">
+          <i nz-icon nzType="edit" class="icon" (click)="this.workbookEdit.emit(workbook)"></i>
+          <i nz-icon nzType="eye" class="icon" (click)="this.workbookView.emit(workbook)"></i>
+          <i nz-icon nzType="download" class="icon" (click)="this.workbookDownload.emit(workbook)"></i>
+          <button
+            nzPopconfirmTitle="Вы уверены, что хотите удалить этот документ?"
+            nzPopconfirmPlacement="bottom"
+            nz-popconfirm
+            nz-button
+            nzType="text"
+            nzDanger
+            (nzOnConfirm)="this.workbookDelete.emit(workbook)"
+          >
+            <i class="icon icon-error" nz-icon nzType="delete"></i>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-template #emptylist>
+  <ng-container *ngTemplateOutlet="emptyListTemplate || emptyListDefaultTemplate">
+  </ng-container>
+</ng-template>
+
+<ng-template #emptyListDefaultTemplate>
+  <div class="empty-list">Нет данных</div>
+</ng-template>

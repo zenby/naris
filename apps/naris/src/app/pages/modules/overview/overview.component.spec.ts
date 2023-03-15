@@ -4,9 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ANY_SERVICE } from '@soer/mixed-bus';
 import { PersonalActivityService } from '../../../api/progress/personal-activity.service';
-import { DemoNgZorroAntdModule } from '../../demo.module';
 
 import { OverviewComponent } from './overview.component';
+import {DemoNgZorroAntdModule} from "@soer/soer-components";
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;

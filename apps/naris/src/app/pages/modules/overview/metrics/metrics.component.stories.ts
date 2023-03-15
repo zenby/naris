@@ -1,10 +1,9 @@
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { TileModule } from '@soer/soer-components';
+import {DemoNgZorroAntdModule, TileModule} from '@soer/soer-components';
 import { DataStoreService } from '@soer/sr-dto';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { of } from 'rxjs';
 import { PersonalActivityService } from '../../../../api/progress/personal-activity.service';
-import { DemoNgZorroAntdModule } from '../../../demo.module';
 import { MetricsListComponent } from './metrics-list/metrics-list.component';
 import { MetricsComponent } from './metrics.component';
 import { TargetsListComponent } from './targets-list/targets-list.component';

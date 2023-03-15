@@ -27,7 +27,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzI18nModule } from 'ng-zorro-antd/i18n';
+import {NZ_I18N, NzI18nModule, ru_RU} from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -140,5 +140,8 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
     NzResizableModule,
     NzPipesModule,
   ],
+  providers: [
+    { provide: NZ_I18N, useValue: ru_RU },
+  ]
 })
 export class DemoNgZorroAntdModule {}

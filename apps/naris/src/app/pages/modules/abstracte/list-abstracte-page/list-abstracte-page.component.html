@@ -11,50 +11,21 @@
 </ng-container>
 
 <ng-template #result let-items="items">
-  <ng-container [ngSwitch]="!!items.length">
-    <ng-container *ngSwitchCase="true">
-      <div nz-row [nzGutter]="[24, 24]">
-        <ng-container *ngFor="let workbook of items">
-          <div class="personal-target" nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="8">
-            <nz-card [nzTitle]="workbook.question" [nzActions]="[actionEdit, actionView, actionDownload, actionDelete]">
-              <p *ngIf="workbook.text">{{ workbook.text }}</p>
-              <p *ngIf="workbook.blocks && workbook.blocks.length > 0">{{ workbook.blocks[0].text }}</p>
-            </nz-card>
-          </div>
+  <div class="workbooks">
+    <soer-workbooks-view
+      [workbooks]="items"
+      [emptyListTemplate] = "emptylist"
+      (workbookEdit)="workbookEdit($event)"
+      (workbookView)="workbookView($event)"
+      (workbookDownload)="workbookDownload($event)"
+      (workbookDelete)="workbookDelete($event)"
+      (createWorkbook)="createWorkbook()"
+    ></soer-workbooks-view>
+  </div>
+</ng-template>
 
-          <ng-template #actionEdit>
-            <i nz-icon nzType="edit" (click)="workbookEdit(workbook)"></i>
-          </ng-template>
-
-          <ng-template #actionView>
-            <i nz-icon nzType="eye" (click)="workbookView(workbook)"></i>
-          </ng-template>
-
-          <ng-template #actionDownload>
-            <i nz-icon nzType="download" (click)="workbookDownload(workbook)"></i>
-          </ng-template>
-
-          <ng-template #actionDelete>
-            <button
-              nzPopconfirmTitle="Вы уверены, что хотите удалить этот документ?"
-              nzPopconfirmPlacement="bottom"
-              nz-popconfirm
-              nz-button
-              nzType="text"
-              nzDanger
-              (nzOnConfirm)="workbookDelete(workbook)"
-            >
-              <i nz-icon nzType="delete"></i>
-            </button>
-          </ng-template>
-        </ng-container>
-      </div>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="false">
-      <ng-container *ngTemplateOutlet="emptylist"></ng-container>
-    </ng-container>
-  </ng-container>
+<ng-template #loading>
+  <soer-preloader></soer-preloader>
 </ng-template>
 
 <ng-template #emptylist>
@@ -66,8 +37,4 @@
       <button nz-button nzType="primary" (click)="createWorkbook()">Начать</button>
     </div>
   </nz-result>
-</ng-template>
-
-<ng-template #loading>
-  <soer-preloader></soer-preloader>
 </ng-template>

@@ -4,14 +4,7 @@ import { MixedBusService } from '@soer/mixed-bus';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { BehaviorSubject } from 'rxjs';
 import { ComposePage } from '../compose-page';
-
-interface IconTab {
-  title: string;
-  icon?: string;
-  path: string[];
-  iconText?: string;
-  componentName?: string;
-}
+import { IconTab } from './compose-icontabs-page.model';
 
 @Component({
   selector: 'soer-compose-icontabs-page',
@@ -43,47 +36,63 @@ export class ComposeIcontabsPageComponent extends ComposePage implements OnInit,
 
   prepareTabs(): void {
     this.route.routeConfig?.children?.forEach((child) => {
-      if (child.data?.['header']) {
-        const newPath = child.path === undefined || child.path === '' ? '.' : child.path;
-        if (!child.data?.['header']?.['cantBeTab']) {
-          const tab: IconTab = {
-            componentName: child.component?.name,
-            title: child.data?.['header'].title,
-            icon: child.data?.['header'].icon,
-            iconText: child.data?.['header'].iconText || '',
-            path: [newPath],
-          };
-          this.tabs.push(tab);
-        }
+      const childHeader = child.data?.['header'];
+
+      if (!childHeader) {
+        return;
+      }
+
+      const newPath = child.path === undefined || child.path === '' ? '.' : child.path;
+
+      if (!childHeader['cantBeTab']) {
+        const tab: IconTab = {
+          componentName: child.component?.name,
+          title: childHeader.title,
+          icon: childHeader.icon,
+          iconText: childHeader.iconText || '',
+          path: [newPath],
+        };
+
+        this.tabs.push(tab);
       }
     });
   }
 
-  activateTab(data: any): void {
-    const findActiveTitle = (r: ActivatedRoute): string[] => {
-      let result: string[] = [];
-      if (r.snapshot.routeConfig?.path) {
-        result.push(r.snapshot.routeConfig?.path);
-      }
-      if (r.children.length > 0) {
-        for (let i = 0; i < r.children.length; i++) {
-          const childTitles = findActiveTitle(r.children[i]);
-          result = [...result, ...childTitles];
-        }
-      }
-      return result;
+  activateTab(): void {
+    const [activeRoute] = this.route.children;
+    const path = this.getRouteSnapshotsPaths(this.route).pop() || '';
+
+    if (!activeRoute) {
+      return;
+    }
+
+    const activeTab = this.tabs.find((tab) => tab.path.includes(path)) || {
+      title: '',
+      icon: '',
+      path: [],
     };
 
-    const [activeRoute] = this.route.children;
-    const path = findActiveTitle(this.route).pop() || '';
+    setTimeout(() => this.active$.next(activeTab), 0);
+  }
 
-    if (activeRoute) {
-      const activeTab = this.tabs.find((tab) => tab.path && tab.path.includes(path)) || {
-        title: '',
-        icon: '',
-        path: [],
-      };
-      setTimeout(() => this.active$.next(activeTab), 0);
+  isTabDisabled(activeTab: IconTab, tab: IconTab) {
+    return activeTab.path.length > 0 && activeTab.path.join('') === tab.path.join('');
+  }
+
+  private getRouteSnapshotsPaths(r: ActivatedRoute): string[] {
+    const result: string[] = [];
+
+    if (r.snapshot.routeConfig?.path) {
+      result.push(r.snapshot.routeConfig?.path);
     }
+
+    if (r.children.length > 0) {
+      for (let i = 0; i < r.children.length; i++) {
+        const childTitles = this.getRouteSnapshotsPaths(r.children[i]);
+        result.push(...childTitles);
+      }
+    }
+
+    return result;
   }
 }

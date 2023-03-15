@@ -5,7 +5,6 @@ import { moduleMetadata, Story, Meta } from '@storybook/angular';
 import { DefaultComponent } from './default.component';
 import { BusMessage } from '@soer/mixed-bus';
 import { JWTModel } from '@soer/sr-auth';
-import { DemoNgZorroAntdModule } from '../demo.module';
 import { extractDtoPackFromBus, SrDTOModule } from '@soer/sr-dto';
 import { of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,6 +13,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MobileMenuComponent } from './mobile-menu/mobile-menu.component';
 import { Observable } from 'rxjs';
 import { ApplicationService } from '../../services/application.service';
+import {DemoNgZorroAntdModule} from "@soer/soer-components";
 
 const dataStoreServiceMock = {
   of: (manifestId?: any): Observable<BusMessage> => {

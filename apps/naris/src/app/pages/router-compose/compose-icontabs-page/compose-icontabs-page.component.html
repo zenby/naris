@@ -7,12 +7,12 @@
       nzSize="large"
       nzShape="round"
       [title]="tab.title"
-      [disabled]="active.path.length > 0 && active.path.join('') === tab.path.join('')"
-      [nzType]="active.path.length > 0 && active.path.join('') === tab.path.join('') ? 'dashed' : 'primary'"
+      [disabled]="isTabDisabled(active, tab)"
+      [nzType]="isTabDisabled(active, tab) ? 'dashed' : 'primary'"
     >
       <i *ngIf="tab.icon" nz-icon [nzType]="tab.icon || 'empty'" nzTheme="outline"></i>
       <span *ngIf="tab.iconText">{{ tab.iconText }}</span>
     </a>
   </div>
 </ng-container>
-<router-outlet (activate)="activateTab($event)"></router-outlet>
+<router-outlet (activate)="activateTab()"></router-outlet>

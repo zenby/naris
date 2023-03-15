@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output, TemplateRef} from "@angular/core";
-import {WorkbookModel} from "@soer/sr-editor";
+import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { WorkbookModel } from '@soer/sr-editor';
 
 @Component({
   selector: 'soer-workbooks-view',

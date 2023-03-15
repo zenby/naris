@@ -13,7 +13,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MobileMenuComponent } from './mobile-menu/mobile-menu.component';
 import { Observable } from 'rxjs';
 import { ApplicationService } from '../../services/application.service';
-import {DemoNgZorroAntdModule} from "@soer/soer-components";
+import { DemoNgZorroAntdModule } from '@soer/soer-components';
 
 const dataStoreServiceMock = {
   of: (manifestId?: any): Observable<BusMessage> => {

@@ -6,10 +6,10 @@
           [tile]="{
             title: metric['title'],
             suffix: metric['suffix'],
-            status: (metric['suffix'] === '%' 
-              ? (metric['value'] | percentStatusStrategy) 
-              : (metric['value'] | countStatusStrategy)
-            ),
+            status:
+              metric['suffix'] === '%'
+                ? (metric['value'] | percentStatusStrategy)
+                : (metric['value'] | countStatusStrategy),
             value: metric['value']
           }"
         ></soer-tile>

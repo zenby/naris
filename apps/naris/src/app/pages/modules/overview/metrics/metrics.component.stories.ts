@@ -1,5 +1,5 @@
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import {DemoNgZorroAntdModule, TileModule} from '@soer/soer-components';
+import { DemoNgZorroAntdModule, TileModule } from '@soer/soer-components';
 import { DataStoreService } from '@soer/sr-dto';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { of } from 'rxjs';

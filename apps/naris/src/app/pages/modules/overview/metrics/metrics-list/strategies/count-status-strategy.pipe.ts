@@ -15,7 +15,7 @@ export class CountStatusStrategyPipe implements PipeTransform {
     }
 
     if (value >= 5) {
-      return 'normal'
+      return 'normal';
     }
 
     return 'none';

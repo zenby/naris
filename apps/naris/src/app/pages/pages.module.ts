@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { SrDTOModule } from '@soer/sr-dto';
-import {AccessDeniedModule, DemoNgZorroAntdModule, OverlayModule, VideoPlayerModule} from '@soer/soer-components';
+import { AccessDeniedModule, DemoNgZorroAntdModule, OverlayModule, VideoPlayerModule } from '@soer/soer-components';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { IconsProviderModule } from '../../icons-provider.module';
 import { DefaultComponent } from './default/default.component';

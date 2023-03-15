@@ -41,14 +41,13 @@ $hover-color: #1890ff;
   height: $icon-size-mobile;
 }
 
-
 .title,
 .icon {
   transition: all 0.5s ease;
 }
 
 .title:hover,
-.icon:hover, {
+.icon:hover {
   cursor: pointer;
   transition: all 0.5s ease;
 }

@@ -14,7 +14,7 @@
   <div class="workbooks">
     <soer-workbooks-view
       [workbooks]="items"
-      [emptyListTemplate] = "emptylist"
+      [emptyListTemplate]="emptylist"
       (workbookEdit)="workbookEdit($event)"
       (workbookView)="workbookView($event)"
       (workbookDownload)="workbookDownload($event)"

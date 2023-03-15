@@ -22,7 +22,7 @@ import { EditAbstracteFormComponent } from './edit-abstracte-form/edit-abstracte
 import { EditAbstractePageComponent } from './edit-abstracte-page/edit-abstracte-page.component';
 import { ListAbstractePageComponent } from './list-abstracte-page/list-abstracte-page.component';
 import { ViewAbstractePageComponent } from './view-abstracte-page/view-abstracte-page.component';
-import { WorkbooksViewModule } from "@soer/soer-components";
+import { WorkbooksViewModule } from '@soer/soer-components';
 
 @NgModule({
   declarations: [

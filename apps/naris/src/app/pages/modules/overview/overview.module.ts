@@ -32,7 +32,7 @@ import { CountStatusStrategyPipe } from './metrics/metrics-list/strategies/count
     TargetsListComponent,
     InfoComponent,
     PercentStatusStrategyPipe,
-    CountStatusStrategyPipe
+    CountStatusStrategyPipe,
   ],
   imports: [
     CommonModule,

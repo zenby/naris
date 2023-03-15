@@ -6,7 +6,7 @@ import { ANY_SERVICE } from '@soer/mixed-bus';
 import { PersonalActivityService } from '../../../api/progress/personal-activity.service';
 
 import { OverviewComponent } from './overview.component';
-import {DemoNgZorroAntdModule} from "@soer/soer-components";
+import { DemoNgZorroAntdModule } from '@soer/soer-components';
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;

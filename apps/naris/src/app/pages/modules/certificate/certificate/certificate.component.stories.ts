@@ -8,7 +8,7 @@ import { DataStoreService, SrDTOModule } from '@soer/sr-dto';
 import { ANY_SERVICE, BusEmitter } from '@soer/mixed-bus';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
-import {DemoNgZorroAntdModule} from "@soer/soer-components";
+import { DemoNgZorroAntdModule } from '@soer/soer-components';
 
 const mockDataStoreService = {
   of: (manifestId: BusEmitter) =>

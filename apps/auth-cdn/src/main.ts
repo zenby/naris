@@ -6,7 +6,6 @@ import helmet from 'helmet';
 import { AppModule } from './app/app.module';
 import { setupSwagger } from './swagger';
 import * as express from 'express';
-import { verifyToken } from './app/common/middlewares/verify-token.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,8 +13,6 @@ async function bootstrap() {
 
   // ATTENTION! This call must come before all app.use(...)
   app.use(helmet());
-
-  app.use('/assets', verifyToken);
 
   const staticRoot = configService.get<string>('fileStoragePath');
 

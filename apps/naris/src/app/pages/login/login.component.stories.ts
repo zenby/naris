@@ -2,7 +2,7 @@ import { LoginComponent } from './login.component';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import {DemoNgZorroAntdModule} from "@soer/soer-components";
+import { DemoNgZorroAntdModule } from '@soer/soer-components';
 import { SrAuthModule } from '@soer/sr-auth';
 
 export default {

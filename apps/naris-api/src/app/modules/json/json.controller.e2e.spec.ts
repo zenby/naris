@@ -6,6 +6,9 @@ import { Test } from '@nestjs/testing';
 import { HttpJsonStatus } from '../../common/types/http-json-response.interface';
 import { DataSource } from 'typeorm';
 import { faker } from '@faker-js/faker';
+import { JwtConfig } from '../../config/jwt.config';
+import { ConfigType } from '@nestjs/config';
+import { JwtTestHelper } from '../../common/helpers/JwtTestHelper';
 
 const jsonRepositoryMock = {
   find: jest.fn(),
@@ -34,6 +37,10 @@ describe('JsonModule e2e-test', () => {
       imports: [JsonModule],
     })
       .useMocker((token) => {
+        if (token == JwtConfig.KEY) {
+          const jwtConfigMock: ConfigType<typeof JwtConfig> = { jwtSecret: JwtTestHelper.defaultSecret };
+          return jwtConfigMock;
+        }
         if (token == DataSource) return dataSourceMockHack;
       })
       .compile();
@@ -58,7 +65,10 @@ describe('JsonModule e2e-test', () => {
 
       jsonRepositoryMock.find.mockReturnValueOnce([document]);
 
-      await request.get(`/json/${document.group}`).expect({ status: HttpJsonStatus.Ok, items: [document] });
+      await request
+        .get(`/json/${document.group}`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
       expect(jsonRepositoryMock.find).toHaveBeenCalledWith({ where: { group: document.group } });
     });
@@ -72,6 +82,7 @@ describe('JsonModule e2e-test', () => {
 
       await request
         .post(`/json/${document.group}/new`)
+        .set(JwtTestHelper.createBearerHeader())
         .send({ json: document.json })
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
@@ -87,6 +98,7 @@ describe('JsonModule e2e-test', () => {
 
       await request
         .get(`/json/${document.group}/${document.id}`)
+        .set(JwtTestHelper.createBearerHeader())
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
       expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: document.id, group: document.group } });
@@ -106,6 +118,7 @@ describe('JsonModule e2e-test', () => {
 
       await request
         .put(`/json/${group}/${id}`)
+        .set(JwtTestHelper.createBearerHeader())
         .send({ json: jsonToUpdate })
         .expect({ status: HttpJsonStatus.Ok, items: [updatedDocument] });
 
@@ -122,6 +135,7 @@ describe('JsonModule e2e-test', () => {
 
       await request
         .delete(`/json/${storedDocument.group}/${storedDocument.id}`)
+        .set(JwtTestHelper.createBearerHeader())
         .expect({ status: HttpJsonStatus.Ok, items: [] });
 
       expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({

@@ -20,7 +20,7 @@ import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor
   templateUrl: './block-editor.component.html',
   styleUrls: ['./block-editor.component.scss'],
 })
-export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
+export class BlockEditorComponent implements AfterViewInit {
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
 
   @ViewChild('edit') set editRef(ref: ElementRef) {
@@ -50,9 +50,9 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
 
   constructor(@Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry) {}
 
-  ngAfterViewChecked(): void {
+  ngOnChanges(): void {
     if (this.isActive && this.isEdit) {
-      this.edit.nativeElement.focus();
+      this.edit?.nativeElement.focus();
     }
   }
 

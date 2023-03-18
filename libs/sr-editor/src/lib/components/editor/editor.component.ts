@@ -32,22 +32,6 @@ export class EditorComponent {
         this.router.navigate([], { relativeTo: this.route, queryParams: {} });
         this.delimitBLock(this.document.blocks[this.activeIndex]);
       }
-      if (params['action'] === 'add') {
-        this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.addBlockMarkdown(this.activeIndex);
-      }
-      if (params['action'] === 'remove') {
-        this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.removeBlock(this.activeIndex);
-      }
-      if (params['action'] === 'up') {
-        this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.move(this.activeIndex, this.activeIndex - 1);
-      }
-      if (params['action'] === 'down') {
-        this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.move(this.activeIndex, this.activeIndex + 1);
-      }
       this.previewFlag = params['preview'] === 'true';
       this.cdp.markForCheck();
     });

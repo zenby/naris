@@ -92,8 +92,8 @@ export class EditorComponent {
   removeBlock(removeIndex: number): void {
     if (this.document.blocks.length === 1) return;
 
+    this.saveEditStateForSubsequentBlocksWhenDeletingBlock(removeIndex, this.document.blocks.slice(removeIndex));
     this.document.blocks = this.document.blocks.filter((el, index) => removeIndex !== index);
-    this.stopBlockEdit(removeIndex);
     this.activeIndex = this.activeIndex - 1;
   }
 
@@ -127,14 +127,23 @@ export class EditorComponent {
   private saveEditStateForSubsequentBlocksWhenInsertingBlock(insertIndex: number, subsequentBlocks: TextBlock[]): void {
     let index = subsequentBlocks.length;
     while (index > 0) {
-      const oldIndex = insertIndex + index;
-      const newIndex = oldIndex + 1;
-      if (this.isBlockEditable(oldIndex)) {
-        this.startBlockEdit(newIndex);
-      } else {
-        this.stopBlockEdit(newIndex);
-      }
+      this.saveBlockEditState(insertIndex + index, insertIndex + index + 1);
       index--;
+    }
+  }
+  private saveEditStateForSubsequentBlocksWhenDeletingBlock(deleteIndex: number, subsequentBlocks: TextBlock[]): void {
+    let index = 0;
+    while (index < subsequentBlocks.length) {
+      this.saveBlockEditState(deleteIndex + index, deleteIndex + index - 1);
+      index++;
+    }
+  }
+
+  private saveBlockEditState(oldIndex: number, newIndex: number) {
+    if (this.isBlockEditable(oldIndex)) {
+      this.startBlockEdit(newIndex);
+    } else {
+      this.stopBlockEdit(newIndex);
     }
   }
 

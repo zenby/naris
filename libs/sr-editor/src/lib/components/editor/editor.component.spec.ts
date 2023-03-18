@@ -140,6 +140,18 @@ describe('EditorComponent', () => {
       expect(component.document.blocks.length).toBe(countOfblocks);
     });
 
+    it('should save editing state for existing blocks after delete', () => {
+      component.setActive(0);
+      component.setActive(1);
+      component.setActive(3);
+
+      component.removeBlock(0);
+
+      expect(component.isBlockEditable(0)).toBeTruthy();
+      expect(component.isBlockEditable(1)).toBeFalsy();
+      expect(component.isBlockEditable(2)).toBeTruthy();
+    });
+
     describe('check editing state after block removement', () => {
       beforeEach(() => {
         component.setActive(2);

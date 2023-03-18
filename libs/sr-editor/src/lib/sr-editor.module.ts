@@ -6,6 +6,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { BlockEditorComponent } from './components/block-editor/block-editor.component';
+import { BlockEditorControlsComponent } from './components/block-editor-controls/block-editor-controls.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { BooleanToStringPipe } from './pipes/boolean-to-string.pipe';
 import { TypeFormatPipe } from './pipes/type-format.pipe';
@@ -16,6 +17,7 @@ import { TextareaAutoresizeDirective } from './textarea-autoresize.directive';
   imports: [CommonModule, MarkdownModule.forRoot(), FormsModule, NzIconModule, NzButtonModule],
   declarations: [
     BlockEditorComponent,
+    BlockEditorControlsComponent,
     BooleanToStringPipe,
     EditorComponent,
     TextareaAutoresizeDirective,

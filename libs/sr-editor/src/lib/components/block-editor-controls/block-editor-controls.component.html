@@ -1,0 +1,8 @@
+<div class="controls-wrapper">
+  <div class="control" *ngFor="let control of controls">
+    <button nz-button nzSize="small" nzType="text" (click)="control?.handler()">
+      <i nz-icon [nzType]="control.icon" nzTheme="outline"></i>
+      <span class="control-title">{{ control.title }}</span>
+    </button>
+  </div>
+</div>

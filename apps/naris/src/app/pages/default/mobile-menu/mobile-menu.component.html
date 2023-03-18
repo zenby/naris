@@ -52,7 +52,15 @@
 
   <div class="controls" *ngIf="controls">
     <div class="control" *ngFor="let control of controls">
-      <button nz-button nzSize="large" nzShape="circle" (click)="controlPanel(control)">
+      <button
+        nz-tooltip
+        [nzTooltipTitle]="control.title"
+        [nzTooltipTrigger]="isMobile ? 'focus' : 'hover'"
+        nz-button
+        nzSize="large"
+        nzShape="circle"
+        (click)="controlPanel(control)"
+      >
         <i nz-icon [nzType]="control.icon" nzTheme="outline"></i>
       </button>
     </div>

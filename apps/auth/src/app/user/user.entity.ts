@@ -3,6 +3,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { genSalt, hash } from 'bcrypt';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
+export enum UserRole {
+  ADMIN = 'admin',
+  USER = 'user',
+  MODERATOR = 'moderator',
+}
+
 @Entity({ name: 'users' })
 export class UserEntity {
   @ApiProperty()
@@ -28,6 +34,18 @@ export class UserEntity {
   @Column()
   @Generated('uuid')
   uuid: string;
+
+  @ApiProperty()
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.USER,
+  })
+  role: UserRole;
+
+  async isAdmin() {
+    return this.role === UserRole.ADMIN;
+  }
 
   @BeforeInsert()
   async hashPassword() {

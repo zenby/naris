@@ -4,25 +4,6 @@
 
   .control {
     margin: 2px;
-    position: relative;
-
-    &-title {
-      display: none;
-      position: absolute;
-      white-space: nowrap;
-      bottom: 150%;
-      right: 0;
-      background-color: rgba(139, 139, 141, 0.168);
-      z-index: 1000;
-      width: max-content;
-      padding: 0.3em;
-    }
-
-    &:hover {
-      .control-title {
-        display: block;
-      }
-    }
   }
 
   .ant-btn:hover {

@@ -131,12 +131,11 @@ export class EditorComponent {
       index--;
     }
   }
+
   private saveEditStateForSubsequentBlocksWhenDeletingBlock(deleteIndex: number, subsequentBlocks: TextBlock[]): void {
-    let index = 0;
-    while (index < subsequentBlocks.length) {
-      this.saveBlockEditState(deleteIndex + index, deleteIndex + index - 1);
-      index++;
-    }
+    subsequentBlocks.forEach((block, blockIndex) => {
+      this.saveBlockEditState(deleteIndex + blockIndex, deleteIndex + blockIndex - 1);
+    });
   }
 
   private saveBlockEditState(oldIndex: number, newIndex: number) {

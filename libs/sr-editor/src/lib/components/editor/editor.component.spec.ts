@@ -187,16 +187,23 @@ describe('EditorComponent', () => {
     });
 
     it('should focus on the previous block', () => {
-      component.setActive(1);
+      component.setActive(0);
+      component.onEndEdit(1);
+
+      expect(component.isBlockActive(0)).toBe(true);
+    });
+
+    it('should not focus on the previous block because currently active block mismatch stopped editing block', () => {
+      component.setActive(3);
       component.onEndEdit(2);
 
-      expect(component.isBlockActive(1)).toBe(true);
+      expect(component.isBlockActive(3)).toBe(true);
     });
 
     it('should not autofocus, if the editor has no editable blocks', () => {
       component.onEndEdit(2);
 
-      expect(component.activeIndex).toBe(0);
+      expect(component.activeIndex).toBe(-1);
     });
   });
 });

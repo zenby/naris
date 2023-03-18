@@ -99,7 +99,9 @@ export class EditorComponent {
 
   onEndEdit(blockIndex: number) {
     this.stopBlockEdit(blockIndex);
-    this.activeIndex = this.findPreviousEditingBlock(blockIndex);
+    if (this.activeIndex == blockIndex) {
+      this.activeIndex = this.findPreviousEditingBlock(blockIndex);
+    }
   }
 
   isBlockEditable(index: number): boolean {
@@ -148,7 +150,7 @@ export class EditorComponent {
 
   private findPreviousEditingBlock(blockIndex: number): number {
     let index = blockIndex;
-    while (index > 0) {
+    while (index >= 0) {
       if (this.isBlockEditable(index)) {
         return index;
       }

@@ -1,9 +1,9 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { ConfigService } from '@nestjs/config';
-import { CommonConfig, Jwt } from '@soer/sr-common-interfaces';
+import { CommonAppConfig, Jwt } from '@soer/sr-common-interfaces';
 
-export interface Configuration<T extends TypeOrmModuleOptions = any> extends CommonConfig {
+export interface Configuration<T extends TypeOrmModuleOptions = any> extends CommonAppConfig {
   jwt: Jwt;
   typeOrm: T;
 }

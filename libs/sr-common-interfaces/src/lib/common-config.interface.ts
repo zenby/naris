@@ -1,4 +1,4 @@
-export interface CommonConfig {
+export interface CommonAppConfig {
   port: number;
 }
 

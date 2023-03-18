@@ -1,7 +1,7 @@
 import { join } from 'path';
-import { CommonConfig, Jwt } from '@soer/sr-common-interfaces';
+import { CommonAppConfig, Jwt } from '@soer/sr-common-interfaces';
 
-export interface Configuration extends CommonConfig {
+export interface Configuration extends CommonAppConfig {
   fileStoragePath: string;
   jwt: Jwt;
 }

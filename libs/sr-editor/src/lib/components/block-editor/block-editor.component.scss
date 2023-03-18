@@ -20,15 +20,6 @@
   color: gray;
 }
 
-.edit {
-  width: calc(100% - 70px);
-
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-}
-
 .info {
   min-width: 60px;
   text-align: right;
@@ -47,5 +38,29 @@
   @media screen and (max-width: 768px) {
     display: inline-block;
     margin: 0 0 5px 5px;
+  }
+}
+
+.block-wrapper {
+  width: calc(100% - 70px);
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  position: relative;
+  .block-controls {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: flex-end;
+
+    @media screen and (max-width: 768px) {
+      top: -2em;
+    }
   }
 }

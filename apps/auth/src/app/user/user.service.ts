@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { validate } from 'class-validator';
 import { ValidationErrorHelper } from '../common/helpers/validation-error.helper';
@@ -57,5 +57,15 @@ export class UserService {
     }
 
     return users;
+  }
+
+  async deleteUser(id: number): Promise<DeleteResult | Error> {
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      return new NotFoundException(`User with id ${id} not found`);
+    }
+
+    return await this.userRepository.delete({ id: id });
   }
 }

@@ -49,4 +49,13 @@ export class UserService {
   async findByIdAndEmail({ id, email }: { id: number; email: string }): Promise<UserEntity | Error> {
     return await this.userRepository.findOne({ where: { id, email } });
   }
+
+  async getUsers(): Promise<UserEntity[] | Error> {
+    const users = this.userRepository.find();
+    if (!users) {
+      return new NotFoundException(`There are no users`);
+    }
+
+    return users;
+  }
 }

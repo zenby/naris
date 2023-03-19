@@ -16,6 +16,7 @@
         "assets": [
           "apps/auth/src/assets"
         ],
+        "generatePackageJson": true,
         "target": "node",
         "compiler": "tsc"
       },

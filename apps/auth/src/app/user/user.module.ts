@@ -6,11 +6,12 @@ import { UserController } from './user.controller';
 import { RolesGuard } from '../common/guards/roles-guard';
 import { AuthService } from '../auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Global()
 @Module({
   controllers: [UserController],
-  providers: [UserService, RolesGuard, AuthService],
+  providers: [UserService, RolesGuard, AuthService, ConfigService],
   imports: [TypeOrmModule.forFeature([UserEntity]), JwtModule.register({})],
   exports: [UserService, TypeOrmModule.forFeature([UserEntity])],
 })

@@ -7,13 +7,10 @@ WORKDIR /usr/apps/auth
 # Set envs
 ARG PORT=8000
 
-# Copy package.json AND package-lock.json
-COPY package*.json ./
+# Copy builded app source
+COPY ../../dist/apps/auth .
 
 # Install app dependencies
 RUN npm install
 
-# Copy builded app source
-COPY ../../dist/apps/auth .
-
-CMD ["node", "auth/main.js"]
+CMD ["node", "main.js"]

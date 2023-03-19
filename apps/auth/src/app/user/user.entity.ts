@@ -43,10 +43,6 @@ export class UserEntity {
   })
   role: UserRole;
 
-  async isAdmin() {
-    return this.role === UserRole.ADMIN;
-  }
-
   @BeforeInsert()
   async hashPassword() {
     if (this.password === '') return;

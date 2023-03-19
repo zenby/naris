@@ -32,7 +32,6 @@ export class UserController {
   @Roles('admin')
   @Delete('user/:id')
   async deleteUser(@Param('id') id: number) {
-    console.log(id);
     try {
       const result = await this.userService.deleteUser(id);
       if (result instanceof Error) {

@@ -6,6 +6,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { InlineEditorModule } from '../inline-editor/inline-editor.module';
 import { TodoModule } from '../todo';
 import { ToolbarModule } from '../toolbar/toolbar.module';
@@ -27,6 +28,7 @@ import { TargetComponent } from './target/target.component';
     NzGridModule,
     NzGridModule,
     NzTypographyModule,
+    NzPopconfirmModule,
     InlineEditorModule,
   ],
   providers: [TargetService],

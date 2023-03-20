@@ -1,13 +1,22 @@
-<nz-card>
-  <div class="card_toolbar">
-    <ng-content select="[toolbar]"></ng-content>
-    <!--<a nz-button nzType="link" (click)="hideCompleted = !hideCompleted"><i nz-icon [nzType]="hideCompleted ? 'eye' : 'eye-invisible'"></i></a>-->
-    <a *ngIf="!isEdit" nz-button nzType="link" (click)="isEdit = !isEdit"><i nz-icon [nzType]="'edit'"></i></a>
-    <a *ngIf="isEdit" nz-button nzType="link" (click)="onSave()"><i nz-icon [nzType]="'save'"></i></a>
-    <a *ngIf="isEdit" nz-button nzType="link" nzDanger (click)="delete.emit(target)"
-      ><i nz-icon [nzType]="'delete'"></i
-    ></a>
-  </div>
+<nz-card> 
+    <div class="card_toolbar">
+        <ng-content select="[toolbar]"></ng-content>
+        <!--<a nz-button nzType="link" (click)="hideCompleted = !hideCompleted"><i nz-icon [nzType]="hideCompleted ? 'eye' : 'eye-invisible'"></i></a>-->
+        <a *ngIf="!isEdit" nz-button nzType="link" (click)="isEdit = !isEdit"><i nz-icon [nzType]="'edit'"></i></a>
+        <a
+            *ngIf="isEdit"
+            nzPopconfirmTitle="Вы уверены, что хотите удалить эту цель?"
+            nzPopconfirmPlacement="bottom"
+            nz-popconfirm
+            nz-button
+            nzType="text"
+            nzDanger
+            (nzOnConfirm)="delete.emit(target)"
+        >
+            <i nz-icon nzType="delete"></i>
+        </a>
+        <a *ngIf="isEdit" nz-button nzType="link" (click)="onSave()"><i nz-icon [nzType]="'save'"></i></a>
+    </div>
 
   <div class="card_title">
     <a [title]="target.title" nzType="link" (click)="onEdit()">{{ target.title }}</a>

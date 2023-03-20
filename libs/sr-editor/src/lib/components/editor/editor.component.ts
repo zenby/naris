@@ -13,8 +13,9 @@ export class EditorComponent {
   @Output() save = new EventEmitter<WorkbookModel>();
 
   public previewFlag = false;
-  public editIndex = -1;
+  public activeIndex = -1;
   public blocksDelimiter = this.blockService.blocksDelimiter;
+  private editingState: { [key: number]: boolean } = {};
 
   constructor(
     private cdp: ChangeDetectorRef,
@@ -29,23 +30,23 @@ export class EditorComponent {
       }
       if (params['action'] === 'format') {
         this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.delimitBLock(this.document.blocks[this.editIndex]);
+        this.delimitBLock(this.document.blocks[this.activeIndex]);
       }
       if (params['action'] === 'add') {
         this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.addBlockMarkdown(this.editIndex);
+        this.addBlockMarkdown(this.activeIndex);
       }
       if (params['action'] === 'remove') {
         this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.removeBlock(this.editIndex);
+        this.removeBlock(this.activeIndex);
       }
       if (params['action'] === 'up') {
         this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.move(this.editIndex, this.editIndex - 1);
+        this.move(this.activeIndex, this.activeIndex - 1);
       }
       if (params['action'] === 'down') {
         this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.move(this.editIndex, this.editIndex + 1);
+        this.move(this.activeIndex, this.activeIndex + 1);
       }
       this.previewFlag = params['preview'] === 'true';
       this.cdp.markForCheck();
@@ -53,7 +54,10 @@ export class EditorComponent {
   }
 
   setActive(activeBlock: number) {
-    this.editIndex = activeBlock;
+    this.activeIndex = activeBlock;
+    if (!this.isBlockEditable(activeBlock)) {
+      this.startBlockEdit(activeBlock);
+    }
   }
 
   move(from: number, to: number): void {
@@ -62,30 +66,48 @@ export class EditorComponent {
     if (tmp) {
       blocks[to] = blocks[from];
       blocks[from] = tmp;
-      this.editIndex = -1;
+      this.activeIndex = -1;
       setTimeout(() => {
-        this.editIndex = to;
+        if (!this.isBlockEditable(to)) {
+          this.stopBlockEdit(from);
+          this.startBlockEdit(to);
+        }
+
+        this.activeIndex = to;
         this.cdp.detectChanges();
       }, 10);
     }
   }
 
   addBlockMarkdown(from: number): void {
-    this.editIndex = from + 1;
-    const left = this.document.blocks.slice(0, this.editIndex);
-    const right = this.document.blocks.slice(this.editIndex);
+    const newBlockIndex = from + 1;
+    const left = this.document.blocks.slice(0, newBlockIndex);
+    const right = this.document.blocks.slice(newBlockIndex);
     this.document.blocks = [...left, { text: '', type: 'markdown' }, ...right];
+    this.saveEditStateForSubsequentBlocksWhenInsertingBlock(from, right);
+    this.startBlockEdit(newBlockIndex);
+    this.activeIndex = newBlockIndex;
   }
 
   removeBlock(removeIndex: number): void {
     if (this.document.blocks.length === 1) return;
 
     this.document.blocks = this.document.blocks.filter((el, index) => removeIndex !== index);
-    this.editIndex = this.editIndex - 1;
+    this.stopBlockEdit(removeIndex);
+    this.activeIndex = this.activeIndex - 1;
+  }
+
+  onEndEdit(blockIndex: number) {
+    this.stopBlockEdit(blockIndex);
+    this.activeIndex = this.findPreviousEditingBlock(blockIndex);
   }
 
   isBlockEditable(index: number): boolean {
-    return index === this.editIndex;
+    return this.editingState[index] ?? false;
+  }
+
+  isBlockActive(index: number) {
+    return this.activeIndex === index;
   }
 
   onFolderUp() {
@@ -96,9 +118,43 @@ export class EditorComponent {
     const { blocks, activeBlockIndex } = this.blockService.delimitBlock(
       delimitData,
       this.document.blocks,
-      this.editIndex
+      this.activeIndex
     );
     this.document.blocks = blocks;
-    this.editIndex = activeBlockIndex;
+    this.activeIndex = activeBlockIndex;
+  }
+
+  private saveEditStateForSubsequentBlocksWhenInsertingBlock(insertIndex: number, subsequentBlocks: TextBlock[]): void {
+    let index = subsequentBlocks.length;
+    while (index > 0) {
+      const oldIndex = insertIndex + index;
+      const newIndex = oldIndex + 1;
+      if (this.isBlockEditable(oldIndex)) {
+        this.startBlockEdit(newIndex);
+      } else {
+        this.stopBlockEdit(newIndex);
+      }
+      index--;
+    }
+  }
+
+  private findPreviousEditingBlock(blockIndex: number): number {
+    let index = blockIndex;
+    while (index > 0) {
+      if (this.isBlockEditable(index)) {
+        return index;
+      }
+      index--;
+    }
+
+    return index;
+  }
+
+  private stopBlockEdit(blockIndex: number): void {
+    this.editingState[blockIndex] = false;
+  }
+
+  private startBlockEdit(blockIndex: number): void {
+    this.editingState[blockIndex] = true;
   }
 }

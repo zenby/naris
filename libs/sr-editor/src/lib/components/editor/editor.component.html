@@ -2,6 +2,7 @@
   *ngFor="let block of document.blocks; index as bIndex"
   [textBlock]="block"
   [isEdit]="isBlockEditable(bIndex)"
+  [isActive]="isBlockActive(bIndex)"
   [blocksLength]="document.blocks.length"
   [localIndex]="bIndex"
   [blockDelimeter]="blocksDelimiter"
@@ -10,4 +11,5 @@
   (moveUp)="move($event, $event - 1)"
   (removeBlock)="removeBlock($event)"
   (addBlock)="addBlockMarkdown($event)"
+  (endEdit)="onEndEdit($event)"
 ></soer-block-editor>

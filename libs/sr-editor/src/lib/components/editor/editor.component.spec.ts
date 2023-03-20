@@ -153,22 +153,34 @@ describe('EditorComponent', () => {
     });
 
     describe('check editing state after block removement', () => {
-      beforeEach(() => {
-        component.setActive(2);
-      });
+      const removeBlock = 2;
 
       it('active index should be on the previous block', () => {
-        const activeIndex = component.activeIndex;
+        component.setActive(removeBlock - 1);
 
-        component.removeBlock(2);
+        component.removeBlock(removeBlock);
 
-        expect(component.activeIndex).toBe(activeIndex - 1);
+        expect(component.activeIndex).toBe(removeBlock - 1);
+      });
+
+      it('active index should be on the next block', () => {
+        component.setActive(removeBlock + 1);
+
+        component.removeBlock(removeBlock);
+
+        expect(component.activeIndex).toBe(removeBlock);
+      });
+
+      it('no block should be active', () => {
+        component.removeBlock(removeBlock);
+
+        expect(component.activeIndex).toBe(-1);
       });
 
       it('block index should be removed from edit state', () => {
-        component.removeBlock(2);
+        component.removeBlock(removeBlock);
 
-        expect(component.isBlockEditable(2)).toBe(false);
+        expect(component.isBlockEditable(removeBlock)).toBe(false);
       });
     });
   });
@@ -198,6 +210,16 @@ describe('EditorComponent', () => {
       component.onEndEdit(2);
 
       expect(component.isBlockActive(3)).toBe(true);
+    });
+
+    it('should focus on the next block because it`s nearest', () => {
+      component.setActive(0);
+      component.setActive(3);
+      component.setActive(2);
+
+      component.onEndEdit(2);
+
+      expect(component.activeIndex).toBe(3);
     });
 
     it('should not autofocus, if the editor has no editable blocks', () => {

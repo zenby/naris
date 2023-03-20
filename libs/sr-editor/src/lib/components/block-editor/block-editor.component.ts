@@ -45,7 +45,7 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
 
   ngAfterViewChecked(): void {
     if (this.isActive && document.activeElement != this.edit?.nativeElement) {
-      this.edit.nativeElement.focus();
+      this.edit?.nativeElement.focus();
     }
   }
 

@@ -92,15 +92,16 @@ export class EditorComponent {
   removeBlock(removeIndex: number): void {
     if (this.document.blocks.length === 1) return;
 
-    this.saveEditStateForSubsequentBlocksWhenDeletingBlock(removeIndex, this.document.blocks.slice(removeIndex));
+    const nearestEditedBlock = this.findNearestEditedBlock(removeIndex);
+    this.saveEditStateForSubsequentBlocksWhenDeletingBlock(removeIndex + 1, this.document.blocks.slice(removeIndex));
     this.document.blocks = this.document.blocks.filter((el, index) => removeIndex !== index);
-    this.setActiveBlock(this.activeIndex - 1);
+    this.setActiveBlock(nearestEditedBlock > removeIndex ? nearestEditedBlock - 1 : nearestEditedBlock);
   }
 
   onEndEdit(blockIndex: number) {
     this.stopBlockEdit(blockIndex);
     if (this.isBlockActive(blockIndex)) {
-      this.setActiveBlock(this.findPreviousEditingBlock(blockIndex));
+      this.setActiveBlock(this.findNearestEditedBlock(blockIndex));
     }
   }
 
@@ -153,16 +154,20 @@ export class EditorComponent {
     }
   }
 
-  private findPreviousEditingBlock(blockIndex: number): number {
-    let index = blockIndex;
-    while (index >= 0) {
-      if (this.isBlockEditable(index)) {
-        return index;
+  private findNearestEditedBlock(blockIndex: number): number {
+    let index = 1;
+    while (index <= this.document.blocks.length) {
+      const upBlockIndex = blockIndex - index;
+      const downBlockIndex = blockIndex + index;
+      if (this.isBlockEditable(upBlockIndex)) {
+        return upBlockIndex;
+      } else if (this.isBlockEditable(downBlockIndex)) {
+        return downBlockIndex;
       }
-      index--;
+      index++;
     }
 
-    return index;
+    return -1;
   }
 
   private stopBlockEdit(blockIndex: number): void {

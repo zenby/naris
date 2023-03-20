@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   Component,
   ComponentRef,
@@ -6,9 +7,7 @@ import {
   EventEmitter,
   Inject,
   Input,
-  OnChanges,
   Output,
-  SimpleChanges,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -21,15 +20,8 @@ import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor
   templateUrl: './block-editor.component.html',
   styleUrls: ['./block-editor.component.scss'],
 })
-export class BlockEditorComponent implements AfterViewInit, OnChanges {
+export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
-
-  @ViewChild('edit') set editRef(ref: ElementRef) {
-    if (ref) {
-      ref.nativeElement.focus();
-    }
-  }
-
   @Input() localIndex = -1;
   @Input() isEdit = false;
   @Input() isActive = false;
@@ -51,9 +43,9 @@ export class BlockEditorComponent implements AfterViewInit, OnChanges {
 
   constructor(@Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['isActive']?.currentValue) {
-      this.edit?.nativeElement.focus();
+  ngAfterViewChecked(): void {
+    if (this.isActive && document.activeElement != this.edit?.nativeElement) {
+      this.edit.nativeElement.focus();
     }
   }
 

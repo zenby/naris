@@ -18,7 +18,7 @@ export class EditorComponent {
   private editingState: { [key: number]: boolean } = {};
 
   constructor(
-    private cdp: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     private _location: Location,
     private route: ActivatedRoute,
     private router: Router,
@@ -49,12 +49,12 @@ export class EditorComponent {
         this.move(this.activeIndex, this.activeIndex + 1);
       }
       this.previewFlag = params['preview'] === 'true';
-      this.cdp.markForCheck();
+      this.cdr.markForCheck();
     });
   }
 
   setActive(activeBlock: number) {
-    this.activeIndex = activeBlock;
+    this.setActiveBlock(activeBlock);
     if (!this.isBlockEditable(activeBlock)) {
       this.startBlockEdit(activeBlock);
     }
@@ -74,7 +74,7 @@ export class EditorComponent {
         }
 
         this.activeIndex = to;
-        this.cdp.detectChanges();
+        this.cdr.detectChanges();
       }, 10);
     }
   }
@@ -86,7 +86,7 @@ export class EditorComponent {
     this.document.blocks = [...left, { text: '', type: 'markdown' }, ...right];
     this.saveEditStateForSubsequentBlocksWhenInsertingBlock(from, right);
     this.startBlockEdit(newBlockIndex);
-    this.activeIndex = newBlockIndex;
+    this.setActiveBlock(newBlockIndex);
   }
 
   removeBlock(removeIndex: number): void {
@@ -94,13 +94,13 @@ export class EditorComponent {
 
     this.saveEditStateForSubsequentBlocksWhenDeletingBlock(removeIndex, this.document.blocks.slice(removeIndex));
     this.document.blocks = this.document.blocks.filter((el, index) => removeIndex !== index);
-    this.activeIndex = this.activeIndex - 1;
+    this.setActiveBlock(this.activeIndex - 1);
   }
 
   onEndEdit(blockIndex: number) {
     this.stopBlockEdit(blockIndex);
-    if (this.activeIndex == blockIndex) {
-      this.activeIndex = this.findPreviousEditingBlock(blockIndex);
+    if (this.isBlockActive(blockIndex)) {
+      this.setActiveBlock(this.findPreviousEditingBlock(blockIndex));
     }
   }
 
@@ -123,7 +123,12 @@ export class EditorComponent {
       this.activeIndex
     );
     this.document.blocks = blocks;
-    this.activeIndex = activeBlockIndex;
+    this.setActiveBlock(activeBlockIndex);
+  }
+
+  private setActiveBlock(blockIndex: number): void {
+    this.activeIndex = blockIndex;
+    this.cdr.markForCheck();
   }
 
   private saveEditStateForSubsequentBlocksWhenInsertingBlock(insertIndex: number, subsequentBlocks: TextBlock[]): void {

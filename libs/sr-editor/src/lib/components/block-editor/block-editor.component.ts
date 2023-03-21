@@ -21,15 +21,8 @@ import { ControlBtn } from '../block-editor-controls/block-editor-controls.compo
   templateUrl: './block-editor.component.html',
   styleUrls: ['./block-editor.component.scss'],
 })
-export class BlockEditorComponent implements AfterViewInit {
+export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
-
-  @ViewChild('edit') set editRef(ref: ElementRef) {
-    if (ref) {
-      ref.nativeElement.focus();
-    }
-  }
-
   @Input() localIndex = -1;
   @Input() isEdit = false;
   @Input() isActive = false;
@@ -74,8 +67,8 @@ export class BlockEditorComponent implements AfterViewInit {
     },
   ];
 
-  ngOnChanges(): void {
-    if (this.isActive && this.isEdit) {
+  ngAfterViewChecked(): void {
+    if (this.isActive && document.activeElement != this.edit?.nativeElement) {
       this.edit?.nativeElement.focus();
     }
   }

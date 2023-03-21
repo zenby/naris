@@ -26,7 +26,7 @@ export class AuthOpenIdController {
     summary: 'Login in google',
     description: "Requires body { login, password }. Returns HTTP_ONLY cookie['refresh_token']",
   })
-  googleLogin() {
+  async googleLogin() {
     return { status: HttpJsonStatus.Ok, items: [] };
   }
 
@@ -42,7 +42,8 @@ export class AuthOpenIdController {
       const refreshToken = await this.authService.getRefreshToken(user);
 
       const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
-      response.cookie(cookieName, refreshToken, { httpOnly: true });
+      // sameSite & secure  for firefox https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
+      response.cookie(cookieName, refreshToken, { httpOnly: true, sameSite: 'none', secure: true });
 
       return { status: HttpJsonStatus.Ok, items: [] };
     } catch (e) {

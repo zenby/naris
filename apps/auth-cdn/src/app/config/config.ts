@@ -1,11 +1,9 @@
 import { join } from 'path';
+import { CommonAppConfig, Jwt } from '@soer/sr-common-interfaces';
 
-export interface Configuration {
-  port: number;
+export interface Configuration extends CommonAppConfig {
   fileStoragePath: string;
-  jwt: {
-    jwtSecret: string;
-  };
+  jwt: Jwt;
 }
 
 export function configurationFactory(): Configuration {

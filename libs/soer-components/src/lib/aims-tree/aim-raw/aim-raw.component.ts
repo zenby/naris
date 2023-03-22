@@ -21,11 +21,13 @@ export class AimRawComponent implements OnChanges {
   @Input() isExpand = false;
   @Input() isEdit = false;
   @Input() aim: AimModel = EMPTY_AIM;
+  @Input() aimIndex!: number;
 
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() add: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() expand: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
   doneProgress = 100;
   actions = ['plus', 'edit', 'delete'];
   inlineEditorActions = ['save', 'cancel'];
@@ -38,6 +40,14 @@ export class AimRawComponent implements OnChanges {
   toggle(): void {
     this.isExpand = !this.isExpand;
     this.expand.emit(this.isExpand);
+  }
+
+  showDescription() {
+    this.description.emit([this.aimIndex]);
+  }
+
+  onDescription($event: number[], index: number) {
+    this.description.emit([index, ...$event]);
   }
 
   toolbarAction(action: string, task: AimModel): void {

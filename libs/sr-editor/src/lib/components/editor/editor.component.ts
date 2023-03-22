@@ -32,22 +32,6 @@ export class EditorComponent {
         this.router.navigate([], { relativeTo: this.route, queryParams: {} });
         this.delimitBLock(this.document.blocks[this.activeIndex]);
       }
-      if (params['action'] === 'add') {
-        this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.addBlockMarkdown(this.activeIndex);
-      }
-      if (params['action'] === 'remove') {
-        this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.removeBlock(this.activeIndex);
-      }
-      if (params['action'] === 'up') {
-        this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.move(this.activeIndex, this.activeIndex - 1);
-      }
-      if (params['action'] === 'down') {
-        this.router.navigate([], { relativeTo: this.route, queryParams: {} });
-        this.move(this.activeIndex, this.activeIndex + 1);
-      }
       this.previewFlag = params['preview'] === 'true';
       this.cdr.markForCheck();
     });
@@ -92,10 +76,12 @@ export class EditorComponent {
   removeBlock(removeIndex: number): void {
     if (this.document.blocks.length === 1) return;
 
-    const nearestEditedBlock = this.findNearestEditedBlock(removeIndex);
+    const newActiveBlock = this.isBlockActive(removeIndex)
+      ? this.findNearestEditedBlock(removeIndex)
+      : this.activeIndex;
     this.saveEditStateForSubsequentBlocksWhenDeletingBlock(removeIndex + 1, this.document.blocks.slice(removeIndex));
     this.document.blocks = this.document.blocks.filter((el, index) => removeIndex !== index);
-    this.setActiveBlock(nearestEditedBlock > removeIndex ? nearestEditedBlock - 1 : nearestEditedBlock);
+    this.setActiveBlock(newActiveBlock > removeIndex ? newActiveBlock - 1 : newActiveBlock);
   }
 
   onEndEdit(blockIndex: number) {

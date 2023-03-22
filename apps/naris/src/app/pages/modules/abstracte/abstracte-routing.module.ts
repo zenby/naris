@@ -43,30 +43,6 @@ const routes: Routes = [
                   icon: 'scissor',
                 },
                 {
-                  title: 'Добавить',
-                  path: ['.'],
-                  action: 'add',
-                  icon: 'appstore-add',
-                },
-                {
-                  title: 'Удалить',
-                  path: ['.'],
-                  action: 'remove',
-                  icon: 'delete',
-                },
-                {
-                  title: 'Вверх',
-                  path: ['.'],
-                  action: 'up',
-                  icon: 'up',
-                },
-                {
-                  title: 'Вниз',
-                  path: ['.'],
-                  action: 'down',
-                  icon: 'down',
-                },
-                {
                   title: 'Просмотр',
                   path: ['.'],
                   toggle: 'preview',
@@ -99,30 +75,6 @@ const routes: Routes = [
                   path: ['.'],
                   action: 'format',
                   icon: 'scissor',
-                },
-                {
-                  title: 'Добавить',
-                  path: ['.'],
-                  action: 'add',
-                  icon: 'appstore-add',
-                },
-                {
-                  title: 'Удалить',
-                  path: ['.'],
-                  action: 'remove',
-                  icon: 'delete',
-                },
-                {
-                  title: 'Вверх',
-                  path: ['.'],
-                  action: 'up',
-                  icon: 'up',
-                },
-                {
-                  title: 'Вниз',
-                  path: ['.'],
-                  action: 'down',
-                  icon: 'down',
                 },
                 {
                   title: 'Просмотр',

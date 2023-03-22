@@ -1,0 +1,15 @@
+<div class="controls-wrapper">
+  <div class="control" *ngFor="let control of controls">
+    <button
+      nz-tooltip
+      [nzTooltipTitle]="control.title"
+      nzTooltipTrigger="hover"
+      nz-button
+      nzSize="small"
+      nzType="text"
+      (click)="control?.handler()"
+    >
+      <i nz-icon [nzType]="control.icon" nzTheme="outline"></i>
+    </button>
+  </div>
+</div>

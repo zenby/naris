@@ -16,25 +16,30 @@
       <i nz-icon nzType="edit"></i>
     </button>
   </div>
-  <div (click)="onSelectBlock()" class="edit">
-    <ng-container *ngIf="isEdit">
-      <textarea
-        class="block-editor"
-        [(ngModel)]="textBlock.text"
-        (ngModelChange)="textChange($event)"
-        (keydown)="command($event)"
-        #edit
-        soerAutoresize
-      >
-      </textarea>
-      <p class="help">
-        (EDIT:{{ localIndex }}) Alt-1,2,3 - markdown, test, presentation Alt-Enter - новый блок, Alt-Backspace - удалить
-        блок, Alt-Up/Down - сдвинуть блок, Ctrl-Up/Down - переключить блок, Esc - конец редактирования
-      </p>
-    </ng-container>
+  <div class="block-wrapper">
+    <div (click)="onSelectBlock()" class="edit">
+      <ng-container *ngIf="isEdit">
+        <textarea
+          class="block-editor"
+          [(ngModel)]="textBlock.text"
+          (ngModelChange)="textChange($event)"
+          (keydown)="command($event)"
+          #edit
+          soerAutoresize
+        >
+        </textarea>
+        <p class="help">
+          (EDIT:{{ localIndex }}) Alt-1,2,3 - markdown, test, presentation Alt-Enter - новый блок, Alt-Backspace -
+          удалить блок, Alt-Up/Down - сдвинуть блок, Ctrl-Up/Down - переключить блок, Esc - конец редактирования
+        </p>
+      </ng-container>
 
-    <div class="block-editor" (click)="isEdit = true" [ngStyle]="{ display: isEdit ? 'none' : 'block' }">
-      <ng-template #editComponent></ng-template>
+      <div class="block-editor" (click)="isEdit = true" [ngStyle]="{ display: isEdit ? 'none' : 'block' }">
+        <ng-template #editComponent></ng-template>
+      </div>
+    </div>
+    <div class="block-controls" *ngIf="isEdit">
+      <soer-block-editor-controls [controls]="controls"></soer-block-editor-controls>
     </div>
   </div>
 </div>

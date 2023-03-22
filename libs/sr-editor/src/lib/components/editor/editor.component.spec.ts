@@ -171,6 +171,15 @@ describe('EditorComponent', () => {
         expect(component.activeIndex).toBe(removeBlock);
       });
 
+      it('active index should be on the current active block', () => {
+        const currentActiveBlock = 0;
+        component.setActive(removeBlock - 1);
+        component.setActive(currentActiveBlock);
+
+        component.removeBlock(removeBlock);
+        expect(component.activeIndex).toBe(currentActiveBlock);
+      });
+
       it('no block should be active', () => {
         component.removeBlock(removeBlock);
 

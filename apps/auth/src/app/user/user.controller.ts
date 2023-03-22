@@ -9,8 +9,8 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  logger = new Logger(UserController.name);
-  internalErrorMessage = 'Something went wrong. Try it later';
+  private logger = new Logger(UserController.name);
+  private internalErrorMessage = 'Something went wrong. Try it later';
 
   @Roles('admin')
   @Get('users')

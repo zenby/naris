@@ -3,7 +3,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { CommonAppConfig } from '@soer/sr-common-interfaces';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 
-export interface Config<T extends TypeOrmModuleOptions = any> extends CommonAppConfig {
+export interface Config<T extends TypeOrmModuleOptions = unknown> extends CommonAppConfig {
   prefix: string;
   typeOrm: T;
   version: number;

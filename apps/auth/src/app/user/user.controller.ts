@@ -1,7 +1,7 @@
-import { Controller, Delete, Get, InternalServerErrorException, Logger, Param, UseGuards } from '@nestjs/common';
-import { HttpJsonStatus } from '@soer/sr-common-interfaces';
+import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles-guard';
+import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @UseGuards(RolesGuard)
@@ -14,7 +14,7 @@ export class UserController {
 
   @Roles('admin')
   @Get('users')
-  async getUsers() {
+  async getUsers(): Promise<HttpJsonResult<UserEntity | string>> {
     try {
       const users = await this.userService.getUsers();
       if (users instanceof Error) {
@@ -31,7 +31,7 @@ export class UserController {
 
   @Roles('admin')
   @Delete('user/:id')
-  async deleteUser(@Param('id') id: number) {
+  async deleteUser(@Param('id') id: number): Promise<HttpJsonResult<string>> {
     try {
       const result = await this.userService.deleteUser(id);
       if (result instanceof Error) {

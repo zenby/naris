@@ -51,12 +51,7 @@ export class UserService {
   }
 
   async getUsers(): Promise<UserEntity[] | Error> {
-    const users = this.userRepository.find();
-    if (!users) {
-      return new NotFoundException(`There are no users`);
-    }
-
-    return users;
+    return await this.userRepository.find();
   }
 
   async deleteUser(id: number): Promise<DeleteResult | Error> {

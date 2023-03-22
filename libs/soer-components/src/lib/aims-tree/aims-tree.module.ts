@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -19,6 +20,7 @@ import { TargetComponent } from './target/target.component';
   declarations: [AimsTreeComponent, AimRawComponent, TargetComponent],
   imports: [
     CommonModule,
+    RouterModule,
     TodoModule,
     ToolbarModule,
     NzProgressModule,

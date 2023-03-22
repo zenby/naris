@@ -17,7 +17,7 @@ export class TargetComponent {
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() edit: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
-  @Output() description: EventEmitter<AimModel> = new EventEmitter<AimModel>();
+  @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
 
   constructor(private targetService: TargetService) {}
 
@@ -42,8 +42,13 @@ export class TargetComponent {
     this.targetService.factory(this.target).delete(aim);
   }
 
-  onDescription() {
-    this.description.emit(this.target);
+  showDescription() {
+    this.description.emit([-1]);
+  }
+
+  onDescription(descriptionPath: number[]) {
+    const rootIndex = 0;
+    this.description.emit([rootIndex, ...descriptionPath]);
   }
 
   onAction(action: string): void {

@@ -8,11 +8,13 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 })
 export class TodoComponent {
   @Input() label = '';
+  @Input() hasOverview = false;
   @Input() checked = false;
   @Input() disabled = false;
 
   public isUndo = false;
   @Output() update: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() description: EventEmitter<null> = new EventEmitter<null>();
 
   constructor(private cdp: ChangeDetectorRef) {}
 

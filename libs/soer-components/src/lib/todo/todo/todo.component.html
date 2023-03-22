@@ -1,18 +1,29 @@
 <div nz-typography [nzDisabled]="checked">
-  <button *ngIf="isUndo && checked" nz-button nzType="default" nzSize="small" nzShape="circle" (click)="toggle()">
-    <i nz-icon nzType="undo"></i>
-  </button>
-  <button
-    *ngIf="!checked"
-    [disabled]="disabled"
-    nz-button
-    nzType="default"
-    nzSize="small"
-    nzShape="circle"
-    (click)="toggle()"
-  >
-    <i nz-icon nzType="check"></i>
-  </button>
-  <i *ngIf="checked" class="todo_done-icon" nz-icon nzType="check"></i>
-  <span>{{ label }}</span>
+<button     
+        *ngIf="isUndo && checked"
+        nz-button
+            nzType="default"
+            nzSize="small"
+            nzShape="circle"
+            (click)="toggle()"
+            ><i nz-icon nzType="undo"></i></button>            
+<button
+            *ngIf="!checked"
+            [disabled]="disabled"
+            nz-button
+            nzType="default"
+            nzSize="small"
+            nzShape="circle"
+            (click)="toggle()"
+            ><i nz-icon nzType="check"></i></button>
+<i *ngIf="checked" class="todo_done-icon" nz-icon nzType="check"></i>
+<span>{{label}}</span>
+<ng-container *ngIf="hasOverview">
+  <i
+    (click)="description.emit(null)"
+    class="description-icon"
+    nz-icon
+    nzType="info-circle"
+    nzTheme="outline"></i>
+</ng-container>
 </div>

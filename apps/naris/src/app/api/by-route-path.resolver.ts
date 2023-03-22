@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class ByRoutePathResolver implements Resolve<boolean> {
   constructor(private http: HttpClient) {}
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+  resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<any> {
     const path = route.routeConfig?.path || 'overview';
     return this.http.get<any>(`${environment.assetsUrl}${path}.json`);
   }

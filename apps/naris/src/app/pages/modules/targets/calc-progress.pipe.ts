@@ -5,7 +5,7 @@ import { TargetModel } from '../../../api/targets/target.interface';
   name: 'calcProgress',
 })
 export class CalcProgressPipe implements PipeTransform {
-  transform(value: TargetModel, ...args: unknown[]): unknown {
+  transform(value: TargetModel, ..._args: unknown[]): unknown {
     return value.tasks?.length > 0 ? this.calcProgress(value) : value.progress;
   }
 

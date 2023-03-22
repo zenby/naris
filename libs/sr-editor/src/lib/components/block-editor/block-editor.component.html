@@ -17,24 +17,21 @@
     </button>
   </div>
   <div class="block-wrapper">
-    <div (click)="onSelectBlock()" class="edit">
-      <ng-container *ngIf="isEdit">
+    <div class="edit" soerAutoresize style="overflow: hidden">
+      <ng-container>
         <textarea
+          [ngStyle]="{ opacity: isEdit ? '100%' : '0%' }"
+          style="height: 100%; position: absolute"
           class="block-editor"
+          (click)="isEdit = true"
           [(ngModel)]="textBlock.text"
-          (ngModelChange)="textChange($event)"
           (keydown)="command($event)"
           #edit
-          soerAutoresize
         >
         </textarea>
-        <p class="help">
-          (EDIT:{{ localIndex }}) Alt-1,2,3 - markdown, test, presentation Alt-Enter - новый блок, Alt-Backspace -
-          удалить блок, Alt-Up/Down - сдвинуть блок, Ctrl-Up/Down - переключить блок, Esc - конец редактирования
-        </p>
       </ng-container>
 
-      <div class="block-editor" (click)="isEdit = true" [ngStyle]="{ display: isEdit ? 'none' : 'block' }">
+      <div class="block-editor" style="height: 100%" [ngStyle]="{ visibility: !isEdit ? 'visible' : 'hidden' }">
         <ng-template #editComponent></ng-template>
       </div>
     </div>

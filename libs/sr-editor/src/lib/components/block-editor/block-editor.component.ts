@@ -86,6 +86,10 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
   }
 
   command(event: KeyboardEvent): void {
+    if (this.componentRef) {
+      this.componentRef.instance.text = this.textBlock.text;
+    }
+
     if (event.altKey && event.code === 'Enter') {
       this.addBlockDown();
     }

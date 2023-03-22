@@ -53,7 +53,7 @@ import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
     CountOpenTasksPipe,
     CountClosedTasksPipe,
     TemplateCreateComponent,
-    TargetDescriptionComponent
+    TargetDescriptionComponent,
   ],
   imports: [
     CommonModule,

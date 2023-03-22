@@ -11,14 +11,9 @@
           </a>
         </nz-col>
         <ng-container *ngIf="aim.overview">
-            <nz-col>
-                <i
-                    (click)="showDescription()"
-                    class="description-icon"
-                    nz-icon
-                    nzType="info-circle"
-                    nzTheme="outline"></i>
-            </nz-col>
+          <nz-col>
+            <i (click)="showDescription()" class="description-icon" nz-icon nzType="info-circle" nzTheme="outline"></i>
+          </nz-col>
         </ng-container>
         <nz-col *ngIf="isEdit" nzFlex="none">
           <soer-toolbar [actions]="actions" (action)="toolbarAction($event, aim)"></soer-toolbar>

@@ -17,12 +17,11 @@
     </button>
   </div>
   <div class="block-wrapper">
-    <div class="edit" soerAutoresize style="overflow: hidden">
+    <div class="edit" soerAutoresize>
       <ng-container>
         <textarea
           [ngStyle]="{ opacity: isEdit ? '100%' : '0%' }"
-          style="height: 100%; position: absolute"
-          class="block-editor"
+          class="block-editor block-editor__input"
           (click)="isEdit = true"
           [(ngModel)]="textBlock.text"
           (keydown)="command($event)"
@@ -31,7 +30,7 @@
         </textarea>
       </ng-container>
 
-      <div class="block-editor" style="height: 100%" [ngStyle]="{ visibility: !isEdit ? 'visible' : 'hidden' }">
+      <div class="block-editor" [ngStyle]="{ visibility: !isEdit ? 'visible' : 'hidden' }">
         <ng-template #editComponent></ng-template>
       </div>
     </div>

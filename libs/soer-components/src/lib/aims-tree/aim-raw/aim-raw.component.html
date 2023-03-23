@@ -3,18 +3,24 @@
     <ng-container *ngIf="aim.tasks.length > 0; else aimDone">
       <nz-row *ngIf="!isTitleEdit; else aimDone">
         <nz-col nzFlex="1">
-          <a class="tasks_expander" *ngIf="aim.tasks.length > 0" (click)="toggle()">
-            <nz-progress [nzStrokeColor]="gradientColors" [nzPercent]="aim.progress" nzType="circle" [nzWidth]="30">
-            </nz-progress>
-            <i nz-icon [nzType]="isExpand ? 'down' : 'right'"></i>
-            <span>{{ aim.title }}</span>
-          </a>
+          <div class="tasks_row">
+            <a class="tasks_expander" *ngIf="aim.tasks.length > 0" (click)="toggle()">
+              <nz-progress [nzStrokeColor]="gradientColors" [nzPercent]="aim.progress" nzType="circle" [nzWidth]="30">
+              </nz-progress>
+              <i nz-icon [nzType]="isExpand ? 'down' : 'right'"></i>
+              <span>{{ aim.title }}</span>
+            </a>
+            <ng-container *ngIf="aim.overview">
+              <i
+                (click)="showDescription()"
+                class="description-icon"
+                nz-icon
+                nzType="info-circle"
+                nzTheme="outline"
+              ></i>
+            </ng-container>
+          </div>
         </nz-col>
-        <ng-container *ngIf="aim.overview">
-          <nz-col>
-            <i (click)="showDescription()" class="description-icon" nz-icon nzType="info-circle" nzTheme="outline"></i>
-          </nz-col>
-        </ng-container>
         <nz-col *ngIf="isEdit" nzFlex="none">
           <soer-toolbar [actions]="actions" (action)="toolbarAction($event, aim)"></soer-toolbar>
         </nz-col>

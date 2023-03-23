@@ -88,8 +88,9 @@ export class ListAimsPageComponent implements OnInit {
   }
 
   onDescription(descriptionPath: number[], id: TargetModel['id']) {
-    const state = { descriptionPath: descriptionPath.join(':') };
-    const outlets = { popup: ['target', String(id), 'description'] };
-    this.router.navigate(['/pages/targets', { outlets }], { state });
+    const path = descriptionPath.map((pathId) => (pathId === -1 ? 'root' : pathId)).join('-');
+    console.log(path);
+    const outlets = { popup: ['target', String(id), 'description', path] };
+    this.router.navigate(['/pages/targets', { outlets }]);
   }
 }

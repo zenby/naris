@@ -84,7 +84,7 @@ const routes: Routes = [
         outlet: 'popup',
       },
       {
-        path: 'target/:tid/description',
+        path: 'target/:tid/description/:path',
         component: TargetDescriptionComponent,
         resolve: {
           target: 'targetEmitter',

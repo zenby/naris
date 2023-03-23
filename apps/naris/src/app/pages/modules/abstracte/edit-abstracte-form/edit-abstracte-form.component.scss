@@ -17,4 +17,14 @@
     display: block;
     max-width: 100%;
   }
+
+  ::ng-deep img[src$='#medium'] {
+    width: 75%;
+  }
+  ::ng-deep img[src$='#half'] {
+    width: 50%;
+  }
+  ::ng-deep img[src$='#small'] {
+    width: 25%;
+  }
 }

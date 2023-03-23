@@ -63,6 +63,10 @@
     padding: 0.5rem;
     border: 1px solid gray;
     background-color: rgb(247, 247, 247);
+
+    ::ng-deep img {
+      height: 2.5rem;
+    }
   }
 
   .block-editor__input {

@@ -19,12 +19,12 @@
   }
 
   ::ng-deep img[src$='#medium'] {
-    width: 75%;
+    height: 75vmin;
   }
-  ::ng-deep img[src$='#half'] {
-    width: 50%;
+  ::ng-deep img[src$='#full'] {
+    height: 100vmin;
   }
   ::ng-deep img[src$='#small'] {
-    width: 25%;
+    height: 50vmin;
   }
 }

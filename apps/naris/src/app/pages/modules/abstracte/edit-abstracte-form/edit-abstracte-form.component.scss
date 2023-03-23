@@ -9,3 +9,12 @@
     margin-right: 12px;
   }
 }
+
+.workbook-view {
+  ::ng-deep img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    max-width: 100%;
+  }
+}

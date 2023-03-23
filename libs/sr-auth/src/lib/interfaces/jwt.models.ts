@@ -1,9 +1,11 @@
+import { NarisNamespace } from '@soer/sr-dto';
+
 export interface JWTModel {
   id: number;
   email: string;
   role: string;
   expired?: Date;
-  namespaces?: unknown[];
+  namespaces?: NarisNamespace[];
   iat: number;
   exp: number;
 }

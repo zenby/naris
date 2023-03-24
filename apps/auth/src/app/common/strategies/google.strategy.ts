@@ -1,5 +1,5 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { Strategy } from 'passport-google-oauth20';
 import { config } from 'dotenv';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity } from '../../user/user.entity';

@@ -140,23 +140,56 @@ describe('EditorComponent', () => {
       expect(component.document.blocks.length).toBe(countOfblocks);
     });
 
+    it('should save editing state for existing blocks after delete', () => {
+      component.setActive(0);
+      component.setActive(1);
+      component.setActive(3);
+
+      component.removeBlock(0);
+
+      expect(component.isBlockEditable(0)).toBeTruthy();
+      expect(component.isBlockEditable(1)).toBeFalsy();
+      expect(component.isBlockEditable(2)).toBeTruthy();
+    });
+
     describe('check editing state after block removement', () => {
-      beforeEach(() => {
-        component.setActive(2);
-      });
+      const removeBlock = 2;
 
       it('active index should be on the previous block', () => {
-        const activeIndex = component.activeIndex;
+        component.setActive(removeBlock - 1);
 
-        component.removeBlock(2);
+        component.removeBlock(removeBlock);
 
-        expect(component.activeIndex).toBe(activeIndex - 1);
+        expect(component.activeIndex).toBe(removeBlock - 1);
+      });
+
+      it('active index should be on the next block', () => {
+        component.setActive(removeBlock + 1);
+
+        component.removeBlock(removeBlock);
+
+        expect(component.activeIndex).toBe(removeBlock);
+      });
+
+      it('active index should be on the current active block', () => {
+        const currentActiveBlock = 0;
+        component.setActive(removeBlock - 1);
+        component.setActive(currentActiveBlock);
+
+        component.removeBlock(removeBlock);
+        expect(component.activeIndex).toBe(currentActiveBlock);
+      });
+
+      it('no block should be active', () => {
+        component.removeBlock(removeBlock);
+
+        expect(component.activeIndex).toBe(-1);
       });
 
       it('block index should be removed from edit state', () => {
-        component.removeBlock(2);
+        component.removeBlock(removeBlock);
 
-        expect(component.isBlockEditable(2)).toBe(false);
+        expect(component.isBlockEditable(removeBlock)).toBe(false);
       });
     });
   });
@@ -175,16 +208,33 @@ describe('EditorComponent', () => {
     });
 
     it('should focus on the previous block', () => {
-      component.setActive(1);
+      component.setActive(0);
+      component.onEndEdit(1);
+
+      expect(component.isBlockActive(0)).toBe(true);
+    });
+
+    it('should not focus on the previous block because currently active block mismatch stopped editing block', () => {
+      component.setActive(3);
       component.onEndEdit(2);
 
-      expect(component.isBlockActive(1)).toBe(true);
+      expect(component.isBlockActive(3)).toBe(true);
+    });
+
+    it('should focus on the next block because it`s nearest', () => {
+      component.setActive(0);
+      component.setActive(3);
+      component.setActive(2);
+
+      component.onEndEdit(2);
+
+      expect(component.activeIndex).toBe(3);
     });
 
     it('should not autofocus, if the editor has no editable blocks', () => {
       component.onEndEdit(2);
 
-      expect(component.activeIndex).toBe(0);
+      expect(component.activeIndex).toBe(-1);
     });
   });
 });

@@ -85,9 +85,14 @@ nz-card {
 }
 
 .task-container {
-  a {
+  .tasks_row {
     display: flex;
     align-items: center;
+    .description-icon {
+      display: inline-block;
+      padding: 0 0.5rem;
+      cursor: pointer;
+    }
   }
 }
 

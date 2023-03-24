@@ -8,15 +8,17 @@ nz-card {
   margin-bottom: 0.5rem;
 
   &_title {
-    width: 100%;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
     a {
-      display: inline-block;
-      width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    .description-icon {
+      cursor: pointer;
+      margin-left: 0.5rem;
     }
   }
 

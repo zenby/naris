@@ -15,4 +15,13 @@
   </button>
   <i *ngIf="checked" class="todo_done-icon" nz-icon nzType="check"></i>
   <span>{{ label }}</span>
+  <ng-container *ngIf="hasOverview">
+    <i
+      (click)="description.emit(null)"
+      class="todo_description-icon"
+      nz-icon
+      nzType="info-circle"
+      nzTheme="outline"
+    ></i>
+  </ng-container>
 </div>

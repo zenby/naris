@@ -10,8 +10,8 @@ export class AuthGuard implements CanActivate {
   constructor(private auth: AuthService) {}
 
   canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    _route: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     // TODO: сделать обновление cookie когда грузятся модули, которые могут использовать эти куки
     this.auth.checkCookieAuth();

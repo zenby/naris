@@ -3,13 +3,14 @@ import { moduleMetadata, Story, Meta } from '@storybook/angular';
 import { MAIN_MENU } from '../../../services/menu/menu.const';
 import { HttpClientModule } from '@angular/common/http';
 import { DemoNgZorroAntdModule } from '@soer/soer-components';
+import { RouterModule } from '@angular/router';
 
 export default {
   title: 'MobileMenuComponent',
   component: MobileMenuComponent,
   decorators: [
     moduleMetadata({
-      imports: [DemoNgZorroAntdModule, HttpClientModule],
+      imports: [RouterModule.forRoot([], { useHash: true }), DemoNgZorroAntdModule, HttpClientModule],
     }),
   ],
 } as Meta<MobileMenuComponent>;

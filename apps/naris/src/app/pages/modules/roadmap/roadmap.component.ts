@@ -25,7 +25,7 @@ export class RoadmapComponent implements OnInit {
     this.total = this.calcProgress(this.target.tasks);
   }
 
-  url(file: any): string {
+  url(file: string): string {
     return environment.privateAssetsUrl + file;
   }
 

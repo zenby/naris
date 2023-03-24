@@ -2,8 +2,10 @@
   <soer-aim-raw
     [isEdit]="isEdit"
     [aim]="task"
+    [aimIndex]="index"
     (update)="update.emit($event)"
     (delete)="delete.emit($event)"
     (add)="add.emit($event)"
+    (description)="onDescription($event)"
   ></soer-aim-raw>
 </ng-container>

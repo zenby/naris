@@ -11,8 +11,15 @@ export class AimsTreeComponent {
   @Input() isEdit = false;
   @Input() hideCompleted = false;
   @Input() tasks: AimModel[] = [];
+  @Input() aimIndex!: number;
   @Output() add: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
+  @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
+
   doneProgress = 100;
+
+  onDescription($event: number[]) {
+    this.description.emit($event);
+  }
 }

@@ -5,7 +5,7 @@
 </nz-form-item>
 <nz-form-item>
   <nz-form-control>
-    <div *ngIf="previewFlag; else blocks" style="padding: 1.5em">
+    <div *ngIf="previewFlag; else blocks" class="workbook-view" style="padding: 1.5em">
       <markdown *ngFor="let block of workbook.blocks">{{ block.text }}</markdown>
     </div>
   </nz-form-control>

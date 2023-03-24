@@ -14,21 +14,15 @@ import {
 import { BasicBlockComponent } from '../basic-block.component';
 import { TextBlock } from '../../interfaces/document.model';
 import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor-blocks-config';
+import { ControlBtn } from '../block-editor-controls/block-editor-controls.component';
 
 @Component({
   selector: 'soer-block-editor',
   templateUrl: './block-editor.component.html',
   styleUrls: ['./block-editor.component.scss'],
 })
-export class BlockEditorComponent implements AfterViewInit {
+export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
-
-  @ViewChild('edit') set editRef(ref: ElementRef) {
-    if (ref) {
-      ref.nativeElement.focus();
-    }
-  }
-
   @Input() localIndex = -1;
   @Input() isEdit = false;
   @Input() isActive = false;
@@ -50,8 +44,31 @@ export class BlockEditorComponent implements AfterViewInit {
 
   constructor(@Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry) {}
 
-  ngOnChanges(): void {
-    if (this.isActive && this.isEdit) {
+  controls: ControlBtn[] = [
+    {
+      title: 'Добавить (Alt+Enter)',
+      icon: 'appstore-add',
+      handler: () => this.addBlockDown(),
+    },
+    {
+      title: 'Переместить вверх (Alt+Up)',
+      icon: 'up',
+      handler: () => this.moveUpBlock(),
+    },
+    {
+      title: 'Переместить вниз (Alt+Down)',
+      icon: 'down',
+      handler: () => this.moveDownBlock(),
+    },
+    {
+      title: 'Удалить (Alt+Backspace)',
+      icon: 'delete',
+      handler: () => this.removeCurrentBlock(),
+    },
+  ];
+
+  ngAfterViewChecked(): void {
+    if (this.isActive && document.activeElement != this.edit?.nativeElement) {
       this.edit?.nativeElement.focus();
     }
   }
@@ -69,16 +86,20 @@ export class BlockEditorComponent implements AfterViewInit {
   }
 
   command(event: KeyboardEvent): void {
+    if (this.componentRef) {
+      this.componentRef.instance.text = this.textBlock.text;
+    }
+
     if (event.altKey && event.code === 'Enter') {
-      this.addBlock.next(this.localIndex);
+      this.addBlockDown();
     }
 
     if (event.altKey && event.code === 'Backspace') {
-      this.removeBlock.next(this.localIndex);
+      this.removeCurrentBlock();
     }
 
     if (event.altKey && event.code === 'ArrowUp') {
-      this.moveUp.next(this.localIndex);
+      this.moveUpBlock();
 
       return;
     }
@@ -94,7 +115,7 @@ export class BlockEditorComponent implements AfterViewInit {
     }
 
     if (event.altKey && event.code === 'ArrowDown') {
-      this.moveDown.next(this.localIndex);
+      this.moveDownBlock();
 
       return;
     }
@@ -134,9 +155,25 @@ export class BlockEditorComponent implements AfterViewInit {
     }
   }
 
+  private addBlockDown(): void {
+    this.addBlock.next(this.localIndex);
+  }
+
+  private removeCurrentBlock(): void {
+    this.removeBlock.next(this.localIndex);
+  }
+
+  private moveUpBlock(): void {
+    this.moveUp.next(this.localIndex);
+  }
+
+  private moveDownBlock(): void {
+    this.moveDown.next(this.localIndex);
+  }
+
   private setActivePreviousIfAvailable() {
     if (this.localIndex <= 0) return;
-  
+
     this.setActive.next(this.localIndex - 1);
   }
 

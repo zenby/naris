@@ -1,0 +1,12 @@
+.controls-wrapper {
+  display: flex;
+  flex-direction: row;
+
+  .control {
+    margin: 2px;
+  }
+
+  .ant-btn:hover {
+    background-color: rgba(139, 139, 141, 0.168);
+  }
+}

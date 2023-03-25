@@ -17,14 +17,7 @@ import { Observable } from 'rxjs';
       }
     `,
   ],
-  template: `
-    <div class="description">
-      <ng-container *ngIf="target$ | async as targetDTO; else loading">
-        <markdown *ngFor="let target of targetDTO.items">{{ target | targetDescription: path }}</markdown>
-      </ng-container>
-    </div>
-    <ng-template #loading><nz-spin></nz-spin></ng-template>
-  `,
+  templateUrl: 'target-description.component.html',
 })
 export class TargetDescriptionComponent {
   public target$: Observable<DtoPack<TargetModel>>;

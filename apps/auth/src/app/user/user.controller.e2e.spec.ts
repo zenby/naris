@@ -69,12 +69,7 @@ describe('user controller e2e tests', () => {
     }
 
     it('should return a list of users when user is an admin', async () => {
-      const { jwtSecret: secret, expiresInRefresh: expiresIn } = config;
-
-      const jwtToken = await jwtService.signAsync(
-        { userId: adminUser.id, userEmail: adminUser.email, userRole: adminUser.role },
-        { secret, expiresIn }
-      );
+      const jwtToken = await getJWTTokenForUser(adminUser);
 
       jest.spyOn(userRepo, 'find').mockResolvedValueOnce(users);
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
@@ -94,12 +89,7 @@ describe('user controller e2e tests', () => {
     it('should return 403 error when user not an admin', async () => {
       const user = getTestUser();
 
-      const { jwtSecret: secret, expiresInRefresh: expiresIn } = config;
-
-      const jwtToken = await jwtService.signAsync(
-        { userId: user.id, userEmail: user.email, userRole: user.role },
-        { secret, expiresIn }
-      );
+      const jwtToken = await getJWTTokenForUser(user);
 
       jest.spyOn(userRepo, 'find').mockResolvedValueOnce(users);
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(user);
@@ -121,12 +111,7 @@ describe('user controller e2e tests', () => {
       const adminUser = getTestUser({ role: UserRole.ADMIN });
       const userToDelete = getTestUser();
 
-      const { jwtSecret: secret, expiresInRefresh: expiresIn } = config;
-
-      const jwtToken = await jwtService.signAsync(
-        { userId: adminUser.id, userEmail: adminUser.email, userRole: adminUser.role },
-        { secret, expiresIn }
-      );
+      const jwtToken = await getJWTTokenForUser(adminUser);
 
       const userRepositoryDeleteSpy = jest.spyOn(userRepo, 'delete').mockResolvedValueOnce({} as DeleteResult);
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser).mockResolvedValueOnce(userToDelete);
@@ -147,12 +132,7 @@ describe('user controller e2e tests', () => {
       const user = getTestUser();
       const userToDelete = getTestUser();
 
-      const { jwtSecret: secret, expiresInRefresh: expiresIn } = config;
-
-      const jwtToken = await jwtService.signAsync(
-        { userId: user.id, userEmail: user.email, userRole: user.role },
-        { secret, expiresIn }
-      );
+      const jwtToken = await getJWTTokenForUser(user);
 
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(user);
 
@@ -187,5 +167,15 @@ describe('user controller e2e tests', () => {
       role: userInfo.role ?? UserRole.USER,
     });
     return user;
+  }
+
+  async function getJWTTokenForUser(user: UserEntity) {
+    const { jwtSecret: secret, expiresInRefresh: expiresIn } = config;
+
+    const jwtToken = await jwtService.signAsync(
+      { userId: user.id, userEmail: user.email, userRole: user.role },
+      { secret, expiresIn }
+    );
+    return jwtToken;
   }
 });

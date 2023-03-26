@@ -6,7 +6,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-IMAGE_TAG="naris-auth-${TIMESTAMP}"
+IMAGE_TAG="naris-auth"
 
 export SCRIPT_DIR=$SCRIPT_DIR;
 echo "${GREEN}SCRIPT_DIR${NC} = $SCRIPT_DIR";

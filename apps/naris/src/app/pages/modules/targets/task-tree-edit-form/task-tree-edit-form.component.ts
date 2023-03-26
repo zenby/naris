@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TargetModel } from '../../../../api/targets/target.interface';
 import { updateProgress } from '../progress.helper';
 
@@ -28,8 +20,8 @@ export class TaskTreeEditFormComponent implements OnChanges {
 
   @Output() readonly save = new EventEmitter<TargetModel>();
   @Output() readonly historyChange = new EventEmitter<{ ind: number; title: string }[]>();
-  @Output() readonly cancel = new EventEmitter<any>();
-  @Output() readonly inTemplate = new EventEmitter<any>();
+  @Output() readonly cancel = new EventEmitter<boolean>();
+  @Output() readonly inTemplate = new EventEmitter<TargetModel>();
   @Output() readonly delete = new EventEmitter<TargetModel>();
 
   public activeTarget: TargetModel | undefined;
@@ -37,7 +29,7 @@ export class TaskTreeEditFormComponent implements OnChanges {
   public isEditTask = false;
   public editTaskByIndex = -1;
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.applyHistory(this.history);
     this.autoEditTask();
   }
@@ -58,7 +50,7 @@ export class TaskTreeEditFormComponent implements OnChanges {
     return false;
   }
 
-  onCancelEdit(value: any): void {
+  onCancelEdit(value: string): void {
     if (value === '') {
       this.onDeleteTask(this.target, this.editTaskByIndex);
     }

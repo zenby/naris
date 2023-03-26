@@ -5,10 +5,11 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable()
-export class ByRoutePathResolver implements Resolve<boolean> {
+export class ByRoutePathResolver<T> implements Resolve<T> {
   constructor(private http: HttpClient) {}
-  resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<any> {
+
+  resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<T> {
     const path = route.routeConfig?.path || 'overview';
-    return this.http.get<any>(`${environment.assetsUrl}${path}.json`);
+    return this.http.get<T>(`${environment.assetsUrl}${path}.json`);
   }
 }

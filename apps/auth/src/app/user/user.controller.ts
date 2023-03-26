@@ -1,10 +1,12 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
   InternalServerErrorException,
   Logger,
   Param,
+  Put,
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
@@ -24,6 +26,7 @@ import { RolesGuard } from '../common/guards/roles-guard';
 import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
+import { BlockUserOptions } from './dto/block-user-options';
 
 @UseGuards(RefreshCookieGuard, RolesGuard)
 @Controller()
@@ -71,6 +74,35 @@ export class UserController {
   async deleteUser(@Param('id') id: number): Promise<HttpJsonResult<string>> {
     try {
       const result = await this.userService.deleteUser(id);
+      if (result instanceof Error) {
+        return { status: HttpJsonStatus.Error, items: [result.message] };
+      }
+
+      return { status: HttpJsonStatus.Ok, items: [] };
+    } catch (e) {
+      this.logger.error(e);
+
+      throw new InternalServerErrorException(this.internalErrorMessage);
+    }
+  }
+
+  @Roles(UserRole.ADMIN)
+  @UsePipes(BackendValidationPipe)
+  @ApiOperation({
+    summary: 'block or unblock user from db',
+    description: "Requires the user's id which will be blocked. Returns status of the operation",
+  })
+  @ApiOkResponse({ schema: responseSchema })
+  @ApiNotFoundResponse({ schema: responseErrorSchema('User with id ${id} not found') })
+  @ApiUnauthorizedResponse({ description: 'Should be an admin.' })
+  @Put('user/:id')
+  async blockOrUnblockUser(
+    @Param('id') id: number,
+    @Body() options: BlockUserOptions
+  ): Promise<HttpJsonResult<string>> {
+    try {
+      const result = options.block ? await this.userService.block(id) : await this.userService.unblock(id);
+
       if (result instanceof Error) {
         return { status: HttpJsonStatus.Error, items: [result.message] };
       }

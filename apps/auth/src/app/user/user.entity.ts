@@ -38,6 +38,13 @@ export class UserEntity implements Role {
   })
   role: UserRole;
 
+  @ApiProperty()
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  blocked: boolean;
+
   @BeforeInsert()
   async hashPassword() {
     if (this.password === '') return;

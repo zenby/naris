@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DataStoreService, DtoPack } from '@soer/sr-dto';
 import { TargetModel } from '../../../../api/targets/target.interface';
-import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
-import { Observable } from 'rxjs';
+import { BusEmitter } from '@soer/mixed-bus';
+import { DescriptionService } from '../description.service';
 
 @Component({
   selector: 'soer-target-description',
@@ -15,18 +14,47 @@ import { Observable } from 'rxjs';
         max-height: 100%;
         overflow-y: scroll;
       }
+      .controls {
+        display: flex;
+        column-gap: 0.3rem;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        margin-bottom: 1rem;
+      }
     `,
   ],
   templateUrl: 'target-description.component.html',
 })
-export class TargetDescriptionComponent {
-  public target$: Observable<DtoPack<TargetModel>>;
-  public description$?: Observable<string | undefined>;
+export class TargetDescriptionComponent implements OnDestroy {
+  public isEditMode = false;
 
-  path = '';
-  constructor(private store$: DataStoreService, private route: ActivatedRoute) {
-    const targetId = this.route.snapshot.data['target'];
-    this.path = route.snapshot.params['path'];
-    this.target$ = parseJsonDTOPack<TargetModel>(this.store$.of(targetId), 'Targets edit');
+  constructor(route: ActivatedRoute, private descriptionService: DescriptionService) {
+    const path = route.snapshot.params['path'];
+    const targetEmitter = route.snapshot.data['target'] as BusEmitter<TargetModel>;
+    this.descriptionService.init(targetEmitter, path);
+    this.description = this.descriptionService.getDescription();
+  }
+
+  public set description(description: string | null) {
+    this.descriptionService.setDescription(description);
+  }
+
+  public get description(): string | null {
+    return this.descriptionService.getDescription();
+  }
+
+  onCancel() {
+    this.descriptionService.resetDescription();
+    this.isEditMode = false;
+  }
+
+  onSave() {
+    this.descriptionService.save();
+    this.isEditMode = false;
+  }
+
+  ngOnDestroy(): void {
+    this.descriptionService.destroy();
   }
 }

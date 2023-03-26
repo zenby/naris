@@ -115,7 +115,7 @@ describe('user controller e2e tests', () => {
       const jwtToken = await getJWTTokenForUser(adminUser);
 
       const userRepositoryDeleteSpy = jest.spyOn(userRepo, 'delete').mockResolvedValueOnce({} as DeleteResult);
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser).mockResolvedValueOnce(userToDelete);
+      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
 
       const response = await request
         .delete(`/user/${userToDelete.id}`)

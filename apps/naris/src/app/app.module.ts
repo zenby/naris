@@ -19,13 +19,12 @@ import { IconsProviderModule } from '../icons-provider.module';
 import { ActivityKey } from './api/progress/progress.const';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NxWelcomeComponent } from './nx-welcome.component';
 import { ApplicationService } from './services/application.service';
 
 registerLocaleData(ru);
 
 @NgModule({
-  declarations: [AppComponent, NxWelcomeComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     MixedBusModule,
@@ -63,11 +62,11 @@ registerLocaleData(ru);
       deps: [UrlBuilderService, MixedBusService, DataStoreService, StoreCrudService, PdfConverterService],
       useFactory:
         (
-          UrlBuilderService: UrlBuilderService,
-          MixedBusService: MixedBusService,
-          DataStoreService: DataStoreService,
-          StoreCrudService: StoreCrudService,
-          PdfConverterService: PdfConverterService
+          _UrlBuilderService: UrlBuilderService,
+          _MixedBusService: MixedBusService,
+          _DataStoreService: DataStoreService,
+          _StoreCrudService: StoreCrudService,
+          _PdfConverterService: PdfConverterService
         ) =>
         () =>
           null,

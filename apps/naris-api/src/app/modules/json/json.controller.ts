@@ -13,7 +13,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 export class JsonController {
   constructor(private readonly jsonService: JsonService) {}
 
-  logger = new Logger(JsonController.name);
+  private logger = new Logger(JsonController.name);
 
   @ApiOperation({ summary: 'Get all', description: 'Get a list of documents of a specific group' })
   @ApiOkResponse({ type: JsonResponseDto })

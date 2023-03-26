@@ -35,8 +35,8 @@ export class UserController {
   @Roles(UserRole.ADMIN)
   @UsePipes(BackendValidationPipe)
   @ApiOperation({
-    summary: 'Login',
-    description: "Requires body { login, password }. Returns HTTP_ONLY cookie['refresh_token']",
+    summary: 'get users from db',
+    description: 'Requesting user should be an Admin. Returns list os users from database',
   })
   @ApiFoundResponse({ schema: responseSchema })
   @ApiNotFoundResponse({ schema: responseSchema })
@@ -59,6 +59,10 @@ export class UserController {
 
   @Roles(UserRole.ADMIN)
   @UsePipes(BackendValidationPipe)
+  @ApiOperation({
+    summary: 'delete user from db',
+    description: "Requires the user's id whitch will be deleted. Returns status of the operation",
+  })
   @ApiOkResponse({ schema: responseSchema })
   @ApiNotFoundResponse({ schema: responseErrorSchema('User with id ${id} not found') })
   @ApiUnauthorizedResponse({ description: 'Should be an admin.' })

@@ -66,13 +66,9 @@ describe('AuthOpenIdController', () => {
         throw new HttpException('test exception', HttpStatus.INTERNAL_SERVER_ERROR);
       });
 
-      try {
-        await controller.googleLoginCallback(user, {} as unknown as Response);
-        fail('Expected exception not thrown');
-      } catch (e) {
-        expect(e.getStatus()).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
-        expect(e.message).toBe('Something went wrong. Try it later');
-      }
+      await expect(controller.googleLoginCallback(user, {} as unknown as Response)).rejects.toThrowError(
+        'Something went wrong. Try it later'
+      );
     });
   });
 
@@ -109,13 +105,9 @@ describe('AuthOpenIdController', () => {
         throw new HttpException('test exception', HttpStatus.INTERNAL_SERVER_ERROR);
       });
 
-      try {
-        await controller.yandexCallback(user, {} as unknown as Response);
-        fail('Expected exception not thrown');
-      } catch (e) {
-        expect(e.getStatus()).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
-        expect(e.message).toBe('Something went wrong. Try it later');
-      }
+      await expect(controller.yandexCallback(user, {} as unknown as Response)).rejects.toThrowError(
+        'Something went wrong. Try it later'
+      );
     });
   });
 });

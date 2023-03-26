@@ -8,7 +8,7 @@ import { DataStoreService, SrDTOModule } from '@soer/sr-dto';
 import { ANY_SERVICE, BusEmitter } from '@soer/mixed-bus';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { DemoNgZorroAntdModule } from '@soer/soer-components';
+import { DemoNgZorroAntdModule, Role } from '@soer/soer-components';
 
 const mockDataStoreService = {
   of: (manifestId: BusEmitter) =>
@@ -65,44 +65,44 @@ Primary.args = {};
 export const Success = Template.bind({});
 Success.args = {
   certObject: {
-    role: 'PRO',
+    role: Role.PRO,
     status: 'succeeded',
-    exp: Date.now(),
+    exp: new Date(),
   },
 };
 
 export const Pending = Template.bind({});
 Pending.args = {
   certObject: {
-    role: 'PRO',
+    role: Role.PRO,
     status: 'pending',
-    exp: Date.now(),
+    exp: new Date(),
   },
 };
 
 export const New = Template.bind({});
 New.args = {
   certObject: {
-    role: 'PRO',
+    role: Role.PRO,
     status: 'new',
-    exp: Date.now(),
+    exp: new Date(),
   },
 };
 
 export const Undefined = Template.bind({});
 Undefined.args = {
   certObject: {
-    role: 'PRO',
+    role: Role.PRO,
     status: 'undefined',
-    exp: Date.now(),
+    exp: new Date(),
   },
 };
 
 export const Inuse = Template.bind({});
 Inuse.args = {
   certObject: {
-    role: 'PRO',
+    role: Role.PRO,
     status: 'inuse',
-    exp: Date.now(),
+    exp: new Date(),
   },
 };

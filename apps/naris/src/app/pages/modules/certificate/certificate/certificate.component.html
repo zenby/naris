@@ -32,7 +32,7 @@
         </ul>
         <div class="controls">
           <button
-            [disabled]="certObject?.status !== 'new'"
+            [disabled]="certObject.status !== 'new'"
             (click)="useCert(userManifest.email)"
             nzSize="large"
             nz-button

@@ -2,6 +2,8 @@ import { MetricsListComponent } from './metrics-list.component';
 import { Story, Meta, moduleMetadata } from '@storybook/angular';
 import { TileModule } from '@soer/soer-components';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { PercentStatusStrategyPipe } from './strategies/percent-status-strategy.pipe';
+import { CountStatusStrategyPipe } from './strategies/count-status-strategy.pipe';
 
 export default {
   title: 'MetricsListComponent',
@@ -9,6 +11,7 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [TileModule, NzGridModule],
+      declarations: [PercentStatusStrategyPipe, CountStatusStrategyPipe],
     }),
   ],
 } as Meta<MetricsListComponent>;

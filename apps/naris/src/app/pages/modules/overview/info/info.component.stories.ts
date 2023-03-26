@@ -1,15 +1,16 @@
 import { HttpClientModule } from '@angular/common/http';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { moduleMetadata, Story, Meta } from '@storybook/angular';
+import { ActivatedRoute } from '@angular/router';
+import { moduleMetadata, Meta, StoryFn } from '@storybook/angular';
 import { InfoComponent } from './info.component';
 import { DemoNgZorroAntdModule } from '@soer/soer-components';
+import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
   title: 'InfoComponent',
   component: InfoComponent,
   decorators: [
     moduleMetadata({
-      imports: [RouterModule.forRoot([], { useHash: true }), DemoNgZorroAntdModule, HttpClientModule],
+      imports: [RouterTestingModule, DemoNgZorroAntdModule, HttpClientModule],
       providers: [
         {
           provide: ActivatedRoute,
@@ -64,9 +65,4 @@ export default {
   ],
 } as Meta<InfoComponent>;
 
-const Template: Story<InfoComponent> = (args: InfoComponent) => ({
-  props: args,
-});
-
-export const Primary = Template.bind({});
-Primary.args = {};
+export const Primary: StoryFn = () => ({});

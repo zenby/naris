@@ -1,7 +1,9 @@
-import { RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TileModule } from '@soer/soer-components';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { CountStatusStrategyPipe } from '../metrics-list/strategies/count-status-strategy.pipe';
+import { PercentStatusStrategyPipe } from '../metrics-list/strategies/percent-status-strategy.pipe';
 import { TargetsListComponent } from './targets-list.component';
 
 export default {
@@ -9,7 +11,8 @@ export default {
   component: TargetsListComponent,
   decorators: [
     moduleMetadata({
-      imports: [RouterModule.forRoot([], { useHash: true }), TileModule, NzGridModule],
+      declarations: [PercentStatusStrategyPipe, CountStatusStrategyPipe],
+      imports: [RouterTestingModule, TileModule, NzGridModule],
     }),
   ],
 } as Meta<TargetsListComponent>;

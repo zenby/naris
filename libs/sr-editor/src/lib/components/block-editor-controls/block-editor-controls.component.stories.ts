@@ -1,6 +1,8 @@
 import { moduleMetadata, Story, Meta } from '@storybook/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { BlockEditorControlsComponent } from './block-editor-controls.component';
 
 export default {
@@ -11,7 +13,7 @@ export default {
   },
   decorators: [
     moduleMetadata({
-      imports: [NzIconModule, NzButtonModule],
+      imports: [NzIconModule, NzButtonModule, NzToolTipModule, BrowserAnimationsModule],
     }),
   ],
 } as Meta<BlockEditorControlsComponent>;

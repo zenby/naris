@@ -33,7 +33,6 @@ import { SourcesModule } from './modules/sources/sources.module';
     DemoNgZorroAntdModule,
     YouTubePlayerModule,
     QuestionsModule,
-    NzModalModule,
     TargetsModule,
     OverviewModule,
     AbstracteModule,

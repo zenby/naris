@@ -1,5 +1,4 @@
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
 import { moduleMetadata, Story, Meta } from '@storybook/angular';
 import { CertificateComponent } from './certificate.component';
 import { of } from 'rxjs';
@@ -9,6 +8,7 @@ import { ANY_SERVICE, BusEmitter } from '@soer/mixed-bus';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoNgZorroAntdModule, Role } from '@soer/soer-components';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const mockDataStoreService = {
   of: (manifestId: BusEmitter) =>
@@ -37,7 +37,7 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [
-        RouterModule.forRoot([], { useHash: true }),
+        RouterTestingModule,
         HttpClientModule,
         DemoNgZorroAntdModule,
         BrowserAnimationsModule,

@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { moduleMetadata, Story, Meta } from '@storybook/angular';
+import { moduleMetadata, Story, Meta, StoryFn } from '@storybook/angular';
 import { DefaultComponent } from './default.component';
 import { ANY_SERVICE, BusEmitter, BusMessage } from '@soer/mixed-bus';
 import { JWTModel } from '@soer/sr-auth';
@@ -89,14 +89,11 @@ export default {
   ],
 } as Meta<DefaultComponent>;
 
-const Template: Story<DefaultComponent> = (args: DefaultComponent) => ({
-  props: args,
+export const Primary: StoryFn = () => ({
+  props: {
+    isMobileView: false,
+  },
 });
-
-export const Primary = Template.bind({});
-Primary.args = {
-  isMobileView: false,
-};
 
 Primary.parameters = {
   layout: 'fullscreen',

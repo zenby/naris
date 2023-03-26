@@ -1,5 +1,4 @@
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
 import { moduleMetadata, Story, Meta } from '@storybook/angular';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzTagModule } from 'ng-zorro-antd/tag';
@@ -9,6 +8,7 @@ import { FilesListComponent } from './files-list.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AccessDeniedModule } from '../access-denied/access-denied.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
   title: 'FilesListComponent',
@@ -16,7 +16,7 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [
-        RouterModule.forRoot([], { useHash: true }),
+        RouterTestingModule,
         NzCardModule,
         NzTagModule,
         NzGridModule,

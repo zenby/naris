@@ -5,7 +5,7 @@ import { PreloaderService } from './preloader.service';
 import { PreloaderComponent } from './preloader.component';
 
 export default {
-  title: PreloaderComponent.name,
+  title: 'PreloaderComponent',
   component: PreloaderComponent,
   decorators: [
     moduleMetadata({

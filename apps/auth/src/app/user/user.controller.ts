@@ -21,7 +21,7 @@ import { responseSchema } from '../auth/doc/response.schema';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles-guard';
 import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
-import { UserEntity } from './user.entity';
+import { UserEntity, UserRole } from './user.entity';
 import { UserService } from './user.service';
 
 @UseGuards(RolesGuard)
@@ -32,7 +32,7 @@ export class UserController {
   private logger = new Logger(UserController.name);
   private internalErrorMessage = 'Something went wrong. Try it later';
 
-  @Roles('admin')
+  @Roles(UserRole.ADMIN)
   @UsePipes(BackendValidationPipe)
   @ApiOperation({
     summary: 'Login',
@@ -57,7 +57,7 @@ export class UserController {
     }
   }
 
-  @Roles('admin')
+  @Roles(UserRole.ADMIN)
   @UsePipes(BackendValidationPipe)
   @ApiOkResponse({ schema: responseSchema })
   @ApiNotFoundResponse({ schema: responseErrorSchema('User with id ${id} not found') })

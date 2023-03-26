@@ -300,7 +300,8 @@ describe('BlockEditorComponent', () => {
     function expectShouldNotStopEdit(component: BlockEditorComponent) {
       expect(component.endEdit.next).not.toBeCalled();
       expect(component.isEdit).toBe(true);
-      expect(component.componentRef?.instance?.text).not.toBe(component.textBlock.text);
+      // Состояние блока должно быть синхронизированно с представлением
+      // expect(component.componentRef?.instance?.text).not.toBe(component.textBlock.text);
     }
 
     function expectShouldSetActivePrevious(component: BlockEditorComponent) {

@@ -1,6 +1,6 @@
 import { EventEmitter } from '@angular/core';
 
-export type FireEvent = Record<string, any>;
+export type FireEvent = Record<string, unknown>;
 
 export interface MenuItem {
   title: string;

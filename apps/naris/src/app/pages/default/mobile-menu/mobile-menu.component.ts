@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NzSiderComponent } from 'ng-zorro-antd/layout';
 import { UserModel } from '../../../services/application.models';
 import { IMenuControl, MenuTree } from '../../../services/menu/menu.interfaces';
 
@@ -13,7 +14,7 @@ export class MobileMenuComponent {
   @Input() applicationMenu: MenuTree = [];
   @Input() controls: IMenuControl[] | null = null;
   @Output() logout = new EventEmitter<boolean>();
-  @Output() check = new EventEmitter<any>();
+  @Output() check = new EventEmitter<NzSiderComponent>();
 
   isMenuOpen = false;
   isOpenControlPanel = false;
@@ -28,7 +29,7 @@ export class MobileMenuComponent {
     }
   }
 
-  controlPanel(control: any): void {
+  controlPanel(control: IMenuControl): void {
     this.checkOpenControlPanel(control.title);
     control.cb();
   }

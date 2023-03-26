@@ -38,13 +38,6 @@ export class TaskEditFormComponent {
     );
   }
 
-  createTask(target: TargetModel, title: any): void {
-    target.tasks = target.tasks || [];
-    target.tasks.push({ title: title.value, overview: '', progress: 0, tasks: [] });
-    title.value = '';
-    this.onSave(target);
-  }
-
   onDelete(target: TargetModel): void {
     this.bus$.publish(new CommandDelete(this.targetId, target, { tid: target.id }));
   }

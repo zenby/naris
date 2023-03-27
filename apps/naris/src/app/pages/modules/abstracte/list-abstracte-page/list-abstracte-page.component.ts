@@ -32,6 +32,8 @@ export enum LoadingState {
 })
 export class ListAbstractePageComponent implements OnInit {
   public name? = '';
+  public title = '';
+  public info = '';
 
   private workbooksId: BusEmitter;
   private workbookId: BusEmitter;
@@ -87,6 +89,8 @@ export class ListAbstractePageComponent implements OnInit {
     private preloaderService: PreloaderService
   ) {
     this.name = this.route.snapshot.data['header'].title;
+    this.title = this.route.snapshot.data['page'].title;
+    this.info = this.route.snapshot.data['page'].info;
 
     this.workbooksId = this.route.snapshot.data['workbooks'];
     this.workbookId = { ...this.workbooksId, key: { wid: '?' } };

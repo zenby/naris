@@ -14,7 +14,7 @@ export class BlockService {
 
   private blockStates: BlockState[] = [];
 
-  public init(blocks: TextBlock[]) {
+  init(blocks: TextBlock[]): void {
     this.blockStates = blocks.map((block) => ({
       block,
       isActive: false,
@@ -22,10 +22,6 @@ export class BlockService {
     }));
 
     this.dispacthBlockStatesChangeEvent();
-  }
-
-  private dispacthBlockStatesChangeEvent() {
-    this.onBlockStatesChange.next(this.blockStates);
   }
 
   delimitBlock(
@@ -42,5 +38,41 @@ export class BlockService {
       blocks: [...beforeBlocksToInsert, ...blocksToInsert, ...afterBlocksToInsert],
       activeBlockIndex: activeBlockIndex + textBlocksToInsert.length - 1,
     };
+  }
+
+  setActive(blockIndex: number): void {
+    if (!this.isActive(blockIndex)) {
+      this.markAsActive(blockIndex);
+      if (!this.isEditable(blockIndex)) {
+        this.markAsEditable(blockIndex);
+      }
+
+      this.dispacthBlockStatesChangeEvent();
+    }
+  }
+
+  private dispacthBlockStatesChangeEvent(): void {
+    this.onBlockStatesChange.next(this.blockStates);
+  }
+
+  private isActive(blockIndex: number): boolean {
+    return this.blockStates[blockIndex].isActive;
+  }
+
+  private isEditable(index: number): boolean {
+    return this.blockStates[index].isEdit;
+  }
+
+  private markAsActive(blockIndex: number): void {
+    const newBlockStates = this.blockStates.map((blockState) => ({
+      ...blockState,
+      isActive: false,
+    }));
+    newBlockStates[blockIndex].isActive = true;
+    this.blockStates = newBlockStates;
+  }
+
+  private markAsEditable(blockIndex: number): void {
+    this.blockStates[blockIndex].isEdit = true;
   }
 }

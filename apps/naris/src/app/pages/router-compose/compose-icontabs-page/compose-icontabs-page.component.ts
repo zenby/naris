@@ -60,13 +60,13 @@ export class ComposeIcontabsPageComponent extends ComposePage implements OnInit,
 
   activateTab(): void {
     const [activeRoute] = this.route.children;
-    const path = this.getRouteSnapshotsPaths(this.route).pop() || '';
+    const paths = this.getRouteSnapshotsPaths(this.route) || [''];
 
     if (!activeRoute) {
       return;
     }
 
-    const activeTab = this.tabs.find((tab) => tab.path.includes(path)) || {
+    const activeTab = this.tabs.find((tab) => tab.path.find((route) => paths.includes(route))) || {
       title: '',
       icon: '',
       path: [],

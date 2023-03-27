@@ -51,6 +51,17 @@ export class BlockService {
     }
   }
 
+  move(from: number, to: number): void {
+    const currentBlockStates = this.blockStates;
+    const tmp: BlockState = currentBlockStates[to];
+    if (tmp) {
+      currentBlockStates[to] = currentBlockStates[from];
+      currentBlockStates[from] = tmp;
+
+      this.dispacthBlockStatesChangeEvent();
+    }
+  }
+
   private dispacthBlockStatesChangeEvent(): void {
     this.onBlockStatesChange.next(this.blockStates);
   }

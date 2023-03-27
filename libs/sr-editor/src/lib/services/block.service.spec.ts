@@ -4,12 +4,15 @@ import { BlockService, BlockState } from './block.service';
 
 describe('BlockService', () => {
   let service: BlockService;
-  let blocks: TextBlock[];
+  let blocks: TextBlock[] = [];
+  let blockStates: BlockState[] = [];
 
   beforeEach(() => {
     service = new BlockService();
     jest.spyOn(service.onBlockStatesChange, 'next');
+    service.onBlockStatesChange.subscribe((newBlockStates) => (blockStates = newBlockStates));
     blocks = createFakeTextBlocks();
+    service.init(blocks);
   });
 
   afterEach(() => {
@@ -18,21 +21,12 @@ describe('BlockService', () => {
 
   describe('init', () => {
     it('should dispatch block states', () => {
-      service.init(blocks);
-
       expect(service.onBlockStatesChange.next).toBeCalled();
     });
   });
 
-  describe('setActive', () => {
+  describe('setting active block', () => {
     const blockIndex = 1;
-    let blockStates: BlockState[] = [];
-
-    beforeEach(() => {
-      service.init(blocks);
-      blockStates = [];
-      service.onBlockStatesChange.subscribe((newBlockStates) => (blockStates = newBlockStates));
-    });
 
     it('should set block in active and editing state', async () => {
       service.setActive(blockIndex);
@@ -46,6 +40,34 @@ describe('BlockService', () => {
       service.setActive(blockIndex);
 
       expect(service.onBlockStatesChange.next).toBeCalledTimes(2); // 1-й -> инициализация, 2-й -> первая установка активного блока
+    });
+  });
+
+  describe('move', () => {
+    const oldBlockPosition = 1;
+    const newBlockPosition = 2;
+
+    it('should move block', () => {
+      service.move(oldBlockPosition, newBlockPosition);
+
+      expect(blockStates[newBlockPosition].block.text).toBe(blocks[oldBlockPosition].text);
+      expect(blockStates[oldBlockPosition].block.text).toBe(blocks[newBlockPosition].text);
+    });
+
+    it('should save active state after moving block', () => {
+      service.setActive(oldBlockPosition);
+      service.move(oldBlockPosition, newBlockPosition);
+
+      expect(blockStates[newBlockPosition].isActive).toBeTruthy();
+      expect(blockStates[oldBlockPosition].isActive).toBeFalsy();
+    });
+
+    it.todo('should save editable state after moving block');
+
+    it('should not dispatched block change event because block position which need to move block is out of range', () => {
+      service.move(oldBlockPosition, -1);
+
+      expect(service.onBlockStatesChange.next).toBeCalledTimes(1);
     });
   });
 });

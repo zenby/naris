@@ -2,15 +2,10 @@ import { BeforeInsert, Column, Entity, Generated, PrimaryGeneratedColumn } from 
 import { ApiProperty } from '@nestjs/swagger';
 import { genSalt, hash } from 'bcrypt';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-
-export enum UserRole {
-  ADMIN = 'admin',
-  USER = 'user',
-  MODERATOR = 'moderator',
-}
+import { Role, UserRole } from '@soer/sr-common-interfaces';
 
 @Entity({ name: 'users' })
-export class UserEntity {
+export class UserEntity implements Role {
   @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;

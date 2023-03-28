@@ -7,9 +7,9 @@ import * as supertest from 'supertest';
 import { DeleteResult, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Configuration } from '../config/config';
-import { UserEntity, UserRole } from './user.entity';
+import { UserEntity } from './user.entity';
 import { UserModule } from './user.module';
-import { HttpJsonResult } from '@soer/sr-common-interfaces';
+import { HttpJsonResult, UserRole } from '@soer/sr-common-interfaces';
 import { faker } from '@faker-js/faker';
 
 describe('user controller e2e tests', () => {

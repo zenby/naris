@@ -15,14 +15,14 @@ import {
   ApiOperation,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
+import { HttpJsonResult, HttpJsonStatus, UserRole } from '@soer/sr-common-interfaces';
 import { responseErrorSchema } from '../auth/doc/response-error.schema';
 import { responseSchema } from '../auth/doc/response.schema';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RefreshCookieGuard } from '../common/guards/refreshCookie.guard';
 import { RolesGuard } from '../common/guards/roles-guard';
 import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
-import { UserEntity, UserRole } from './user.entity';
+import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @UseGuards(RefreshCookieGuard, RolesGuard)

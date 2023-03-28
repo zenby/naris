@@ -2,7 +2,6 @@ import { ExecutionContext, CanActivate, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { AuthService } from '../../auth/auth.service';
-import { Configuration } from '../../config/config';
 import { UserRole } from '../../user/user.entity';
 
 @Injectable()
@@ -14,19 +13,15 @@ export class RolesGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const roles = this.reflector.get<UserRole[]>('roles', context.getHandler());
+    const roles = this.reflector.getAllAndOverride<UserRole[]>('roles', [context.getHandler(), context.getClass()]);
     if (!roles) return true;
 
     const req = context.switchToHttp().getRequest();
-    const cookieName = this.configService.get<Configuration['jwt']>('jwt').cookieName;
-    const refreshToken = req.cookies?.[cookieName];
 
-    if (!refreshToken) return false;
+    const { user } = req;
+    if (user?.role === undefined) return false;
 
-    const user = await this.authService.getVerifiedUserByRefreshToken(refreshToken);
-    if (user instanceof Error) return false;
-
-    return matchRoles(roles, user.role);
+    return matchRoles(roles, user?.role);
   }
 }
 function matchRoles(roles: UserRole[], role: UserRole): boolean {

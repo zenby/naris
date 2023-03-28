@@ -7,11 +7,12 @@ import { RolesGuard } from '../common/guards/roles-guard';
 import { AuthService } from '../auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { RefreshCookieStrategy } from '../common/strategies/refreshCookie.strategy';
 
 @Global()
 @Module({
   controllers: [UserController],
-  providers: [UserService, RolesGuard, AuthService, ConfigService],
+  providers: [UserService, RolesGuard, AuthService, ConfigService, RefreshCookieStrategy],
   imports: [TypeOrmModule.forFeature([UserEntity]), JwtModule.register({})],
   exports: [UserService, TypeOrmModule.forFeature([UserEntity])],
 })

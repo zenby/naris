@@ -4,6 +4,8 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { UserModule } from './user.module';
 import { CreateUserDto } from './dto/create-user.dto';
+import { Configuration } from '../config/config';
+import { ConfigService } from '@nestjs/config';
 
 describe('User service', () => {
   let userService: UserService;
@@ -15,10 +17,23 @@ describe('User service', () => {
     delete: jest.fn(),
   };
 
+  const config: Configuration['jwt'] = {
+    cookieName: 'refreshToken',
+    expiresInAccess: 10000,
+    expiresInRefresh: 10000,
+    jwtSecret: 'secret',
+  };
+
   beforeAll(async () => {
+    const configMock = {
+      get: jest.fn().mockImplementation((): Configuration['jwt'] => config),
+    };
+
     const moduleRef = await Test.createTestingModule({
       imports: [UserModule],
     })
+      .overrideProvider(ConfigService)
+      .useValue(configMock)
       .overrideProvider(getRepositoryToken(UserEntity))
       .useValue(userRepositoryMock)
       .compile();

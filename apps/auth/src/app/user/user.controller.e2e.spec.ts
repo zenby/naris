@@ -101,8 +101,8 @@ describe('user controller e2e tests', () => {
         .expect(403);
     });
 
-    it('should return 403 error when not authorized', async () => {
-      await request.get('/users').send().expect(403);
+    it('should return 401 error when not authorized', async () => {
+      await request.get('/users').send().expect(401);
     });
   });
 
@@ -143,10 +143,10 @@ describe('user controller e2e tests', () => {
         .expect(403);
     });
 
-    it('should return 403 error when not authorized', async () => {
+    it('should return 401 error when not authorized', async () => {
       const userToDelete = getTestUser();
 
-      await request.delete(`/user/${userToDelete.id}`).send().expect(403);
+      await request.delete(`/user/${userToDelete.id}`).send().expect(401);
     });
   });
 

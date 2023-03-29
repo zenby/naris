@@ -62,6 +62,22 @@ export class BlockService {
     }
   }
 
+  add(newBlockIndex: number): void {
+    const left = this.blockStates.slice(0, newBlockIndex);
+    const right = this.blockStates.slice(newBlockIndex);
+    this.blockStates = [
+      ...left,
+      {
+        block: { text: '', type: 'markdown' },
+        isActive: true,
+        isEdit: true,
+      },
+      ...right,
+    ];
+
+    this.dispacthBlockStatesChangeEvent();
+  }
+
   private dispacthBlockStatesChangeEvent(): void {
     this.onBlockStatesChange.next(this.blockStates);
   }

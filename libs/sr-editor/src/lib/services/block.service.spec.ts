@@ -70,6 +70,43 @@ describe('BlockService', () => {
       expect(service.onBlockStatesChange.next).toBeCalledTimes(1);
     });
   });
+
+  describe('add block', () => {
+    it('should add block', () => {
+      const counOfblock = blockStates.length;
+
+      service.add(0);
+
+      expect(blockStates.length).toBe(counOfblock + 1);
+    });
+
+    describe('check new block state', () => {
+      const newBlockIndex = 1;
+      beforeEach(() => {
+        service.add(newBlockIndex);
+      });
+
+      it('should set new block in editing state', () => {
+        expect(blockStates[newBlockIndex].isEdit).toBeTruthy();
+      });
+
+      it('should set new block as active block', () => {
+        expect(blockStates[newBlockIndex].isActive).toBeTruthy();
+      });
+    });
+
+    it('should save editing state for existing blocks after add', () => {
+      service.setActive(1);
+      service.setActive(3);
+
+      service.add(0);
+
+      expect(blockStates[1].isEdit).toBeFalsy();
+      expect(blockStates[2].isEdit).toBeTruthy();
+      expect(blockStates[3].isEdit).toBeFalsy();
+      expect(blockStates[4].isEdit).toBeTruthy();
+    });
+  });
 });
 
 function createFakeTextBlocks(): TextBlock[] {

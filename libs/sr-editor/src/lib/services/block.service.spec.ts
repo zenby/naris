@@ -107,6 +107,55 @@ describe('BlockService', () => {
       expect(blockStates[4].isEdit).toBeTruthy();
     });
   });
+
+  describe('remove block', () => {
+    const removeIndex = 2;
+
+    it('should remove block', () => {
+      const counOfblock = blockStates.length;
+
+      service.remove(removeIndex);
+
+      expect(blockStates.length).toBe(counOfblock - 1);
+    });
+
+    it('active index should be on the previous block', () => {
+      service.setActive(removeIndex - 1);
+
+      service.remove(removeIndex);
+
+      expect(blockStates[removeIndex - 1].isActive).toBeTruthy();
+    });
+
+    it('active index should be on the next block', () => {
+      service.setActive(removeIndex + 1);
+
+      service.remove(removeIndex);
+
+      expect(blockStates[removeIndex].isActive).toBeTruthy();
+    });
+
+    it('active index should be on the current active block', () => {
+      const currentActiveBlock = 0;
+      service.setActive(removeIndex - 1);
+      service.setActive(currentActiveBlock);
+
+      service.remove(removeIndex);
+      expect(blockStates[currentActiveBlock].isActive).toBeTruthy();
+    });
+
+    it('no block should be active', () => {
+      service.remove(removeIndex);
+
+      expect(blockStates.findIndex((blockState) => blockState.isActive)).toBe(-1);
+    });
+
+    it('block index should be removed from edit state', () => {
+      service.remove(removeIndex);
+
+      expect(blockStates[removeIndex].isEdit).toBe(false);
+    });
+  });
 });
 
 function createFakeTextBlocks(): TextBlock[] {

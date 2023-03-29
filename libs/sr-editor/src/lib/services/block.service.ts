@@ -78,6 +78,18 @@ export class BlockService {
     this.dispacthBlockStatesChangeEvent();
   }
 
+  remove(blockIndex: number): void {
+    if (this.blockStates.length === 1) return;
+
+    const newActiveBlock = this.isActive(blockIndex) ? this.findNearestEditedBlock(blockIndex) : false;
+    this.blockStates = this.blockStates.filter((el, index) => blockIndex !== index);
+    if (newActiveBlock !== false) {
+      this.markAsActive(newActiveBlock > blockIndex ? newActiveBlock - 1 : newActiveBlock);
+    }
+
+    this.dispacthBlockStatesChangeEvent();
+  }
+
   private dispacthBlockStatesChangeEvent(): void {
     this.onBlockStatesChange.next(this.blockStates);
   }
@@ -101,5 +113,21 @@ export class BlockService {
 
   private markAsEditable(blockIndex: number): void {
     this.blockStates[blockIndex].isEdit = true;
+  }
+
+  private findNearestEditedBlock(blockIndex: number): number | false {
+    let index = 1;
+    while (index <= this.blockStates.length) {
+      const upBlockIndex = blockIndex - index;
+      const downBlockIndex = blockIndex + index;
+      if (this.isEditable(upBlockIndex)) {
+        return upBlockIndex;
+      } else if (this.isEditable(downBlockIndex)) {
+        return downBlockIndex;
+      }
+      index++;
+    }
+
+    return false;
   }
 }

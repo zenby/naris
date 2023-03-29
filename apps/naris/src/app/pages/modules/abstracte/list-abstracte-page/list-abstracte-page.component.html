@@ -29,10 +29,10 @@
 </ng-template>
 
 <ng-template #emptylist>
-  <nz-result nzStatus="info" nzTitle="Создайте свой первый конспект">
+  <nz-result nzStatus="info" [nzTitle]="title">
     <div nz-result-extra>
       <p class="info">
-        Для закрепления материала важно не только смотреть видео и читать книги, но и пытаться выделить главное.
+        {{ info }}
       </p>
       <button nz-button nzType="primary" (click)="createWorkbook()">Начать</button>
     </div>

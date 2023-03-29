@@ -1,16 +1,9 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DataStoreService, DtoPack } from '@soer/sr-dto';
 import { TargetModel } from '../../../../api/targets/target.interface';
 import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
-type DescriptionExtras =
-  | undefined
-  | {
-      descriptionPath?: string;
-    };
 
 @Component({
   selector: 'soer-target-description',

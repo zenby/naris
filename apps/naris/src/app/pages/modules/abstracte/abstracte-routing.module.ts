@@ -21,6 +21,10 @@ const routes: Routes = [
         data: {
           header: { title: 'Конспекты', iconText: 'Конспекты' },
           controls: [{ title: 'Добавить', path: ['create', 'new'], icon: 'plus' }],
+          page: {
+            title: 'Создайте свой первый конспект',
+            info: 'Для закрепления материала важно не только смотреть видео и читать книги, но и пытаться выделить главное.',
+          },
         },
         resolve: {
           workbooks: 'workbooksEmitter',
@@ -115,6 +119,10 @@ const routes: Routes = [
         data: {
           header: { title: 'Тесты и опросы', iconText: 'Тесты' },
           controls: [{ title: 'Добавить', path: ['create', 'new'], icon: 'plus' }],
+          page: {
+            title: 'Создайте свой первый тест',
+            info: 'Создайте тест, который поможет вам, или вашим коллегам, проверить свои знания',
+          },
         },
         resolve: {
           workbooks: 'quizsEmitter',
@@ -126,8 +134,8 @@ const routes: Routes = [
             component: EditAbstractePageComponent,
             data: {
               header: {
-                title: 'Новый конспект',
-                subtitle: 'помощь в осмыслении материалов по программированию',
+                title: 'Новый тест',
+                subtitle: 'проверка знаний, полученных в ходе образовательного процесса',
               },
               controls: [
                 {
@@ -154,8 +162,8 @@ const routes: Routes = [
             component: EditAbstractePageComponent,
             data: {
               header: {
-                title: 'Изменить конспект',
-                subtitle: 'помощь в осмыслении материалов по программированию',
+                title: 'Изменить тест',
+                subtitle: 'проверка знаний, полученных в ходе образовательного процесса',
               },
               controls: [
                 {
@@ -182,8 +190,8 @@ const routes: Routes = [
             component: ViewAbstractePageComponent,
             data: {
               header: {
-                title: 'Конспект',
-                subtitle: 'помощь в осмыслении материалов по программированию',
+                title: 'Тест',
+                subtitle: 'проверка знаний, полученных в ходе образовательного процесса',
               },
             },
             resolve: {
@@ -197,6 +205,10 @@ const routes: Routes = [
         data: {
           header: { title: 'Статьи', iconText: 'Статьи' },
           controls: [{ title: 'Добавить', path: ['create', 'new'], icon: 'plus' }],
+          page: {
+            title: 'Напишите свою первую статью',
+            info: 'Напишите статью и поделитесь своими знаниями',
+          },
         },
         resolve: {
           workbooks: 'articlesEmitter',
@@ -236,8 +248,8 @@ const routes: Routes = [
             component: EditAbstractePageComponent,
             data: {
               header: {
-                title: 'Изменить конспект',
-                subtitle: 'помощь в осмыслении материалов по программированию',
+                title: 'Изменить статью',
+                subtitle: 'расскажите о своем опыте',
               },
               controls: [
                 {
@@ -264,8 +276,8 @@ const routes: Routes = [
             component: ViewAbstractePageComponent,
             data: {
               header: {
-                title: 'Конспект',
-                subtitle: 'помощь в осмыслении материалов по программированию',
+                title: 'Статья',
+                subtitle: 'расскажите о своем опыте',
               },
             },
             resolve: {

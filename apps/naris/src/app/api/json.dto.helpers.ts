@@ -4,21 +4,6 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { JsonDTOModel } from './jsonDto.model';
 
-export function parseJsonDTO<T>(messages$: Observable<BusMessage>, id: string): Observable<T[]> {
-  console.log('Start pipe =>', id);
-  return messages$.pipe(
-    map((data: BusMessage | null) => {
-      const result: T[] = [];
-      console.log('Pipe map => ', id, data);
-      if (data?.payload?.status === OK) {
-        data?.payload.items.forEach((data: any) => result.push({ ...JSON.parse(data.json), id: data.id }));
-      }
-      console.log('after pipe =>', id, result);
-      return result;
-    })
-  );
-}
-
 export function parseJsonDTOPack<T>(messages$: Observable<BusMessage>, id: string): Observable<DtoPack<T>> {
   console.log(`Start pipe '${id}' => ok`);
   return messages$.pipe(
@@ -26,7 +11,7 @@ export function parseJsonDTOPack<T>(messages$: Observable<BusMessage>, id: strin
       const result: T[] = [];
       console.log(`Pipe map '${id}' => `, data);
       if (data?.payload?.status === OK) {
-        data?.payload.items.forEach((data: any) => result.push({ ...JSON.parse(data.json), id: data.id }));
+        data?.payload.items.forEach((item: JsonDTOModel) => result.push({ ...JSON.parse(item.json), id: item.id }));
       }
       console.log(`after pipe '${id}' =>`, result, data);
       return { status: data?.payload?.status ?? OK, items: result };
@@ -34,8 +19,11 @@ export function parseJsonDTOPack<T>(messages$: Observable<BusMessage>, id: strin
   );
 }
 
-export function convertToJsonDTO(data: any, excludeKeys: string[] = []): JsonDTOModel {
-  const result: { [key: string]: string } = {};
-  Object.keys(data).forEach((key: string) => (excludeKeys.includes(key) ? null : (result[key] = data[key])));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type DataType = Record<string, any>;
+
+export function convertToJsonDTO(data: DataType, excludeKeys: string[] = []): JsonDTOModel {
+  const result: DataType = {};
+  Object.keys(data).forEach((key) => (excludeKeys.includes(key) ? null : (result[key] = data[key])));
   return { json: JSON.stringify(result) };
 }

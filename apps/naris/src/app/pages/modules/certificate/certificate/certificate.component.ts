@@ -1,11 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { environment } from '../../../../../environments/environment';
-import { AuthService, JWTModel } from '@soer/sr-auth';
 import { BusEmitter } from '@soer/mixed-bus';
+import { Role } from '@soer/soer-components';
+import { AuthService, JWTModel } from '@soer/sr-auth';
 import { DataStoreService, DtoPack, extractDtoPackFromBus } from '@soer/sr-dto';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
+
+type CertificateStatus = 'pending' | 'new' | 'undefined' | 'inuse' | 'succeeded';
+
+type Certificate = {
+  role: Role;
+  status: CertificateStatus;
+  exp: Date;
+};
 
 @Component({
   selector: 'soer-certificate',
@@ -17,14 +25,13 @@ export class CertificateComponent {
 
   public hasCert = false;
   public certText = '';
-  public certObject: any = null;
+  public certObject: Certificate | null = null;
   public user$: Observable<DtoPack<JWTModel>>;
 
   constructor(
     @Inject('manifest') private manifestId: BusEmitter,
     private authService: AuthService,
     private store$: DataStoreService,
-    private router: Router,
     private http: HttpClient
   ) {
     this.user$ = extractDtoPackFromBus<JWTModel>(this.store$.of(this.manifestId));
@@ -32,10 +39,10 @@ export class CertificateComponent {
 
   useCert(email: string): void {
     this.http
-      .get(environment.host + '/api/v2/seller/prepaid/' + email + '/' + this.getClearedCertText())
-      .subscribe((result) => {
-        this.certObject.status = (result as any)['status'];
-      });
+      .get<{ status: CertificateStatus }>(
+        environment.host + '/api/v2/seller/prepaid/' + email + '/' + this.getClearedCertText()
+      )
+      .subscribe((result) => this.setCertificateStatus(result.status));
   }
 
   certinfo(): void {
@@ -48,14 +55,20 @@ export class CertificateComponent {
       };
 
       this.http
-        .get(environment.host + '/api/v2/seller/prepaid_status/' + this.getClearedCertText())
-        .subscribe((result) => {
-          this.certObject.status = (result as any)['status'];
-        });
+        .get<{ status: CertificateStatus }>(
+          environment.host + '/api/v2/seller/prepaid_status/' + this.getClearedCertText()
+        )
+        .subscribe((result) => this.setCertificateStatus(result.status));
     }
   }
 
-  getClearedCertText(): string {
+  private setCertificateStatus(status: CertificateStatus): void {
+    if (this.certObject) {
+      this.certObject.status = status;
+    }
+  }
+
+  private getClearedCertText(): string {
     return this.certText.replace(/[\n\r\s]*/g, '');
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JsonService } from './json.service';
 import { JsonEntity } from './json.entity';
 import { CreateJsonDto } from './dto/create-json.dto';
@@ -13,6 +13,8 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 export class JsonController {
   constructor(private readonly jsonService: JsonService) {}
 
+  private logger = new Logger(JsonController.name);
+
   @ApiOperation({ summary: 'Get all', description: 'Get a list of documents of a specific group' })
   @ApiOkResponse({ type: JsonResponseDto })
   @ApiBearerAuth()
@@ -24,6 +26,7 @@ export class JsonController {
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
     } catch (e) {
+      this.logger.error(e);
       return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
     }
   }
@@ -42,6 +45,7 @@ export class JsonController {
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
+      this.logger.error(e);
       return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
     }
   }
@@ -59,6 +63,7 @@ export class JsonController {
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
+      this.logger.error(e);
       return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
     }
   }
@@ -82,6 +87,7 @@ export class JsonController {
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
+      this.logger.error(e);
       return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
     }
   }
@@ -102,6 +108,7 @@ export class JsonController {
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, []);
     } catch (e) {
+      this.logger.error(e);
       return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
     }
   }

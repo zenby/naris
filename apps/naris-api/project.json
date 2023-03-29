@@ -65,6 +65,34 @@
       "options": {
         "preset": "conventional"
       }
+    },
+    "migration-create": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli migration:create migrations/{args.name}",
+        "cwd": "apps/naris-api"
+      }
+    },
+    "migration-generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli migration:generate migrations/{args.name} -d src/app/config/ormconfig.ts",
+        "cwd": "apps/naris-api"
+      }
+    },
+    "migration-run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli migration:run -d src/app/config/ormconfig.ts",
+        "cwd": "apps/naris-api"
+      }
+    },
+    "migration-revert": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli migration:revert -d src/app/config/ormconfig.ts",
+        "cwd": "apps/naris-api"
+      }
     }
   },
   "tags": []

@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { moduleMetadata, Story, Meta } from '@storybook/angular';
 import { DefaultComponent } from './default.component';
-import { BusMessage } from '@soer/mixed-bus';
+import { ANY_SERVICE, BusEmitter, BusMessage } from '@soer/mixed-bus';
 import { JWTModel } from '@soer/sr-auth';
 import { extractDtoPackFromBus, SrDTOModule } from '@soer/sr-dto';
 import { of } from 'rxjs';
@@ -16,7 +16,7 @@ import { ApplicationService } from '../../services/application.service';
 import { DemoNgZorroAntdModule } from '@soer/soer-components';
 
 const dataStoreServiceMock = {
-  of: (manifestId?: any): Observable<BusMessage> => {
+  of: (manifestId: BusEmitter): Observable<BusMessage> => {
     return of({
       owner: manifestId,
       params: {},
@@ -43,7 +43,7 @@ const applicationServiceMock = {
     email: '',
     role: '',
   },
-  user$: extractDtoPackFromBus<JWTModel>(dataStoreServiceMock.of()),
+  user$: extractDtoPackFromBus<JWTModel>(dataStoreServiceMock.of(ANY_SERVICE)),
   auth: {
     logout: () => true,
   },

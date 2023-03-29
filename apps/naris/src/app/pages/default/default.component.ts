@@ -12,6 +12,22 @@ import { IMenuControl } from '../../services/menu/menu.interfaces';
 import { MenuControl } from '../../services/menu/MenuControl.class';
 import { MAIN_MENU } from './menu.const';
 
+type RoutingData = {
+  header: {
+    title: string;
+    subtitle: string;
+  };
+  controls?: RoutingDataControl[];
+};
+
+type RoutingDataControl = {
+  icon: string;
+  title: string;
+  path: string[];
+  toggle?: string;
+  action?: string;
+};
+
 @Component({
   selector: 'soer-default',
   templateUrl: './default.component.html',
@@ -81,19 +97,18 @@ export class DefaultComponent implements OnInit, OnDestroy {
     };
 
     const child = findChildActiveRoute(this.route);
+    const data = child.snapshot.data as RoutingData;
+    this.title = data?.header.title;
+    this.subtitle = data?.header.subtitle;
 
-    const data = child.snapshot.data;
-    this.title = (data['header'] || {}).title;
-    this.subtitle = (data['header'] || {}).subtitle;
-
-    const controls = child.snapshot.data['controls'];
+    const { controls } = data;
     if (controls && Array.isArray(controls)) {
-      const renderIcon = (ctrl: any): string => {
+      const renderIcon = (ctrl: RoutingDataControl): string => {
         if (ctrl.toggle) {
-          const value = child.snapshot.queryParams[ctrl['toggle']] === 'true';
+          const value = child.snapshot.queryParams[ctrl.toggle] === 'true';
           return ctrl.icon.split('/')[value ? 1 : 0] || '';
         }
-        return ctrl['icon'];
+        return ctrl.icon;
       };
       const controlsMenu = controls.map(
         (ctrl) =>
@@ -103,10 +118,8 @@ export class DefaultComponent implements OnInit, OnDestroy {
               queryParams['action'] = ctrl['action'];
             }
 
-            if (ctrl['toggle']) {
-              queryParams[ctrl['toggle']] = !(child.snapshot.queryParams[ctrl['toggle']] === 'true')
-                ? 'true'
-                : undefined;
+            if (ctrl.toggle) {
+              queryParams[ctrl.toggle] = !(child.snapshot.queryParams[ctrl.toggle] === 'true') ? 'true' : undefined;
             }
 
             this.router.navigate(ctrl.path, { relativeTo: child, queryParams });

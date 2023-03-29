@@ -58,9 +58,9 @@ export abstract class ComposePage {
   }
 
   showMessageOrErrors(msg: string, data: BusMessage | BusError): void {
-    const result: any[] = [];
-    function extract(node: any): void {
-      node.children.forEach((child: any) => {
+    const result: Array<BusEmitter> = [];
+    function extract(node: ActivatedRoute): void {
+      node.children.forEach((child: ActivatedRoute) => {
         Object.keys(child.snapshot.data).forEach((dataElement) => {
           if (child.snapshot.data[dataElement].sid) {
             result.push(child.snapshot.data[dataElement]);
@@ -72,11 +72,6 @@ export abstract class ComposePage {
     extract(this.router.routerState.root);
 
     result.forEach((h) => {
-      const isSameSchema = function (a: BusEmitter, b: BusEmitter): boolean {
-        const aStr = JSON.stringify(a.schema);
-        const bStr = JSON.stringify(b.schema);
-        return aStr === bStr;
-      };
       if (h.sid === data.owner.sid) {
         if (isBusMessage(data) && data.params?.['skipSyncRead'] !== true) {
           this.bus$.publish(new CommandRead(h));

@@ -11,6 +11,11 @@ import { QuestionModel } from '../../../api/questions/question.model';
 import { VideoModel } from '../../../api/streams/stream.model';
 import { TargetModel } from '../../../api/targets/target.interface';
 
+type CountVideos = { items: { length: number } };
+type MetricsCommonModel = WorkbookModel | QuestionModel | TargetModel;
+type MetricsListItem = Observable<DtoPack<MetricsCommonModel> | CountVideos>;
+type MetricsItem = { icon: string; title: string; url: string; suffix?: string };
+
 @Component({
   selector: 'soer-overview',
   templateUrl: './overview.component.html',
@@ -22,7 +27,9 @@ export class OverviewComponent {
   workbook$: Observable<DtoPack<WorkbookModel>>;
   question$: Observable<DtoPack<QuestionModel>>;
   target$: Observable<DtoPack<TargetModel>>;
-  public metrics: { list$: Observable<any>; [key: string]: any }[];
+
+  public metrics: Array<{ list$: MetricsListItem } & MetricsItem>;
+
   constructor(
     private route: ActivatedRoute,
     @Inject('workbooks') private workbooksId: BusEmitter,
@@ -34,17 +41,15 @@ export class OverviewComponent {
     this.data = this.route.snapshot.data;
     this.workbook$ = parseJsonDTOPack<WorkbookModel>(this.store$.of(this.workbooksId), 'workbooks');
     this.target$ = parseJsonDTOPack<TargetModel>(this.store$.of(this.targetsId), 'targets');
-    this.question$ = this.store$.of(this.questionsId).pipe(
-      map<BusMessage, DtoPack<QuestionModel>>((data) => {
-        return data.payload;
-      })
-    );
+    this.question$ = this.store$
+      .of(this.questionsId)
+      .pipe(map<BusMessage, DtoPack<QuestionModel>>((data) => data.payload));
 
     const videosFlatMap = (videos: VideoModel[]): VideoModel[] => {
       return videos.reduce((acc: VideoModel[], item: VideoModel) => [...acc, ...(item.children || [])], []);
     };
 
-    const countVideosIn = (videos: VideoModel[], watchedVideos: VideoIdModel[]): { items: { length: number } } => {
+    const countVideosIn = (videos: VideoModel[], watchedVideos: VideoIdModel[]): CountVideos => {
       const onlyIds = watchedVideos.map((video) => video.videoId);
       const onlyWatchedVideos = videos.filter((video) => onlyIds.includes(video.vimeo_id || video.youtube_id || ''));
       const length = onlyWatchedVideos.reduce(
@@ -89,14 +94,14 @@ export class OverviewComponent {
       },
       {
         title: 'Книга',
-        list$: of({ items: { length: '57' } }),
+        list$: of({ items: { length: 57 } }),
         suffix: '%',
         icon: 'book',
         url: '#!/pages/book',
       },
       {
         title: 'Исходники',
-        list$: of({ items: { length: '6' } }),
+        list$: of({ items: { length: 6 } }),
         icon: 'field-binary',
         url: '#!/pages/sources',
       },

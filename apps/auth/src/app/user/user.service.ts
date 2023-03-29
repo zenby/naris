@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { validate } from 'class-validator';
 import { ValidationErrorHelper } from '../common/helpers/validation-error.helper';
@@ -48,5 +48,13 @@ export class UserService {
 
   async findByIdAndEmail({ id, email }: { id: number; email: string }): Promise<UserEntity | Error> {
     return await this.userRepository.findOne({ where: { id, email } });
+  }
+
+  async getUsers(): Promise<UserEntity[] | Error> {
+    return await this.userRepository.find();
+  }
+
+  async deleteUser(id: number): Promise<DeleteResult | Error> {
+    return await this.userRepository.delete({ id: id });
   }
 }

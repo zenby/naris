@@ -2,9 +2,10 @@ import { BeforeInsert, Column, Entity, Generated, PrimaryGeneratedColumn } from 
 import { ApiProperty } from '@nestjs/swagger';
 import { genSalt, hash } from 'bcrypt';
 import { IsEmail, IsNotEmpty } from 'class-validator';
+import { Role, UserRole } from '@soer/sr-common-interfaces';
 
 @Entity({ name: 'users' })
-export class UserEntity {
+export class UserEntity implements Role {
   @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
@@ -28,6 +29,14 @@ export class UserEntity {
   @Column()
   @Generated('uuid')
   uuid: string;
+
+  @ApiProperty()
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.USER,
+  })
+  role: UserRole;
 
   @BeforeInsert()
   async hashPassword() {

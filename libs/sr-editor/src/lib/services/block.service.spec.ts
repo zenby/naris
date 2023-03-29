@@ -62,7 +62,13 @@ describe('BlockService', () => {
       expect(blockStates[oldBlockPosition].isActive).toBeFalsy();
     });
 
-    it.todo('should save editable state after moving block');
+    it('should save editable state after moving block', () => {
+      service.setActive(oldBlockPosition);
+      service.move(oldBlockPosition, newBlockPosition);
+
+      expect(blockStates[newBlockPosition].isEdit).toBeTruthy();
+      expect(blockStates[oldBlockPosition].isEdit).toBeFalsy();
+    });
 
     it('should not dispatched block change event because block position which need to move block is out of range', () => {
       service.move(oldBlockPosition, -1);
@@ -154,6 +160,54 @@ describe('BlockService', () => {
       service.remove(removeIndex);
 
       expect(blockStates[removeIndex].isEdit).toBe(false);
+    });
+  });
+
+  describe('stop edit', () => {
+    const blockIndex = 2;
+    beforeEach(() => {
+      service.setActive(blockIndex);
+    });
+
+    it('block should not be in editing state after end of edition', () => {
+      service.stopEdit(blockIndex);
+
+      expect(blockStates[blockIndex].isEdit).toBeFalsy();
+    });
+
+    it('should focus on the previous block', () => {
+      const activeIndex = blockIndex - 1;
+      service.setActive(activeIndex);
+      service.setActive(blockIndex);
+      service.stopEdit(blockIndex);
+
+      expect(blockStates[activeIndex].isActive).toBeTruthy();
+    });
+
+    it('should not focus on the previous block because currently active block mismatch stopped editing block', () => {
+      const activeIndex = blockIndex + 1;
+      service.setActive(activeIndex);
+      service.setActive(blockIndex);
+      service.stopEdit(blockIndex);
+
+      expect(blockStates[blockIndex - 1].isActive).toBeFalsy();
+      expect(blockStates[activeIndex].isActive).toBeTruthy();
+    });
+
+    it('should focus on the next block because it`s nearest', () => {
+      service.setActive(0);
+      service.setActive(blockIndex + 1);
+      service.setActive(blockIndex);
+
+      service.stopEdit(blockIndex);
+
+      expect(blockStates.findIndex((blockState) => blockState.isActive)).toBe(3);
+    });
+
+    it('should not have active block, if the editor has no editable blocks', () => {
+      service.stopEdit(blockIndex);
+
+      expect(blockStates.findIndex((blockState) => blockState.isActive)).toBe(-1);
     });
   });
 });

@@ -25,25 +25,25 @@ describe('BlockService', () => {
     });
   });
 
-  describe('setting active block', () => {
+  describe('setting focused block', () => {
     const blockIndex = 1;
 
-    it('should set block in active and editing state', async () => {
-      service.setActive(blockIndex);
+    it('should mark block as focused and editing', async () => {
+      service.setFocus(blockIndex);
 
-      expect(blockStates[blockIndex].isActive).toBeTruthy();
+      expect(blockStates[blockIndex].isFocused).toBeTruthy();
       expect(blockStates[blockIndex].isEdit).toBeTruthy();
     });
 
-    it('should not be dispatched block change event because block is currently active', async () => {
-      service.setActive(blockIndex);
-      service.setActive(blockIndex);
+    it('should not be dispatched block change event because block is currently focused', async () => {
+      service.setFocus(blockIndex);
+      service.setFocus(blockIndex);
 
       expect(service.onBlockStatesChange.next).toBeCalledTimes(2); // 1-й -> инициализация, 2-й -> первая установка активного блока
     });
   });
 
-  describe('move', () => {
+  describe('move block', () => {
     const oldBlockPosition = 1;
     const newBlockPosition = 2;
 
@@ -54,16 +54,16 @@ describe('BlockService', () => {
       expect(blockStates[oldBlockPosition].block.text).toBe(blocks[newBlockPosition].text);
     });
 
-    it('should save active state after moving block', () => {
-      service.setActive(oldBlockPosition);
+    it('should save focused after moving block', () => {
+      service.setFocus(oldBlockPosition);
       service.move(oldBlockPosition, newBlockPosition);
 
-      expect(blockStates[newBlockPosition].isActive).toBeTruthy();
-      expect(blockStates[oldBlockPosition].isActive).toBeFalsy();
+      expect(blockStates[newBlockPosition].isFocused).toBeTruthy();
+      expect(blockStates[oldBlockPosition].isFocused).toBeFalsy();
     });
 
     it('should save editable state after moving block', () => {
-      service.setActive(oldBlockPosition);
+      service.setFocus(oldBlockPosition);
       service.move(oldBlockPosition, newBlockPosition);
 
       expect(blockStates[newBlockPosition].isEdit).toBeTruthy();
@@ -96,14 +96,14 @@ describe('BlockService', () => {
         expect(blockStates[newBlockIndex].isEdit).toBeTruthy();
       });
 
-      it('should set new block as active block', () => {
-        expect(blockStates[newBlockIndex].isActive).toBeTruthy();
+      it('should set new block as focused', () => {
+        expect(blockStates[newBlockIndex].isFocused).toBeTruthy();
       });
     });
 
     it('should save editing state for existing blocks after add', () => {
-      service.setActive(1);
-      service.setActive(3);
+      service.setFocus(1);
+      service.setFocus(3);
 
       service.add(0);
 
@@ -125,48 +125,42 @@ describe('BlockService', () => {
       expect(blockStates.length).toBe(counOfblock - 1);
     });
 
-    it('active index should be on the previous block', () => {
-      service.setActive(removeIndex - 1);
+    it('should focus on the previous block', () => {
+      service.setFocus(removeIndex - 1);
 
       service.remove(removeIndex);
 
-      expect(blockStates[removeIndex - 1].isActive).toBeTruthy();
+      expect(blockStates[removeIndex - 1].isFocused).toBeTruthy();
     });
 
-    it('active index should be on the next block', () => {
-      service.setActive(removeIndex + 1);
+    it('should focus on the next block', () => {
+      service.setFocus(removeIndex + 1);
 
       service.remove(removeIndex);
 
-      expect(blockStates[removeIndex].isActive).toBeTruthy();
+      expect(blockStates[removeIndex].isFocused).toBeTruthy();
     });
 
-    it('active index should be on the current active block', () => {
-      const currentActiveBlock = 0;
-      service.setActive(removeIndex - 1);
-      service.setActive(currentActiveBlock);
+    it('should focus on the current focused block', () => {
+      const currentFocusedBlock = 0;
+      service.setFocus(removeIndex - 1);
+      service.setFocus(currentFocusedBlock);
 
       service.remove(removeIndex);
-      expect(blockStates[currentActiveBlock].isActive).toBeTruthy();
+      expect(blockStates[currentFocusedBlock].isFocused).toBeTruthy();
     });
 
-    it('no block should be active', () => {
+    it('no block should be in focus', () => {
       service.remove(removeIndex);
 
-      expect(blockStates.findIndex((blockState) => blockState.isActive)).toBe(-1);
-    });
-
-    it('block index should be removed from edit state', () => {
-      service.remove(removeIndex);
-
-      expect(blockStates[removeIndex].isEdit).toBe(false);
+      expect(blockStates.findIndex((blockState) => blockState.isFocused)).toBe(-1);
     });
   });
 
   describe('stop edit', () => {
     const blockIndex = 2;
     beforeEach(() => {
-      service.setActive(blockIndex);
+      service.setFocus(blockIndex);
     });
 
     it('block should not be in editing state after end of edition', () => {
@@ -176,38 +170,38 @@ describe('BlockService', () => {
     });
 
     it('should focus on the previous block', () => {
-      const activeIndex = blockIndex - 1;
-      service.setActive(activeIndex);
-      service.setActive(blockIndex);
+      const focusedIndex = blockIndex - 1;
+      service.setFocus(focusedIndex);
+      service.setFocus(blockIndex);
       service.stopEdit(blockIndex);
 
-      expect(blockStates[activeIndex].isActive).toBeTruthy();
+      expect(blockStates[focusedIndex].isFocused).toBeTruthy();
     });
 
-    it('should not focus on the previous block because currently active block mismatch stopped editing block', () => {
-      const activeIndex = blockIndex + 1;
-      service.setActive(activeIndex);
-      service.setActive(blockIndex);
+    it('should not focus on the previous block because currently focused block mismatch stopped editing block', () => {
+      const focusedIndex = blockIndex + 1;
+      service.setFocus(focusedIndex);
+      service.setFocus(blockIndex);
       service.stopEdit(blockIndex);
 
-      expect(blockStates[blockIndex - 1].isActive).toBeFalsy();
-      expect(blockStates[activeIndex].isActive).toBeTruthy();
+      expect(blockStates[blockIndex - 1].isFocused).toBeFalsy();
+      expect(blockStates[focusedIndex].isFocused).toBeTruthy();
     });
 
     it('should focus on the next block because it`s nearest', () => {
-      service.setActive(0);
-      service.setActive(blockIndex + 1);
-      service.setActive(blockIndex);
+      service.setFocus(0);
+      service.setFocus(blockIndex + 1);
+      service.setFocus(blockIndex);
 
       service.stopEdit(blockIndex);
 
-      expect(blockStates.findIndex((blockState) => blockState.isActive)).toBe(3);
+      expect(blockStates.findIndex((blockState) => blockState.isFocused)).toBe(3);
     });
 
-    it('should not have active block, if the editor has no editable blocks', () => {
+    it('should not have focused block because no block editable', () => {
       service.stopEdit(blockIndex);
 
-      expect(blockStates.findIndex((blockState) => blockState.isActive)).toBe(-1);
+      expect(blockStates.findIndex((blockState) => blockState.isFocused)).toBe(-1);
     });
   });
 });

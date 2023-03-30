@@ -3,7 +3,7 @@ import { DelimitEvent, TextBlock } from '../interfaces/document.model';
 
 export type BlockState = {
   block: TextBlock;
-  isActive: boolean;
+  isFocused: boolean;
   isEdit: boolean;
 };
 
@@ -17,7 +17,7 @@ export class BlockService {
   init(blocks: TextBlock[]): void {
     this.blockStates = blocks.map((block) => ({
       block,
-      isActive: false,
+      isFocused: false,
       isEdit: false,
     }));
 
@@ -40,9 +40,9 @@ export class BlockService {
     };
   }
 
-  setActive(blockIndex: number): void {
-    if (!this.isActive(blockIndex)) {
-      this.markAsActive(blockIndex);
+  setFocus(blockIndex: number): void {
+    if (!this.isFocused(blockIndex)) {
+      this.markAsFocused(blockIndex);
       if (!this.isEditable(blockIndex)) {
         this.markAsEditable(blockIndex);
       }
@@ -51,12 +51,12 @@ export class BlockService {
     }
   }
 
-  move(from: number, to: number): void {
+  move(oldBlockPosition: number, newBlockPosition: number): void {
     const currentBlockStates = this.blockStates;
-    const tmp: BlockState = currentBlockStates[to];
+    const tmp: BlockState = currentBlockStates[newBlockPosition];
     if (tmp) {
-      currentBlockStates[to] = currentBlockStates[from];
-      currentBlockStates[from] = tmp;
+      currentBlockStates[newBlockPosition] = currentBlockStates[oldBlockPosition];
+      currentBlockStates[oldBlockPosition] = tmp;
 
       this.dispacthBlockStatesChangeEvent();
     }
@@ -69,7 +69,7 @@ export class BlockService {
       ...left,
       {
         block: { text: '', type: 'markdown' },
-        isActive: true,
+        isFocused: true,
         isEdit: true,
       },
       ...right,
@@ -81,10 +81,10 @@ export class BlockService {
   remove(blockIndex: number): void {
     if (this.blockStates.length === 1) return;
 
-    const newActiveBlock = this.isActive(blockIndex) ? this.findNearestEditedBlock(blockIndex) : false;
+    const newFocusedBlock = this.isFocused(blockIndex) ? this.findNearestEditedBlock(blockIndex) : false;
     this.blockStates = this.blockStates.filter((el, index) => blockIndex !== index);
-    if (newActiveBlock !== false) {
-      this.markAsActive(newActiveBlock > blockIndex ? newActiveBlock - 1 : newActiveBlock);
+    if (newFocusedBlock !== false) {
+      this.setFocus(newFocusedBlock > blockIndex ? newFocusedBlock - 1 : newFocusedBlock);
     }
 
     this.dispacthBlockStatesChangeEvent();
@@ -92,11 +92,11 @@ export class BlockService {
 
   stopEdit(blockIndex: number): void {
     this.markAsUneditable(blockIndex);
-    if (this.isActive(blockIndex)) {
-      this.resetActive();
+    if (this.isFocused(blockIndex)) {
+      this.resetFocus();
       const nearestEditedBlock = this.findNearestEditedBlock(blockIndex);
       if (nearestEditedBlock !== false) {
-        this.markAsActive(nearestEditedBlock);
+        this.setFocus(nearestEditedBlock);
       }
     }
 
@@ -107,23 +107,23 @@ export class BlockService {
     this.onBlockStatesChange.next(this.blockStates);
   }
 
-  private isActive(blockIndex: number): boolean {
-    return this.blockStates[blockIndex]?.isActive;
+  private isFocused(blockIndex: number): boolean {
+    return this.blockStates[blockIndex]?.isFocused;
   }
 
-  private isEditable(index: number): boolean {
-    return this.blockStates[index]?.isEdit;
+  private isEditable(blockIndex: number): boolean {
+    return this.blockStates[blockIndex]?.isEdit;
   }
 
-  private markAsActive(blockIndex: number): void {
-    this.resetActive();
-    this.blockStates[blockIndex].isActive = true;
+  private markAsFocused(blockIndex: number): void {
+    this.resetFocus();
+    this.blockStates[blockIndex].isFocused = true;
   }
 
-  private resetActive() {
+  private resetFocus() {
     this.blockStates = this.blockStates.map((blockState) => ({
       ...blockState,
-      isActive: false,
+      isFocused: false,
     }));
   }
 

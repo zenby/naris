@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { moduleMetadata, Story, Meta } from '@storybook/angular';
+import { moduleMetadata, Meta, StoryFn } from '@storybook/angular';
 import { CertificateComponent } from './certificate.component';
 import { of } from 'rxjs';
 import { SrAuthModule } from '@soer/sr-auth';
@@ -55,54 +55,51 @@ export default {
   ],
 } as Meta<CertificateComponent>;
 
-const Template: Story<CertificateComponent> = (args: CertificateComponent) => ({
-  props: args,
+export const Primary: StoryFn = () => ({});
+
+export const Success: StoryFn = () => ({
+  props: {
+    certObject: {
+      role: Role.PRO,
+      status: 'succeeded',
+      exp: new Date(),
+    },
+  },
 });
 
-export const Primary = Template.bind({});
-Primary.args = {};
-
-export const Success = Template.bind({});
-Success.args = {
-  certObject: {
-    role: Role.PRO,
-    status: 'succeeded',
-    exp: new Date(),
+export const Pending: StoryFn = () => ({
+  props: {
+    certObject: {
+      role: Role.PRO,
+      status: 'pending',
+      exp: new Date(),
+    },
   },
-};
-
-export const Pending = Template.bind({});
-Pending.args = {
-  certObject: {
-    role: Role.PRO,
-    status: 'pending',
-    exp: new Date(),
+});
+export const New: StoryFn = () => ({
+  props: {
+    certObject: {
+      role: Role.PRO,
+      status: 'new',
+      exp: new Date(),
+    },
   },
-};
-
-export const New = Template.bind({});
-New.args = {
-  certObject: {
-    role: Role.PRO,
-    status: 'new',
-    exp: new Date(),
+});
+export const Undefined: StoryFn = () => ({
+  props: {
+    certObject: {
+      role: Role.PRO,
+      status: 'undefined',
+      exp: new Date(),
+    },
   },
-};
-
-export const Undefined = Template.bind({});
-Undefined.args = {
-  certObject: {
-    role: Role.PRO,
-    status: 'undefined',
-    exp: new Date(),
+});
+export const Inuse: StoryFn = () => ({
+  props: {
+    certObject: {
+      role: Role.PRO,
+      status: 'inuse',
+      exp: new Date(),
+    },
   },
-};
-
-export const Inuse = Template.bind({});
-Inuse.args = {
-  certObject: {
-    role: Role.PRO,
-    status: 'inuse',
-    exp: new Date(),
-  },
-};
+});

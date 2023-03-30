@@ -1,6 +1,6 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { TileModule } from '@soer/soer-components';
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
+import { Meta, moduleMetadata, StoryFn } from '@storybook/angular';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { CountStatusStrategyPipe } from '../metrics-list/strategies/count-status-strategy.pipe';
 import { PercentStatusStrategyPipe } from '../metrics-list/strategies/percent-status-strategy.pipe';
@@ -17,37 +17,35 @@ export default {
   ],
 } as Meta<TargetsListComponent>;
 
-const Template: Story<TargetsListComponent> = (args: TargetsListComponent) => ({
-  props: args,
+export const Primary: StoryFn = () => ({
+  props: {
+    targets: {
+      status: 'ok',
+      items: [
+        {
+          id: 1,
+          title: 'Выучить Python',
+          overview: '',
+          progress: 30,
+          tasks: [],
+        },
+        {
+          id: 2,
+          title: 'Посмотреть все воркшопы',
+          overview: '',
+          progress: 48,
+          tasks: [],
+        },
+      ],
+    },
+  },
 });
 
-export const Primary = Template.bind({});
-Primary.args = {
-  targets: {
-    status: 'ok',
-    items: [
-      {
-        id: 1,
-        title: 'Выучить Python',
-        overview: '',
-        progress: 30,
-        tasks: [],
-      },
-      {
-        id: 2,
-        title: 'Посмотреть все воркшопы',
-        overview: '',
-        progress: 48,
-        tasks: [],
-      },
-    ],
+export const TargetsEmpty: StoryFn = () => ({
+  props: {
+    targets: {
+      status: 'ok',
+      items: [],
+    },
   },
-};
-
-export const TargetsEmpty = Template.bind({});
-TargetsEmpty.args = {
-  targets: {
-    status: 'ok',
-    items: [],
-  },
-};
+});

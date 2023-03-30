@@ -1,4 +1,4 @@
-import { moduleMetadata, Story, Meta } from '@storybook/angular';
+import { moduleMetadata, StoryFn, Meta } from '@storybook/angular';
 import { ToolbarComponent } from './toolbar.component';
 
 export default {
@@ -11,12 +11,9 @@ export default {
   ],
 } as Meta<ToolbarComponent>;
 
-const Template: Story<ToolbarComponent> = (args: ToolbarComponent) => ({
-  props: args,
+export const Primarsy: StoryFn = () => ({
+  props: {
+    size: 'small',
+    actions: [],
+  },
 });
-
-export const Primary = Template.bind({});
-Primary.args = {
-  size: 'small',
-  actions: [],
-};

@@ -1,5 +1,5 @@
 import { RouterTestingModule } from '@angular/router/testing';
-import { moduleMetadata, Story, Meta } from '@storybook/angular';
+import { moduleMetadata, StoryFn, Meta } from '@storybook/angular';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { AccessDeniedComponent } from './access-denied.component';
 
@@ -14,9 +14,4 @@ export default {
   ],
 } as Meta<AccessDeniedComponent>;
 
-const Template: Story<AccessDeniedComponent> = (args: AccessDeniedComponent) => ({
-  props: args,
-});
-
-export const Primary = Template.bind({});
-Primary.args = {};
+export const Primary: StoryFn = () => ({});

@@ -2,7 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DemoNgZorroAntdModule, TileModule } from '@soer/soer-components';
 import { DataStoreService } from '@soer/sr-dto';
-import { Meta, moduleMetadata, Story, StoryFn } from '@storybook/angular';
+import { Meta, moduleMetadata, StoryFn } from '@storybook/angular';
 import { of } from 'rxjs';
 import { PersonalActivityService } from '../../../../api/progress/personal-activity.service';
 import { MetricsListComponent } from './metrics-list/metrics-list.component';

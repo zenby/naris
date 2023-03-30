@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AudioPlayerModule } from '@soer/soer-components';
 import { DataStoreService } from '@soer/sr-dto';
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
+import { Meta, moduleMetadata, StoryFn } from '@storybook/angular';
 import { QuestionsConfigService } from '../services/questions-config.service';
 import { QuestionViewComponent } from './question-view.component';
 
@@ -52,9 +52,4 @@ export default {
   ],
 } as Meta<QuestionViewComponent>;
 
-const Template: Story<QuestionViewComponent> = (args: QuestionViewComponent) => ({
-  props: args,
-});
-
-export const Primary = Template.bind({});
-Primary.args = {};
+export const Primary: StoryFn = () => ({});

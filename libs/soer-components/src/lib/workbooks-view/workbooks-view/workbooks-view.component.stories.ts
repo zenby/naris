@@ -1,5 +1,5 @@
 import { WorkbooksViewComponent } from './workbooks-view.component';
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
+import { Meta, moduleMetadata, StoryFn } from '@storybook/angular';
 import { WorkbookModel } from '@soer/sr-editor';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -41,32 +41,16 @@ export default {
   ],
 } as Meta<WorkbooksViewComponent>;
 
-const Template: Story<WorkbooksViewComponent> = (args: WorkbooksViewComponent) => ({
-  props: args,
-});
-
 const workbooks: WorkbookModel[] = [
   { question: 'Сортируем нули и единицы', id: 123, blocks: [] },
   { question: 'Что общего у пингвина и окна', id: 456, blocks: [] },
   { question: 'Как пропатчить KDE2 под FreeBSD', id: 789, blocks: [] },
 ];
 
-export const Default = Template.bind({});
-Default.args = { workbooks };
-Default.parameters = {
-  docs: {
-    description: {
-      story: 'Компонент с непустым списком воркбуков',
-    },
+export const Default: StoryFn = () => ({
+  props: {
+    workbooks,
   },
-};
+});
 
-export const Empty = Template.bind({});
-Empty.args = {};
-Empty.parameters = {
-  docs: {
-    description: {
-      story: 'Компонент с пустым списком воркбуков',
-    },
-  },
-};
+export const Empty: StoryFn = () => ({});

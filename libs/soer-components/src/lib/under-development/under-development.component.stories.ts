@@ -1,4 +1,4 @@
-import { moduleMetadata, Story, Meta } from '@storybook/angular';
+import { moduleMetadata, StoryFn, Meta } from '@storybook/angular';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { UnderDevelopmentComponent } from './under-development.component';
 
@@ -13,9 +13,4 @@ export default {
   ],
 } as Meta<UnderDevelopmentComponent>;
 
-const Template: Story<UnderDevelopmentComponent> = (args: UnderDevelopmentComponent) => ({
-  props: args,
-});
-
-export const Primary = Template.bind({});
-Primary.args = {};
+export const Primary: StoryFn = () => ({});

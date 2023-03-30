@@ -16,8 +16,10 @@ export default {
   ],
 } as Meta<LoginComponent>;
 
-export const Primary: StoryFn = () => ({
+export const Primarsy: StoryFn = () => ({
   props: {
     loading: false,
   },
 });
+
+export const Primary: StoryFn = () => ({});

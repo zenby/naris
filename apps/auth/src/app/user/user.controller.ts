@@ -96,12 +96,9 @@ export class UserController {
   @ApiNotFoundResponse({ schema: responseErrorSchema('User with id ${id} not found') })
   @ApiUnauthorizedResponse({ description: 'Should be an admin.' })
   @Put('user/:id')
-  async blockOrUnblockUser(
-    @Param('id') id: number,
-    @Body() options: BlockUserOptions
-  ): Promise<HttpJsonResult<string>> {
+  async changeBlockStatus(@Param('id') id: number, @Body() options: BlockUserOptions): Promise<HttpJsonResult<string>> {
     try {
-      const result = options.block ? await this.userService.block(id) : await this.userService.unblock(id);
+      const result = await this.userService.changeBlockStatus(id, options.isBlocked);
 
       if (result instanceof Error) {
         return { status: HttpJsonStatus.Error, items: [result.message] };

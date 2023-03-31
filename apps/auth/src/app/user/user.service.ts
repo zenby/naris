@@ -58,11 +58,7 @@ export class UserService {
     return await this.userRepository.delete({ id: id });
   }
 
-  async block(id: number): Promise<void | Error> {
-    await this.userRepository.update({ id }, { blocked: true });
-  }
-
-  async unblock(id: number): Promise<void | Error> {
-    await this.userRepository.update({ id }, { blocked: false });
+  async changeBlockStatus(id: number, isBlocked: boolean): Promise<void | Error> {
+    await this.userRepository.update({ id }, { isBlocked });
   }
 }

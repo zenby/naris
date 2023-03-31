@@ -43,7 +43,7 @@ export class UserEntity implements Role {
     type: 'boolean',
     default: false,
   })
-  blocked: boolean;
+  isBlocked: boolean;
 
   @BeforeInsert()
   async hashPassword() {

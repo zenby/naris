@@ -5,7 +5,7 @@ import { HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { ValidationErrorHelper } from '../helpers/validation-error.helper';
 
 export class BackendValidationPipe implements PipeTransform {
-  async transform(value: any, metadata: ArgumentMetadata) {
+  async transform(value: unknown, metadata: ArgumentMetadata) {
     const object = plainToInstance(metadata.metatype, value);
 
     if (typeof value !== 'object') {

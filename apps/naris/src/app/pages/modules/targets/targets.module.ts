@@ -40,6 +40,9 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { TargetDescriptionComponent } from './target-description/target-description.component';
 
 import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
+import { MarkdownModule } from 'ngx-markdown';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { TargetDescriptionPipe } from './target-description.pipe';
 
 @NgModule({
   declarations: [
@@ -50,10 +53,11 @@ import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
     ListAimsPageComponent,
     TaskTreeEditFormComponent,
     CalcProgressPipe,
+    TargetDescriptionPipe,
     CountOpenTasksPipe,
     CountClosedTasksPipe,
     TemplateCreateComponent,
-    TargetDescriptionComponent
+    TargetDescriptionComponent,
   ],
   imports: [
     CommonModule,
@@ -86,6 +90,8 @@ import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
     SrDTOModule,
     InlineEditorModule,
     AimsTreeModule,
+    MarkdownModule.forRoot(),
+    NzSpinModule,
   ],
   exports: [],
 })

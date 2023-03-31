@@ -7,20 +7,20 @@ nz-card {
   align-items: center;
   margin-bottom: 0.5rem;
 
-        &_title {
-            display: flex;
-            justify-items: center;
-            justify-content: center;
-            align-items: center;
-            a {
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            .description-icon {
-                cursor: pointer;
-                margin-left: 0.5rem;
-            }
-        }
+  &_title {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    a {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .description-icon {
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+  }
 
   &_toolbar {
     width: 100%;

@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.6.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.5.0...naris-0.6.0) (2023-03-23)
+
+
+### Features
+
+* add markdown parser to workbooks and change description search in target ([d49e6f3](https://gitlog.ru:2222/Naris/soermono/commit/d49e6f3ce5d42db9f9f14dd1140b8621d42104a7))
+* change view action to edit ([7bee84a](https://gitlog.ru:2222/Naris/soermono/commit/7bee84ab8d925b97ab1b800dd3c1991edd70fe2c))
+* **list-aims-page:** show popup for target description ([78e2a01](https://gitlog.ru:2222/Naris/soermono/commit/78e2a012f93fab9f987e1d1740d8114add148f36)), closes [#171](https://gitlog.ru:2222/Naris/soermono/issues/171)
+* **mobile-menu:** add tooltip to controls ([6b72171](https://gitlog.ru:2222/Naris/soermono/commit/6b72171fa8ca2a58cefc5e4e88de9a39befea91a))
+* **target:** add target description component ([64fa03f](https://gitlog.ru:2222/Naris/soermono/commit/64fa03f12cea0dea3c4d4ad65c9c89487a3d9baf)), closes [#171](https://gitlog.ru:2222/Naris/soermono/issues/171)
+* **targets-routing:** add route for target description ([35bf464](https://gitlog.ru:2222/Naris/soermono/commit/35bf464ce7efebac88bd6ecbc7f640ab796dd3ff)), closes [#171](https://gitlog.ru:2222/Naris/soermono/issues/171)
+
+
+### Bug Fixes
+
+* add RouterModule to the imports ([367b587](https://gitlog.ru:2222/Naris/soermono/commit/367b587f26f56ec01e9644f97d1dc085fb1f793b))
+
 ## [0.5.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.4.0...naris-0.5.0) (2023-03-15)
 
 

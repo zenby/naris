@@ -24,7 +24,10 @@ export class AuthService {
   async getAccessToken(user: UserEntity): Promise<string> {
     const { jwtSecret: secret, expiresInAccess: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
 
-    return this.jwtService.signAsync({ id: user.id, uuid: user.uuid, email: user.email }, { secret, expiresIn });
+    return this.jwtService.signAsync(
+      { id: user.id, uuid: user.uuid, email: user.email, userRole: user.role },
+      { secret, expiresIn }
+    );
   }
 
   async getRefreshToken(user: UserEntity | Error): Promise<string | Error> {
@@ -34,7 +37,10 @@ export class AuthService {
 
     const { jwtSecret: secret, expiresInRefresh: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
 
-    return await this.jwtService.signAsync({ userId: user.id, userEmail: user.email }, { secret, expiresIn });
+    return await this.jwtService.signAsync(
+      { userId: user.id, userEmail: user.email, userRole: user.role },
+      { secret, expiresIn }
+    );
   }
 
   async getVerifiedUserByRefreshToken(refreshToken: string): Promise<UserEntity | Error> {

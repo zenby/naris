@@ -7,6 +7,24 @@ import { CommandRead, DataStoreService, DtoPack, extractDtoPackFromBus, OK } fro
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 
+type PendingOrder = {
+  id: number;
+  amount: number;
+  tries: number;
+  createdAt: string;
+};
+
+type Good = {
+  role: string;
+  amount: number;
+  options: string[];
+};
+
+type PeriodicOrder = {
+  id: number;
+  amount: number;
+};
+
 @Component({
   selector: 'soer-pay-form',
   templateUrl: './pay-form.component.html',
@@ -15,10 +33,14 @@ import { environment } from '../../../../../environments/environment';
 export class PayFormComponent {
   public payUrl = '';
   public deadline?: number = undefined;
-  public pendingOrders: any[] = [];
-  public periodicOrders: any[] = [];
-  public goods: any[] = [];
-  public remoteState: { status: string; messages: string[]; actions: any[] } = {
+  public pendingOrders: PendingOrder[] = [];
+  public periodicOrders: PeriodicOrder[] = [];
+  public goods: Good[] = [];
+  public remoteState: {
+    status: string;
+    messages: string[];
+    actions: Array<Record<string, { id: number; role: string }>>;
+  } = {
     status: 'loading',
     messages: [],
     actions: [],
@@ -53,7 +75,9 @@ export class PayFormComponent {
 
   checkRemoteStatus(): void {
     this.http
-      .get<DtoPack<{ subs: any[]; goods: any[]; pending: any[] }>>(environment.host + '/api/v2/seller/shelf/roles')
+      .get<DtoPack<{ subs: PeriodicOrder[]; goods: Good[]; pending: PendingOrder[] }>>(
+        environment.host + '/api/v2/seller/shelf/roles'
+      )
       .subscribe((result) => {
         if (result['status'] === OK) {
           this.remoteState.status = 'ok';
@@ -116,7 +140,7 @@ export class PayFormComponent {
 
   deletePayment(id: number): void {
     this.remoteState.status = 'loading';
-    this.http.get(environment.host + '/api/v2/seller/cancel/' + id).subscribe((result) => {
+    this.http.get(environment.host + '/api/v2/seller/cancel/' + id).subscribe(() => {
       this.checkRemoteStatus();
     });
   }
@@ -128,10 +152,10 @@ export class PayFormComponent {
 
   renew(id: number): void {
     this.remoteState.status = 'loading';
-    this.http.get(environment.host + '/api/v2/seller/check/' + id).subscribe((result) => {
+    this.http.get<{ status: string }>(environment.host + '/api/v2/seller/check/' + id).subscribe((result) => {
       let status = 'error';
       let { messages, actions } = this.remoteState;
-      if ((result as any).status === 'succeeded') {
+      if (result.status === 'succeeded') {
         status = 'error';
         messages = ['У вас есть уже оплаченные тарифы'];
         actions = [
@@ -148,7 +172,7 @@ export class PayFormComponent {
 
   cancelSubscription(id: number): void {
     this.remoteState.status = 'loading';
-    this.http.delete(environment.host + '/api/v2/seller/subscription/' + id).subscribe((result) => {
+    this.http.delete(environment.host + '/api/v2/seller/subscription/' + id).subscribe(() => {
       this.checkRemoteStatus();
     });
   }

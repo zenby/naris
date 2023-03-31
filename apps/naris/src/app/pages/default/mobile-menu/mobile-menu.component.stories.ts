@@ -1,25 +1,23 @@
 import { MobileMenuComponent } from './mobile-menu.component';
-import { moduleMetadata, Story, Meta } from '@storybook/angular';
+import { moduleMetadata, Meta, StoryFn } from '@storybook/angular';
 import { MAIN_MENU } from '../../../services/menu/menu.const';
 import { HttpClientModule } from '@angular/common/http';
 import { DemoNgZorroAntdModule } from '@soer/soer-components';
+import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
   title: 'MobileMenuComponent',
   component: MobileMenuComponent,
   decorators: [
     moduleMetadata({
-      imports: [DemoNgZorroAntdModule, HttpClientModule],
+      imports: [RouterTestingModule, DemoNgZorroAntdModule, HttpClientModule],
     }),
   ],
-} as Meta<MobileMenuComponent>;
+} as Meta;
 
-const Template: Story<MobileMenuComponent> = (args: MobileMenuComponent) => ({
-  props: args,
+export const Primary: StoryFn = () => ({
+  props: {
+    isMobile: true,
+    applicationMenu: MAIN_MENU,
+  },
 });
-
-export const Primary = Template.bind({});
-Primary.args = {
-  isMobile: true,
-  applicationMenu: MAIN_MENU,
-};

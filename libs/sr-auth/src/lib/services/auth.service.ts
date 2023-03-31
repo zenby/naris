@@ -5,7 +5,7 @@ import { ChangeDataEvent, OK } from '@soer/sr-dto';
 import { LocalStorageService } from '@soer/sr-local-storage';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthEmitter } from '../interfaces/auth-options.interface';
-import { EmptyJWTModel } from '../interfaces/jwt.models';
+import { EmptyJWTModel, JWTModel } from '../interfaces/jwt.models';
 
 const TOKEN_KEY = 'token';
 
@@ -89,15 +89,15 @@ export class AuthService {
       .pipe(tap((result) => (this.token = result.accessToken)));
   }
 
-  extractAndParseJWT(jwt: string | null): any {
+  extractAndParseJWT(jwt: string | null): JWTModel | null {
     if (jwt === null) {
-      return {};
+      return null;
     }
     try {
       const base64Url = jwt.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const result = JSON.parse(atob(base64));
-      return result;
+      return result as JWTModel;
     } catch (err) {
       // do nothing
     }

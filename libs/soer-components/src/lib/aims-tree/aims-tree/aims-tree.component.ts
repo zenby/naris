@@ -16,7 +16,7 @@ export class AimsTreeComponent {
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
-  
+
   doneProgress = 100;
 
   onDescription($event: number[]) {

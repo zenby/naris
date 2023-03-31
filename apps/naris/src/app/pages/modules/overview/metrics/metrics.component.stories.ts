@@ -1,10 +1,13 @@
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DemoNgZorroAntdModule, TileModule } from '@soer/soer-components';
 import { DataStoreService } from '@soer/sr-dto';
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
+import { Meta, moduleMetadata, StoryFn } from '@storybook/angular';
 import { of } from 'rxjs';
 import { PersonalActivityService } from '../../../../api/progress/personal-activity.service';
 import { MetricsListComponent } from './metrics-list/metrics-list.component';
+import { CountStatusStrategyPipe } from './metrics-list/strategies/count-status-strategy.pipe';
+import { PercentStatusStrategyPipe } from './metrics-list/strategies/percent-status-strategy.pipe';
 import { MetricsComponent } from './metrics.component';
 import { TargetsListComponent } from './targets-list/targets-list.component';
 
@@ -92,8 +95,8 @@ export default {
   component: MetricsComponent,
   decorators: [
     moduleMetadata({
-      declarations: [TargetsListComponent, MetricsListComponent],
-      imports: [RouterModule.forRoot([], { useHash: true }), DemoNgZorroAntdModule, TileModule],
+      declarations: [TargetsListComponent, MetricsListComponent, PercentStatusStrategyPipe, CountStatusStrategyPipe],
+      imports: [RouterTestingModule, DemoNgZorroAntdModule, TileModule],
       providers: [
         {
           provide: ActivatedRoute,
@@ -180,9 +183,4 @@ export default {
   ],
 } as Meta<MetricsComponent>;
 
-const Template: Story<MetricsComponent> = (args: MetricsComponent) => ({
-  props: args,
-});
-
-export const Primary = Template.bind({});
-Primary.args = {};
+export const Primary: StoryFn = () => ({});

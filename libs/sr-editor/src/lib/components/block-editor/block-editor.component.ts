@@ -46,22 +46,22 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
 
   controls: ControlBtn[] = [
     {
-      title: 'Добавить',
+      title: 'Добавить (Alt+Enter)',
       icon: 'appstore-add',
       handler: () => this.addBlockDown(),
     },
     {
-      title: 'Переместить вверх',
+      title: 'Переместить вверх (Alt+Up)',
       icon: 'up',
       handler: () => this.moveUpBlock(),
     },
     {
-      title: 'Переместить вниз',
+      title: 'Переместить вниз (Alt+Down)',
       icon: 'down',
       handler: () => this.moveDownBlock(),
     },
     {
-      title: 'Удалить',
+      title: 'Удалить (Alt+Backspace)',
       icon: 'delete',
       handler: () => this.removeCurrentBlock(),
     },
@@ -86,6 +86,10 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
   }
 
   command(event: KeyboardEvent): void {
+    if (this.componentRef) {
+      this.componentRef.instance.text = this.textBlock.text;
+    }
+
     if (event.altKey && event.code === 'Enter') {
       this.addBlockDown();
     }

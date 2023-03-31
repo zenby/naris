@@ -9,3 +9,22 @@
     margin-right: 12px;
   }
 }
+
+.workbook-view {
+  ::ng-deep img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    max-width: 100%;
+  }
+
+  ::ng-deep img[src$='#medium'] {
+    height: 75vmin;
+  }
+  ::ng-deep img[src$='#full'] {
+    height: 100vmin;
+  }
+  ::ng-deep img[src$='#small'] {
+    height: 50vmin;
+  }
+}

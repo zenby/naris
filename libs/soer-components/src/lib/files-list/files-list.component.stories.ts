@@ -1,6 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
-import { moduleMetadata, Story, Meta } from '@storybook/angular';
+import { moduleMetadata, Meta, StoryFn } from '@storybook/angular';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -9,6 +8,7 @@ import { FilesListComponent } from './files-list.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AccessDeniedModule } from '../access-denied/access-denied.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
   title: 'FilesListComponent',
@@ -16,7 +16,7 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [
-        RouterModule.forRoot([], { useHash: true }),
+        RouterTestingModule,
         NzCardModule,
         NzTagModule,
         NzGridModule,
@@ -30,36 +30,33 @@ export default {
   ],
 } as Meta<FilesListComponent>;
 
-const Template: Story<FilesListComponent> = (args: FilesListComponent) => ({
-  props: args,
+export const Primary: StoryFn = () => ({
+  props: {
+    webFiles: [
+      {
+        title: 'xDonate',
+        labels: ['v0.2.0'],
+        url: 'xdonate.zip',
+        desc: 'Система донатов для персонального использования',
+        level: 'workshop',
+        icon: 'lock',
+      },
+      {
+        title: 'SOER PRO',
+        labels: ['github', 'Frontend'],
+        url: 'https://github.com/soerdev/soer',
+        desc: 'Фронтенд часть проекта SOER PRO ',
+        level: 'public',
+        icon: 'github',
+      },
+      {
+        title: 'SOER PRO',
+        labels: ['v1.8.0', 'Backend'],
+        url: 'soerback.zip',
+        desc: 'Бекенд часть проекта SOER PRO',
+        level: 'pro',
+        icon: 'lock',
+      },
+    ],
+  },
 });
-
-export const Primary = Template.bind({});
-Primary.args = {
-  webFiles: [
-    {
-      title: 'xDonate',
-      labels: ['v0.2.0'],
-      url: 'xdonate.zip',
-      desc: 'Система донатов для персонального использования',
-      level: 'workshop',
-      icon: 'lock',
-    },
-    {
-      title: 'SOER PRO',
-      labels: ['github', 'Frontend'],
-      url: 'https://github.com/soerdev/soer',
-      desc: 'Фронтенд часть проекта SOER PRO ',
-      level: 'public',
-      icon: 'github',
-    },
-    {
-      title: 'SOER PRO',
-      labels: ['v1.8.0', 'Backend'],
-      url: 'soerback.zip',
-      desc: 'Бекенд часть проекта SOER PRO',
-      level: 'pro',
-      icon: 'lock',
-    },
-  ],
-};

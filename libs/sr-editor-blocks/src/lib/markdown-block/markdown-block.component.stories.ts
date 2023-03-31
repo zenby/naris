@@ -11,7 +11,7 @@ export default {
   ],
 } as Meta<MarkdownBlockComponent>;
 
-export const Primarsy: StoryFn = () => ({
+export const Primary: StoryFn = () => ({
   props: {
     text: '',
   },

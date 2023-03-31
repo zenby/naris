@@ -11,7 +11,7 @@ export default {
   ],
 } as Meta<ToolbarComponent>;
 
-export const Primarsy: StoryFn = () => ({
+export const Primary: StoryFn = () => ({
   props: {
     size: 'small',
     actions: [],

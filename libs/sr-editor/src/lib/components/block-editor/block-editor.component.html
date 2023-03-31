@@ -22,7 +22,7 @@
         <textarea
           [ngStyle]="{ opacity: isEdit ? '100%' : '0%' }"
           class="block-editor block-editor__input"
-          (click)="isEdit = true"
+          (click)="startEdit()"
           [(ngModel)]="textBlock.text"
           (keydown)="command($event)"
           #edit

@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { DelimitEvent, TextBlock } from '../interfaces/document.model';
+import { TextBlock } from '../interfaces/document.model';
 
 export type BlockState = {
   block: TextBlock;
@@ -24,20 +24,20 @@ export class BlockService {
     this.dispacthBlockStatesChangeEvent();
   }
 
-  delimitBlock(
-    delimitData: DelimitEvent,
-    blocks: TextBlock[],
-    activeBlockIndex: number
-  ): { blocks: TextBlock[]; activeBlockIndex: number } {
-    const beforeBlocksToInsert = blocks.slice(0, activeBlockIndex);
-    const afterBlocksToInsert = blocks.slice(activeBlockIndex + 1);
-    const textBlocksToInsert = delimitData.text.split(this.blocksDelimiter);
-    const blocksToInsert = textBlocksToInsert.map((b: string) => ({ text: b.trim(), type: delimitData.type }));
+  format(blockIndex: number): void {
+    const beforeBlocksToInsert = this.blockStates.slice(0, blockIndex);
+    const afterBlocksToInsert = this.blockStates.slice(blockIndex + 1);
+    const formatedBlock = this.blockStates[blockIndex].block;
+    const textBlocksToInsert = this.blockStates[blockIndex].block.text.split(this.blocksDelimiter);
+    const blocksToInsert = textBlocksToInsert.map((b: string) => ({
+      block: { text: b.trim(), type: formatedBlock.type },
+      isFocused: false,
+      isEdit: false,
+    }));
 
-    return {
-      blocks: [...beforeBlocksToInsert, ...blocksToInsert, ...afterBlocksToInsert],
-      activeBlockIndex: activeBlockIndex + textBlocksToInsert.length - 1,
-    };
+    this.blockStates = [...beforeBlocksToInsert, ...blocksToInsert, ...afterBlocksToInsert];
+
+    this.dispacthBlockStatesChangeEvent();
   }
 
   setFocus(blockIndex: number): void {
@@ -49,6 +49,11 @@ export class BlockService {
 
       this.dispacthBlockStatesChangeEvent();
     }
+  }
+
+  saveFocused(blockIndex: number): void {
+    this.markAsFocused(blockIndex);
+    this.markAsEditable(blockIndex);
   }
 
   move(oldBlockPosition: number, newBlockPosition: number): void {
@@ -65,6 +70,7 @@ export class BlockService {
   add(newBlockIndex: number): void {
     const left = this.blockStates.slice(0, newBlockIndex);
     const right = this.blockStates.slice(newBlockIndex);
+    this.resetFocus();
     this.blockStates = [
       ...left,
       {
@@ -120,7 +126,7 @@ export class BlockService {
     this.blockStates[blockIndex].isFocused = true;
   }
 
-  private resetFocus() {
+  private resetFocus(): void {
     this.blockStates = this.blockStates.map((blockState) => ({
       ...blockState,
       isFocused: false,

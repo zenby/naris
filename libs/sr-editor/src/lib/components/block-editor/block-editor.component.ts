@@ -1,6 +1,7 @@
 import {
   AfterViewChecked,
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ComponentRef,
   ElementRef,
@@ -20,14 +21,14 @@ import { ControlBtn } from '../block-editor-controls/block-editor-controls.compo
   selector: 'soer-block-editor',
   templateUrl: './block-editor.component.html',
   styleUrls: ['./block-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
   @Input() localIndex = -1;
   @Input() isEdit = false;
-  @Input() isActive = false;
+  @Input() isFocused = false;
   @Input() blocksLength = 0;
-  @Input() blockDelimeter: string | undefined;
 
   @Output() addBlock = new EventEmitter<number>();
   @Output() removeBlock = new EventEmitter<number>();
@@ -35,7 +36,8 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
   @Output() moveUp = new EventEmitter<number>();
   @Output() moveDown = new EventEmitter<number>();
   @Output() setActive = new EventEmitter<number>();
-  @Output() markdownTextChange = new EventEmitter<string>();
+  @Output() format = new EventEmitter<number>();
+  @Output() saveFocused = new EventEmitter<number>();
 
   @ViewChild('edit') edit!: ElementRef;
   @ViewChild('editComponent', { static: true, read: ViewContainerRef }) editComponent!: ViewContainerRef;
@@ -49,6 +51,11 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
       title: 'Добавить (Alt+Enter)',
       icon: 'appstore-add',
       handler: () => this.addBlockDown(),
+    },
+    {
+      title: 'Форматировать',
+      icon: 'scissor',
+      handler: () => this.formatBlock(),
     },
     {
       title: 'Переместить вверх (Alt+Up)',
@@ -68,7 +75,7 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
   ];
 
   ngAfterViewChecked(): void {
-    if (this.isActive && document.activeElement != this.edit?.nativeElement) {
+    if (this.isFocused && document.activeElement != this.edit?.nativeElement) {
       this.edit?.nativeElement.focus();
     }
   }
@@ -77,12 +84,9 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
     this.renderComponentForEditMode();
   }
 
-  onSelectBlock(): void {
-    this.setActive.next(this.localIndex);
-  }
-
-  textChange(changedText: string) {
-    this.markdownTextChange.emit(changedText);
+  startEdit(): void {
+    this.isEdit = true;
+    this.saveFocused.next(this.localIndex);
   }
 
   command(event: KeyboardEvent): void {
@@ -153,6 +157,10 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
     if (this.componentRef) {
       this.componentRef.instance.text = this.textBlock.text;
     }
+  }
+
+  private formatBlock() {
+    this.format.next(this.localIndex);
   }
 
   private addBlockDown(): void {

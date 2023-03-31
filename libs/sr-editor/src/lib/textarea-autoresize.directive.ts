@@ -13,7 +13,7 @@ export class TextareaAutoresizeDirective implements OnInit {
 
   ngOnInit(): void {
     if (this.element.nativeElement.scrollHeight) {
-      setTimeout(() => this.adjust());
+      requestAnimationFrame(() => this.adjust());
     }
   }
 

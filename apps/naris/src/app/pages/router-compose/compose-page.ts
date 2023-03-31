@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 export abstract class ComposePage {
   protected subscriptions: Subscription[] = [];
   public popup = false;
-  private updateSID: NodeJS.Timer | null = null;
+  private updateSID: NodeJS.Timeout | null = null;
 
   render = () => console.log(Math.random());
 

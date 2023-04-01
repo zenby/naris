@@ -1,14 +1,11 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   ComponentRef,
   ElementRef,
-  EventEmitter,
   Inject,
   Input,
-  Output,
+  OnInit,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -16,35 +13,28 @@ import { BasicBlockComponent } from '../basic-block.component';
 import { TextBlock } from '../../interfaces/document.model';
 import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor-blocks-config';
 import { ControlBtn } from '../block-editor-controls/block-editor-controls.component';
+import { BlockService } from '../../services/block.service';
 
 @Component({
   selector: 'soer-block-editor',
   templateUrl: './block-editor.component.html',
   styleUrls: ['./block-editor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
+export class BlockEditorComponent implements OnInit, AfterViewInit {
+  @Input() id = '';
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
-  @Input() localIndex = -1;
-  @Input() isEdit = false;
-  @Input() isFocused = false;
   @Input() blocksLength = 0;
-
-  @Output() addBlock = new EventEmitter<number>();
-  @Output() removeBlock = new EventEmitter<number>();
-  @Output() endEdit = new EventEmitter<number>();
-  @Output() moveUp = new EventEmitter<number>();
-  @Output() moveDown = new EventEmitter<number>();
-  @Output() setActive = new EventEmitter<number>();
-  @Output() format = new EventEmitter<number>();
-  @Output() saveFocused = new EventEmitter<number>();
 
   @ViewChild('edit') edit!: ElementRef;
   @ViewChild('editComponent', { static: true, read: ViewContainerRef }) editComponent!: ViewContainerRef;
 
   componentRef: ComponentRef<BasicBlockComponent> | null = null;
+  isEdit = false;
 
-  constructor(@Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry) {}
+  constructor(
+    @Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry,
+    private blockService: BlockService
+  ) {}
 
   controls: ControlBtn[] = [
     {
@@ -74,10 +64,17 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
     },
   ];
 
-  ngAfterViewChecked(): void {
-    if (this.isFocused && document.activeElement != this.edit?.nativeElement) {
-      this.edit?.nativeElement.focus();
-    }
+  ngOnInit(): void {
+    this.textBlock.text = this.id;
+    this.blockService.onBlocksStateChange.subscribe((blockState) => {
+      if (blockState[this.id]) {
+        const currentState = blockState[this.id];
+        this.isEdit = currentState.isEdit;
+        if (currentState.isFocused) {
+          this.edit?.nativeElement.focus();
+        }
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -86,14 +83,10 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
 
   startEdit(): void {
     this.isEdit = true;
-    this.saveFocused.next(this.localIndex);
+    this.blockService.saveFocused(this.id);
   }
 
   command(event: KeyboardEvent): void {
-    if (this.componentRef) {
-      this.componentRef.instance.text = this.textBlock.text;
-    }
-
     if (event.altKey && event.code === 'Enter') {
       this.addBlockDown();
     }
@@ -109,13 +102,13 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
     }
 
     if (event.ctrlKey && event.code === 'ArrowUp') {
-      this.setActivePreviousIfAvailable();
+      this.setFocusOnPrevious();
 
       return;
     }
 
     if (event.code === 'ArrowUp' && this.getIsFirstLine(event)) {
-      this.setActivePreviousIfAvailable();
+      this.setFocusOnPrevious();
     }
 
     if (event.altKey && event.code === 'ArrowDown') {
@@ -125,13 +118,13 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
     }
 
     if (event.ctrlKey && event.code === 'ArrowDown') {
-      this.setActiveNextIfAvailable();
+      this.setFocusOnNext();
 
       return;
     }
 
     if (event.code === 'ArrowDown' && this.getIsLastLine(event)) {
-      this.setActiveNextIfAvailable();
+      this.setFocusOnNext();
     }
 
     if (event.altKey && event.code === 'Digit1') {
@@ -152,43 +145,35 @@ export class BlockEditorComponent implements AfterViewInit, AfterViewChecked {
   }
 
   stopEdit() {
-    this.endEdit.next(this.localIndex);
-    this.isEdit = false;
-    if (this.componentRef) {
-      this.componentRef.instance.text = this.textBlock.text;
-    }
+    this.blockService.stopEdit(this.id);
   }
 
   private formatBlock() {
-    this.format.next(this.localIndex);
+    this.blockService.format(this.id);
   }
 
   private addBlockDown(): void {
-    this.addBlock.next(this.localIndex);
+    this.blockService.addAfter(this.id);
   }
 
   private removeCurrentBlock(): void {
-    this.removeBlock.next(this.localIndex);
+    this.blockService.remove(this.id);
   }
 
   private moveUpBlock(): void {
-    this.moveUp.next(this.localIndex);
+    this.blockService.moveUp(this.id);
   }
 
   private moveDownBlock(): void {
-    this.moveDown.next(this.localIndex);
+    this.blockService.moveDown(this.id);
   }
 
-  private setActivePreviousIfAvailable() {
-    if (this.localIndex <= 0) return;
-
-    this.setActive.next(this.localIndex - 1);
+  private setFocusOnPrevious() {
+    this.blockService.setFocusOnPrevious(this.id);
   }
 
-  private setActiveNextIfAvailable() {
-    if (this.localIndex + 1 === this.blocksLength) return;
-
-    this.setActive.next(this.localIndex + 1);
+  private setFocusOnNext() {
+    this.blockService.setFocusOnNext(this.id);
   }
 
   private getIsFirstLine(event: KeyboardEvent) {

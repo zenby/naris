@@ -2,154 +2,260 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { TextBlock } from '../interfaces/document.model';
 
 export type BlockState = {
+  [id: string]: {
+    isFocused: boolean;
+    isEdit: boolean;
+  };
+};
+
+export type BlockWrapper = {
+  id: string;
   block: TextBlock;
-  isFocused: boolean;
-  isEdit: boolean;
 };
 
 @Injectable()
 export class BlockService {
   public readonly blocksDelimiter = '\n\n\n';
-  public onBlockStatesChange = new EventEmitter<BlockState[]>();
+  public onBlocksChange = new EventEmitter<BlockWrapper[]>();
+  public onBlocksStateChange = new EventEmitter<BlockState>();
 
-  private blockStates: BlockState[] = [];
+  private blockState: BlockState = {};
+  private blocks: BlockWrapper[] = [];
 
   init(blocks: TextBlock[]): void {
-    this.blockStates = blocks.map((block) => ({
-      block,
-      isFocused: false,
-      isEdit: false,
-    }));
+    this.blocks = [];
+    blocks.forEach((block) => {
+      const id = this.generateId();
+      this.blocks.push({
+        id,
+        block,
+      });
 
-    this.dispacthBlockStatesChangeEvent();
+      this.blockState[id] = {
+        isFocused: false,
+        isEdit: false,
+      };
+    });
+
+    this.dispacthBlocksChangeEvent();
   }
 
-  format(blockIndex: number): void {
-    const beforeBlocksToInsert = this.blockStates.slice(0, blockIndex);
-    const afterBlocksToInsert = this.blockStates.slice(blockIndex + 1);
-    const formatedBlock = this.blockStates[blockIndex].block;
-    const textBlocksToInsert = this.blockStates[blockIndex].block.text.split(this.blocksDelimiter);
-    const blocksToInsert = textBlocksToInsert.map((b: string) => ({
-      block: { text: b.trim(), type: formatedBlock.type },
-      isFocused: false,
-      isEdit: false,
-    }));
-
-    this.blockStates = [...beforeBlocksToInsert, ...blocksToInsert, ...afterBlocksToInsert];
-
-    this.dispacthBlockStatesChangeEvent();
+  private generateId(): string {
+    return Math.random().toString(36).substring(2, 8);
   }
 
-  setFocus(blockIndex: number): void {
-    if (!this.isFocused(blockIndex)) {
-      this.markAsFocused(blockIndex);
-      if (!this.isEditable(blockIndex)) {
-        this.markAsEditable(blockIndex);
+  format(blockId: string): void {
+    const blockIndex = this.getCurrentPostion(blockId);
+    const beforeBlocksToInsert = this.blocks.slice(0, blockIndex);
+    const afterBlocksToInsert = this.blocks.slice(blockIndex + 1);
+    const formatedBlock = this.blocks[blockIndex].block;
+    const textBlocksToInsert = this.blocks[blockIndex].block.text.split(this.blocksDelimiter);
+
+    const blocksToInsert: BlockWrapper[] = [];
+    textBlocksToInsert.forEach((b: string, index: number) => {
+      if (index == 0) {
+        blocksToInsert.push({
+          id: this.blocks[blockIndex].id,
+          block: { text: b.trim(), type: formatedBlock.type },
+        });
+
+        this.blockState[blockId] = {
+          isEdit: true,
+          isFocused: true,
+        };
+      } else {
+        const newBlockId = this.generateId();
+        blocksToInsert.push({
+          id: newBlockId,
+          block: { text: b.trim(), type: formatedBlock.type },
+        });
+
+        this.blockState[newBlockId] = {
+          isEdit: false,
+          isFocused: false,
+        };
+      }
+    });
+
+    this.blocks = [...beforeBlocksToInsert, ...blocksToInsert, ...afterBlocksToInsert];
+
+    this.dispacthBlocksChangeEvent();
+    setTimeout(() => {
+      this.markAsFocused(blockId);
+      this.dispacthBlockStatesChangeEvent();
+    }, 100);
+  }
+
+  saveFocused(blockId: string): void {
+    this.resetFocus();
+    delete this.blockState[blockId];
+    this.dispacthBlockStatesChangeEvent();
+    this.blockState[blockId] = {
+      isFocused: true,
+      isEdit: true,
+    };
+  }
+
+  setFocus(blockId: string): void {
+    if (!this.isFocused(blockId)) {
+      this.markAsFocused(blockId);
+      if (!this.isEditable(blockId)) {
+        this.markAsEditable(blockId);
       }
 
       this.dispacthBlockStatesChangeEvent();
     }
   }
 
-  saveFocused(blockIndex: number): void {
-    this.markAsFocused(blockIndex);
-    this.markAsEditable(blockIndex);
-  }
-
-  move(oldBlockPosition: number, newBlockPosition: number): void {
-    const currentBlockStates = this.blockStates;
-    const tmp: BlockState = currentBlockStates[newBlockPosition];
-    if (tmp) {
-      currentBlockStates[newBlockPosition] = currentBlockStates[oldBlockPosition];
-      currentBlockStates[oldBlockPosition] = tmp;
-
-      this.dispacthBlockStatesChangeEvent();
+  setFocusOnPrevious(blockId: string): void {
+    const previousIndex = this.getPreviousIndex(blockId);
+    if (this.blocks[previousIndex]) {
+      this.setFocus(this.blocks[previousIndex].id);
     }
   }
 
-  add(newBlockIndex: number): void {
-    const left = this.blockStates.slice(0, newBlockIndex);
-    const right = this.blockStates.slice(newBlockIndex);
+  setFocusOnNext(blockId: string): void {
+    const nextIndex = this.getNextIndex(blockId);
+    if (this.blocks[nextIndex]) {
+      this.setFocus(this.blocks[nextIndex].id);
+    }
+  }
+
+  moveUp(blockId: string): void {
+    this.move(this.getCurrentPostion(blockId), this.getPreviousIndex(blockId));
+  }
+
+  moveDown(blockId: string): void {
+    this.move(this.getCurrentPostion(blockId), this.getNextIndex(blockId));
+  }
+
+  private getPreviousIndex(blockId: string): number {
+    return this.getCurrentPostion(blockId) - 1;
+  }
+
+  private getNextIndex(blockId: string): number {
+    return this.getCurrentPostion(blockId) + 1;
+  }
+
+  private getCurrentPostion(blockId: string) {
+    return this.blocks.findIndex((block) => block.id == blockId);
+  }
+
+  private move(oldBlockPosition: number, newBlockPosition: number): void {
+    const currentBlocks = this.blocks;
+    const tmp: BlockWrapper = currentBlocks[newBlockPosition];
+    if (tmp) {
+      currentBlocks[newBlockPosition] = currentBlocks[oldBlockPosition];
+      currentBlocks[oldBlockPosition] = tmp;
+
+      this.dispacthBlocksChangeEvent();
+      setTimeout(() => {
+        this.dispacthBlockStatesChangeEvent();
+      }, 100);
+    }
+  }
+
+  addAfter(blockId: string): void {
+    const newBlockIndex = this.getNextIndex(blockId);
+    const left = this.blocks.slice(0, newBlockIndex);
+    const right = this.blocks.slice(newBlockIndex);
     this.resetFocus();
-    this.blockStates = [
+    const newBlockId = this.generateId();
+    this.blocks = [
       ...left,
       {
         block: { text: '', type: 'markdown' },
-        isFocused: true,
-        isEdit: true,
+        id: newBlockId,
       },
       ...right,
     ];
 
-    this.dispacthBlockStatesChangeEvent();
+    this.dispacthBlocksChangeEvent();
+
+    setTimeout(() => {
+      this.blockState[newBlockId] = {
+        isEdit: true,
+        isFocused: true,
+      };
+      this.dispacthBlockStatesChangeEvent();
+    }, 100);
   }
 
-  remove(blockIndex: number): void {
-    if (this.blockStates.length === 1) return;
+  remove(blockId: string): void {
+    if (this.blocks.length === 1) return;
 
-    const newFocusedBlock = this.isFocused(blockIndex) ? this.findNearestEditedBlock(blockIndex) : false;
-    this.blockStates = this.blockStates.filter((el, index) => blockIndex !== index);
+    this.markAsUneditable(blockId);
+    const newFocusedBlock = this.isFocused(blockId) ? this.findNearestEditedBlock(blockId) : false;
+    const blockIndex = this.getCurrentPostion(blockId);
+    this.blocks = this.blocks.filter((el, index) => blockIndex !== index);
     if (newFocusedBlock !== false) {
-      this.setFocus(newFocusedBlock > blockIndex ? newFocusedBlock - 1 : newFocusedBlock);
+      this.markAsFocused(newFocusedBlock);
+      setTimeout(() => {
+        this.dispacthBlockStatesChangeEvent();
+      }, 100);
     }
 
-    this.dispacthBlockStatesChangeEvent();
+    this.dispacthBlocksChangeEvent();
   }
 
-  stopEdit(blockIndex: number): void {
-    this.markAsUneditable(blockIndex);
-    if (this.isFocused(blockIndex)) {
+  stopEdit(blockId: string): void {
+    this.markAsUneditable(blockId);
+    if (this.isFocused(blockId)) {
       this.resetFocus();
-      const nearestEditedBlock = this.findNearestEditedBlock(blockIndex);
+      const nearestEditedBlock = this.findNearestEditedBlock(blockId);
       if (nearestEditedBlock !== false) {
-        this.setFocus(nearestEditedBlock);
+        this.markAsFocused(nearestEditedBlock);
       }
     }
 
     this.dispacthBlockStatesChangeEvent();
   }
 
+  private dispacthBlocksChangeEvent(): void {
+    this.onBlocksChange.next(this.blocks);
+  }
+
   private dispacthBlockStatesChangeEvent(): void {
-    this.onBlockStatesChange.next(this.blockStates);
+    this.onBlocksStateChange.next(this.blockState);
   }
 
-  private isFocused(blockIndex: number): boolean {
-    return this.blockStates[blockIndex]?.isFocused;
+  private isFocused(blockId: string): boolean {
+    return this.blockState[blockId]?.isFocused;
   }
 
-  private isEditable(blockIndex: number): boolean {
-    return this.blockStates[blockIndex]?.isEdit;
+  private isEditable(blockId: string): boolean {
+    return this.blockState[blockId]?.isEdit;
   }
 
-  private markAsFocused(blockIndex: number): void {
+  private markAsFocused(blockId: string): void {
     this.resetFocus();
-    this.blockStates[blockIndex].isFocused = true;
+    this.blockState[blockId].isFocused = true;
   }
 
   private resetFocus(): void {
-    this.blockStates = this.blockStates.map((blockState) => ({
-      ...blockState,
-      isFocused: false,
-    }));
+    Object.keys(this.blockState).map((blockId) => {
+      this.blockState[blockId].isFocused = false;
+    });
   }
 
-  private markAsEditable(blockIndex: number): void {
-    this.blockStates[blockIndex].isEdit = true;
+  private markAsEditable(blockId: string): void {
+    this.blockState[blockId].isEdit = true;
   }
 
-  private markAsUneditable(blockIndex: number): void {
-    this.blockStates[blockIndex].isEdit = false;
+  private markAsUneditable(blockId: string): void {
+    this.blockState[blockId].isEdit = false;
   }
 
-  private findNearestEditedBlock(blockIndex: number): number | false {
+  private findNearestEditedBlock(blockId: string): string | false {
     let index = 1;
-    while (index <= this.blockStates.length) {
+    const blockIndex = this.getCurrentPostion(blockId);
+    while (index <= this.blocks.length) {
       const upBlockIndex = blockIndex - index;
       const downBlockIndex = blockIndex + index;
-      if (this.isEditable(upBlockIndex)) {
-        return upBlockIndex;
-      } else if (this.isEditable(downBlockIndex)) {
-        return downBlockIndex;
+      if (this.isEditable(this.blocks[upBlockIndex]?.id)) {
+        return this.blocks[upBlockIndex].id;
+      } else if (this.isEditable(this.blocks[downBlockIndex]?.id)) {
+        return this.blocks[downBlockIndex].id;
       }
       index++;
     }

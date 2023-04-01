@@ -1,16 +1,6 @@
 <soer-block-editor
   *ngFor="let blockState of blockStates; index as bIndex"
   [textBlock]="blockState.block"
-  [isEdit]="blockState.isEdit"
-  [isFocused]="blockState.isFocused"
+  [id]="blockState.id"
   [blocksLength]="blockStates.length"
-  [localIndex]="bIndex"
-  (setActive)="setActive($event)"
-  (moveDown)="move($event, $event + 1)"
-  (moveUp)="move($event, $event - 1)"
-  (removeBlock)="removeBlock($event)"
-  (addBlock)="addBlockMarkdown($event)"
-  (endEdit)="onEndEdit($event)"
-  (format)="format($event)"
-  (saveFocused)="saveFocused($event)"
 ></soer-block-editor>

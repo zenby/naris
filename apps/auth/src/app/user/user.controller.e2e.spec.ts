@@ -151,7 +151,7 @@ describe('user controller e2e tests', () => {
     });
   });
 
-  describe('PUT /user/id {block: true | false}', () => {
+  describe('PUT /user/id', () => {
     it('should block user when user blocked by an admin', async () => {
       const adminUser = getTestUser({ role: UserRole.ADMIN });
       const userId = faker.random.numeric();
@@ -163,10 +163,10 @@ describe('user controller e2e tests', () => {
       await request
         .put(`/user/${userId}`)
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .send({ block: true })
+        .send({ isBlocked: true })
         .expect(200);
 
-      expect(userRepo.update).toHaveBeenCalledWith({ id: userId }, { blocked: true });
+      expect(userRepo.update).toHaveBeenCalledWith({ id: userId }, { isBlocked: true });
     });
 
     it('should block user when user unblocked by an admin', async () => {
@@ -180,10 +180,10 @@ describe('user controller e2e tests', () => {
       await request
         .put(`/user/${userId}`)
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .send({ block: false })
+        .send({ isBlocked: false })
         .expect(200);
 
-      expect(userRepo.update).toHaveBeenCalledWith({ id: userId }, { blocked: false });
+      expect(userRepo.update).toHaveBeenCalledWith({ id: userId }, { isBlocked: false });
     });
   });
 

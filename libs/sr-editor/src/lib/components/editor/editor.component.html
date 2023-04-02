@@ -2,5 +2,6 @@
   *ngFor="let blockState of blockStates; index as bIndex"
   [textBlock]="blockState.block"
   [id]="blockState.id"
+  [localIndex]="bIndex"
   [blocksLength]="blockStates.length"
 ></soer-block-editor>

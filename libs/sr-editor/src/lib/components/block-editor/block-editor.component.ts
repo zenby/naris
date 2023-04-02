@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ComponentRef,
   ElementRef,
@@ -22,6 +23,7 @@ import { BlockService } from '../../services/block.service';
 })
 export class BlockEditorComponent implements OnInit, AfterViewInit {
   @Input() id = '';
+  @Input() localIndex = -1;
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
   @Input() blocksLength = 0;
 
@@ -33,7 +35,8 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
 
   constructor(
     @Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry,
-    private blockService: BlockService
+    private blockService: BlockService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   controls: ControlBtn[] = [
@@ -78,6 +81,7 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
         if (currentState.isFocused) {
           this.edit?.nativeElement.focus();
         }
+        this.cdr.markForCheck();
       }
     });
   }

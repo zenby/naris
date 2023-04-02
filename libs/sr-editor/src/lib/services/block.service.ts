@@ -8,19 +8,19 @@ export type BlockState = {
   };
 };
 
-export type BlockWrapper = {
+export type WrappedBlock = {
   id: string;
-  block: TextBlock;
+  textBlock: TextBlock;
 };
 
 @Injectable()
 export class BlockService {
   public readonly blocksDelimiter = '\n\n\n';
-  public onBlocksChange = new EventEmitter<BlockWrapper[]>();
+  public onBlocksChange = new EventEmitter<WrappedBlock[]>();
   public onBlocksStateChange = new EventEmitter<BlockState>();
 
   private blockState: BlockState = {};
-  private blocks: BlockWrapper[] = [];
+  private blocks: WrappedBlock[] = [];
 
   init(blocks: TextBlock[]): void {
     this.blocks = [];
@@ -28,7 +28,7 @@ export class BlockService {
       const id = this.generateId();
       this.blocks.push({
         id,
-        block,
+        textBlock: block,
       });
 
       this.blockState[id] = {
@@ -44,16 +44,16 @@ export class BlockService {
     const blockIndex = this.getCurrentPostion(blockId);
     const beforeBlocksToInsert = this.blocks.slice(0, blockIndex);
     const afterBlocksToInsert = this.blocks.slice(blockIndex + 1);
-    const formatedBlock = this.blocks[blockIndex].block;
-    const textBlocksToInsert = this.blocks[blockIndex].block.text.split(this.blocksDelimiter);
+    const formatedBlock = this.blocks[blockIndex].textBlock;
+    const textBlocksToInsert = this.blocks[blockIndex].textBlock.text.split(this.blocksDelimiter);
 
-    const blocksToInsert: BlockWrapper[] = [];
+    const blocksToInsert: WrappedBlock[] = [];
     this.resetFocus();
     textBlocksToInsert.forEach((b: string, index: number) => {
       const id = this.generateId();
       blocksToInsert.push({
         id,
-        block: { text: b.trim(), type: formatedBlock.type },
+        textBlock: { text: b.trim(), type: formatedBlock.type },
       });
 
       this.blockState[id] = {
@@ -117,7 +117,7 @@ export class BlockService {
     this.blocks = [
       ...left,
       {
-        block: { text: '', type: 'markdown' },
+        textBlock: { text: '', type: 'markdown' },
         id: newBlockId,
       },
       ...right,
@@ -175,7 +175,7 @@ export class BlockService {
 
   private move(oldBlockPosition: number, newBlockPosition: number): void {
     const currentBlocks = this.blocks;
-    const tmp: BlockWrapper = currentBlocks[newBlockPosition];
+    const tmp: WrappedBlock = currentBlocks[newBlockPosition];
     if (tmp) {
       currentBlocks[newBlockPosition] = currentBlocks[oldBlockPosition];
       currentBlocks[oldBlockPosition] = tmp;

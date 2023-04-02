@@ -73,7 +73,6 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
   ];
 
   ngOnInit(): void {
-    this.textBlock.text = this.id;
     this.blockService.onBlocksStateChange.subscribe((blockState) => {
       if (blockState[this.id]) {
         const currentState = blockState[this.id];
@@ -96,6 +95,10 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
   }
 
   command(event: KeyboardEvent): void {
+    if (this.componentRef) {
+      this.componentRef.instance.text = this.textBlock.text;
+    }
+
     if (event.altKey && event.code === 'Enter') {
       this.addBlockDown();
     }

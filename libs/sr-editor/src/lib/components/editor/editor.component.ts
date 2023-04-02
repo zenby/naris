@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BlockService, BlockState, BlockWrapper } from '../../services/block.service';
+import { BlockService, WrappedBlock } from '../../services/block.service';
 import { EMPTY_WORKBOOK, WorkbookModel } from '../../interfaces/document.model';
 
 @Component({
@@ -15,7 +15,7 @@ export class EditorComponent implements OnInit {
   public previewFlag = false;
   public activeIndex = -1;
   public blocksDelimiter = this.blockService.blocksDelimiter;
-  public blockStates: BlockWrapper[] = [];
+  public blocks: WrappedBlock[] = [];
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -26,14 +26,14 @@ export class EditorComponent implements OnInit {
   ) {
     this.route.queryParams.subscribe((params) => {
       if (params['action'] === 'save') {
-        this.document.blocks = this.blockStates.map((block) => block.block);
+        this.document.blocks = this.blocks.map((block) => block.textBlock);
         this.save.next(this.document);
       }
       this.previewFlag = params['preview'] === 'true';
       this.cdr.markForCheck();
     });
-    this.blockService.onBlocksChange.subscribe((blockStates) => {
-      this.blockStates = [...blockStates];
+    this.blockService.onBlocksChange.subscribe((blocks) => {
+      this.blocks = [...blocks];
       cdr.markForCheck();
     });
   }

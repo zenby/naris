@@ -1,7 +1,7 @@
 <soer-block-editor
-  *ngFor="let blockState of blockStates; index as bIndex"
-  [textBlock]="blockState.block"
-  [id]="blockState.id"
+  *ngFor="let block of blocks; index as bIndex"
+  [textBlock]="block.textBlock"
+  [id]="block.id"
   [localIndex]="bIndex"
-  [blocksLength]="blockStates.length"
+  [blocksLength]="blocks.length"
 ></soer-block-editor>

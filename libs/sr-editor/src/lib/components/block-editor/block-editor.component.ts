@@ -58,6 +58,11 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
       handler: () => this.moveDownBlock(),
     },
     {
+      title: 'Завершить редактирование (Esc)',
+      icon: 'edit',
+      handler: () => this.stopEdit(),
+    },
+    {
       title: 'Удалить (Alt+Backspace)',
       icon: 'delete',
       handler: () => this.removeCurrentBlock(),

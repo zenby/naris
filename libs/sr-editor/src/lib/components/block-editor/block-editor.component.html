@@ -2,19 +2,6 @@
   <div class="info">
     {{ textBlock.type | typeFormat }}
     {{ isEdit | booleanToString: ' [*]':' [ ]' }}
-
-    <button
-      *ngIf="isEdit"
-      class="edit-button"
-      (click)="stopEdit()"
-      nz-button
-      nzTrigger="click"
-      nzType="default"
-      nzSize="small"
-      nzPlacement="bottomRight"
-    >
-      <i nz-icon nzType="edit"></i>
-    </button>
   </div>
   <div class="block-wrapper">
     <div class="edit" soerAutoresize>

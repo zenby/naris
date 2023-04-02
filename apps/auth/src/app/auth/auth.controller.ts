@@ -4,10 +4,11 @@ import {
   Controller,
   Get,
   HttpException,
+  HttpStatus,
   InternalServerErrorException,
   Logger,
-  Param,
   Post,
+  Query,
   Res,
   UnauthorizedException,
   UseGuards,
@@ -93,7 +94,10 @@ export class AuthController {
   @Roles(UserRole.ADMIN)
   @UsePipes(BackendValidationPipe)
   @Post('access_token_for_user')
-  async getAccessTokenForUser(@Param('email') email: string): Promise<HttpJsonResult<{ accessToken: string }>> {
+  async getAccessTokenForUser(@Query('email') email: string): Promise<HttpJsonResult<{ accessToken: string }>> {
+    //if not handle empty post req then userService.findByEmail(undefined) returns first user id db
+    if (email === undefined) throw new HttpException('Email was not presented', HttpStatus.NOT_FOUND);
+
     const user = await this.userService.findByEmail(email);
     if (user instanceof Error) throw user;
     try {

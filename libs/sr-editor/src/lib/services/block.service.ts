@@ -37,11 +37,7 @@ export class BlockService {
       };
     });
 
-    this.dispacthBlocksChangeEvent();
-  }
-
-  private generateId(): string {
-    return Math.random().toString(36).substring(2, 8);
+    this.dispatchBlocksChangeEvent();
   }
 
   format(blockId: string): void {
@@ -52,48 +48,31 @@ export class BlockService {
     const textBlocksToInsert = this.blocks[blockIndex].block.text.split(this.blocksDelimiter);
 
     const blocksToInsert: BlockWrapper[] = [];
+    this.resetFocus();
     textBlocksToInsert.forEach((b: string, index: number) => {
-      if (index == 0) {
-        blocksToInsert.push({
-          id: this.blocks[blockIndex].id,
-          block: { text: b.trim(), type: formatedBlock.type },
-        });
+      const id = this.generateId();
+      blocksToInsert.push({
+        id,
+        block: { text: b.trim(), type: formatedBlock.type },
+      });
 
-        this.blockState[blockId] = {
-          isEdit: true,
-          isFocused: true,
-        };
-      } else {
-        const newBlockId = this.generateId();
-        blocksToInsert.push({
-          id: newBlockId,
-          block: { text: b.trim(), type: formatedBlock.type },
-        });
-
-        this.blockState[newBlockId] = {
-          isEdit: false,
-          isFocused: false,
-        };
-      }
+      this.blockState[id] = {
+        isEdit: index == 0,
+        isFocused: index == 0,
+      };
     });
 
     this.blocks = [...beforeBlocksToInsert, ...blocksToInsert, ...afterBlocksToInsert];
 
-    this.dispacthBlocksChangeEvent();
-    setTimeout(() => {
-      this.markAsFocused(blockId);
-      this.dispacthBlockStatesChangeEvent();
-    }, 100);
+    this.dispatchBlocksChangeEvent();
+    this.delayedDispatchBlockStatesChangeEvent();
   }
 
   saveFocused(blockId: string): void {
     this.resetFocus();
     delete this.blockState[blockId];
-    this.dispacthBlockStatesChangeEvent();
-    this.blockState[blockId] = {
-      isFocused: true,
-      isEdit: true,
-    };
+    this.dispatchBlockStatesChangeEvent();
+    this.markAsFocused(blockId);
   }
 
   setFocus(blockId: string): void {
@@ -103,7 +82,7 @@ export class BlockService {
         this.markAsEditable(blockId);
       }
 
-      this.dispacthBlockStatesChangeEvent();
+      this.dispatchBlockStatesChangeEvent();
     }
   }
 
@@ -129,6 +108,59 @@ export class BlockService {
     this.move(this.getCurrentPostion(blockId), this.getNextIndex(blockId));
   }
 
+  addAfter(blockId: string): void {
+    const newBlockIndex = this.getNextIndex(blockId);
+    const left = this.blocks.slice(0, newBlockIndex);
+    const right = this.blocks.slice(newBlockIndex);
+    this.resetFocus();
+    const newBlockId = this.generateId();
+    this.blocks = [
+      ...left,
+      {
+        block: { text: '', type: 'markdown' },
+        id: newBlockId,
+      },
+      ...right,
+    ];
+
+    this.dispatchBlocksChangeEvent();
+
+    this.markAsFocused(newBlockId);
+    this.delayedDispatchBlockStatesChangeEvent();
+  }
+
+  remove(blockId: string): void {
+    if (this.blocks.length === 1) return;
+
+    this.markAsUneditable(blockId);
+    const newFocusedBlock = this.isFocused(blockId) ? this.findNearestEditedBlock(blockId) : false;
+    const blockIndex = this.getCurrentPostion(blockId);
+    this.blocks = this.blocks.filter((el, index) => blockIndex !== index);
+    if (newFocusedBlock !== false) {
+      this.markAsFocused(newFocusedBlock);
+    }
+
+    this.delayedDispatchBlockStatesChangeEvent();
+    this.dispatchBlocksChangeEvent();
+  }
+
+  stopEdit(blockId: string): void {
+    this.markAsUneditable(blockId);
+    if (this.isFocused(blockId)) {
+      this.resetFocus();
+      const nearestEditedBlock = this.findNearestEditedBlock(blockId);
+      if (nearestEditedBlock !== false) {
+        this.markAsFocused(nearestEditedBlock);
+      }
+    }
+
+    this.dispatchBlockStatesChangeEvent();
+  }
+
+  private generateId(): string {
+    return Math.random().toString(36).substring(2, 8);
+  }
+
   private getPreviousIndex(blockId: string): number {
     return this.getCurrentPostion(blockId) - 1;
   }
@@ -148,74 +180,22 @@ export class BlockService {
       currentBlocks[newBlockPosition] = currentBlocks[oldBlockPosition];
       currentBlocks[oldBlockPosition] = tmp;
 
-      this.dispacthBlocksChangeEvent();
-      setTimeout(() => {
-        this.dispacthBlockStatesChangeEvent();
-      }, 100);
+      this.dispatchBlocksChangeEvent();
+      this.delayedDispatchBlockStatesChangeEvent();
     }
   }
 
-  addAfter(blockId: string): void {
-    const newBlockIndex = this.getNextIndex(blockId);
-    const left = this.blocks.slice(0, newBlockIndex);
-    const right = this.blocks.slice(newBlockIndex);
-    this.resetFocus();
-    const newBlockId = this.generateId();
-    this.blocks = [
-      ...left,
-      {
-        block: { text: '', type: 'markdown' },
-        id: newBlockId,
-      },
-      ...right,
-    ];
-
-    this.dispacthBlocksChangeEvent();
-
-    setTimeout(() => {
-      this.blockState[newBlockId] = {
-        isEdit: true,
-        isFocused: true,
-      };
-      this.dispacthBlockStatesChangeEvent();
-    }, 100);
-  }
-
-  remove(blockId: string): void {
-    if (this.blocks.length === 1) return;
-
-    this.markAsUneditable(blockId);
-    const newFocusedBlock = this.isFocused(blockId) ? this.findNearestEditedBlock(blockId) : false;
-    const blockIndex = this.getCurrentPostion(blockId);
-    this.blocks = this.blocks.filter((el, index) => blockIndex !== index);
-    if (newFocusedBlock !== false) {
-      this.markAsFocused(newFocusedBlock);
-      setTimeout(() => {
-        this.dispacthBlockStatesChangeEvent();
-      }, 100);
-    }
-
-    this.dispacthBlocksChangeEvent();
-  }
-
-  stopEdit(blockId: string): void {
-    this.markAsUneditable(blockId);
-    if (this.isFocused(blockId)) {
-      this.resetFocus();
-      const nearestEditedBlock = this.findNearestEditedBlock(blockId);
-      if (nearestEditedBlock !== false) {
-        this.markAsFocused(nearestEditedBlock);
-      }
-    }
-
-    this.dispacthBlockStatesChangeEvent();
-  }
-
-  private dispacthBlocksChangeEvent(): void {
+  private dispatchBlocksChangeEvent(): void {
     this.onBlocksChange.next(this.blocks);
   }
 
-  private dispacthBlockStatesChangeEvent(): void {
+  private delayedDispatchBlockStatesChangeEvent(): void {
+    setTimeout(() => {
+      this.dispatchBlockStatesChangeEvent();
+    }, 100);
+  }
+
+  private dispatchBlockStatesChangeEvent(): void {
     this.onBlocksStateChange.next(this.blockState);
   }
 
@@ -229,7 +209,14 @@ export class BlockService {
 
   private markAsFocused(blockId: string): void {
     this.resetFocus();
-    this.blockState[blockId].isFocused = true;
+    if (this.blockState[blockId]) {
+      this.blockState[blockId].isFocused = true;
+    } else {
+      this.blockState[blockId] = {
+        isFocused: true,
+        isEdit: true,
+      };
+    }
   }
 
   private resetFocus(): void {

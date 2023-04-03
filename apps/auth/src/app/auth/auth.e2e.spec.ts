@@ -7,12 +7,13 @@ import { Test } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
-import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
+import { HttpJsonResult, HttpJsonStatus, UserRole } from '@soer/sr-common-interfaces';
 import { AuthModule } from './auth.module';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import { Configuration } from '../config/config';
 import { UserEntity } from '../user/user.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { faker } from '@faker-js/faker';
 
 describe('Auth e2e-test', () => {
   let app: INestApplication;
@@ -156,4 +157,97 @@ describe('Auth e2e-test', () => {
       await request.get('/auth/access_token').expect(401);
     });
   });
+
+  describe('POST /auth/access_token_for_user', () => {
+    let adminUser: UserEntity;
+    let users: UserEntity[];
+
+    const generateRefreshToken = (user: UserEntity, expiredInSec = 3600) => {
+      const iat = Math.floor(Date.now() / 1000) + expiredInSec;
+      const token = jwt.sign({ ...user, iat }, config.jwtSecret);
+      return config.cookieName + '=' + token;
+    };
+
+    beforeAll(() => {
+      adminUser = getTestUser({ role: UserRole.ADMIN });
+      users = [getTestUser({ email: 'fakeUser@mail.com' }), getTestUser(), adminUser];
+    });
+
+    it('should generate an access_token for requested user', async () => {
+      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser).mockResolvedValueOnce(users[0]);
+
+      const response = await request
+        .post('/auth/access_token_for_user')
+        .set('Cookie', [generateRefreshToken(adminUser, 0)])
+        .query({ email: users[0].email })
+        .expect(201);
+
+      const body: HttpJsonResult<{ accessToken: string }> = response.body;
+      const accessToken = body.items[0]?.accessToken;
+      const { email } = jwt.verify(accessToken, config.jwtSecret) as { email: string };
+
+      expect(body.status).toBe(HttpJsonStatus.Ok);
+      expect(accessToken).toBeDefined();
+      expect(email).toBe(users[0].email);
+    });
+
+    it('should return 401 error when pass old refresh token', async () => {
+      const expired10MinAgo = -10 * 60;
+      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
+
+      await request
+        .post('/auth/access_token_for_user')
+        .set('Cookie', [generateRefreshToken(adminUser, expired10MinAgo)])
+        .query({ email: users[0].email })
+        .expect(401);
+    });
+
+    it('should return 403 error when user role is USER', async () => {
+      await request
+        .post('/auth/access_token_for_user')
+        .set('Cookie', [generateRefreshToken(users[1], 0)])
+        .query({ email: users[0].email })
+        .expect(403);
+    });
+
+    it('should return 401 error when not authorized user', async () => {
+      await request.post('/auth/access_token_for_user').query({ email: users[0].email }).expect(401);
+    });
+
+    it('should return 404 error when no query params passed', async () => {
+      await request
+        .post('/auth/access_token_for_user')
+        .set('Cookie', [generateRefreshToken(adminUser, 0)])
+        .expect(404);
+    });
+
+    it('should return 404 error when empty email passed', async () => {
+      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser).mockResolvedValueOnce(adminUser);
+
+      await request
+        .post('/auth/access_token_for_user')
+        .set('Cookie', [generateRefreshToken(adminUser, 0)])
+        .query({ email: '' })
+        .expect(404);
+    });
+  });
+
+  type UserInfo = {
+    id?: number;
+    login?: string;
+    email?: string;
+    role?: UserRole;
+  };
+
+  function getTestUser(userInfo: UserInfo = { id: undefined, login: undefined, email: undefined, role: undefined }) {
+    const user = new UserEntity();
+    Object.assign(user, {
+      id: userInfo.id ?? faker.random.numeric(),
+      login: userInfo.login ?? faker.internet.userName(),
+      email: userInfo.email ?? faker.internet.email(),
+      uuid: faker.datatype.uuid(),
+      role: userInfo.role ?? UserRole.USER,
+    });
+    return user;
+  }
 });

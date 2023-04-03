@@ -23,7 +23,7 @@ export class PdfConverterService {
     routeParams: BusMessageParams = {}
   ): Observable<ArrayBuffer> {
     return this.http.post<ArrayBuffer>(
-      this.urlBuilder.build(':wid', owner.key, routeParams, owner.schema['params']),
+      this.urlBuilder.build(':wid', owner.key, routeParams, owner.schema['params'], owner.apiRoot),
       data
     );
   }

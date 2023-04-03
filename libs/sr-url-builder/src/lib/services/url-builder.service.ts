@@ -14,7 +14,8 @@ export class UrlBuilderService {
     apiSuffix: string = '',
     key: BusKey = {},
     routeParams: BusMessageParams = {},
-    urlParams: Record<string, string> = {}
+    urlParams: Record<string, string> = {},
+    externalApiRoot: undefined | string = undefined
   ): string {
     const urlSegments = apiSuffix
       .split('/')
@@ -36,6 +37,7 @@ export class UrlBuilderService {
       })
       .filter((value) => value !== '');
     const urlResultParams = urlMappedParams.length ? `?${urlMappedParams.join('&')}` : '';
-    return `${this.options.apiRoot}${urlSegments.join('/')}${urlResultParams}`;
+    const apiRoot = externalApiRoot ? externalApiRoot : this.options.apiRoot;
+    return `${apiRoot}${urlSegments.join('/')}${urlResultParams}`;
   }
 }

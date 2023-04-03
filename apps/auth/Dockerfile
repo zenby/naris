@@ -5,10 +5,10 @@ FROM node:18-alpine
 WORKDIR /usr/apps/auth
 
 # Set envs
-ARG PORT=8000
+ARG AUTH_BACK_PORT=3400
 
 # Copy builded app source
-COPY ../../dist/apps/auth .
+COPY ./dist/apps/auth .
 
 # Install app dependencies
 RUN npm install

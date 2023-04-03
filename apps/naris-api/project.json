@@ -16,6 +16,7 @@
         "assets": [
           "apps/naris-api/src/assets"
         ],
+        "generatePackageJson": true,
         "target": "node",
         "compiler": "tsc"
       },

@@ -107,6 +107,15 @@ const routes: Routes = [
                 title: 'Конспект',
                 subtitle: 'помощь в осмыслении материалов по программированию',
               },
+              controls: [
+                {
+                  title: 'Сохранить в PDF',
+                  path: ['.'],
+                  action: 'save-as-pdf',
+                  icon: 'file-pdf',
+                },
+                { title: 'Назад', path: ['../..'], icon: 'rollback' },
+              ],
             },
             resolve: {
               workbook: 'workbookEmitter',
@@ -193,6 +202,15 @@ const routes: Routes = [
                 title: 'Тест',
                 subtitle: 'проверка знаний, полученных в ходе образовательного процесса',
               },
+              controls: [
+                {
+                  title: 'Сохранить в PDF',
+                  path: ['.'],
+                  action: 'save-as-pdf',
+                  icon: 'file-pdf',
+                },
+                { title: 'Назад', path: ['../..'], icon: 'rollback' },
+              ],
             },
             resolve: {
               workbook: 'quizEmitter',
@@ -279,6 +297,15 @@ const routes: Routes = [
                 title: 'Статья',
                 subtitle: 'расскажите о своем опыте',
               },
+              controls: [
+                {
+                  title: 'Сохранить в PDF',
+                  path: ['.'],
+                  action: 'save-as-pdf',
+                  icon: 'file-pdf',
+                },
+                { title: 'Назад', path: ['../..'], icon: 'rollback' },
+              ],
             },
             resolve: {
               workbook: 'articleEmitter',

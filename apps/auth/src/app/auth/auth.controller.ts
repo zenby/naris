@@ -96,7 +96,7 @@ export class AuthController {
   @Post('access_token_for_user')
   async getAccessTokenForUser(@Query('email') email: string): Promise<HttpJsonResult<{ accessToken: string }>> {
     //if not handle empty post req then userService.findByEmail(undefined) returns first user id db
-    if (email === undefined) throw new HttpException('Email was not presented', HttpStatus.NOT_FOUND);
+    if (email === undefined || email === '') throw new HttpException('Email was not presented', HttpStatus.NOT_FOUND);
 
     const user = await this.userService.findByEmail(email);
     if (user instanceof Error) throw user;

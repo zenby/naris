@@ -16,14 +16,14 @@ export class ViewAbstractePageComponent {
   public workbook$: Observable<DtoPack<WorkbookModel>>;
   private workbookId: BusEmitter;
 
-  constructor(private store$: DataStoreService, private route: ActivatedRoute, private _location: Location) {
+  constructor(private store$: DataStoreService, private route: ActivatedRoute, private location: Location) {
     this.workbookId = this.route.snapshot.data['workbook'];
     this.workbook$ = parseJsonDTOPack<WorkbookModel>(this.store$.of(this.workbookId), 'workbook');
 
     this.route.queryParams.subscribe((params) => {
       if (params['action'] === 'save-as-pdf') {
         this.callPrint('.workbook-view');
-        this._location.back();
+        this.location.back();
       }
     });
   }

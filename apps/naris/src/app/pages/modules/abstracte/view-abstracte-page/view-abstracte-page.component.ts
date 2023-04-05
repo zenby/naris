@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BusEmitter } from '@soer/mixed-bus';
 import { DataStoreService, DtoPack } from '@soer/sr-dto';
@@ -16,30 +16,31 @@ export class ViewAbstractePageComponent {
   public workbook$: Observable<DtoPack<WorkbookModel>>;
   private workbookId: BusEmitter;
 
+  @ViewChild('workbook') workbookElement!: ElementRef;
+
   constructor(private store$: DataStoreService, private route: ActivatedRoute, private location: Location) {
     this.workbookId = this.route.snapshot.data['workbook'];
     this.workbook$ = parseJsonDTOPack<WorkbookModel>(this.store$.of(this.workbookId), 'workbook');
 
     this.route.queryParams.subscribe((params) => {
       if (params['action'] === 'save-as-pdf') {
-        this.callPrint('.workbook-view');
+        this.callPrint(this.workbookElement.nativeElement.innerHTML);
         this.location.back();
       }
     });
   }
 
-  callPrint(onElement: string) {
-    const prtContent = document.querySelector(onElement);
-    const WinPrint = window.open('', '', 'left=50,top=50,width=800,height=640,toolbar=0,scrollbars=1,status=0');
+  callPrint(prtContent: string) {
+    const winPrint = window.open('', '', 'left=50,top=50,width=800,height=640,toolbar=0,scrollbars=1,status=0');
 
-    if (prtContent && WinPrint) {
-      WinPrint.document.write('<div id="print" class="contentpane">');
-      WinPrint.document.write(prtContent.innerHTML);
-      WinPrint.document.write('</div>');
-      WinPrint.document.close();
-      WinPrint.focus();
-      WinPrint.print();
-      WinPrint.close();
+    if (winPrint) {
+      winPrint.document.write('<div id="print" class="contentpane">');
+      winPrint.document.write(prtContent);
+      winPrint.document.write('</div>');
+      winPrint.document.close();
+      winPrint.focus();
+      winPrint.print();
+      winPrint.close();
     }
   }
 }

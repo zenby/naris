@@ -1,15 +1,11 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
 import { EnvironmentInterface } from './environment.interface';
-import { dev } from './feature-flags';
+import { dev_ab } from './feature-flags';
 import { getDevHostVariables } from './getHostVariables';
 
 export const environment: EnvironmentInterface = {
   ...getDevHostVariables(),
   production: false,
-  features: dev,
+  features: dev_ab,
 };
 
 /*

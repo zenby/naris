@@ -6,6 +6,7 @@ import { WorkbookModel } from '@soer/sr-editor';
 import { Observable } from 'node_modules/rxjs/dist/types';
 import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
 import { Location } from '@angular/common';
+import { printHTML } from '../abstracte.helper';
 
 @Component({
   selector: 'soer-view-abstracte-page',
@@ -24,23 +25,9 @@ export class ViewAbstractePageComponent {
 
     this.route.queryParams.subscribe((params) => {
       if (params['action'] === 'save-as-pdf') {
-        this.callPrint(this.workbookElement.nativeElement.innerHTML);
+        printHTML(this.workbookElement.nativeElement.innerHTML);
         this.location.back();
       }
     });
-  }
-
-  callPrint(prtContent: string) {
-    const winPrint = window.open('', '', 'left=50,top=50,width=800,height=640,toolbar=0,scrollbars=1,status=0');
-
-    if (winPrint) {
-      winPrint.document.write('<div id="print" class="contentpane">');
-      winPrint.document.write(prtContent);
-      winPrint.document.write('</div>');
-      winPrint.document.close();
-      winPrint.focus();
-      winPrint.print();
-      winPrint.close();
-    }
   }
 }

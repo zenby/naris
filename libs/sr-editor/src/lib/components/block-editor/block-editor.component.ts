@@ -23,7 +23,6 @@ import { BlockService } from '../../services/block.service';
 })
 export class BlockEditorComponent implements OnInit, AfterViewInit {
   @Input() id = '';
-  @Input() localIndex = -1;
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
   @Input() blocksLength = 0;
 
@@ -132,7 +131,7 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    if (event.ctrlKey && event.code === 'ArrowDown') {
+    if ((event.ctrlKey && event.code === 'ArrowDown') || event.code === 'Tab') {
       this.setFocusOnNext();
 
       return;
@@ -157,10 +156,6 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
     if (event.code === 'Escape') {
       this.stopEdit();
     }
-  }
-
-  onFocusOut() {
-    this.blockService.setBlockText(this.id, this.textBlock.text);
   }
 
   stopEdit() {

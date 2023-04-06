@@ -81,7 +81,7 @@ export class BlockService {
       this.markAsEditable(blockId);
     }
 
-    this.dispatchBlockStatesChangeEvent();
+    this.delayedDispatchBlockStatesChangeEvent();
   }
 
   setFocusOnPrevious(blockId: string): void {

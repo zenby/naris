@@ -97,6 +97,7 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
   command(event: KeyboardEvent): void {
     if (this.componentRef) {
       this.componentRef.instance.text = this.textBlock.text;
+      this.blockService.setBlockText(this.id, this.textBlock.text);
     }
 
     if (event.altKey && event.code === 'Enter') {
@@ -154,6 +155,10 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
     if (event.code === 'Escape') {
       this.stopEdit();
     }
+  }
+
+  onFocusOut() {
+    this.blockService.setBlockText(this.id, this.textBlock.text);
   }
 
   stopEdit() {

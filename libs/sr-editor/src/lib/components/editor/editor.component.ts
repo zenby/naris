@@ -26,7 +26,6 @@ export class EditorComponent implements OnInit {
   ) {
     this.route.queryParams.subscribe((params) => {
       if (params['action'] === 'save') {
-        this.document.blocks = this.blocks.map((block) => block.textBlock);
         this.save.next(this.document);
       }
       this.previewFlag = params['preview'] === 'true';
@@ -34,6 +33,7 @@ export class EditorComponent implements OnInit {
     });
     this.blockService.onBlocksChange.subscribe((blocks) => {
       this.blocks = [...blocks];
+      this.document.blocks = this.blocks.map((block) => block.textBlock);
       cdr.markForCheck();
     });
   }

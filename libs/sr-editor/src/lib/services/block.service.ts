@@ -153,7 +153,11 @@ export class BlockService {
         this.markAsFocused(nearestEditedBlock);
       }
     }
+  }
 
+  setBlockText(blockId: string, text: string): void {
+    const blockIndex = this.getCurrentPostion(blockId);
+    this.blocks[blockIndex].textBlock.text = text;
     this.dispatchBlockStatesChangeEvent();
   }
 
@@ -192,7 +196,7 @@ export class BlockService {
   private delayedDispatchBlockStatesChangeEvent(): void {
     setTimeout(() => {
       this.dispatchBlockStatesChangeEvent();
-    }, 100);
+    }, 10);
   }
 
   private dispatchBlockStatesChangeEvent(): void {

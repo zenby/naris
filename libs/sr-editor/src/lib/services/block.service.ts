@@ -76,14 +76,12 @@ export class BlockService {
   }
 
   setFocus(blockId: string): void {
-    if (!this.isFocused(blockId)) {
-      this.markAsFocused(blockId);
-      if (!this.isEditable(blockId)) {
-        this.markAsEditable(blockId);
-      }
-
-      this.dispatchBlockStatesChangeEvent();
+    this.markAsFocused(blockId);
+    if (!this.isEditable(blockId)) {
+      this.markAsEditable(blockId);
     }
+
+    this.dispatchBlockStatesChangeEvent();
   }
 
   setFocusOnPrevious(blockId: string): void {
@@ -133,7 +131,7 @@ export class BlockService {
     if (this.blocks.length === 1) return;
 
     this.markAsUneditable(blockId);
-    const newFocusedBlock = this.isFocused(blockId) ? this.findNearestEditedBlock(blockId) : false;
+    const newFocusedBlock = this.findNearestEditingBlock(blockId);
     const blockIndex = this.getCurrentPostion(blockId);
     this.blocks = this.blocks.filter((el, index) => blockIndex !== index);
     if (newFocusedBlock !== false) {
@@ -146,13 +144,13 @@ export class BlockService {
 
   stopEdit(blockId: string): void {
     this.markAsUneditable(blockId);
-    if (this.isFocused(blockId)) {
-      this.resetFocus();
-      const nearestEditedBlock = this.findNearestEditedBlock(blockId);
-      if (nearestEditedBlock !== false) {
-        this.markAsFocused(nearestEditedBlock);
-      }
+    this.resetFocus();
+    const nearestEditedBlock = this.findNearestEditingBlock(blockId);
+    if (nearestEditedBlock !== false) {
+      this.markAsFocused(nearestEditedBlock);
     }
+
+    this.dispatchBlockStatesChangeEvent();
   }
 
   setBlockText(blockId: string, text: string): void {
@@ -203,10 +201,6 @@ export class BlockService {
     this.onBlocksStateChange.next(this.blockState);
   }
 
-  private isFocused(blockId: string): boolean {
-    return this.blockState[blockId]?.isFocused;
-  }
-
   private isEditable(blockId: string): boolean {
     return this.blockState[blockId]?.isEdit;
   }
@@ -237,7 +231,7 @@ export class BlockService {
     this.blockState[blockId].isEdit = false;
   }
 
-  private findNearestEditedBlock(blockId: string): string | false {
+  private findNearestEditingBlock(blockId: string): string | false {
     let index = 1;
     const blockIndex = this.getCurrentPostion(blockId);
     while (index <= this.blocks.length) {

@@ -11,6 +11,7 @@
           [ngStyle]="{ opacity: isEdit ? '100%' : '0%' }"
           class="block-editor block-editor__input"
           (focusin)="startEdit()"
+          (focusout)="onFocusOut()"
           [(ngModel)]="textBlock.text"
           (keydown)="command($event)"
           #edit
@@ -22,7 +23,7 @@
         <ng-template #editComponent></ng-template>
       </div>
     </div>
-    <div class="block-controls" *ngIf="isEdit">
+    <div class="block-controls" *ngIf="isFocused">
       <soer-block-editor-controls [controls]="controls"></soer-block-editor-controls>
     </div>
   </div>

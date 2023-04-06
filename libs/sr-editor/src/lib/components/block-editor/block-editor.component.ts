@@ -32,13 +32,7 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
 
   componentRef: ComponentRef<BasicBlockComponent> | null = null;
   isEdit = false;
-
-  constructor(
-    @Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry,
-    private blockService: BlockService,
-    private cdr: ChangeDetectorRef
-  ) {}
-
+  isFocused = false;
   controls: ControlBtn[] = [
     {
       title: 'Добавить (Alt+Enter)',
@@ -72,11 +66,18 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
     },
   ];
 
+  constructor(
+    @Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry,
+    private blockService: BlockService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
   ngOnInit(): void {
     this.blockService.onBlocksStateChange.subscribe((blockState) => {
       if (blockState[this.id]) {
         const currentState = blockState[this.id];
         this.isEdit = currentState.isEdit;
+        this.isFocused = currentState.isFocused;
         if (currentState.isFocused) {
           this.edit?.nativeElement.focus();
         }
@@ -91,6 +92,7 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
 
   startEdit(): void {
     this.isEdit = true;
+    this.isFocused = true;
     this.blockService.saveFocused(this.id);
   }
 

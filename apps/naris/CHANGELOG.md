@@ -2,6 +2,22 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.7.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.6.0...naris-0.7.0) (2023-04-06)
+
+
+### Features
+
+* **abstract:** change fast download mechanism ([d994a62](https://gitlog.ru:2222/Naris/soermono/commit/d994a62d58177da557cd0df6b7c79fa470c6ddd1))
+* add apiRoot to BusEmitter interface ([8a019f9](https://gitlog.ru:2222/Naris/soermono/commit/8a019f92256cac61772bd13fb651954bf409e13c))
+* add save workbook as pdf feature ([498e16d](https://gitlog.ru:2222/Naris/soermono/commit/498e16da9226b47b4a9d93ed6a68a88cdaca0735))
+
+
+### Bug Fixes
+
+* storyname typos ([cbeea0d](https://gitlog.ru:2222/Naris/soermono/commit/cbeea0d4d8c43e3c302bde05b13dd98f0823d3aa))
+* **tabs:** change logic of active tab selection ([451df67](https://gitlog.ru:2222/Naris/soermono/commit/451df67c24a552d935cda8ff2ecc00574cbf05b4))
+* typescript errors ([5f84e89](https://gitlog.ru:2222/Naris/soermono/commit/5f84e899a18e6d683d6f47d870ce1457aca24193))
+
 ## [0.6.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.5.0...naris-0.6.0) (2023-03-23)
 
 

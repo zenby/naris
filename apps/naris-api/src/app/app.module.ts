@@ -5,7 +5,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JsonModule } from './modules/json/json.module';
-import { PdfModule } from './modules/pdf/pdf.module';
 import { ImagesModule } from './modules/images/images.module';
 import { JwtConfig } from './config/jwt.config';
 import { PassportModule } from '@nestjs/passport';
@@ -23,7 +22,6 @@ import { PassportModule } from '@nestjs/passport';
       inject: [ConfigService],
     }),
     JsonModule,
-    PdfModule,
     ImagesModule,
   ],
   controllers: [AppController],

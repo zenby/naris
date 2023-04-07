@@ -39,7 +39,7 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
       handler: () => this.addBlockDown(),
     },
     {
-      title: 'Форматировать',
+      title: 'Форматировать (Alt+C)',
       icon: 'scissor',
       handler: () => this.formatBlock(),
     },
@@ -103,6 +103,10 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
 
     if (event.altKey && event.code === 'Enter') {
       this.addBlockDown();
+    }
+
+    if (event.altKey && event.code === 'KeyC') {
+      this.formatBlock();
     }
 
     if (event.altKey && event.code === 'Backspace') {

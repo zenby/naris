@@ -20,12 +20,22 @@ describe('Auth e2e-test', () => {
   let request: ReturnType<typeof supertest>;
   let userRepo: Repository<UserEntity>;
 
+  const adminUser = getTestUser({ role: UserRole.ADMIN });
+  const users = [getTestUser({ email: 'fakeUser@mail.com' }), getTestUser(), adminUser];
+
   const config: Configuration['jwt'] = {
     cookieName: 'refreshToken',
     expiresInAccess: 10,
     expiresInRefresh: 10,
     jwtSecret: 'secret',
   };
+
+  async function getJWTTokenForUser(user: UserEntity, expiredInSec = 3600) {
+    const { jwtSecret: secret } = config;
+    const iat = Math.floor(Date.now() / 1000) + expiredInSec;
+    const jwtToken = jwt.sign({ userId: user.id, userEmail: user.email, iat }, secret);
+    return jwtToken;
+  }
 
   beforeAll(async () => {
     const configMock = {
@@ -125,21 +135,12 @@ describe('Auth e2e-test', () => {
   });
 
   describe('GET /auth/access_token', () => {
-    const existsUser = new UserEntity();
-    existsUser.id = 1;
-    existsUser.email = 'test@ya.ru';
-
-    const generateRefreshToken = (expiredInSec = 3600) => {
-      const iat = Math.floor(Date.now() / 1000) + expiredInSec;
-      return config.cookieName + '=' + jwt.sign({ ...existsUser, iat }, config.jwtSecret);
-    };
-
-    beforeEach(() => {
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(existsUser);
-    });
-
     it('should generate access token when pass valid refresh token', async () => {
-      const response = await request.get('/auth/access_token').set('Cookie', [generateRefreshToken()]).expect(200);
+      const jwtToken = await getJWTTokenForUser(users[0]);
+      const response = await request
+        .get('/auth/access_token')
+        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .expect(200);
       const body: HttpJsonResult<{ accessToken: string }> = response.body;
       const accessToken = body.items[0]?.accessToken;
 
@@ -149,8 +150,11 @@ describe('Auth e2e-test', () => {
 
     it('should return 401 error when pass old refresh token', async () => {
       const expired10MinAgo = -10 * 60;
-
-      await request.get('/auth/access_token').set('Cookie', generateRefreshToken(expired10MinAgo)).expect(401);
+      const jwtToken = await getJWTTokenForUser(users[0], expired10MinAgo);
+      await request
+        .get('/auth/access_token')
+        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .expect(401);
     });
 
     it('should return 401 error when no pass refresh token', async () => {
@@ -159,27 +163,13 @@ describe('Auth e2e-test', () => {
   });
 
   describe('POST /auth/access_token_for_user', () => {
-    let adminUser: UserEntity;
-    let users: UserEntity[];
-
-    const generateRefreshToken = (user: UserEntity, expiredInSec = 3600) => {
-      const iat = Math.floor(Date.now() / 1000) + expiredInSec;
-      const token = jwt.sign({ ...user, iat }, config.jwtSecret);
-      return config.cookieName + '=' + token;
-    };
-
-    beforeAll(() => {
-      adminUser = getTestUser({ role: UserRole.ADMIN });
-      users = [getTestUser({ email: 'fakeUser@mail.com' }), getTestUser(), adminUser];
-    });
-
     it('should generate an access_token for requested user', async () => {
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser).mockResolvedValueOnce(users[0]);
+      const jwtToken = await getJWTTokenForUser(adminUser);
 
       const response = await request
         .post('/auth/access_token_for_user')
-        .set('Cookie', [generateRefreshToken(adminUser, 0)])
-        .query({ email: users[0].email })
+        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .send({ email: users[0].email })
         .expect(201);
 
       const body: HttpJsonResult<{ accessToken: string }> = response.body;
@@ -193,20 +183,23 @@ describe('Auth e2e-test', () => {
 
     it('should return 401 error when pass old refresh token', async () => {
       const expired10MinAgo = -10 * 60;
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
+
+      const jwtToken = await getJWTTokenForUser(adminUser, expired10MinAgo);
 
       await request
         .post('/auth/access_token_for_user')
-        .set('Cookie', [generateRefreshToken(adminUser, expired10MinAgo)])
-        .query({ email: users[0].email })
+        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .send({ email: users[0].email })
         .expect(401);
     });
 
     it('should return 403 error when user role is USER', async () => {
+      const jwtToken = await getJWTTokenForUser(users[1]);
+
       await request
         .post('/auth/access_token_for_user')
-        .set('Cookie', [generateRefreshToken(users[1], 0)])
-        .query({ email: users[0].email })
+        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .send({ email: users[0].email })
         .expect(403);
     });
 
@@ -214,20 +207,22 @@ describe('Auth e2e-test', () => {
       await request.post('/auth/access_token_for_user').query({ email: users[0].email }).expect(401);
     });
 
-    it('should return 404 error when no query params passed', async () => {
+    it('should return 404 error when no params passed', async () => {
+      const jwtToken = await getJWTTokenForUser(adminUser);
+
       await request
         .post('/auth/access_token_for_user')
-        .set('Cookie', [generateRefreshToken(adminUser, 0)])
+        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
         .expect(404);
     });
 
     it('should return 404 error when empty email passed', async () => {
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser).mockResolvedValueOnce(adminUser);
+      const jwtToken = await getJWTTokenForUser(adminUser);
 
       await request
         .post('/auth/access_token_for_user')
-        .set('Cookie', [generateRefreshToken(adminUser, 0)])
-        .query({ email: '' })
+        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .send({ email: '' })
         .expect(404);
     });
   });

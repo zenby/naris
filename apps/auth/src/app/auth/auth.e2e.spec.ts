@@ -167,14 +167,14 @@ describe('Auth e2e-test', () => {
     });
   });
 
-  describe('POST /auth/access_token_for_user', () => {
+  describe('POST /auth/access_token_for_user_request', () => {
     it('should generate an access_token for requested user', async () => {
       const jwtToken = await getJWTTokenForUser(adminUser);
 
       const response = await request
-        .post('/auth/access_token_for_user')
+        .post('/auth/access_token_for_user_request')
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .send({ email: users[0].email })
+        .send({ switch_to_user_by_email: users[0].email })
         .expect(201);
 
       const body: HttpJsonResult<{ accessToken: string }> = response.body;
@@ -192,9 +192,9 @@ describe('Auth e2e-test', () => {
       const jwtToken = await getJWTTokenForUser(adminUser, expired10MinAgo);
 
       await request
-        .post('/auth/access_token_for_user')
+        .post('/auth/access_token_for_user_request')
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .send({ email: users[0].email })
+        .send({ switch_to_user_by_email: users[0].email })
         .expect(401);
     });
 
@@ -202,21 +202,24 @@ describe('Auth e2e-test', () => {
       const jwtToken = await getJWTTokenForUser(users[1]);
 
       await request
-        .post('/auth/access_token_for_user')
+        .post('/auth/access_token_for_user_request')
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .send({ email: users[0].email })
+        .send({ switch_to_user_by_email: users[0].email })
         .expect(403);
     });
 
     it('should return 401 error when not authorized user', async () => {
-      await request.post('/auth/access_token_for_user').query({ email: users[0].email }).expect(401);
+      await request
+        .post('/auth/access_token_for_user_request')
+        .send({ switch_to_user_by_email: users[0].email })
+        .expect(401);
     });
 
     it('should return 404 error when no params passed', async () => {
       const jwtToken = await getJWTTokenForUser(adminUser);
 
       await request
-        .post('/auth/access_token_for_user')
+        .post('/auth/access_token_for_user_request')
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
         .expect(404);
     });
@@ -225,9 +228,9 @@ describe('Auth e2e-test', () => {
       const jwtToken = await getJWTTokenForUser(adminUser);
 
       await request
-        .post('/auth/access_token_for_user')
+        .post('/auth/access_token_for_user_request')
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .send({ email: '' })
+        .send({ switch_to_user_by_email: '' })
         .expect(404);
     });
   });

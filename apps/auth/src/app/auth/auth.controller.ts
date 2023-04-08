@@ -92,10 +92,12 @@ export class AuthController {
   @UseGuards(RefreshCookieGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @UsePipes(BackendValidationPipe)
-  @Post('access_token_for_user')
-  async getAccessTokenForUser(@Body() body: { email: string }): Promise<HttpJsonResult<{ accessToken: string }>> {
+  @Post('access_token_for_user_request')
+  async getAccessTokenForUser(
+    @Body() body: { switch_to_user_by_email: string }
+  ): Promise<HttpJsonResult<{ accessToken: string }>> {
     //if not handle empty post req then userService.findByEmail(undefined) returns first user id db
-    const email = body.email;
+    const email = body.switch_to_user_by_email;
     if (email === undefined || email === '') throw new HttpException('Email was not presented', HttpStatus.NOT_FOUND);
 
     const user = await this.userService.findByEmail(email);

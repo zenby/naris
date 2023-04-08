@@ -95,12 +95,14 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
     this.blockService.saveFocused(this.id);
   }
 
-  command(event: KeyboardEvent): void {
+  handleTextChange(): void {
     if (this.componentRef) {
-      this.componentRef.instance.text = this.textBlock.text;
       this.blockService.setBlockText(this.id, this.textBlock.text);
+      this.componentRef.instance.text = this.textBlock.text;
     }
+  }
 
+  command(event: KeyboardEvent): void {
     if (event.altKey && event.code === 'Enter') {
       this.addBlockDown();
     }
@@ -155,6 +157,10 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
 
     if (event.altKey && event.code === 'Digit3') {
       this.textBlock.type = 'code';
+    }
+
+    if (event.altKey && event.code === 'Digit4') {
+      this.textBlock.type = 'diagram';
     }
 
     if (event.code === 'Escape') {

@@ -8,7 +8,6 @@ import {
   InternalServerErrorException,
   Logger,
   Post,
-  Query,
   Res,
   UnauthorizedException,
   UseGuards,
@@ -81,7 +80,7 @@ export class AuthController {
 
   @ApiOperation({
     summary: 'Get access token for specified user',
-    description: 'Requires cookie with token, returns JWT access token',
+    description: 'Requires to be an admin and user email parameter in the POST body, returns JWT access token',
   })
   @ApiOkResponse({ schema: accessTokenSchema })
   @ApiUnauthorizedResponse({
@@ -94,8 +93,9 @@ export class AuthController {
   @Roles(UserRole.ADMIN)
   @UsePipes(BackendValidationPipe)
   @Post('access_token_for_user')
-  async getAccessTokenForUser(@Query('email') email: string): Promise<HttpJsonResult<{ accessToken: string }>> {
+  async getAccessTokenForUser(@Body() body: { email: string }): Promise<HttpJsonResult<{ accessToken: string }>> {
     //if not handle empty post req then userService.findByEmail(undefined) returns first user id db
+    const email = body.email;
     if (email === undefined || email === '') throw new HttpException('Email was not presented', HttpStatus.NOT_FOUND);
 
     const user = await this.userService.findByEmail(email);

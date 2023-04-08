@@ -50,7 +50,12 @@ describe('Auth e2e-test', () => {
         if (token == getRepositoryToken(UserEntity))
           return {
             save: jest.fn(),
-            findOne: jest.fn(),
+            findOne: jest.fn().mockImplementation((options) => {
+              const usr = users.find((user) => {
+                return user.email === options.where?.email;
+              });
+              return usr;
+            }),
           };
       })
       .compile();

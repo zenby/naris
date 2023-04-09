@@ -8,6 +8,7 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
     "build": "nx build",
+    "postbuild": "node ./scripts/postbuild.js",
     "test": "nx run-many --all --target=test --run-in-band",
     "lint": "nx run-many --all --target=lint --verbose",
     "format": "prettier --write \"{apps,libs}/**/*.{ts,js,scss,html}\"",

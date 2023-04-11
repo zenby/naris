@@ -23,6 +23,7 @@ import { EditAbstractePageComponent } from './edit-abstracte-page/edit-abstracte
 import { ListAbstractePageComponent } from './list-abstracte-page/list-abstracte-page.component';
 import { ViewAbstractePageComponent } from './view-abstracte-page/view-abstracte-page.component';
 import { WorkbooksViewModule } from '@soer/soer-components';
+import { PendingChangesGuard } from '../../../guards/pending-changes-guard.guard';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { WorkbooksViewModule } from '@soer/soer-components';
     ViewAbstractePageComponent,
     EditAbstracteFormComponent,
   ],
+  providers: [PendingChangesGuard],
   imports: [
     PreloaderModule,
     CommonModule,

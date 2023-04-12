@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { PreloaderModule } from '@soer/soer-components';
 import { SrDTOModule } from '@soer/sr-dto';
 import { SrEditorModule } from '@soer/sr-editor';
+import { SrDiagramBlockModule } from '@soer/sr-editor-blocks';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
@@ -55,6 +56,7 @@ import { ConfirmPageLeaveGuard } from '../../../guards/confirm-page-leave.guard'
     MarkdownModule.forRoot(),
     SrDTOModule,
     SrEditorModule,
+    SrDiagramBlockModule,
     WorkbooksViewModule,
   ],
 })

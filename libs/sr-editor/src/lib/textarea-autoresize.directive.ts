@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
 
 @Directive({
   selector: '[soerAutoresize]', // Attribute selector
@@ -13,12 +13,11 @@ export class TextareaAutoresizeDirective implements OnInit {
 
   ngOnInit(): void {
     if (this.element.nativeElement.scrollHeight) {
-      setTimeout(() => this.adjust());
+      requestAnimationFrame(() => this.adjust());
     }
   }
 
   adjust(): void {
-    this.element.nativeElement.style.height = this.element.nativeElement.children[0].scrollHeight - 50 + 'px';
-    this.element.nativeElement.style.height = this.element.nativeElement.children[0].scrollHeight + 10 + 'px';
+    this.element.nativeElement.style.height = this.element.nativeElement.children[0].scrollHeight + 2 + 'px';
   }
 }

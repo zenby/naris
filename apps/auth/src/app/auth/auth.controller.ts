@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   HttpException,
+  HttpStatus,
   InternalServerErrorException,
   Logger,
   Post,
@@ -25,7 +26,7 @@ import {
 } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
-import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
+import { HttpJsonResult, HttpJsonStatus, UserRole } from '@soer/sr-common-interfaces';
 import { Configuration } from '../config/config';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { responseSchema } from './doc/response.schema';
@@ -37,11 +38,18 @@ import { User } from '../common/decorators/user.decorator';
 import { UserEntity } from '../user/user.entity';
 import { RefreshCookieGuard } from '../common/guards/refreshCookie.guard';
 import { LocalAuthGuard } from '../common/guards/local-auth.guard';
+import { RolesGuard } from '../common/guards/roles-guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { UserService } from '../user/user.service';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService, private readonly configService: ConfigService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+    private readonly userService: UserService
+  ) {}
 
   logger = new Logger(AuthController.name);
   internalErrorMessage = 'Something went wrong. Try it later';
@@ -64,6 +72,41 @@ export class AuthController {
     } catch (e) {
       if (e instanceof UnauthorizedException) throw e;
 
+      this.logger.error(e);
+
+      throw new InternalServerErrorException(this.internalErrorMessage);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Get access token for specified user',
+    description: 'Requires to be an admin and user email parameter in the POST body, returns JWT access token',
+  })
+  @ApiOkResponse({ schema: accessTokenSchema })
+  @ApiUnauthorizedResponse({
+    description: 'Invalid or empty refresh token',
+  })
+  @ApiNotFoundResponse({
+    description: 'User not found',
+  })
+  @UseGuards(RefreshCookieGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @UsePipes(BackendValidationPipe)
+  @Post('access_token_for_user_request')
+  async getAccessTokenForUser(
+    @Body() body: { switch_to_user_by_email: string }
+  ): Promise<HttpJsonResult<{ accessToken: string }>> {
+    //if not handle empty post req then userService.findByEmail(undefined) returns first user id db
+    const email = body.switch_to_user_by_email;
+    if (email === undefined || email === '') throw new HttpException('Email was not presented', HttpStatus.NOT_FOUND);
+
+    const user = await this.userService.findByEmail(email);
+    if (user instanceof Error) throw user;
+    try {
+      const accessToken = await this.authService.getAccessToken(user);
+
+      return { status: HttpJsonStatus.Ok, items: [{ accessToken }] };
+    } catch (e) {
       this.logger.error(e);
 
       throw new InternalServerErrorException(this.internalErrorMessage);

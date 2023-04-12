@@ -27,7 +27,7 @@ export function getTypeOrmConfig(): TypeOrmModuleOptions {
 
 export function configurationFactory(): Config {
   return {
-    port: process.env.PORT ? parseInt(process.env.PORT, 10) : 3200,
+    port: process.env.NARIS_API_BACK_PORT ? parseInt(process.env.NARIS_API_BACK_PORT, 10) : 3200,
     prefix: process.env.PREFIX ?? 'api',
     typeOrm: getTypeOrmConfig(),
     version: 3,

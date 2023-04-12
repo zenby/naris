@@ -6,12 +6,6 @@
   }
 }
 
-.help {
-  font-size: 0.7rem;
-  font-style: italic;
-  color: gray;
-}
-
 .info {
   min-width: 60px;
   text-align: right;
@@ -20,16 +14,6 @@
 
   @media screen and (max-width: 768px) {
     text-align: left;
-  }
-}
-
-.edit-button {
-  display: block;
-  margin: 5px 0 0 auto;
-
-  @media screen and (max-width: 768px) {
-    display: inline-block;
-    margin: 0 0 5px 5px;
   }
 }
 

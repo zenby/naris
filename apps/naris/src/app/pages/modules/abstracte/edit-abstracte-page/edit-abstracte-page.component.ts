@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
 import {
@@ -10,6 +10,7 @@ import {
   SerializedJsonModel,
 } from '@soer/sr-dto';
 import { EMPTY_WORKBOOK, WorkbookModel } from '@soer/sr-editor';
+import { ComponentCanDeactivate } from '../../../../guards/pending-changes-guard.guard';
 import { map, Observable } from 'rxjs';
 import { convertToJsonDTO } from '../../../../api/json.dto.helpers';
 
@@ -19,7 +20,7 @@ import { convertToJsonDTO } from '../../../../api/json.dto.helpers';
   styleUrls: ['./edit-abstracte-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditAbstractePageComponent {
+export class EditAbstractePageComponent implements ComponentCanDeactivate {
   public workbook$: Observable<WorkbookModel[]>;
   private workbookId: BusEmitter;
   constructor(private bus$: MixedBusService, private store$: DataStoreService, private route: ActivatedRoute) {
@@ -40,6 +41,15 @@ export class EditAbstractePageComponent {
         return data;
       })
     );
+  }
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    return false;
+  }
+
+  getConfirmMessage(): string {
+    return 'Вы точно хотите прекратить редактирование?';
   }
 
   onSave(workbook: WorkbookModel): void {

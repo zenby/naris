@@ -2,19 +2,6 @@
   <div class="info">
     {{ textBlock.type | typeFormat }}
     {{ isEdit | booleanToString: ' [*]':' [ ]' }}
-
-    <button
-      *ngIf="isEdit"
-      class="edit-button"
-      (click)="stopEdit()"
-      nz-button
-      nzTrigger="click"
-      nzType="default"
-      nzSize="small"
-      nzPlacement="bottomRight"
-    >
-      <i nz-icon nzType="edit"></i>
-    </button>
   </div>
   <div class="block-wrapper">
     <div class="edit" soerAutoresize>
@@ -22,9 +9,10 @@
         <textarea
           [ngStyle]="{ opacity: isEdit ? '100%' : '0%' }"
           class="block-editor block-editor__input"
-          (click)="isEdit = true"
+          (click)="startEdit()"
           [(ngModel)]="textBlock.text"
           (keydown)="command($event)"
+          (ngModelChange)="handleTextChange()"
           #edit
         >
         </textarea>
@@ -34,7 +22,7 @@
         <ng-template #editComponent></ng-template>
       </div>
     </div>
-    <div class="block-controls" *ngIf="isEdit">
+    <div class="block-controls" *ngIf="isFocused">
       <soer-block-editor-controls [controls]="controls"></soer-block-editor-controls>
     </div>
   </div>

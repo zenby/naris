@@ -12,8 +12,10 @@ import {
   DtoPack,
 } from '@soer/sr-dto';
 import { WorkbookModel } from '@soer/sr-editor';
+import { MarkdownService } from 'ngx-markdown';
 import { Observable, finalize } from 'rxjs';
 import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
+import { printHTML } from '../abstracte.helper';
 
 // TODO: вынести в отдельный файл, подумать над его местом в структуре
 export enum LoadingState {
@@ -86,7 +88,8 @@ export class ListAbstractePageComponent implements OnInit {
     private bus$: MixedBusService,
     private store$: DataStoreService,
     private route: ActivatedRoute,
-    private preloaderService: PreloaderService
+    private preloaderService: PreloaderService,
+    private markdownService: MarkdownService
   ) {
     this.name = this.route.snapshot.data['header'].title;
     this.title = this.route.snapshot.data['page'].title;
@@ -125,9 +128,19 @@ export class ListAbstractePageComponent implements OnInit {
   }
 
   workbookDownload(workbook: WorkbookModel): void {
-    this.bus$.publish(
-      new CommandConvertMdToPdf({ ...this.workbookId, key: { wid: 'document/convertor/mdtopdf' } }, workbook)
-    );
+    let workbookHtml = '';
+
+    if (workbook.text && workbook.text.length > 0) {
+      workbookHtml = this.markdownService.parse(`<markdown>${workbook.text}</markdown>`);
+    }
+
+    if (workbook.blocks.length > 0) {
+      workbook.blocks.forEach(
+        (block) => (workbookHtml += this.markdownService.parse(`<markdown>${block.text}</markdown>`))
+      );
+    }
+
+    printHTML(workbookHtml);
   }
 
   createWorkbook(): void {

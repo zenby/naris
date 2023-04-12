@@ -57,4 +57,8 @@ export class UserService {
   async deleteUser(id: number): Promise<DeleteResult | Error> {
     return await this.userRepository.delete({ id: id });
   }
+
+  async changeBlockStatus(id: number, isBlocked: boolean): Promise<void | Error> {
+    await this.userRepository.update({ id }, { isBlocked });
+  }
 }

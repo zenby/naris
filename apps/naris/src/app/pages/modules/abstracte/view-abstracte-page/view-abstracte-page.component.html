@@ -1,4 +1,4 @@
-<div class="workbook-view">
+<div class="workbook-view" ngModel #workbook>
   <ng-container *ngIf="workbook$ | async as workbooks">
     <ng-container *ngFor="let workbook of workbooks.items">
       <markdown *ngIf="workbook.text && workbook.text.length > 0">{{ workbook.text }}</markdown>

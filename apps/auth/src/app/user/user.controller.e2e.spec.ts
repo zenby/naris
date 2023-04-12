@@ -34,6 +34,7 @@ describe('user controller e2e tests', () => {
       find: jest.fn(),
       findOne: jest.fn(),
       delete: jest.fn(),
+      update: jest.fn(),
     };
 
     const moduleRef = await Test.createTestingModule({
@@ -114,7 +115,7 @@ describe('user controller e2e tests', () => {
       const jwtToken = await getJWTTokenForUser(adminUser);
 
       const userRepositoryDeleteSpy = jest.spyOn(userRepo, 'delete').mockResolvedValueOnce({} as DeleteResult);
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser).mockResolvedValueOnce(userToDelete);
+      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
 
       const response = await request
         .delete(`/user/${userToDelete.id}`)
@@ -147,6 +148,42 @@ describe('user controller e2e tests', () => {
       const userToDelete = getTestUser();
 
       await request.delete(`/user/${userToDelete.id}`).send().expect(401);
+    });
+  });
+
+  describe('PUT /user/id', () => {
+    it('should block user when user blocked by an admin', async () => {
+      const adminUser = getTestUser({ role: UserRole.ADMIN });
+      const userId = faker.random.numeric();
+
+      const jwtToken = await getJWTTokenForUser(adminUser);
+
+      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
+
+      await request
+        .put(`/user/${userId}`)
+        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .send({ isBlocked: true })
+        .expect(200);
+
+      expect(userRepo.update).toHaveBeenCalledWith({ id: userId }, { isBlocked: true });
+    });
+
+    it('should block user when user unblocked by an admin', async () => {
+      const adminUser = getTestUser({ role: UserRole.ADMIN });
+      const userId = faker.random.numeric();
+
+      const jwtToken = await getJWTTokenForUser(adminUser);
+
+      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
+
+      await request
+        .put(`/user/${userId}`)
+        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .send({ isBlocked: false })
+        .expect(200);
+
+      expect(userRepo.update).toHaveBeenCalledWith({ id: userId }, { isBlocked: false });
     });
   });
 

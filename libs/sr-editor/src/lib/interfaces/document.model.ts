@@ -1,4 +1,4 @@
-export type TextBlockType = 'markdown' | 'test' | 'presentation' | 'code';
+export type TextBlockType = 'markdown' | 'test' | 'presentation' | 'code' | 'diagram';
 
 export interface TextBlock {
   type: TextBlockType;

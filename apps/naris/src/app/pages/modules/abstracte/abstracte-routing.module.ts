@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PendingChangesGuard } from '../../../guards/pending-changes-guard.guard';
 import { ComposeIcontabsPageComponent } from '../../router-compose/compose-icontabs-page/compose-icontabs-page.component';
 import { WORKBOOK_TAG } from './abstracte.const';
 import { EditAbstractePageComponent } from './edit-abstracte-page/edit-abstracte-page.component';
@@ -41,12 +42,6 @@ const routes: Routes = [
               },
               controls: [
                 {
-                  title: 'Форматировать',
-                  path: ['.'],
-                  action: 'format',
-                  icon: 'scissor',
-                },
-                {
                   title: 'Просмотр',
                   path: ['.'],
                   toggle: 'preview',
@@ -64,6 +59,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'workbookEmitter',
             },
+            canDeactivate: [PendingChangesGuard],
           },
           {
             path: 'edit/:wid',
@@ -75,12 +71,6 @@ const routes: Routes = [
               },
               controls: [
                 {
-                  title: 'Форматировать',
-                  path: ['.'],
-                  action: 'format',
-                  icon: 'scissor',
-                },
-                {
                   title: 'Просмотр',
                   path: ['.'],
                   toggle: 'preview',
@@ -98,6 +88,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'workbookEmitter',
             },
+            canDeactivate: [PendingChangesGuard],
           },
           {
             path: 'view/:wid',
@@ -107,6 +98,15 @@ const routes: Routes = [
                 title: 'Конспект',
                 subtitle: 'помощь в осмыслении материалов по программированию',
               },
+              controls: [
+                {
+                  title: 'Сохранить в PDF',
+                  path: ['.'],
+                  action: 'save-as-pdf',
+                  icon: 'file-pdf',
+                },
+                { title: 'Назад', path: ['../..'], icon: 'rollback' },
+              ],
             },
             resolve: {
               workbook: 'workbookEmitter',
@@ -156,6 +156,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'quizEmitter',
             },
+            canDeactivate: [PendingChangesGuard],
           },
           {
             path: 'edit/:wid',
@@ -184,6 +185,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'quizEmitter',
             },
+            canDeactivate: [PendingChangesGuard],
           },
           {
             path: 'view/:wid',
@@ -193,6 +195,15 @@ const routes: Routes = [
                 title: 'Тест',
                 subtitle: 'проверка знаний, полученных в ходе образовательного процесса',
               },
+              controls: [
+                {
+                  title: 'Сохранить в PDF',
+                  path: ['.'],
+                  action: 'save-as-pdf',
+                  icon: 'file-pdf',
+                },
+                { title: 'Назад', path: ['../..'], icon: 'rollback' },
+              ],
             },
             resolve: {
               workbook: 'quizEmitter',
@@ -242,6 +253,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'articleEmitter',
             },
+            canDeactivate: [PendingChangesGuard],
           },
           {
             path: 'edit/:wid',
@@ -270,6 +282,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'articleEmitter',
             },
+            canDeactivate: [PendingChangesGuard],
           },
           {
             path: 'view/:wid',
@@ -279,6 +292,15 @@ const routes: Routes = [
                 title: 'Статья',
                 subtitle: 'расскажите о своем опыте',
               },
+              controls: [
+                {
+                  title: 'Сохранить в PDF',
+                  path: ['.'],
+                  action: 'save-as-pdf',
+                  icon: 'file-pdf',
+                },
+                { title: 'Назад', path: ['../..'], icon: 'rollback' },
+              ],
             },
             resolve: {
               workbook: 'articleEmitter',

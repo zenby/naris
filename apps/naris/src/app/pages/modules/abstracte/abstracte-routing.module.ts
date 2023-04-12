@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ConfirmPageLeaveGuard } from '../../../guards/pending-changes.guard';
+import { ConfirmPageLeaveGuard } from '../../../guards/confirm-page-leave.guard';
 import { ComposeIcontabsPageComponent } from '../../router-compose/compose-icontabs-page/compose-icontabs-page.component';
 import { WORKBOOK_TAG } from './abstracte.const';
 import { EditAbstractePageComponent } from './edit-abstracte-page/edit-abstracte-page.component';

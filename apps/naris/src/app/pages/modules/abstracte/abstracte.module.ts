@@ -23,7 +23,7 @@ import { EditAbstractePageComponent } from './edit-abstracte-page/edit-abstracte
 import { ListAbstractePageComponent } from './list-abstracte-page/list-abstracte-page.component';
 import { ViewAbstractePageComponent } from './view-abstracte-page/view-abstracte-page.component';
 import { WorkbooksViewModule } from '@soer/soer-components';
-import { ConfirmPageLeaveGuard } from '../../../guards/pending-changes.guard';
+import { ConfirmPageLeaveGuard } from '../../../guards/confirm-page-leave.guard';
 
 @NgModule({
   declarations: [

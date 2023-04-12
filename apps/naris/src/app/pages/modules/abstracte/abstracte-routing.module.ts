@@ -156,6 +156,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'quizEmitter',
             },
+            canDeactivate: [PendingChangesGuard],
           },
           {
             path: 'edit/:wid',
@@ -184,6 +185,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'quizEmitter',
             },
+            canDeactivate: [PendingChangesGuard],
           },
           {
             path: 'view/:wid',
@@ -251,6 +253,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'articleEmitter',
             },
+            canDeactivate: [PendingChangesGuard],
           },
           {
             path: 'edit/:wid',
@@ -279,6 +282,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'articleEmitter',
             },
+            canDeactivate: [PendingChangesGuard],
           },
           {
             path: 'view/:wid',

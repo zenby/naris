@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PendingChangesGuard } from '../../../guards/pending-changes-guard.guard';
+import { ConfirmPageLeaveGuard } from '../../../guards/pending-changes.guard';
 import { ComposeIcontabsPageComponent } from '../../router-compose/compose-icontabs-page/compose-icontabs-page.component';
 import { WORKBOOK_TAG } from './abstracte.const';
 import { EditAbstractePageComponent } from './edit-abstracte-page/edit-abstracte-page.component';
@@ -59,7 +59,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'workbookEmitter',
             },
-            canDeactivate: [PendingChangesGuard],
+            canDeactivate: [ConfirmPageLeaveGuard],
           },
           {
             path: 'edit/:wid',
@@ -88,7 +88,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'workbookEmitter',
             },
-            canDeactivate: [PendingChangesGuard],
+            canDeactivate: [ConfirmPageLeaveGuard],
           },
           {
             path: 'view/:wid',
@@ -156,7 +156,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'quizEmitter',
             },
-            canDeactivate: [PendingChangesGuard],
+            canDeactivate: [ConfirmPageLeaveGuard],
           },
           {
             path: 'edit/:wid',
@@ -185,7 +185,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'quizEmitter',
             },
-            canDeactivate: [PendingChangesGuard],
+            canDeactivate: [ConfirmPageLeaveGuard],
           },
           {
             path: 'view/:wid',
@@ -253,7 +253,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'articleEmitter',
             },
-            canDeactivate: [PendingChangesGuard],
+            canDeactivate: [ConfirmPageLeaveGuard],
           },
           {
             path: 'edit/:wid',
@@ -282,7 +282,7 @@ const routes: Routes = [
             resolve: {
               workbook: 'articleEmitter',
             },
-            canDeactivate: [PendingChangesGuard],
+            canDeactivate: [ConfirmPageLeaveGuard],
           },
           {
             path: 'view/:wid',

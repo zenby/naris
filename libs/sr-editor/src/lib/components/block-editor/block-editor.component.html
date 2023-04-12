@@ -4,7 +4,7 @@
     {{ isEdit | booleanToString: ' [*]':' [ ]' }}
   </div>
   <div class="block-wrapper">
-    <div class="edit" [soerAutoresize]="textBlock.type === 'markdown'">
+    <div class="edit" soerAutoresize>
       <ng-container>
         <textarea
           [ngStyle]="{ opacity: isEdit ? '100%' : '0%' }"

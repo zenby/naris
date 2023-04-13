@@ -13,19 +13,26 @@
       nzXl="8"
       *ngFor="let video of streams; index as i"
     >
-      <nz-card nzHoverable [nzCover]="coverTemplate" (click)="showVideoOrOpenFolder(video, i)">
-        <nz-card-meta [nzTitle]="video.title" [nzDescription]="video.desc"></nz-card-meta>
-      </nz-card>
-      <ng-template #coverTemplate>
-        <div *ngIf="video.thumb_url && !video.children" class="card-cover_placeholder">
-          <img [src]="video.thumb_url" class="card-cover_image" />
-        </div>
-        <div *ngIf="video.children" class="card-cover_folder">
-          <div class="folder-icon">
-            <i nz-icon [nzType]="'folder'" nzTheme="outline"></i>
-            <div>{{ video.children.length }}</div>
+      <soer-thumbnail-card
+        *ngIf="video.thumb_url && !video.children; else folder"
+        (click)="showVideoOrOpenFolder(video, i)"
+        [title]="video.title"
+        [description]="video.desc"
+        [img]="video.thumb_url"
+      >
+      </soer-thumbnail-card>
+      <ng-template #folder>
+        <nz-card nzHoverable [nzCover]="coverTemplate" (click)="showVideoOrOpenFolder(video, i)">
+          <nz-card-meta [nzTitle]="video.title" [nzDescription]="video.desc"></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <div class="card-cover_folder">
+            <div class="folder-icon">
+              <i nz-icon [nzType]="'folder'" nzTheme="outline"></i>
+              <div>{{ video.children?.length }}</div>
+            </div>
           </div>
-        </div>
+        </ng-template>
       </ng-template>
     </div>
   </ng-container>

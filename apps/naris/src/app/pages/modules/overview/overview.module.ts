@@ -12,6 +12,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { TileModule } from '@soer/soer-components';
+import { ThumbnailCardModule } from '@soer/soer-components';
 import { ByRoutePathResolver } from '../../../api/by-route-path.resolver';
 import { StreamService } from '../../../api/streams/stream.service';
 import { WorkshopsService } from '../../../api/workshops/workshops.service';
@@ -22,6 +23,7 @@ import { TargetsListComponent } from './metrics/targets-list/targets-list.compon
 import { MetricsListComponent } from './metrics/metrics-list/metrics-list.component';
 import { PercentStatusStrategyPipe } from './metrics/metrics-list/strategies/percent-status-strategy.pipe';
 import { CountStatusStrategyPipe } from './metrics/metrics-list/strategies/count-status-strategy.pipe';
+import { LatestComponent } from './latest/latest.component';
 
 @NgModule({
   declarations: [
@@ -31,9 +33,11 @@ import { CountStatusStrategyPipe } from './metrics/metrics-list/strategies/count
     InfoComponent,
     PercentStatusStrategyPipe,
     CountStatusStrategyPipe,
+    LatestComponent,
   ],
   imports: [
     CommonModule,
+    ThumbnailCardModule,
     TileModule,
     FormsModule,
     NzFormModule,

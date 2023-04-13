@@ -5,6 +5,7 @@ import { StreamService } from '../../../api/streams/stream.service';
 import { WorkshopsService } from '../../../api/workshops/workshops.service';
 import { ComposeIcontabsPageComponent } from '../../router-compose/compose-icontabs-page/compose-icontabs-page.component';
 import { InfoComponent } from './info/info.component';
+import { LatestComponent } from './latest/latest.component';
 import { MetricsComponent } from './metrics/metrics.component';
 
 const routes: Routes = [
@@ -36,6 +37,15 @@ const routes: Routes = [
         component: InfoComponent,
         resolve: {
           brif: ByRoutePathResolver,
+        },
+      },
+      {
+        path: 'latest',
+        data: { header: { title: 'Новые материалы', subtitle: 'последние видео и воркшопы', icon: 'star' } },
+        component: LatestComponent,
+        resolve: {
+          streams: StreamService,
+          workshops: WorkshopsService,
         },
       },
     ],

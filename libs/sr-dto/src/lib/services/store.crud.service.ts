@@ -23,10 +23,12 @@ import { DtoPack, ERROR, INIT, OK } from '../interfaces/dto.pack.interface';
 import { CRUDBusEmitter } from '../sr-dto.module';
 import { Params } from '@angular/router';
 
+type StoreCrudPatchedWindow = Window & { store$?: StoreCrudService };
+
 @Injectable({ providedIn: 'root' })
 export class StoreCrudService implements CRUD {
   constructor(private http: HttpClient, private bus$: MixedBusService, private urlBuilder: UrlBuilderService) {
-    const wnd = window as any;
+    const wnd = window as StoreCrudPatchedWindow;
     wnd.store$ = this;
     console.log('Start RESTfull CRUD events service');
     bus$.of(CommandNew).subscribe(this.createNew.bind(this));

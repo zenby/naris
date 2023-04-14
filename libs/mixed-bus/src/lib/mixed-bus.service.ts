@@ -29,7 +29,7 @@ export class MixedBusService {
    * Публикует BusMessage в шине
    * @param message  - BusMessage
    */
-  public publish<T extends Record<string, unknown>>(message: BusMessage | BusError): void {
+  public publish(message: BusMessage | BusError): void {
     console.log('Publish =>', message.owner, message);
     const channel = (message.constructor as any).name;
     this.bus$.next({ channel, message });

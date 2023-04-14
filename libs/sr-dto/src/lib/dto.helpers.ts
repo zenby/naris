@@ -1,6 +1,6 @@
 import { BusEmitter, BusMessage } from '@soer/mixed-bus';
 import { map, Observable } from 'rxjs';
-import { DtoPack, INIT, OK } from './interfaces/dto.pack.interface';
+import { DtoPack, OK } from './interfaces/dto.pack.interface';
 import { SerializedJsonModel } from './interfaces/serialize-json.model';
 import { CRUDBusEmitter } from './sr-dto.module';
 

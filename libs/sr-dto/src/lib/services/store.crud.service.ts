@@ -21,6 +21,7 @@ import { isCRUDBusEmitter } from '../dto.helpers';
 import { CRUD } from '../interfaces/crud.interface';
 import { DtoPack, ERROR, INIT, OK } from '../interfaces/dto.pack.interface';
 import { CRUDBusEmitter } from '../sr-dto.module';
+import { Params } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class StoreCrudService implements CRUD {
@@ -40,13 +41,13 @@ export class StoreCrudService implements CRUD {
     this.updateData({ status: INIT, items: [] }, msg.owner);
   }
   // Create
-  protected queryRead(owner: CRUDBusEmitter, routeParams: any): Observable<DtoPack<any>> {
-    return this.http.get<DtoPack<any>>(
+  protected queryRead(owner: CRUDBusEmitter, routeParams: Params): Observable<DtoPack> {
+    return this.http.get<DtoPack>(
       this.urlBuilder.build(owner.schema['url'], owner.key, routeParams, owner.schema['params'])
     );
   }
 
-  public read(msg: BusMessage | BusError): Promise<DtoPack<any>> {
+  public read(msg: BusMessage | BusError): Promise<DtoPack> {
     if (msg instanceof BusError || !isCRUDBusEmitter(msg.owner)) {
       return Promise.resolve({ status: ERROR, items: [] });
     }
@@ -60,14 +61,14 @@ export class StoreCrudService implements CRUD {
   }
 
   // Create
-  protected queryCreate(data: any, owner: CRUDBusEmitter, routeParams: any): Observable<DtoPack<any>> {
-    return this.http.post<DtoPack<any>>(
+  protected queryCreate(data: unknown, owner: CRUDBusEmitter, routeParams: Params): Observable<DtoPack> {
+    return this.http.post<DtoPack>(
       this.urlBuilder.build(owner.schema['url'], owner.key, routeParams, owner.schema['params']),
       data
     );
   }
 
-  public create(msg: BusMessage | BusError): Promise<DtoPack<any>> {
+  public create(msg: BusMessage | BusError): Promise<DtoPack> {
     if (msg instanceof BusError || !isCRUDBusEmitter(msg.owner)) {
       return Promise.resolve({ status: ERROR, items: [] });
     }
@@ -80,14 +81,14 @@ export class StoreCrudService implements CRUD {
   }
 
   // UPDATE
-  protected queryUpdate(data: any, owner: CRUDBusEmitter, routeParams: any): Observable<DtoPack<any>> {
-    return this.http.put<DtoPack<any>>(
+  protected queryUpdate(data: unknown, owner: CRUDBusEmitter, routeParams: Params): Observable<DtoPack> {
+    return this.http.put<DtoPack>(
       this.urlBuilder.build(owner.schema['url'], owner.key, routeParams, owner.schema['params']),
       data
     );
   }
 
-  public update(msg: BusMessage | BusError): Promise<DtoPack<any>> {
+  public update(msg: BusMessage | BusError): Promise<DtoPack> {
     if (msg instanceof BusError || !isCRUDBusEmitter(msg.owner)) {
       return Promise.resolve({ status: ERROR, items: [] });
     }
@@ -101,13 +102,13 @@ export class StoreCrudService implements CRUD {
   }
 
   // DELETE
-  protected queryDelete(owner: CRUDBusEmitter, routeParams: any): Observable<DtoPack<any>> {
-    return this.http.delete<DtoPack<any>>(
+  protected queryDelete(owner: CRUDBusEmitter, routeParams: Params): Observable<DtoPack> {
+    return this.http.delete<DtoPack>(
       this.urlBuilder.build(owner.schema['url'], owner.key, routeParams, owner.schema['params'])
     );
   }
 
-  public delete(msg: BusMessage | BusError): Promise<DtoPack<any>> {
+  public delete(msg: BusMessage | BusError): Promise<DtoPack> {
     if (msg instanceof BusError || !isCRUDBusEmitter(msg.owner)) {
       return Promise.resolve({ status: ERROR, items: [] });
     }
@@ -120,10 +121,7 @@ export class StoreCrudService implements CRUD {
     );
   }
 
-  async updateData(
-    dataOrObservable: DtoPack<any> | Observable<DtoPack<any>> | undefined,
-    id: BusEmitter
-  ): Promise<DtoPack<any>> {
+  async updateData(dataOrObservable: DtoPack | Observable<DtoPack> | undefined, id: BusEmitter): Promise<DtoPack> {
     if (isObservable(dataOrObservable)) {
       try {
         dataOrObservable = await dataOrObservable.pipe(first()).toPromise();

@@ -86,7 +86,7 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.renderComponentForEditMode();
+    this.renderBlockForPreview();
   }
 
   startEdit(): void {
@@ -170,6 +170,7 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
 
   stopEdit() {
     this.blockService.stopEdit(this.id);
+    this.renderBlockForPreview();
   }
 
   private formatBlock() {
@@ -221,8 +222,9 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
     return text.split(lineBreakRegExp).length;
   }
 
-  private renderComponentForEditMode(): void {
+  private renderBlockForPreview(): void {
     const component = this.editorBlocksRegistry[this.textBlock.type];
+    this.componentRef?.destroy();
     this.componentRef = this.editComponent.createComponent<BasicBlockComponent>(component);
     this.componentRef.instance.text = this.textBlock.text;
     this.componentRef.changeDetectorRef.detectChanges();

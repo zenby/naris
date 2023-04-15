@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
 import {
@@ -12,6 +12,7 @@ import {
 import { EMPTY_WORKBOOK, WorkbookModel } from '@soer/sr-editor';
 import { map, Observable } from 'rxjs';
 import { convertToJsonDTO } from '../../../../api/json.dto.helpers';
+import { EditAbstracteFormComponent } from '../edit-abstracte-form/edit-abstracte-form.component';
 
 @Component({
   selector: 'soer-edit-abstracte-page',
@@ -22,6 +23,9 @@ import { convertToJsonDTO } from '../../../../api/json.dto.helpers';
 export class EditAbstractePageComponent {
   public workbook$: Observable<WorkbookModel[]>;
   private workbookId: BusEmitter;
+
+  @ViewChild(EditAbstracteFormComponent) editForm: EditAbstracteFormComponent | null = null;
+
   constructor(private bus$: MixedBusService, private store$: DataStoreService, private route: ActivatedRoute) {
     this.workbookId = this.route.snapshot.data['workbook'];
     this.workbook$ = deSerializeJson<WorkbookModel>(
@@ -40,6 +44,10 @@ export class EditAbstractePageComponent {
         return data;
       })
     );
+  }
+
+  canDeactivate(): boolean {
+    return !this.editForm?.hasChanges();
   }
 
   onSave(workbook: WorkbookModel): void {

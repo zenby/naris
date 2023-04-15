@@ -9,7 +9,7 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiPara
 import { JsonResponseDto } from './dto/json-response.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
-@Controller({ version: '3', path: 'json/:documentGroup' })
+@Controller({ version: '3', path: 'json/:documentNamespace' })
 export class JsonController {
   constructor(private readonly jsonService: JsonService) {}
 
@@ -20,9 +20,9 @@ export class JsonController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAll(@Param('documentGroup') documentGroup: string): Promise<HttpJsonResponse<JsonEntity>> {
+  async getAll(@Param('documentNamespace') documentNamespace: string): Promise<HttpJsonResponse<JsonEntity>> {
     try {
-      const documents = await this.jsonService.getAll(documentGroup);
+      const documents = await this.jsonService.getAll(documentNamespace);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
     } catch (e) {
@@ -37,11 +37,11 @@ export class JsonController {
   @UseGuards(JwtAuthGuard)
   @Post('new')
   async createJson(
-    @Param('documentGroup') documentGroup: string,
+    @Param('documentNamespace') documentNamespace: string,
     @Body() createJsonDto: CreateJsonDto
   ): Promise<HttpJsonResponse<JsonEntity>> {
     try {
-      const document = await this.jsonService.createJson(documentGroup, createJsonDto);
+      const document = await this.jsonService.createJson(documentNamespace, createJsonDto);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
@@ -52,14 +52,14 @@ export class JsonController {
 
   @ApiOperation({ summary: 'Get one', description: 'Getting a document by id and belonging to a specific group' })
   @ApiOkResponse({ type: JsonResponseDto })
-  @ApiParam({ name: 'documentGroup' })
+  @ApiParam({ name: 'documentNamespace' })
   @ApiParam({ name: 'documentId' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get(':documentId')
   async findOne(@Param() params: JsonParams): Promise<HttpJsonResponse<JsonEntity>> {
     try {
-      const document = await this.jsonService.findOne(params.documentGroup, +params.documentId);
+      const document = await this.jsonService.findOne(params.documentNamespace, +params.documentId);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
@@ -73,7 +73,7 @@ export class JsonController {
     description: 'Change a document with a specific id belonging to a specific category',
   })
   @ApiOkResponse({ type: JsonResponseDto })
-  @ApiParam({ name: 'documentGroup' })
+  @ApiParam({ name: 'documentNamespace' })
   @ApiParam({ name: 'documentId' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -83,7 +83,7 @@ export class JsonController {
     @Body() updateJsonDto: UpdateJsonDto
   ): Promise<HttpJsonResponse<JsonEntity>> {
     try {
-      const document = await this.jsonService.update(+params.documentId, params.documentGroup, updateJsonDto);
+      const document = await this.jsonService.update(+params.documentId, params.documentNamespace, updateJsonDto);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
@@ -97,14 +97,14 @@ export class JsonController {
     description: 'Delete a document with a specific id belonging to a specific category',
   })
   @ApiOkResponse({ type: JsonResponseDto })
-  @ApiParam({ name: 'documentGroup' })
+  @ApiParam({ name: 'documentNamespace' })
   @ApiParam({ name: 'documentId' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':documentId')
   async deleteJson(@Param() params: JsonParams): Promise<HttpJsonResponse<JsonEntity>> {
     try {
-      await this.jsonService.delete(+params.documentId, params.documentGroup);
+      await this.jsonService.delete(+params.documentId, params.documentNamespace);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, []);
     } catch (e) {

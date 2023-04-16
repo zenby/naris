@@ -7,4 +7,5 @@ export interface Jwt {
   expiresInAccess?: number | string;
   expiresInRefresh?: number | string;
   cookieName?: string;
+  redirectUrl?: string;
 }

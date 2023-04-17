@@ -32,7 +32,7 @@ export function configurationFactory(): Configuration {
       expiresInAccess: setExpiresIn(process.env.EXP_ACCESS || 60 * 15), // 15 min
       expiresInRefresh: setExpiresIn(process.env.EXP_REFRESH || 60 * 60 * 24 * 30), // 30 days
       cookieName: process.env.COOKIE_NAME || 'refresh_token',
-      redirectUrl: process.env.NARIS_LOGIN_URL || '/auth',
+      redirectUrl: process.env.NARIS_LOGIN_URL || '/',
     },
     typeOrm: getTypeOrmConfig(),
   };

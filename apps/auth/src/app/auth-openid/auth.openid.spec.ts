@@ -46,9 +46,10 @@ describe('AuthOpenIdController', () => {
       });
     });
 
-    it('should call authService.getRefreshToken and set cookie when callback', async () => {
+    it('should call authService.getRefreshToken, set cookie when callback then redirect', async () => {
       const response = {
         cookie: jest.fn(),
+        redirect: jest.fn(),
       } as unknown as Response;
       const user = {} as UserEntity;
 
@@ -60,6 +61,7 @@ describe('AuthOpenIdController', () => {
         sameSite: 'none',
         secure: true,
       });
+      expect(response.redirect).toHaveBeenCalledWith('/fake-redirect-url');
     });
 
     it('should throw InternalServerErrorException on error when invalid callback', async () => {

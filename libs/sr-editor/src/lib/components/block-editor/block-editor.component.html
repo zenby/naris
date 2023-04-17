@@ -12,6 +12,7 @@
           (click)="startEdit()"
           [(ngModel)]="textBlock.text"
           (keydown)="command($event)"
+          (ngModelChange)="handleTextChange()"
           #edit
         >
         </textarea>

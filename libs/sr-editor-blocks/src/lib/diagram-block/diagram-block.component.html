@@ -1,0 +1,8 @@
+<ng-container *ngIf="textValue; else empty">
+  <p class="error" *ngIf="!!error">{{ error }}</p>
+  <p #diagram></p>
+</ng-container>
+
+<ng-template #empty>
+  <p class="help">Нажмите по этой области для вставки текста</p>
+</ng-template>

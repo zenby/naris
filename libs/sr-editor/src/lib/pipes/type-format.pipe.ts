@@ -14,6 +14,7 @@ export class TypeFormatPipe implements PipeTransform {
       markdown: 'MD',
       test: 'TST',
       code: 'CODE',
+      diagram: 'DGM',
     };
     return formats[format] ?? '';
   }

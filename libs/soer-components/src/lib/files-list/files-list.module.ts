@@ -9,7 +9,16 @@ import { FilesListComponent } from './files-list.component';
 import { AccessDeniedModule } from '../access-denied/access-denied.module';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, NzCardModule, NzTagModule, NzGridModule, NzIconModule, AccessDeniedModule],
+  imports: [
+    AccessDeniedModule,
+    CommonModule,
+    NzCardModule,
+    NzGridModule,
+    NzIconModule,
+    NzTagModule,
+    NzTagModule,
+    RouterModule,
+  ],
   declarations: [FilesListComponent],
   exports: [FilesListComponent],
 })

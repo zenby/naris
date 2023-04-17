@@ -24,7 +24,7 @@ for (let file of files) {
 
 console.log('Run PurgeCSS...');
 
-const command = `npx purgecss -css ${PATH_TO_BUNDLE}/*.css --content ${PATH_TO_BUNDLE}/index.html ${PATH_TO_BUNDLE}/*.js -o ${PATH_TO_BUNDLE}/`;
+const command = `npx purgecss --config ./purgecss.config.js`;
 
 exec(command, function (_error, _stdout, _stderr) {
   console.log('PurgeCSS done');

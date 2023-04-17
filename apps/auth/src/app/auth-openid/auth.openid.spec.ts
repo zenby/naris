@@ -23,7 +23,10 @@ describe('AuthOpenIdController', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: jest.fn(() => ({ cookieName: 'fake-cookie-name' })),
+            get: jest.fn(() => ({
+              cookieName: 'fake-cookie-name',
+              redirectUrl: '/fake-redirect-url',
+            })),
           },
         },
       ],

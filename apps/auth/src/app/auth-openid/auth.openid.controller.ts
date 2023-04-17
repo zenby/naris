@@ -41,11 +41,11 @@ export class AuthOpenIdController {
     try {
       const refreshToken = await this.authService.getRefreshToken(user);
 
-      const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
+      const { cookieName, redirectUrl } = this.configService.get<Configuration['jwt']>('jwt');
       // sameSite & secure  for firefox https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
       response.cookie(cookieName, refreshToken, { httpOnly: true, sameSite: 'none', secure: true });
 
-      return { status: HttpJsonStatus.Ok, items: [] };
+      response.redirect(redirectUrl);
     } catch (e) {
       this.logger.error(e);
 

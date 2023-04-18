@@ -1,63 +1,63 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Data, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { VideoSource } from '@soer/soer-components';
 import { VideoModel } from '../../../../api/streams/stream.model';
 
 @Component({
   selector: 'soer-latest',
   templateUrl: './latest.component.html',
 })
-export class LatestComponent {
+export class LatestComponent implements OnInit {
   public streams: VideoModel[] = [];
   public workshops: VideoModel[] = [];
-  private data: Data;
+  private data: { streams: VideoModel[]; workshops: VideoModel[] } = {
+    streams: [],
+    workshops: [],
+  };
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-    this.data = this.route.snapshot.data;
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
-    const getLastVideos = (videos: VideoModel[], count: number): VideoModel[] => {
-      return videos
-        .reduce((acc: VideoModel[], item: VideoModel) => [...acc, ...(item.children || [])], [])
-        .sort((left, right) => new Date(right.createdAt ?? '').getTime() - new Date(left.createdAt ?? '').getTime())
-        .slice(0, count);
-    };
+  ngOnInit(): void {
+    this.data = this.route.snapshot.data as { streams: VideoModel[]; workshops: VideoModel[] };
+    this.streams = this.getLastVideos(this.getVideosInSubFolders(this.data.streams), 5);
+    this.workshops = this.getLastVideos(this.getVideosInSubFolders(this.data.workshops), 5);
+  }
 
-    this.streams = getLastVideos(this.data['streams'], 5);
-    this.workshops = getLastVideos(this.data['workshops'], 5);
+  private getLastVideos(videos: VideoModel[], count: number): VideoModel[] {
+    return videos
+      .sort((left, right) =>
+        right.createdAt && left.createdAt ? new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime() : 0
+      )
+      .slice(0, count);
+  }
+
+  private getVideosInSubFolders(videos: VideoModel[]): VideoModel[] {
+    return videos.reduce(
+      (acc: VideoModel[], item: VideoModel) =>
+        item?.children ? [...acc, ...this.getVideosInSubFolders(item.children)] : [...acc, item],
+      []
+    );
   }
 
   showVideo(video: VideoModel): void {
-    let videoId = video.youtube_id;
-    let videoSource = 'youtube';
-    if (video.vimeo_id) {
-      videoId = video.vimeo_id;
-      videoSource = 'vimeo';
-    }
-
-    if (video.kinescope_id) {
-      videoId = video.kinescope_id;
-      videoSource = 'kinescope';
-    }
+    const { id: videoId, source: videoSource } = this.getVideoIdAndSource(video);
 
     if (videoId === undefined) {
       const queryParams = this.route.snapshot.queryParams;
       this.router.navigate(['novideo'], { relativeTo: this.route, queryParams });
       return;
     }
-    this.router
-      .navigate([videoSource, videoId], {
-        relativeTo: this.route,
-      })
-      .catch(() =>
-        console.error(`
-        LatestComponent: в RouteModule необходимо указать маршрут для проигрывания видео
-          children: [
-            {
-              path: ':videoSource/:videoId',
-              component: ComposeVideoPlayerComponent,
-              data: { header: {title: 'Смотрим стрим...'}}
-            }
-          ]
-      `)
-      );
+    this.router.navigate([videoSource, videoId], { relativeTo: this.route });
+  }
+
+  private getVideoIdAndSource(video: VideoModel): { id?: string; source: VideoSource } {
+    if (video.vimeo_id) {
+      return { id: video.vimeo_id, source: 'vimeo' };
+    }
+
+    if (video.kinescope_id) {
+      return { id: video.kinescope_id, source: 'kinescope' };
+    }
+    return { id: video.youtube_id, source: 'youtube' };
   }
 }

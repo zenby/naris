@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { VideoSource } from '@soer/soer-components';
 import { Subscription } from 'rxjs';
 import { VideoModel } from '../../../api/streams/stream.model';
 
@@ -43,39 +44,24 @@ export class StreamsComponent implements OnInit, OnDestroy {
     }
   }
   showVideo(video: VideoModel): void {
-    let videoId = video.youtube_id;
-    let videoSource = 'youtube';
-    if (video.vimeo_id) {
-      videoId = video.vimeo_id;
-      videoSource = 'vimeo';
-    }
-
-    if (video.kinescope_id) {
-      videoId = video.kinescope_id;
-      videoSource = 'kinescope';
-    }
+    const { id: videoId, source: videoSource } = this.getVideoIdAndSource(video);
 
     if (videoId === undefined) {
       const queryParams = this.route.snapshot.queryParams;
       this.router.navigate(['novideo'], { relativeTo: this.route, queryParams });
       return;
     }
-    this.router
-      .navigate([videoSource, videoId], {
-        relativeTo: this.route,
-        queryParams: { fid: this.isFolderOpen === -1 ? undefined : this.isFolderOpen },
-      })
-      .catch(() =>
-        console.error(`
-        StreamComponent: в RouteModule необходимо указать маршрут для проигрывания видео
-          children: [
-            {
-              path: ':videoSource/:videoId',
-              component: ComposeVideoPlayerComponent,
-              data: { header: {title: 'Смотрим стрим...'}}
-            }
-          ]
-      `)
-      );
+    this.router.navigate([videoSource, videoId], { relativeTo: this.route });
+  }
+
+  private getVideoIdAndSource(video: VideoModel): { id?: string; source: VideoSource } {
+    if (video.vimeo_id) {
+      return { id: video.vimeo_id, source: 'vimeo' };
+    }
+
+    if (video.kinescope_id) {
+      return { id: video.kinescope_id, source: 'kinescope' };
+    }
+    return { id: video.youtube_id, source: 'youtube' };
   }
 }

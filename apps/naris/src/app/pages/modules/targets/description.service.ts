@@ -14,6 +14,11 @@ export class DescriptionService {
   private targetModel?: TargetModel;
   private path?: string;
   private _description: string | null = null;
+  private _description$: BehaviorSubject<null | string> = new BehaviorSubject<null | string>(null);
+
+  public get description$(): BehaviorSubject<null | string> {
+    return this._description$;
+  }
 
   constructor(private store$: DataStoreService, private bus$: MixedBusService) {}
 
@@ -26,6 +31,7 @@ export class DescriptionService {
       .subscribe((targetDTO) => {
         this.targetModel = targetDTO.items[0];
         this._description = this.getDescription();
+        this.description$.next(this._description);
       });
   }
 

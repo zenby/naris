@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 })
 export class TodoComponent {
   @Input() label = '';
-  @Input() hasOverview = false;
+  @Input() showOverviewIcon = false;
   @Input() checked = false;
   @Input() disabled = false;
 

@@ -4,6 +4,12 @@ import { KinescopePlayer } from './kinescope-player.model';
 
 const SCRIPT_URL = 'https://player.kinescope.io/latest/iframe.player.js';
 
+type KinescopePatchedWindow = Window & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onKinescopeIframeAPIReady?: (arg: any) => void;
+  KinescopeIframeApiReadyHandlers?: Array<() => void>;
+};
+
 @Component({
   selector: 'soer-kinescope-player',
   template: '<div id="player"></div>',
@@ -27,7 +33,7 @@ export class KinescopePlayerComponent implements AfterViewInit, OnDestroy {
       when player script is downloaded it will be called automatically see
       https://kinescope.notion.site/IFrame-Player-API-Embedding-1381e9d8952d4d19a5c3530a3d99445f
     */
-    (window as any).onKinescopeIframeAPIReady = (playerFactory: any) => {
+    (window as KinescopePatchedWindow).onKinescopeIframeAPIReady = (playerFactory) => {
       playerFactory
         .create('player', {
           url: `https://kinescope.io/${this.videoId}`,
@@ -46,7 +52,7 @@ export class KinescopePlayerComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.player?.destroy();
     // clear kinescope player handlers, otherwise they will be called several times
-    const wnd = window as any;
+    const wnd = window as KinescopePatchedWindow;
     wnd.onKinescopeIframeAPIReady = undefined;
     wnd.KinescopeIframeApiReadyHandlers = undefined;
 

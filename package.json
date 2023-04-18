@@ -4,9 +4,11 @@
   "license": "MIT",
   "scripts": {
     "ng": "nx",
+    "prepare": "node ./scripts/prepare.js",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
     "build": "nx build",
+    "postbuild": "node ./scripts/postbuild.js",
     "test": "nx run-many --all --target=test --run-in-band",
     "lint": "nx run-many --all --target=lint --verbose",
     "format": "prettier --write \"{apps,libs}/**/*.{ts,js,scss,html}\"",
@@ -16,8 +18,7 @@
     "typeorm:migrate": "npm run typeorm migration:generate -n",
     "typeorm:create": "npm run typeorm migration:create -n",
     "typeorm:run": "npm run typeorm migration:run",
-    "typeorm:revert": "npm run typeorm migration:revert",
-    "prepare": "node -e \"try { require('husky').install(); require('fs').chmodSync('.husky', 0755); } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\""
+    "typeorm:revert": "npm run typeorm migration:revert"
   },
   "private": true,
   "dependencies": {
@@ -118,6 +119,7 @@
     "jest-preset-angular": "13.0.0",
     "lint-staged": "^13.2.0",
     "prettier": "2.6.2",
+    "purgecss": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "supertest": "^6.3.3",

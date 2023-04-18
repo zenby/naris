@@ -2,15 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
 import { PreloaderService } from '@soer/soer-components';
-import {
-  CommandConvertMdToPdf,
-  CommandDelete,
-  CommandEdit,
-  CommandNew,
-  CommandView,
-  DataStoreService,
-  DtoPack,
-} from '@soer/sr-dto';
+import { CommandDelete, CommandEdit, CommandNew, CommandView, DataStoreService, DtoPack } from '@soer/sr-dto';
 import { WorkbookModel } from '@soer/sr-editor';
 import { MarkdownService } from 'ngx-markdown';
 import { Observable, finalize } from 'rxjs';

@@ -1,4 +1,4 @@
-import { BusEmitter, BusError, BusEvent, BusKey, BusMessage, BusMessageParams } from './interfaces/mixed-bus.interface';
+import { BusEmitter, BusError, BusKey, BusMessage, BusMessageParams } from './interfaces/mixed-bus.interface';
 
 export function isBusMessage(message: BusMessage | BusError): message is BusMessage {
   return (message as BusMessage).payload !== undefined;

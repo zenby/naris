@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { SrDTOModule } from '@soer/sr-dto';
 import { AccessDeniedModule, DemoNgZorroAntdModule, OverlayModule, VideoPlayerModule } from '@soer/soer-components';
-import { NzModalModule } from 'ng-zorro-antd/modal';
 import { IconsProviderModule } from '../../icons-provider.module';
 import { DefaultComponent } from './default/default.component';
 import { MobileMenuComponent } from './default/mobile-menu/mobile-menu.component';
@@ -22,12 +21,22 @@ import { RouterComposeModule } from './router-compose/router-compose.module';
 import { EditorBlocksModule } from './modules/editor-blocks/editor-blocks.module';
 import { AccountPageModule } from './modules/account-page/account-page.module';
 import { SourcesModule } from './modules/sources/sources.module';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzListModule } from 'ng-zorro-antd/list';
 
 @NgModule({
   imports: [
     CommonModule,
     AccessDeniedModule,
     PagesRoutingModule,
+    NzDropDownModule,
+    NzTimelineModule,
+    NzProgressModule,
+    NzCardModule,
+    NzListModule,
     FormsModule,
     IconsProviderModule,
     DemoNgZorroAntdModule,
@@ -40,7 +49,6 @@ import { SourcesModule } from './modules/sources/sources.module';
     EditorBlocksModule,
     CertificateModule,
     SrDTOModule,
-    NzModalModule,
     VideoPlayerModule,
     AccountPageModule,
     SourcesModule,

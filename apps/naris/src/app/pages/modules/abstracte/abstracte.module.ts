@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { PreloaderModule } from '@soer/soer-components';
 import { SrDTOModule } from '@soer/sr-dto';
 import { SrEditorModule } from '@soer/sr-editor';
+import { SrDiagramBlockModule } from '@soer/sr-editor-blocks';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
@@ -23,7 +24,7 @@ import { EditAbstractePageComponent } from './edit-abstracte-page/edit-abstracte
 import { ListAbstractePageComponent } from './list-abstracte-page/list-abstracte-page.component';
 import { ViewAbstractePageComponent } from './view-abstracte-page/view-abstracte-page.component';
 import { WorkbooksViewModule } from '@soer/soer-components';
-import { PendingChangesGuard } from '../../../guards/pending-changes-guard.guard';
+import { ConfirmPageLeaveGuard } from '../../../guards/confirm-page-leave.guard';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { PendingChangesGuard } from '../../../guards/pending-changes-guard.guard
     ViewAbstractePageComponent,
     EditAbstracteFormComponent,
   ],
-  providers: [PendingChangesGuard],
+  providers: [ConfirmPageLeaveGuard],
   imports: [
     PreloaderModule,
     CommonModule,
@@ -55,6 +56,7 @@ import { PendingChangesGuard } from '../../../guards/pending-changes-guard.guard
     MarkdownModule.forRoot(),
     SrDTOModule,
     SrEditorModule,
+    SrDiagramBlockModule,
     WorkbooksViewModule,
   ],
 })

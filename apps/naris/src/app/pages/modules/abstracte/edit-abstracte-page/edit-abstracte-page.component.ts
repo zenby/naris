@@ -10,6 +10,7 @@ import {
   SerializedJsonModel,
 } from '@soer/sr-dto';
 import { EMPTY_WORKBOOK, WorkbookModel } from '@soer/sr-editor';
+import { ComponentCanDeactivate } from '../../../../guards/confirm-page-leave.guard';
 import { map, Observable } from 'rxjs';
 import { convertToJsonDTO } from '../../../../api/json.dto.helpers';
 import { EditAbstracteFormComponent } from '../edit-abstracte-form/edit-abstracte-form.component';
@@ -20,7 +21,7 @@ import { EditAbstracteFormComponent } from '../edit-abstracte-form/edit-abstract
   styleUrls: ['./edit-abstracte-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditAbstractePageComponent {
+export class EditAbstractePageComponent implements ComponentCanDeactivate {
   public workbook$: Observable<WorkbookModel[]>;
   private workbookId: BusEmitter;
 

@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
-import { EditAbstractePageComponent } from '../pages/modules/abstracte/edit-abstracte-page/edit-abstracte-page.component';
+
+export interface ComponentCanDeactivate {
+  canDeactivate: () => boolean;
+}
 
 @Injectable()
-export class ConfirmPageLeaveGuard implements CanDeactivate<EditAbstractePageComponent> {
-  canDeactivate(component: EditAbstractePageComponent): boolean {
+export class ConfirmPageLeaveGuard implements CanDeactivate<ComponentCanDeactivate> {
+  canDeactivate(component: ComponentCanDeactivate): boolean {
     if (component.canDeactivate()) {
       return true;
     }

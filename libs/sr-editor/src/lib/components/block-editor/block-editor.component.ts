@@ -1,16 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ComponentRef,
-  ElementRef,
-  Inject,
-  Input,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
-import { BasicBlockComponent } from '../basic-block.component';
+import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { TextBlock } from '../../interfaces/document.model';
 import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor-blocks-config';
 import { ControlBtn } from '../block-editor-controls/block-editor-controls.component';
@@ -21,15 +9,13 @@ import { BlockService } from '../../services/block.service';
   templateUrl: './block-editor.component.html',
   styleUrls: ['./block-editor.component.scss'],
 })
-export class BlockEditorComponent implements OnInit, AfterViewInit {
+export class BlockEditorComponent implements OnInit {
   @Input() id = '';
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
   @Input() blocksLength = 0;
 
   @ViewChild('edit') edit!: ElementRef;
-  @ViewChild('editComponent', { static: true, read: ViewContainerRef }) editComponent!: ViewContainerRef;
 
-  componentRef: ComponentRef<BasicBlockComponent> | null = null;
   isEdit = false;
   isFocused = false;
   controls: ControlBtn[] = [
@@ -85,10 +71,6 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    this.renderBlockForPreview();
-  }
-
   startEdit(): void {
     this.isEdit = true;
     this.isFocused = true;
@@ -96,10 +78,7 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
   }
 
   handleTextChange(): void {
-    if (this.componentRef) {
-      this.blockService.setBlockText(this.id, this.textBlock.text);
-      this.componentRef.instance.text = this.textBlock.text;
-    }
+    this.blockService.setBlockText(this.id, this.textBlock.text);
   }
 
   command(event: KeyboardEvent): void {
@@ -170,7 +149,6 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
 
   stopEdit() {
     this.blockService.stopEdit(this.id);
-    this.renderBlockForPreview();
   }
 
   private formatBlock() {
@@ -220,13 +198,5 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
     const lineBreakRegExp = new RegExp(/\r\n|\r|\n/gm);
 
     return text.split(lineBreakRegExp).length;
-  }
-
-  private renderBlockForPreview(): void {
-    const component = this.editorBlocksRegistry[this.textBlock.type];
-    this.componentRef?.destroy();
-    this.componentRef = this.editComponent.createComponent<BasicBlockComponent>(component);
-    this.componentRef.instance.text = this.textBlock.text;
-    this.componentRef.changeDetectorRef.detectChanges();
   }
 }

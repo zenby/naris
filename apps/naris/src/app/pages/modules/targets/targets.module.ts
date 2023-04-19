@@ -42,7 +42,7 @@ import { TargetDescriptionComponent } from './target-description/target-descript
 import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
 import { MarkdownModule } from 'ngx-markdown';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { TargetDescriptionPipe } from './target-description.pipe';
+import { DescriptionService } from './description.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,6 @@ import { TargetDescriptionPipe } from './target-description.pipe';
     ListAimsPageComponent,
     TaskTreeEditFormComponent,
     CalcProgressPipe,
-    TargetDescriptionPipe,
     CountOpenTasksPipe,
     CountClosedTasksPipe,
     TemplateCreateComponent,
@@ -94,5 +93,6 @@ import { TargetDescriptionPipe } from './target-description.pipe';
     NzSpinModule,
   ],
   exports: [],
+  providers: [DescriptionService],
 })
 export class TargetsModule {}

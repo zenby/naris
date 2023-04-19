@@ -28,6 +28,7 @@ describe('Auth e2e-test', () => {
     expiresInAccess: 10,
     expiresInRefresh: 10,
     jwtSecret: 'secret',
+    redirectUrl: '/success',
   };
 
   async function getJWTTokenForUser(user: UserEntity, expiredInSec = 3600) {
@@ -82,14 +83,12 @@ describe('Auth e2e-test', () => {
 
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(existsUser);
 
-      const response = await request
+      await request
         .post('/auth/signin')
         .send(validCredentials)
-        .expect('Set-Cookie', new RegExp(`${config.cookieName}=.*; HttpOnly`));
-
-      const body: HttpJsonResult<string> = response.body;
-
-      expect(body.status).toBe(HttpJsonStatus.Ok);
+        .expect('Set-Cookie', new RegExp(`${config.cookieName}=.*; HttpOnly`))
+        .expect(302)
+        .expect('Location', config.redirectUrl);
     });
 
     it('should return error when pass invalid credentials', async () => {

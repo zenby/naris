@@ -20,7 +20,7 @@
 
   <div class="card_title">
     <a [title]="target.title" nzType="link" (click)="onEdit()">{{ target.title }}</a>
-    <ng-container *ngIf="target.overview">
+    <ng-container *ngIf="target.overview || isEdit">
       <i class="description-icon" (click)="showDescription()" nz-icon nzType="info-circle" nzTheme="outline"></i>
     </ng-container>
   </div>

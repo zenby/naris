@@ -9,6 +9,9 @@ import { StoreCrudService } from './services/store.crud.service';
 
 export type CRUDMethods = { create: string; read: string; update: string; delete: string };
 export type UrlSchema = { url: string; params?: Record<string, string> };
+
+type EmittersPatchedWindow = Window & { emitters?: Record<string, CRUDBusEmitter> };
+
 export interface CRUDBusEmitter extends BusEmitter {
   schema: UrlSchema;
 }
@@ -57,7 +60,7 @@ function createcrudEmitters<T extends BusKey>(options: CrudOptions<T>): Provider
 }
 
 function createCRUDSBusId(providerName: string, emitter: CRUDBusEmitter): Provider {
-  const wnd = window as any;
+  const wnd = window as EmittersPatchedWindow;
   wnd.emitters = wnd.emitters || {};
   wnd.emitters[providerName] = emitter;
 

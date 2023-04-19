@@ -1,6 +1,6 @@
 import { BusEmitter, BusMessage } from '@soer/mixed-bus';
 import { map, Observable } from 'rxjs';
-import { DtoPack, INIT, OK } from './interfaces/dto.pack.interface';
+import { DtoPack, OK } from './interfaces/dto.pack.interface';
 import { SerializedJsonModel } from './interfaces/serialize-json.model';
 import { CRUDBusEmitter } from './sr-dto.module';
 
@@ -15,7 +15,7 @@ export function extractDtoPackFromBus<T>(messages$: Observable<BusMessage>): Obs
     map<BusMessage, DtoPack<T>>((data) => {
       const result: T[] = [];
       if (data?.payload?.status === OK) {
-        data?.payload.items.forEach((item: any) => result.push(item as T));
+        data?.payload.items.forEach((item: T) => result.push(item));
       }
       return { status: data?.payload?.status ?? OK, items: result };
     })

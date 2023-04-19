@@ -1,0 +1,24 @@
+<div class="description">
+  <ng-container *ngIf="(description$ | async) !== null; else loading">
+    <ng-container *ngIf="isEditMode; else overview">
+      <div class="controls">
+        <button nz-button (click)="onCancel()">
+          <i nz-icon nzType="stop"></i>
+        </button>
+        <button nz-button (click)="onSave()">
+          <i nz-icon nzType="save"></i>
+        </button>
+      </div>
+      <textarea nz-input [(ngModel)]="description" [nzAutosize]="{ minRows: 8 }"> </textarea>
+    </ng-container>
+    <ng-template #overview>
+      <div class="controls">
+        <button nz-button (click)="isEditMode = true">
+          <i nz-icon nzType="edit"></i>
+        </button>
+      </div>
+      <markdown>{{ description }}</markdown>
+    </ng-template>
+  </ng-container>
+</div>
+<ng-template #loading><nz-spin></nz-spin></ng-template>

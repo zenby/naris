@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -8,7 +8,6 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { QuestionFormComponent } from './question-form/question-form.component';
 import { QuestionRulesComponent } from './question-rules/question-rules.component';
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { RouterModule } from '@angular/router';
 import { ListQuestionsPageComponent } from './list-questions-page/list-questions-page.component';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
@@ -19,7 +18,6 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzMessageModule } from 'ng-zorro-antd/message';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { FileExtensionPipe } from './file-extension.pipe';
@@ -41,29 +39,26 @@ import { AudioPlayerModule } from '@soer/soer-components';
     OnlyWithAnaswerPipe,
   ],
   imports: [
+    AudioPlayerModule,
     CommonModule,
-    FormsModule,
-    NzFormModule,
+    NzBadgeModule,
     NzButtonModule,
-    ReactiveFormsModule,
+    NzDescriptionsModule,
+    NzFormModule,
+    NzGridModule,
+    NzIconModule,
     NzInputModule,
     NzLayoutModule,
-    NzGridModule,
-    NzStatisticModule,
-    NzDescriptionsModule,
-    NzTimelineModule,
-    NzProgressModule,
-    NzBadgeModule,
-    NzResultModule,
-    NzIconModule,
-    NzMessageModule,
-    NzDrawerModule,
-    NzTabsModule,
-    RouterModule,
     NzListModule,
-    NzTypographyModule,
+    NzMessageModule,
+    NzProgressModule,
+    NzResultModule,
+    NzTabsModule,
+    NzTimelineModule,
     NzToolTipModule,
-    AudioPlayerModule,
+    NzTypographyModule,
+    ReactiveFormsModule,
+    RouterModule,
   ],
   providers: [QuestionsConfigService],
   exports: [QuestionFormComponent],

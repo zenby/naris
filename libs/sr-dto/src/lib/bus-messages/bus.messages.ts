@@ -10,7 +10,7 @@ export class DeleteDoneEvent extends BusEvent {}
 export class ChangeDataEvent extends BusEvent {
   constructor(
     public override owner: BusEmitter = ANY_SERVICE,
-    public override payload: DtoPack<any> = DTO_EMPTY,
+    public override payload: DtoPack = DTO_EMPTY,
     public override params: BusMessageParams = {}
   ) {
     super();
@@ -20,7 +20,7 @@ export class ChangeDataEvent extends BusEvent {
 export class ErrorDataEvent extends BusEvent {
   constructor(
     public override owner: BusEmitter = ANY_SERVICE,
-    public override payload: DtoPack<any> = { status: ERROR, items: [] },
+    public override payload: DtoPack = { status: ERROR, items: [] },
     public override params: BusMessageParams = {}
   ) {
     super();

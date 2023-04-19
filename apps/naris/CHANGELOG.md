@@ -2,6 +2,29 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.8.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.7.0...naris-0.8.0) (2023-04-18)
+
+
+### Features
+
+* add confirmation when close edit mode in workbook ([f596cf3](https://gitlog.ru:2222/Naris/soermono/commit/f596cf37dd7d867c6e443c7940fc448149b685af))
+* add observer for description change ([4833f94](https://gitlog.ru:2222/Naris/soermono/commit/4833f9458236eaaef9776e9b475b123a65a40fbf))
+* **edit-abstracte-page:** add a confirmation before leaving the page ([9dbb990](https://gitlog.ru:2222/Naris/soermono/commit/9dbb990972697461585a4200c8c6a98a04629358))
+* show diagram when preview workbook ([5761fcd](https://gitlog.ru:2222/Naris/soermono/commit/5761fcd14d2d35406597dc0d33e7e57768830b2b))
+* **target-description:** add edit mode ([d7941e8](https://gitlog.ru:2222/Naris/soermono/commit/d7941e8099f71f0a8e4226989ef8e481decf808f)), closes [#279](https://gitlog.ru:2222/Naris/soermono/issues/279)
+* use diagram-block in editor ([e1125ad](https://gitlog.ru:2222/Naris/soermono/commit/e1125ad07ddd393447d63deef67cbb0c05c8bc57))
+
+## [0.8.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.7.0...naris-0.8.0) (2023-04-18)
+
+
+### Features
+
+* add confirmation when close edit mode in workbook ([f596cf3](https://gitlog.ru:2222/Naris/soermono/commit/f596cf37dd7d867c6e443c7940fc448149b685af))
+* **edit-abstracte-page:** add a confirmation before leaving the page ([9dbb990](https://gitlog.ru:2222/Naris/soermono/commit/9dbb990972697461585a4200c8c6a98a04629358))
+* show diagram when preview workbook ([5761fcd](https://gitlog.ru:2222/Naris/soermono/commit/5761fcd14d2d35406597dc0d33e7e57768830b2b))
+* **target-description:** add edit mode ([d7941e8](https://gitlog.ru:2222/Naris/soermono/commit/d7941e8099f71f0a8e4226989ef8e481decf808f)), closes [#279](https://gitlog.ru:2222/Naris/soermono/issues/279)
+* use diagram-block in editor ([e1125ad](https://gitlog.ru:2222/Naris/soermono/commit/e1125ad07ddd393447d63deef67cbb0c05c8bc57))
+
 ## [0.7.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.6.0...naris-0.7.0) (2023-04-06)
 
 

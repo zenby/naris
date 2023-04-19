@@ -1,15 +1,17 @@
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { busEmitterFactory, MixedBusService } from '@soer/mixed-bus';
+import { BusEmitter, busEmitterFactory, MixedBusService } from '@soer/mixed-bus';
 import { of } from 'rxjs';
 import { CommandRead } from '../bus-messages/bus.messages';
 import { CRUDBusEmitter } from '../sr-dto.module';
 
-export class ResolveReadEmitterService implements Resolve<any> {
+type ResolveEmittersPatchedWindow = Window & { resolvedEmitters?: Record<string, BusEmitter> };
+
+export class ResolveReadEmitterService implements Resolve<Promise<BusEmitter | undefined>> {
   constructor(private bus$: MixedBusService, private owner: CRUDBusEmitter) {}
 
-  resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Promise<any> {
+  resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Promise<BusEmitter | undefined> {
     const owner = busEmitterFactory(this.owner, route.params);
-    const wnd = window as any;
+    const wnd = window as ResolveEmittersPatchedWindow;
     wnd.resolvedEmitters = wnd.resolvedEmitters || {};
     wnd.resolvedEmitters[owner.sid.toString()] = owner;
     this.bus$.publish(new CommandRead(owner));

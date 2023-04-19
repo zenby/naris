@@ -7,10 +7,7 @@
   <nz-form-control>
     <div *ngIf="previewFlag; else blocks" class="workbook-view" style="padding: 1.5em">
       <ng-container *ngFor="let block of workbook.blocks">
-        <ng-container [ngSwitch]="block.type">
-          <soer-diagram-block *ngSwitchCase="'diagram'" [text]="block.text"></soer-diagram-block>
-          <markdown *ngSwitchDefault>{{ block.text }}</markdown>
-        </ng-container>
+        <soer-preview-block [block]="block"></soer-preview-block>
       </ng-container>
     </div>
   </nz-form-control>

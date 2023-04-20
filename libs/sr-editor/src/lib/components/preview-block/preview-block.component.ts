@@ -8,17 +8,17 @@ import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor
   templateUrl: './preview-block.component.html',
 })
 export class PreviewBlockComponent {
-  _block: TextBlock = { type: 'markdown', text: '' };
+  private blockValue: TextBlock = { type: 'markdown', text: '' };
   @Input() set block(value: TextBlock) {
-    this._block = value;
+    this.blockValue = value;
     this.renderBlock();
   }
   @Input() set type(value: TextBlockType) {
-    this._block.type = value;
+    this.blockValue.type = value;
     this.renderBlock();
   }
   @Input() set text(value: string) {
-    this._block.text = value;
+    this.blockValue.text = value;
     this.renderBlock();
   }
 
@@ -29,10 +29,10 @@ export class PreviewBlockComponent {
   constructor(@Inject(EDITOR_BLOCKS_REGISTRY_TOKEN) public editorBlocksRegistry: EditorBlocksRegistry) {}
 
   private renderBlock(): void {
-    const component = this.editorBlocksRegistry[this._block.type];
+    const component = this.editorBlocksRegistry[this.blockValue.type];
     this.componentRef?.destroy();
     this.componentRef = this.blockComponent.createComponent<BasicBlockComponent>(component);
-    this.componentRef.instance.text = this._block.text;
+    this.componentRef.instance.text = this.blockValue.text;
     this.componentRef.changeDetectorRef.detectChanges();
   }
 }

@@ -45,10 +45,6 @@ const routes: Routes = [
         path: 'latest',
         data: { header: { title: 'Новые материалы', subtitle: 'последние видео и воркшопы', icon: 'star' } },
         component: LatestComponent,
-        resolve: {
-          streams: StreamService,
-          workshops: WorkshopsService,
-        },
         children: [
           {
             path: 'novideo',

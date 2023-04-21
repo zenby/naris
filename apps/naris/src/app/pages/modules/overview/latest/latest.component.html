@@ -8,7 +8,7 @@
     nzMd="8"
     nzLg="8"
     nzXl="8"
-    *ngFor="let video of streams; index as i"
+    *ngFor="let video of streams | async; index as i"
   >
     <soer-thumbnail-card
       [title]="video.title"
@@ -29,7 +29,7 @@
     nzMd="8"
     nzLg="8"
     nzXl="8"
-    *ngFor="let video of workshops; index as i"
+    *ngFor="let video of workshops | async; index as i"
   >
     <soer-thumbnail-card
       [title]="video.title"

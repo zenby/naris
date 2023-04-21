@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { VideoSource } from '@soer/soer-components';
 import { Subscription } from 'rxjs';
 import { VideoModel } from '../../../api/streams/stream.model';
+import { VideoService } from '../../../services/video/video.service';
 
 @Component({
   selector: 'soer-streams',
@@ -13,7 +13,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
   public streams: VideoModel[] = [];
   public isFolderOpen = -1;
   private queryParamsSub: Subscription | null = null;
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private videoService: VideoService) {}
 
   ngOnInit(): void {
     this.queryParamsSub = this.route.queryParams.subscribe((params) => {
@@ -44,24 +44,16 @@ export class StreamsComponent implements OnInit, OnDestroy {
     }
   }
   showVideo(video: VideoModel): void {
-    const { id: videoId, source: videoSource } = this.getVideoIdAndSource(video);
+    const { id: videoId, source: videoSource } = this.videoService.getVideoIdAndSource(video);
 
     if (videoId === undefined) {
       const queryParams = this.route.snapshot.queryParams;
       this.router.navigate(['novideo'], { relativeTo: this.route, queryParams });
       return;
     }
-    this.router.navigate([videoSource, videoId], { relativeTo: this.route });
-  }
-
-  private getVideoIdAndSource(video: VideoModel): { id?: string; source: VideoSource } {
-    if (video.vimeo_id) {
-      return { id: video.vimeo_id, source: 'vimeo' };
-    }
-
-    if (video.kinescope_id) {
-      return { id: video.kinescope_id, source: 'kinescope' };
-    }
-    return { id: video.youtube_id, source: 'youtube' };
+    this.router.navigate([videoSource, videoId], {
+      relativeTo: this.route,
+      queryParams: { fid: this.isFolderOpen === -1 ? undefined : this.isFolderOpen },
+    });
   }
 }

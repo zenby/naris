@@ -16,6 +16,7 @@ import { ThumbnailCardModule } from '@soer/soer-components';
 import { ByRoutePathResolver } from '../../../api/by-route-path.resolver';
 import { StreamService } from '../../../api/streams/stream.service';
 import { WorkshopsService } from '../../../api/workshops/workshops.service';
+import { VideoService } from '../../../services/video/video.service';
 
 import { MetricsComponent } from './metrics/metrics.component';
 import { InfoComponent } from './info/info.component';
@@ -52,7 +53,7 @@ import { LatestComponent } from './latest/latest.component';
     NzTypographyModule,
     NoContentModule,
   ],
-  providers: [StreamService, WorkshopsService, ByRoutePathResolver],
+  providers: [StreamService, WorkshopsService, ByRoutePathResolver, VideoService],
   exports: [],
 })
 export class OverviewModule {}

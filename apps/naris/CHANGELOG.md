@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.8.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.7.0...naris-0.8.0) (2023-04-21)
+
+
+### Features
+
+* **abstracte:** display blocks by type ([28ad18e](https://gitlog.ru:2222/Naris/soermono/commit/28ad18e1ca567ba25baf3f6c5ae232ab64dc26f8))
+
 ## [0.7.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.6.0...naris-0.7.0) (2023-04-21)
 
 

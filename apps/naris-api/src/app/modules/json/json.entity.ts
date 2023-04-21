@@ -8,11 +8,11 @@ export class JsonEntity {
   id: number;
 
   @ApiProperty()
-  @CreateDateColumn('date')
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
   createdAt: Date;
 
   @ApiProperty()
-  @UpdateDateColumn('date')
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
   updatedAt: Date;
 
   @ApiProperty()

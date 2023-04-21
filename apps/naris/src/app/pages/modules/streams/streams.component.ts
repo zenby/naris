@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { VideoModel } from '../../../api/streams/stream.model';
+import { VideoService } from '../../../services/video/video.service';
 
 @Component({
   selector: 'soer-streams',
@@ -12,7 +13,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
   public streams: VideoModel[] = [];
   public isFolderOpen = -1;
   private queryParamsSub: Subscription | null = null;
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private videoService: VideoService) {}
 
   ngOnInit(): void {
     this.queryParamsSub = this.route.queryParams.subscribe((params) => {
@@ -43,39 +44,16 @@ export class StreamsComponent implements OnInit, OnDestroy {
     }
   }
   showVideo(video: VideoModel): void {
-    let videoId = video.youtube_id;
-    let videoSource = 'youtube';
-    if (video.vimeo_id) {
-      videoId = video.vimeo_id;
-      videoSource = 'vimeo';
-    }
-
-    if (video.kinescope_id) {
-      videoId = video.kinescope_id;
-      videoSource = 'kinescope';
-    }
+    const { id: videoId, source: videoSource } = this.videoService.getVideoIdAndSource(video);
 
     if (videoId === undefined) {
       const queryParams = this.route.snapshot.queryParams;
       this.router.navigate(['novideo'], { relativeTo: this.route, queryParams });
       return;
     }
-    this.router
-      .navigate([videoSource, videoId], {
-        relativeTo: this.route,
-        queryParams: { fid: this.isFolderOpen === -1 ? undefined : this.isFolderOpen },
-      })
-      .catch(() =>
-        console.error(`
-        StreamComponent: в RouteModule необходимо указать маршрут для проигрывания видео
-          children: [
-            {
-              path: ':videoSource/:videoId',
-              component: ComposeVideoPlayerComponent,
-              data: { header: {title: 'Смотрим стрим...'}}
-            }
-          ]
-      `)
-      );
+    this.router.navigate([videoSource, videoId], {
+      relativeTo: this.route,
+      queryParams: { fid: this.isFolderOpen === -1 ? undefined : this.isFolderOpen },
+    });
   }
 }

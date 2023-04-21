@@ -21,6 +21,7 @@ import { RouterComposeModule } from './router-compose/router-compose.module';
 import { EditorBlocksModule } from './modules/editor-blocks/editor-blocks.module';
 import { AccountPageModule } from './modules/account-page/account-page.module';
 import { SourcesModule } from './modules/sources/sources.module';
+import { ThumbnailCardModule } from '@soer/soer-components';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
@@ -53,6 +54,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
     AccountPageModule,
     SourcesModule,
     OverlayModule,
+    ThumbnailCardModule,
   ],
   declarations: [
     MobileMenuComponent,

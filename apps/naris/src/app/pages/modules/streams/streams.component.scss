@@ -14,23 +14,12 @@
 }
 
 .card-cover {
-  &_image {
-    width: 100%;
-    position: absolute;
-  }
-  &_placeholder,
   &_folder {
     width: 100%;
     padding-bottom: 56%;
     margin: 1px 1px 0 1px;
     background-color: #f3f3f3;
     border: 0;
-  }
-
-  &_placeholder {
-    background-image: url(../../../../assets/video-placeholder.png);
-    background-repeat: no-repeat;
-    background-position: center center;
   }
 }
 @media screen and (min-width: 768px) {

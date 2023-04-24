@@ -5,20 +5,20 @@ import { faker } from '@faker-js/faker';
 export const TEST_USERS = [
   getTestUser({
     id: 1,
-    login: 'Admin1',
-    email: 'admin1@mail.example',
-    role: UserRole.ADMIN,
-  }),
-  getTestUser({
-    id: 2,
     login: 'regularUser',
     email: 'regularUser@mail.example',
   }),
   getTestUser({
-    id: 3,
+    id: 2,
     login: 'blockedUser',
     email: 'blockedUser@mail.example',
     isBlocked: true,
+  }),
+  getTestUser({
+    id: 3,
+    login: 'AdminUser',
+    email: 'adminUser@mail.example',
+    role: UserRole.ADMIN,
   }),
 ];
 

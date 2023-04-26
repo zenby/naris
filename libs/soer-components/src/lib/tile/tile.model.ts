@@ -4,5 +4,5 @@ export interface TileModel {
   title: string;
   suffix?: string;
   status: TileStatus;
-  value: string | number;
+  value: string | number | null;
 }

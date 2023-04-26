@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { BusEmitter, isBusMessage, MixedBusService } from '@soer/mixed-bus';
 import { CommandCreate, CommandRead, DataStoreService, DtoPack, OK } from '@soer/sr-dto';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { convertToJsonDTO, parseJsonDTOPack } from '../json.dto.helpers';
 import { WatchVideoEvent } from './events/watch-video.event';
 
@@ -28,6 +28,8 @@ export class PersonalActivityService {
 
   public activity$: Observable<DtoPack<PersonalActivity>>;
 
+  public data$ = new BehaviorSubject<PersonalActivity>(EMPTY_ACTIVITY);
+
   constructor(
     public store$: DataStoreService,
     public bus$: MixedBusService,
@@ -39,6 +41,7 @@ export class PersonalActivityService {
     this.activity$.subscribe((data) => {
       if (data.status === OK) {
         this.activity = this.joinActivityObjects([this.activity, ...data.items]);
+        this.data$.next(this.activity);
       }
     });
 

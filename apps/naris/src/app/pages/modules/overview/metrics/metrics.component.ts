@@ -3,8 +3,7 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { BusEmitter, BusMessage } from '@soer/mixed-bus';
 import { DataStoreService, DtoPack } from '@soer/sr-dto';
 import { WorkbookModel } from '@soer/sr-editor';
-import { firstValueFrom, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, firstValueFrom, map, of } from 'rxjs';
 import { parseJsonDTOPack } from '../../../../api/json.dto.helpers';
 import { MetricModel } from '../../../../api/metrics/metric.model';
 import { PersonalActivityService, VideoIdModel } from '../../../../api/progress/personal-activity.service';
@@ -60,44 +59,50 @@ export class MetricsComponent {
       resolve([
         {
           title: 'Цели',
-          value: (await firstValueFrom(this.target$)).items.length,
+          value: of((await firstValueFrom(this.target$)).items.length),
           icon: 'check-circle',
           url: '#!/pages/targets/list',
         },
         {
           title: 'Конспекты',
-          value: (await firstValueFrom(this.workbook$)).items.length,
+          value: of((await firstValueFrom(this.workbook$)).items.length),
           icon: 'solution',
           url: '#!/pages/workbook',
         },
         {
           title: 'Вопросы',
-          value: (await firstValueFrom(this.question$)).items.length,
+          value: of((await firstValueFrom(this.question$)).items.length),
           icon: 'question',
           url: '#!/pages/qa',
         },
         {
           title: 'Стримы',
-          value: countVideosIn(videosFlatMap(this.data['streams']), this.personalActivity.getWatchedVideos()),
+          value: this.personalActivity.data$.pipe(
+            map((_data) => countVideosIn(videosFlatMap(this.data['streams']), this.personalActivity.getWatchedVideos()))
+          ),
           icon: 'play-circle',
           url: '#!/pages/streams',
         },
         {
           title: 'Воркшопы',
-          value: countVideosIn(videosFlatMap(this.data['workshops']), this.personalActivity.getWatchedVideos()),
+          value: this.personalActivity.data$.pipe(
+            map((_data) =>
+              countVideosIn(videosFlatMap(this.data['workshops']), this.personalActivity.getWatchedVideos())
+            )
+          ),
           icon: 'experiment',
           url: '#!/pages/workshops',
         },
         {
           title: 'Книга',
-          value: 57,
+          value: of(57),
           suffix: '%',
           icon: 'book',
           url: '#!/pages/book',
         },
         {
           title: 'Исходники',
-          value: 6,
+          value: of(6),
           icon: 'field-binary',
           url: '#!/pages/sources',
         },

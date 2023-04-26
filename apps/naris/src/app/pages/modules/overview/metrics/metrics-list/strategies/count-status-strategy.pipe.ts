@@ -5,7 +5,11 @@ import { TileStatus } from '@soer/soer-components';
   name: 'countStatusStrategy',
 })
 export class CountStatusStrategyPipe implements PipeTransform {
-  transform(value: number): TileStatus {
+  transform(value: number | string | null): TileStatus {
+    if (value === null) {
+      value = 0;
+    }
+    value = parseInt(value + '', 10);
     if (value === 0) {
       return 'critical';
     }

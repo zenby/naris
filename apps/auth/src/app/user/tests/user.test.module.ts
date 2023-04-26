@@ -9,8 +9,12 @@ export { TEST_USERS } from './test.users';
 
 @Module({
   imports: [],
-  providers: [UserService, { provide: getRepositoryToken(UserEntity), useClass: UserTestRepository }],
-  exports: [UserTestRepository],
+  providers: [
+    UserService,
+    UserTestRepository,
+    { provide: getRepositoryToken(UserEntity), useClass: UserTestRepository },
+  ],
+  exports: [UserTestRepository, UserService],
 })
 export class UserTestModule {
   constructor(private readonly userrepo: UserTestRepository) {}

@@ -17,6 +17,7 @@ import { ByRoutePathResolver } from '../../../api/by-route-path.resolver';
 import { StreamService } from '../../../api/streams/stream.service';
 import { WorkshopsService } from '../../../api/workshops/workshops.service';
 import { VideoService } from '../../../services/video/video.service';
+import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 
 import { MetricsComponent } from './metrics/metrics.component';
 import { InfoComponent } from './info/info.component';
@@ -25,6 +26,7 @@ import { MetricsListComponent } from './metrics/metrics-list/metrics-list.compon
 import { PercentStatusStrategyPipe } from './metrics/metrics-list/strategies/percent-status-strategy.pipe';
 import { CountStatusStrategyPipe } from './metrics/metrics-list/strategies/count-status-strategy.pipe';
 import { LatestComponent } from './latest/latest.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { LatestComponent } from './latest/latest.component';
     PercentStatusStrategyPipe,
     CountStatusStrategyPipe,
     LatestComponent,
+    CalendarComponent,
   ],
   imports: [
     CommonModule,
@@ -52,6 +55,7 @@ import { LatestComponent } from './latest/latest.component';
     NzGridModule,
     NzTypographyModule,
     NoContentModule,
+    NzCalendarModule,
   ],
   providers: [StreamService, WorkshopsService, ByRoutePathResolver, VideoService],
   exports: [],

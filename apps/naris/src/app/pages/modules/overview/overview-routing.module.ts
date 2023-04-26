@@ -6,6 +6,7 @@ import { StreamService } from '../../../api/streams/stream.service';
 import { WorkshopsService } from '../../../api/workshops/workshops.service';
 import { ComposeIcontabsPageComponent } from '../../router-compose/compose-icontabs-page/compose-icontabs-page.component';
 import { ComposeVideoPlayerComponent } from '../compose-video-player/compose-video-player.component';
+import { CalendarComponent } from './calendar/calendar.component';
 import { InfoComponent } from './info/info.component';
 import { LatestComponent } from './latest/latest.component';
 import { MetricsComponent } from './metrics/metrics.component';
@@ -57,6 +58,11 @@ const routes: Routes = [
             data: { header: { title: 'Смотрим воркшоп...' } },
           },
         ],
+      },
+      {
+        path: 'calendar',
+        data: { header: { title: 'Календарь', subtitle: '', icon: 'calendar' } },
+        component: CalendarComponent,
       },
     ],
   },

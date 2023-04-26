@@ -1,0 +1,12 @@
+<nz-calendar>
+  <div *nzDateFullCell="let date" class="day-wrapper" [ngClass]="getDateClass(date)">
+    <div class="ant-picker-calendar-date-value ng-star-inserted date-header">{{ getDateHeader(date) }}</div>
+    <div class="ant-picker-calendar-date-content ng-star-inserted">
+      <ol class="activity-list">
+        <li *ngFor="let wathcedVideos of getWatchedVideos(date)">
+          Просмотрено видео <span class="video-title">{{ wathcedVideos.title }}</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+</nz-calendar>

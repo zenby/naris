@@ -2,25 +2,27 @@ import { UserRole } from '@soer/sr-common-interfaces';
 import { UserEntity } from '../user.entity';
 import { faker } from '@faker-js/faker';
 
-export const TEST_USERS = [
-  getTestUser({
-    id: 1,
-    login: 'regularUser',
-    email: 'regularUser@mail.example',
-  }),
-  getTestUser({
-    id: 2,
-    login: 'blockedUser',
-    email: 'blockedUser@mail.example',
-    isBlocked: true,
-  }),
-  getTestUser({
-    id: 3,
-    login: 'AdminUser',
-    email: 'adminUser@mail.example',
-    role: UserRole.ADMIN,
-  }),
-];
+export const regularUser = getTestUser({
+  id: 1,
+  login: 'regularUser',
+  email: 'regularUser@mail.example',
+});
+
+export const blockedUser = getTestUser({
+  id: 2,
+  login: 'blockedUser',
+  email: 'blockedUser@mail.example',
+  isBlocked: true,
+});
+
+export const adminUser = getTestUser({
+  id: 3,
+  login: 'AdminUser',
+  email: 'adminUser@mail.example',
+  role: UserRole.ADMIN,
+});
+
+export const testUsers = [regularUser, blockedUser, adminUser];
 
 type UserInfo = {
   id?: number;

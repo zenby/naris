@@ -40,3 +40,12 @@ export const config: Configuration['jwt'] = {
 const configMock = {
   get: (): Configuration['jwt'] => config,
 };
+
+export const expired10MinAgo = -10 * 60;
+
+export async function getJWTTokenForUser(user: UserEntity, expiredInSec = 3600) {
+  const { jwtSecret: secret } = config;
+  const iat = Math.floor(Date.now() / 1000) + expiredInSec;
+  const jwtToken = jwt.sign({ userId: user.id, userEmail: user.email, iat }, secret);
+  return jwtToken;
+}

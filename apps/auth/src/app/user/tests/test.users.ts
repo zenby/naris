@@ -27,12 +27,15 @@ export const testUsers = [regularUser, blockedUser, adminUser];
 type UserInfo = {
   id?: number;
   login?: string;
+  password?: string;
   email?: string;
   role?: UserRole;
   isBlocked?: boolean;
 };
 
-function getTestUser(userInfo: UserInfo = { id: undefined, login: undefined, email: undefined, role: undefined }) {
+function getTestUser(
+  userInfo: UserInfo = { id: undefined, login: undefined, email: undefined, role: undefined, password: undefined }
+) {
   const user = new UserEntity();
   Object.assign(user, {
     id: userInfo.id ?? faker.random.numeric(),
@@ -41,6 +44,8 @@ function getTestUser(userInfo: UserInfo = { id: undefined, login: undefined, ema
     uuid: faker.datatype.uuid(),
     role: userInfo.role ?? UserRole.USER,
     blocked: userInfo.isBlocked ?? false,
+    password: userInfo.password ?? '',
   });
+  user.hashPassword();
   return user;
 }

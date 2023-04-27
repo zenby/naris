@@ -4,69 +4,39 @@ import * as jwt from 'jsonwebtoken';
 import { Repository } from 'typeorm';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { ConfigService } from '@nestjs/config';
 import { getRepositoryToken } from '@nestjs/typeorm';
-
-import { HttpJsonResult, HttpJsonStatus, UserRole } from '@soer/sr-common-interfaces';
-import { AuthModule } from './auth.module';
+import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
+import { AuthTestModule, getJWTTokenForUser, expired10MinAgo } from './tests/auth.test.module';
 import { LoginUserDto } from '../user/dto/login-user.dto';
-import { Configuration } from '../config/config';
 import { UserEntity } from '../user/user.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { faker } from '@faker-js/faker';
+import { testUsers, adminUser, regularUser } from '../user/tests/user.test.module';
+import { ConfigService } from '@nestjs/config';
+import { Configuration } from '../config/config';
 
 describe('Auth e2e-test', () => {
   let app: INestApplication;
   let request: ReturnType<typeof supertest>;
   let userRepo: Repository<UserEntity>;
+  let configService: ConfigService;
+  let cookieName: string;
+  let redirectUrl: string;
+  let jwtSecret: string;
 
-  const adminUser = getTestUser({ role: UserRole.ADMIN });
-  const users = [getTestUser({ email: 'fakeUser@mail.com' }), getTestUser(), adminUser];
-
-  const config: Configuration['jwt'] = {
-    cookieName: 'refreshToken',
-    expiresInAccess: 10,
-    expiresInRefresh: 10,
-    jwtSecret: 'secret',
-    redirectUrl: '/success',
-  };
-
-  async function getJWTTokenForUser(user: UserEntity, expiredInSec = 3600) {
-    const { jwtSecret: secret } = config;
-    const iat = Math.floor(Date.now() / 1000) + expiredInSec;
-    const jwtToken = jwt.sign({ userId: user.id, userEmail: user.email, iat }, secret);
-    return jwtToken;
-  }
+  const users = testUsers;
 
   beforeAll(async () => {
-    const configMock = {
-      get: jest.fn().mockImplementation((): Configuration['jwt'] => config),
-    };
-
     const moduleRef = await Test.createTestingModule({
-      imports: [AuthModule],
-    })
-      .useMocker((token) => {
-        if (token == ConfigService) return configMock;
-        if (token == getRepositoryToken(UserEntity))
-          return {
-            save: jest.fn(),
-            findOne: jest.fn().mockImplementation((options) => {
-              const usr = users.find((user) => {
-                return user.email === options.where?.email;
-              });
-              return usr;
-            }),
-          };
-      })
-      .compile();
+      imports: [AuthTestModule],
+    }).compile();
 
     app = moduleRef.createNestApplication();
     app.use(cookieParser());
     await app.init();
 
     userRepo = app.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
-
+    configService = app.get<ConfigService>(ConfigService);
+    ({ cookieName, redirectUrl, jwtSecret } = configService.get<Configuration['jwt']>('jwt'));
     request = supertest(app.getHttpServer());
   });
 
@@ -86,9 +56,9 @@ describe('Auth e2e-test', () => {
       await request
         .post('/auth/signin')
         .send(validCredentials)
-        .expect('Set-Cookie', new RegExp(`${config.cookieName}=.*; HttpOnly`))
+        .expect('Set-Cookie', new RegExp(`${cookieName}=.*; HttpOnly`))
         .expect(302)
-        .expect('Location', config.redirectUrl);
+        .expect('Location', redirectUrl);
     });
 
     it('should return error when pass invalid credentials', async () => {
@@ -143,7 +113,7 @@ describe('Auth e2e-test', () => {
       const jwtToken = await getJWTTokenForUser(users[0]);
       const response = await request
         .get('/auth/access_token')
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .set('Cookie', [`${cookieName}=${jwtToken}`])
         .expect(200);
       const body: HttpJsonResult<{ accessToken: string }> = response.body;
       const accessToken = body.items[0]?.accessToken;
@@ -153,11 +123,10 @@ describe('Auth e2e-test', () => {
     });
 
     it('should return 401 error when pass old refresh token', async () => {
-      const expired10MinAgo = -10 * 60;
       const jwtToken = await getJWTTokenForUser(users[0], expired10MinAgo);
       await request
         .get('/auth/access_token')
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .set('Cookie', [`${cookieName}=${jwtToken}`])
         .expect(401);
     });
 
@@ -172,38 +141,36 @@ describe('Auth e2e-test', () => {
 
       const response = await request
         .post('/auth/access_token_for_user_request')
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .send({ switch_to_user_by_email: users[0].email })
+        .set('Cookie', [`${cookieName}=${jwtToken}`])
+        .send({ switch_to_user_by_email: regularUser.email })
         .expect(201);
 
       const body: HttpJsonResult<{ accessToken: string }> = response.body;
       const accessToken = body.items[0]?.accessToken;
-      const { email } = jwt.verify(accessToken, config.jwtSecret) as { email: string };
+      const { email } = jwt.verify(accessToken, jwtSecret) as { email: string };
 
       expect(body.status).toBe(HttpJsonStatus.Ok);
       expect(accessToken).toBeDefined();
-      expect(email).toBe(users[0].email);
+      expect(email).toBe(regularUser.email);
     });
 
     it('should return 401 error when pass old refresh token', async () => {
-      const expired10MinAgo = -10 * 60;
-
       const jwtToken = await getJWTTokenForUser(adminUser, expired10MinAgo);
 
       await request
         .post('/auth/access_token_for_user_request')
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .set('Cookie', [`${cookieName}=${jwtToken}`])
         .send({ switch_to_user_by_email: users[0].email })
         .expect(401);
     });
 
     it('should return 403 error when user role is USER', async () => {
-      const jwtToken = await getJWTTokenForUser(users[1]);
+      const jwtToken = await getJWTTokenForUser(regularUser);
 
       await request
         .post('/auth/access_token_for_user_request')
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .send({ switch_to_user_by_email: users[0].email })
+        .set('Cookie', [`${cookieName}=${jwtToken}`])
+        .send({ switch_to_user_by_email: regularUser.email })
         .expect(403);
     });
 
@@ -219,7 +186,7 @@ describe('Auth e2e-test', () => {
 
       await request
         .post('/auth/access_token_for_user_request')
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .set('Cookie', [`${cookieName}=${jwtToken}`])
         .expect(404);
     });
 
@@ -228,28 +195,9 @@ describe('Auth e2e-test', () => {
 
       await request
         .post('/auth/access_token_for_user_request')
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .set('Cookie', [`${cookieName}=${jwtToken}`])
         .send({ switch_to_user_by_email: '' })
         .expect(404);
     });
   });
-
-  type UserInfo = {
-    id?: number;
-    login?: string;
-    email?: string;
-    role?: UserRole;
-  };
-
-  function getTestUser(userInfo: UserInfo = { id: undefined, login: undefined, email: undefined, role: undefined }) {
-    const user = new UserEntity();
-    Object.assign(user, {
-      id: userInfo.id ?? faker.random.numeric(),
-      login: userInfo.login ?? faker.internet.userName(),
-      email: userInfo.email ?? faker.internet.email(),
-      uuid: faker.datatype.uuid(),
-      role: userInfo.role ?? UserRole.USER,
-    });
-    return user;
-  }
 });

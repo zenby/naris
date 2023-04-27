@@ -1,9 +1,9 @@
 import { FindOneOptions, FindOptionsWhere, SaveOptions } from 'typeorm';
 import { UserEntity } from '../user.entity';
-import { TEST_USERS } from './test.users';
+import { testUsers } from './test.users';
 
 export class UserTestRepository {
-  private readonly users = TEST_USERS;
+  private readonly users = testUsers;
 
   async findOne(options: FindOneOptions<UserEntity>): Promise<UserEntity> {
     const query = options.where as FindOptionsWhere<UserEntity>;

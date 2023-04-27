@@ -5,7 +5,7 @@ import { UserEntity } from '../user.entity';
 import { UserService } from '../user.service';
 
 export { UserTestRepository } from './user.test.repository';
-export { TEST_USERS } from './test.users';
+export * from './test.users';
 
 @Module({
   imports: [],

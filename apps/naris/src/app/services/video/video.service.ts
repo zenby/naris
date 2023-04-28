@@ -1,19 +1,40 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscriber } from 'rxjs';
+import { combineLatest, map, Observable, Subscriber, tap } from 'rxjs';
+import { PersonalActivityService, VideoIdModel } from '../../api/progress/personal-activity.service';
 import { VideoModel } from '../../api/streams/stream.model';
 import { StreamService } from '../../api/streams/stream.service';
 import { WorkshopsService } from '../../api/workshops/workshops.service';
 import { VideoIdAndSource } from './video.models';
 
+export interface WathcedVideo {
+  id: string;
+  title: string;
+}
+export interface WathcedVideosByDate {
+  [date: string]: WathcedVideo[];
+}
+
 @Injectable()
 export class VideoService {
-  constructor(private stramsService: StreamService, private workshopsService: WorkshopsService) {}
+  constructor(
+    private stramsService: StreamService,
+    private workshopsService: WorkshopsService,
+    private personalActivity: PersonalActivityService
+  ) {}
 
   getVideoIdAndSource(video: VideoModel): VideoIdAndSource {
     if (video.vimeo_id) return { id: video.vimeo_id, source: 'vimeo' };
     if (video.kinescope_id) return { id: video.kinescope_id, source: 'kinescope' };
 
     return { id: video.youtube_id, source: 'youtube' };
+  }
+
+  getAllVideos(): Observable<VideoModel[]> {
+    return combineLatest([this.stramsService.getStreams(), this.workshopsService.getWorkshops()]).pipe(
+      map(([streams, workshops]) => {
+        return [...this.getVideosInSubFolders(streams), ...this.getVideosInSubFolders(workshops)];
+      })
+    );
   }
 
   getLastStreams(count: number): Observable<VideoModel[]> {
@@ -30,6 +51,49 @@ export class VideoService {
         subscriber.next(this.getLastVideos(this.getVideosInSubFolders(videos), count));
       });
     });
+  }
+
+  getWathcedVideosByDate(): Observable<WathcedVideosByDate> {
+    return combineLatest([this.getAllVideos(), this.personalActivity.activityRaw$]).pipe(
+      map(([videos, activity]) => {
+        const videoById: { [id: string]: VideoModel & { id: string } } = {};
+        videos.forEach((video) => {
+          const videoId = this.getVideoIdAndSource(video).id;
+          if (videoId && !videoById[videoId]) {
+            videoById[videoId] = {
+              id: videoId,
+              ...video,
+            };
+          }
+        });
+        const wathcedVideosByDate: WathcedVideosByDate = {};
+        activity.forEach((activity) => {
+          if (activity?.watched?.videos?.length) {
+            activity.watched.videos.forEach((videoIdModel: VideoIdModel) => {
+              const id = videoIdModel.videoId;
+              const dateString = this.getDateString(this.dateParse(activity.createdAt));
+              if (wathcedVideosByDate[dateString] === undefined) {
+                wathcedVideosByDate[dateString] = [];
+              }
+              wathcedVideosByDate[dateString].push({
+                id: videoById[id].id,
+                title: videoById[id].title,
+              });
+            });
+          }
+        });
+
+        return wathcedVideosByDate;
+      })
+    );
+  }
+
+  dateParse(dateString: string): Date {
+    return new Date(dateString);
+  }
+
+  getDateString(date: Date): string {
+    return date.toISOString().slice(0, 10);
   }
 
   private getLastVideos(videos: VideoModel[], count: number): VideoModel[] {

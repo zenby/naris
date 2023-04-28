@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { VideoService } from '../../../../services/video/video.service';
-import { faker } from '@faker-js/faker';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { VideoService, WathcedVideo, WathcedVideosByDate } from '../../../../services/video/video.service';
 
 @Component({
   selector: 'soer-calendar',
@@ -9,19 +7,13 @@ import { faker } from '@faker-js/faker';
   styleUrls: ['./calendar.component.scss'],
 })
 export class CalendarComponent {
-  public wathcedVideosByDate: { [date: string]: { id: string; title: string }[] } = {};
+  public wathcedVideosByDate: WathcedVideosByDate = {};
 
-  constructor(private route: ActivatedRoute, private router: Router, private videoService: VideoService) {
-    Array.from(new Array(30))
-      .fill(1)
-      .map((item, index: number) => {
-        this.wathcedVideosByDate[`2023-04-${index + 1}`] = Array.from(new Array(Math.floor(Math.random() * 3)))
-          .fill(1)
-          .map(() => ({
-            id: faker.random.numeric(6),
-            title: faker.random.words(3),
-          }));
-      });
+  constructor(private videoService: VideoService, private cdr: ChangeDetectorRef) {
+    this.videoService.getWathcedVideosByDate().subscribe((value) => {
+      this.wathcedVideosByDate = value;
+      this.cdr.markForCheck();
+    });
   }
 
   getDateHeader(date: string): string {
@@ -29,14 +21,22 @@ export class CalendarComponent {
   }
 
   getDateClass(date: string): string {
-    return this.isHasWatchedVideos(new Date(date)) ? 'day-with-activity' : 'day-without-activity';
+    return this.isHasWatchedVideos(this.dateParse(date)) ? 'day-with-activity' : 'day-without-activity';
   }
 
-  getWatchedVideos(date: string): Array<{ id: string; title: string }> {
-    return this.wathcedVideosByDate[new Date(date).toISOString().slice(0, 10)] ?? [];
+  getWatchedVideos(date: string): WathcedVideo[] {
+    return this.wathcedVideosByDate[this.getDateString(this.dateParse(date))] ?? [];
   }
 
   private isHasWatchedVideos(date: Date): boolean {
-    return this.wathcedVideosByDate[date.toISOString().slice(0, 10)]?.length > 0;
+    return this.wathcedVideosByDate[this.getDateString(date)]?.length > 0;
+  }
+
+  private dateParse(dateString: string): Date {
+    return this.videoService.dateParse(dateString);
+  }
+
+  private getDateString(date: Date): string {
+    return this.videoService.getDateString(date);
   }
 }

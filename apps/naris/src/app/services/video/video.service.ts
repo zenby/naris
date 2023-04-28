@@ -14,7 +14,9 @@ export interface WathcedVideosByDate {
   [date: string]: WathcedVideo[];
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class VideoService {
   constructor(
     private stramsService: StreamService,

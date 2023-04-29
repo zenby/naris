@@ -71,8 +71,11 @@ describe('VideoService', () => {
     it('should return wathced videos', (done) => {
       const streams = createVideoModel(2);
       const workshops = createVideoModel(2);
+      const removedVideo = createVideoModel(1);
       const today = new Date().toISOString();
-      const activity = createWathedVideoActivity(streams.children ?? [], { createdAt: today });
+      const activity = createWathedVideoActivity([...(streams.children ?? []), ...(removedVideo.children ?? [])], {
+        createdAt: today,
+      });
       configureService(streams, workshops, activity);
 
       let result = {};

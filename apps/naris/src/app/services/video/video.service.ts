@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { combineLatest, map, Observable, Subscriber } from 'rxjs';
 import {
@@ -26,6 +27,8 @@ interface VideosById {
   providedIn: 'root',
 })
 export class VideoService {
+  public readonly dateKeyFormat = 'yyyy-MM-dd';
+
   constructor(
     private stramsService: StreamService,
     private workshopsService: WorkshopsService,
@@ -72,14 +75,6 @@ export class VideoService {
     );
   }
 
-  dateParse(dateString: string): Date {
-    return new Date(dateString);
-  }
-
-  getDateString(date: Date): string {
-    return date.toISOString().slice(0, 10);
-  }
-
   private groupVideosById(videos: VideoModel[]): VideosById {
     const result: VideosById = {};
     videos.forEach((video) => {
@@ -101,7 +96,7 @@ export class VideoService {
       if (activity?.watched?.videos?.length) {
         activity.watched.videos.forEach((videoIdModel: VideoIdModel) => {
           const id = videoIdModel.videoId;
-          const dateString = this.getDateString(this.dateParse(activity.createdAt));
+          const dateString = this.getDateKey(activity.createdAt);
           if (result[dateString] === undefined) {
             result[dateString] = [];
           }
@@ -116,6 +111,10 @@ export class VideoService {
     });
 
     return result;
+  }
+
+  getDateKey(date: Date | string): string {
+    return formatDate(date, this.dateKeyFormat, 'en');
   }
 
   private getLastVideos(videos: VideoModel[], count: number): VideoModel[] {

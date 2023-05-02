@@ -6,12 +6,12 @@ export interface DateActivity {
   [date: string]: WathcedVideo[];
 }
 @Component({
-  selector: 'soer-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss'],
+  selector: 'soer-calendar-page',
+  templateUrl: './calendar-page.component.html',
+  styleUrls: ['./calendar-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CalendarComponent {
+export class CalendarPageComponent {
   public wathcedVideosByDate: WathcedVideosByDate = {};
   public dateActivity$: BehaviorSubject<DateActivity>;
 

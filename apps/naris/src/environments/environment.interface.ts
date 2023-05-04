@@ -11,6 +11,7 @@ export interface HostVariables {
   patreonAuthUrl: string;
   yandexAuthUrl: string;
   apiUrl: string;
+  urlV2: string;
   assetsUrl: string;
   privateAssetsUrl: string;
   payServiceUrl: string;

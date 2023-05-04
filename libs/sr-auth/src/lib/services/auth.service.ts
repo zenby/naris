@@ -6,6 +6,7 @@ import { LocalStorageService } from '@soer/sr-local-storage';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthEmitter } from '../interfaces/auth-options.interface';
 import { EmptyJWTModel, JWTModel } from '../interfaces/jwt.models';
+import { FeatureFlagService } from '@soer/sr-feature-flags';
 
 const TOKEN_KEY = 'token';
 
@@ -25,6 +26,7 @@ export class AuthService {
     @Inject('AuthServiceConfig') private options: AuthEmitter,
     private bus$: MixedBusService,
     private http: HttpClient,
+    private featureFlags: FeatureFlagService,
     private localStorageService: LocalStorageService
   ) {
     this.checkIsAuth();
@@ -89,6 +91,12 @@ export class AuthService {
       .pipe(tap((result) => (this.token = result.accessToken)));
   }
 
+  renewTokenV2(): Observable<{ accessToken: string }> {
+    return this.http
+      .get<{ accessToken: string }>(this.options.schema.renewApi)
+      .pipe(tap((result) => (this.token = result.accessToken)));
+  }
+
   extractAndParseJWT(jwt: string | null): JWTModel | null {
     if (jwt === null) {
       return null;
@@ -120,5 +128,23 @@ export class AuthService {
       this.decodeJWT(this.token);
     }
     return this.decodedJSON.role.toUpperCase();
+  }
+
+  getAuthUrlFor(provider: 'google' | 'yandex'): string {
+    return this.options.schema.authApi + provider;
+  }
+
+  processAuth(): void {
+    console.log(this.featureFlags.isFeatureFlagEnabled('auth_v2'));
+    if (this.featureFlags.isFeatureFlagEnabled('auth_v2')) {
+      console.log('Auth v2');
+      this.processAuthV2();
+    }
+  }
+
+  private processAuthV2(): void {
+    this.renewTokenV2().subscribe((token) => {
+      console.log('V2 token', token);
+    });
   }
 }

@@ -12,8 +12,9 @@ export class AuthComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private readonly authService: AuthService) {}
 
   ngOnInit(): void {
-    this.jwt = this.route.snapshot.queryParams?.['jwt'] ?? null;
-    this.checkJWT(this.jwt);
+    //    this.jwt = this.route.snapshot.queryParams?.['jwt'] ?? null;
+    //    this.checkJWT(this.jwt);
+    this.authService.processAuth();
   }
 
   checkJWT(token: string | null): void {
@@ -21,7 +22,7 @@ export class AuthComponent implements OnInit {
       this.jwt = token;
       this.authService.updateToken(this.jwt);
     }
-    this.redirect();
+    //    this.redirect();
   }
 
   redirect(): void {

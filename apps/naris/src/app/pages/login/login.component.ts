@@ -25,14 +25,14 @@ export class LoginComponent implements OnInit {
     this.loading = false;
   }
 
-  oAuthLogin(provider: 'patreon' | 'google' | 'yandex'): void {
-    const urls = {
+  oAuthLogin(provider: 'google' | 'yandex'): void {
+    /*    const urls = {
       patreon: environment.patreonAuthUrl,
       google: environment.googleAuthUrl,
       yandex: environment.yandexAuthUrl,
-    };
+    };*/
 
-    document.location = urls[provider];
+    document.location = this.authService.getAuthUrlFor(provider);
     return;
   }
 }

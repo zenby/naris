@@ -14,7 +14,9 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {
     //    this.jwt = this.route.snapshot.queryParams?.['jwt'] ?? null;
     //    this.checkJWT(this.jwt);
-    this.authService.processAuth();
+    this.authService.processAuth().then(() => {
+      this.redirect();
+    });
   }
 
   checkJWT(token: string | null): void {

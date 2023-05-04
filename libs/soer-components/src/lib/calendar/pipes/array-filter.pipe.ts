@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DayEvent } from './calendar.component';
+import { DayEvent } from '../calendar.component';
 
 @Pipe({
   name: 'arrayFilter',

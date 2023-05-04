@@ -67,7 +67,7 @@ describe('VideoService', () => {
     });
   });
 
-  describe('getWathcedVideosByDate', () => {
+  describe('getWathcedVideos', () => {
     it('should return wathced videos', (done) => {
       const streams = createVideoModel(2);
       const workshops = createVideoModel(2);
@@ -79,17 +79,18 @@ describe('VideoService', () => {
       configureService(streams, workshops, activity);
 
       let result = {};
-      sut?.getWathcedVideosByDate().subscribe((videos) => {
+      sut?.getWathcedVideos().subscribe((videos) => {
         result = videos;
         done();
       });
 
-      expect(result).toStrictEqual({
-        [today.slice(0, 10)]: streams.children?.map((video) => ({
+      expect(result).toStrictEqual(
+        streams.children?.map((video) => ({
           id: video.youtube_id,
           title: video.title,
-        })),
-      });
+          date: today,
+        }))
+      );
     });
   });
 });

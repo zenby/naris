@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '@soer/sr-auth';
 import { SrDTOModule } from '@soer/sr-dto';
+import { FeatureFlagGuard } from '@soer/sr-feature-flags';
 import { DefaultComponent } from './pages/default/default.component';
 
 const routes: Routes = [
@@ -17,7 +18,24 @@ const routes: Routes = [
     },
     canActivate: [AuthGuard],
   },
-  { path: 'login', loadChildren: () => import('./pages/login/login.module').then((m) => m.LoginModule) },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then((m) => m.LoginModule),
+    canActivate: [FeatureFlagGuard],
+    data: {
+      requiredFeatureFlag: 'auth_v1',
+      featureFlagRedirect: '/login-oauth',
+    },
+  },
+  {
+    path: 'login-oauth',
+    loadChildren: () => import('./pages/login/login.module').then((m) => m.LoginModule),
+    canActivate: [FeatureFlagGuard],
+    data: {
+      requiredFeatureFlag: 'auth_v2',
+      featureFlagRedirect: '/login',
+    },
+  },
 ];
 
 @NgModule({

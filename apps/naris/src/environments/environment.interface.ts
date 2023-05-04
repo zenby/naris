@@ -1,6 +1,9 @@
 export interface DynamicConfig {
+  auth_v1?: boolean;
   auth_v2?: boolean;
 }
+
+export type DynamicConfigKeys = keyof DynamicConfig;
 
 export interface HostVariables {
   host: string;

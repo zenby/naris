@@ -20,6 +20,8 @@ import { ActivityKey } from './api/progress/progress.const';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApplicationService } from './services/application.service';
+import { SrFeatureFlagsModule } from '@soer/sr-feature-flags';
+import { DynamicConfig } from '../environments/environment.interface';
 
 registerLocaleData(ru);
 
@@ -44,7 +46,7 @@ registerLocaleData(ru);
     NzLayoutModule,
     NzMenuModule,
     NzMessageModule,
-
+    SrFeatureFlagsModule.forRoot<DynamicConfig>(environment.features),
     SrDTOModule.forChild<ActivityKey>({
       namespace: 'activity',
       schema: { url: 'v2/json/activity/:aid' },

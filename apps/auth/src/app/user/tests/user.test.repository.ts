@@ -12,6 +12,11 @@ export class UserTestRepository {
         return x.email === query.email;
       });
     }
+    if (query.login !== undefined) {
+      return this.users.find((x) => {
+        return x.login === query.login;
+      });
+    }
 
     return null;
   }

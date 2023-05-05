@@ -10,7 +10,7 @@ import { AuthTestModule, getJWTTokenForUser, expired10MinAgo } from './tests/aut
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import { UserEntity } from '../user/user.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { testUsers, adminUser, regularUser } from '../user/tests/user.test.module';
+import { testUsers, adminUser, regularUser, regularUserCredentials } from '../user/tests/user.test.module';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/config';
 
@@ -42,16 +42,7 @@ describe('Auth e2e-test', () => {
 
   describe('POST /auth/signin', () => {
     it('should signin user when pass valid credentials', async () => {
-      const validCredentials: LoginUserDto = {
-        login: 'validLogin',
-        password: 'validPassword',
-      };
-
-      const existsUser = new UserEntity();
-      Object.assign(existsUser, validCredentials);
-      await existsUser.hashPassword();
-
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(existsUser);
+      const validCredentials = regularUserCredentials;
 
       await request
         .post('/auth/signin')

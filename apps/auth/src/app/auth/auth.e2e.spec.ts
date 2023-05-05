@@ -58,8 +58,6 @@ describe('Auth e2e-test', () => {
         password: 'invalidPassword',
       };
 
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(null);
-
       const response = await request.post('/auth/signin').send(invalidCredentials);
       const body: HttpJsonResult<string> = response.body;
 

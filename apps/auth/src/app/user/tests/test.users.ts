@@ -1,6 +1,7 @@
 import { UserRole } from '@soer/sr-common-interfaces';
 import { UserEntity } from '../user.entity';
 import { faker } from '@faker-js/faker';
+import { genSaltSync, hashSync } from 'bcrypt';
 
 export const regularUser = getTestUser({
   id: 1,
@@ -33,6 +34,12 @@ type UserInfo = {
   isBlocked?: boolean;
 };
 
+function hashPassword(user: UserEntity): void {
+  if (user.password === '') return;
+  const salt = genSaltSync();
+  user.password = hashSync(user.password, salt);
+}
+
 function getTestUser(
   userInfo: UserInfo = { id: undefined, login: undefined, email: undefined, role: undefined, password: undefined }
 ) {
@@ -46,6 +53,6 @@ function getTestUser(
     blocked: userInfo.isBlocked ?? false,
     password: userInfo.password ?? '',
   });
-  user.hashPassword();
+  hashPassword(user);
   return user;
 }

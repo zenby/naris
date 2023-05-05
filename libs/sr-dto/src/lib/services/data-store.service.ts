@@ -11,7 +11,6 @@ import { INIT } from '@soer/sr-dto';
 export class DataStoreService {
   private dataTree$ = new Map();
   constructor(private bus$: MixedBusService) {
-    console.log('Start datastore service...');
     this.bus$.of(ChangeDataEvent).subscribe(this.dataEmission.bind(this));
   }
 
@@ -35,7 +34,6 @@ export class DataStoreService {
   }
 
   dataEmission(data: BusMessage | BusError): void {
-    console.log('Update DataStore ==>>', data.owner, data);
     if (data instanceof ChangeDataEvent) {
       this.of(data.owner).next(data);
     }

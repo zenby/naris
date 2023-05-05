@@ -17,7 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
       this.bus$.publish(new BusError(undefined, [err.message]));
     }
     if (err.status === 426) {
-      this.auth.renewToken().subscribe(() => console.log('Token upgraded'));
+      this.auth.renewToken();
       this.router.navigateByUrl(`/login`);
       return of(err.message);
     }
@@ -34,7 +34,6 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const idToken = this.auth.token;
 
-    console.log('Token:', idToken);
     if (idToken) {
       const cloned = req.clone({
         headers: req.headers.set('Authorization', 'Bearer ' + idToken),

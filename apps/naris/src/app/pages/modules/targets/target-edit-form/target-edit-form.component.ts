@@ -15,7 +15,6 @@ export class TargetEditFormComponent implements AfterViewInit {
   @Input() overview = '';
   @ViewChild('titleElem') titleElem!: ElementRef;
 
-  log = console.log;
   form: UntypedFormGroup;
   constructor(
     @Inject('target') private targetId: BusEmitter,

@@ -51,7 +51,6 @@ describe('ApplicationService', () => {
     service.pageControls([someTestControl, anotherTestControl]);
 
     service.control$.subscribe((menu) => {
-      console.log(menu);
       expect(menu).toEqual([someTestControl, anotherTestControl]);
     });
   }));

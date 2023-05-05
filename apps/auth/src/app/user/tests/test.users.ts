@@ -2,11 +2,18 @@ import { UserRole } from '@soer/sr-common-interfaces';
 import { UserEntity } from '../user.entity';
 import { faker } from '@faker-js/faker';
 import { genSaltSync, hashSync } from 'bcrypt';
+import { LoginUserDto } from '../dto/login-user.dto';
+
+export const regularUserCredentials: LoginUserDto = {
+  login: 'regularUser',
+  password: 'password',
+};
 
 export const regularUser = getTestUser({
   id: 1,
-  login: 'regularUser',
+  login: regularUserCredentials.login,
   email: 'regularUser@mail.example',
+  password: regularUserCredentials.password,
 });
 
 export const blockedUser = getTestUser({

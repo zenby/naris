@@ -1,11 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DayEvent } from '../calendar.component';
 
 @Pipe({
   name: 'arrayFilter',
 })
-export class ArrayFilterPipe implements PipeTransform {
-  transform(arr: Array<DayEvent>, value: string, filter: (item: DayEvent, value: string) => boolean): Array<DayEvent> {
+export class ArrayFilterPipe<T> implements PipeTransform {
+  transform(arr: Array<T>, value: string | number, filter: (item: T, value: string | number) => boolean): Array<T> {
     return arr.filter((item) => filter(item, value));
   }
 }

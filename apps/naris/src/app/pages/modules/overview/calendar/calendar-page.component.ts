@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { VideoService } from '../../../../services/video/video.service';
 
@@ -15,7 +15,7 @@ export interface Activity {
 export class CalendarPageComponent {
   public activities$: BehaviorSubject<Activity[]>;
 
-  constructor(private videoService: VideoService, private cdr: ChangeDetectorRef) {
+  constructor(private videoService: VideoService) {
     this.activities$ = new BehaviorSubject([] as Activity[]);
     this.videoService
       .getWathcedVideos()

@@ -11,7 +11,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { CalendarModule, NoContentModule, TileModule } from '@soer/soer-components';
+import { ActivityCalendarModule, NoContentModule, TileModule } from '@soer/soer-components';
 import { ThumbnailCardModule } from '@soer/soer-components';
 import { ByRoutePathResolver } from '../../../api/by-route-path.resolver';
 import { StreamService } from '../../../api/streams/stream.service';
@@ -26,7 +26,7 @@ import { MetricsListComponent } from './metrics/metrics-list/metrics-list.compon
 import { PercentStatusStrategyPipe } from './metrics/metrics-list/strategies/percent-status-strategy.pipe';
 import { CountStatusStrategyPipe } from './metrics/metrics-list/strategies/count-status-strategy.pipe';
 import { LatestComponent } from './latest/latest.component';
-import { CalendarPageComponent } from './calendar/calendar-page.component';
+import { CalendarPageComponent } from './calendar-page/calendar-page.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +56,7 @@ import { CalendarPageComponent } from './calendar/calendar-page.component';
     NzTypographyModule,
     NoContentModule,
     NzCalendarModule,
-    CalendarModule,
+    ActivityCalendarModule,
   ],
   providers: [StreamService, WorkshopsService, ByRoutePathResolver, VideoService],
   exports: [],

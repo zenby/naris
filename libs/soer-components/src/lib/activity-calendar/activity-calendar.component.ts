@@ -7,11 +7,11 @@ export interface DayEvent {
 }
 
 @Component({
-  selector: 'soer-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss'],
+  selector: 'soer-activity-calendar',
+  templateUrl: './activity-calendar.component.html',
+  styleUrls: ['./activity-calendar.component.scss'],
 })
-export class CalendarComponent {
+export class ActivityCalendarComponent {
   @Input() dayEvents: DayEvent[] = [];
 
   isDatesMatch(dayEvent: DayEvent, date: string): boolean {

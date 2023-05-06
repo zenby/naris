@@ -6,9 +6,9 @@ import { moduleMetadata, Meta, StoryFn, applicationConfig } from '@storybook/ang
 import { NZ_I18N, ru_RU } from 'ng-zorro-antd/i18n';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
-import { CalendarComponent, DayEvent } from './calendar.component';
+import { ActivityCalendarComponent, DayEvent } from './activity-calendar.component';
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
-import { CalendarModule } from './calendar.module';
+import { ActivityCalendarModule } from './activity-calendar.module';
 
 registerLocaleData(ru);
 
@@ -17,15 +17,15 @@ applicationConfig({
 });
 
 export default {
-  title: 'CalendarComponent',
-  component: CalendarComponent,
+  title: 'ActivityCalendarComponent',
+  component: ActivityCalendarComponent,
   decorators: [
     moduleMetadata({
-      imports: [CommonModule, CalendarModule, NzCalendarModule, NzDropDownModule, BrowserAnimationsModule],
+      imports: [CommonModule, ActivityCalendarModule, NzCalendarModule, NzDropDownModule, BrowserAnimationsModule],
       providers: [{ provide: NZ_I18N, useValue: ru_RU }],
     }),
   ],
-} as Meta<CalendarComponent>;
+} as Meta<ActivityCalendarComponent>;
 
 const videos: DayEvent[] = Array(20)
   .fill(1)

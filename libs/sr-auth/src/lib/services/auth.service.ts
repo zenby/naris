@@ -79,8 +79,13 @@ export class AuthService {
 
   checkCookieAuth() {
     if (this.token && this.options.schema.cookieApi) {
+      if (this.featureFlags.isFeatureFlagEnabled('auth_v2')) {
+        console.error('Auth V2 does not support cookie renew method, remove it when auth_v1 will completle removed.');
+        return;
+      }
+
       this.http.get(this.options.schema.cookieApi).subscribe(() => {
-        console.log('Cookie renew');
+        console.log('Cookie renew for auth_v1 method');
       });
     }
   }

@@ -102,6 +102,7 @@ export class PersonalActivityService {
     if (this.isEmpty(activity)) {
       return;
     }
+    console.log('???', this.activityId);
 
     this.bus$.publish(new CommandCreate(this.activityId, convertToJsonDTO(activity, ['id']), { aid: 'new' }));
   }

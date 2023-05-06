@@ -1,7 +1,11 @@
-export interface DynamicConfig {
-  auth_v1?: boolean;
-  auth_v2?: boolean;
+export enum featuresEnum {
+  auth_v1 = 'auth_v1',
+  auth_v2 = 'auth_v2',
 }
+
+export type DynamicConfig = {
+  [key in featuresEnum]?: boolean;
+};
 
 export type DynamicConfigKeys = keyof DynamicConfig;
 

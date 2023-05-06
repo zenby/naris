@@ -21,7 +21,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApplicationService } from './services/application.service';
 import { SrFeatureFlagsModule } from '@soer/sr-feature-flags';
-import { DynamicConfig } from '../environments/environment.interface';
+import { DynamicConfig, featuresEnum } from '../environments/environment.interface';
 
 registerLocaleData(ru);
 
@@ -32,7 +32,7 @@ registerLocaleData(ru);
     MixedBusModule,
     SrAuthModule.forRoot(
       ((options) => {
-        if (options.features.auth_v2) {
+        if (options.features[featuresEnum.auth_v2]) {
           return {
             sid: AUTH_ID,
             schema: {

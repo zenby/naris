@@ -59,7 +59,6 @@ export class AuthService {
     const token: string | null = this.localStorageService.getValue(TOKEN_KEY);
 
     this.token = this.isTokenValid(token) ? token : null;
-    console.log('???', this.token);
     return this.token ? true : false;
   }
 

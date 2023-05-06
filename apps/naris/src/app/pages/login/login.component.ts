@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@soer/sr-auth';
 import { FeatureFlagService } from '@soer/sr-feature-flags';
+import { featuresEnum } from '../../../environments/environment.interface';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -31,7 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   oAuthLogin(provider: 'google' | 'yandex'): void {
-    if (this.featureFlags.isFeatureFlagEnabled('auth_v2')) {
+    if (this.featureFlags.isFeatureFlagEnabled(featuresEnum.auth_v2)) {
       document.location = this.authService.getAuthUrlFor(provider);
       return;
     }

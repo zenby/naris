@@ -82,7 +82,7 @@ export class AuthService {
     return user;
   }
 
-  async compareUsersByPassword(password, userFromDb: UserEntity): Promise<boolean | Error> {
+  async compareUsersByPassword(password: string, userFromDb: UserEntity): Promise<boolean | Error> {
     const isPasswordsMatch = await compare(password, userFromDb.password);
 
     if (!isPasswordsMatch) {

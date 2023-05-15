@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { BusError, BusMessage, BusEmitter, IBus } from './interfaces/mixed-bus.interface';
+import { getChannel } from './mixed-bus.helpers';
 
 /**
  * Шина для обмена сообщениями
@@ -49,7 +50,8 @@ export class MixedBusService {
    * @returns
    */
   public of(messageType: unknown, eventOwners: BusEmitter[] = []): Observable<BusMessage | BusError> {
-    const channel = (messageType as any).name;
+    const channel = getChannel(messageType);
+
     return this.bus$.pipe(
       filter((m) => m != null && m.channel === channel),
       filter((m) => (eventOwners?.length > 0 ? eventOwners.map((o) => o.sid).includes(m.message.owner.sid) : true)),

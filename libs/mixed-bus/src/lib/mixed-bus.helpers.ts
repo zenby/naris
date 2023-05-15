@@ -19,3 +19,7 @@ export function busEmitterFactory(owner: BusEmitter, params: BusMessageParams): 
 
   return owner;
 }
+
+export function getChannel(messageType: unknown) {
+  return messageType && typeof messageType === 'object' && 'name' in messageType ? messageType.name : undefined;
+}

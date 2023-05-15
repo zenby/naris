@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type BusKey = { [key: string]: any };
 export type BusKeys<T extends BusKey = BusKey> = { [key: string]: T };
 export type BusMessageParams = { [param: string]: any };

@@ -1,4 +1,4 @@
-import { BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('documents')
@@ -8,23 +8,26 @@ export class JsonEntity {
   id: number;
 
   @ApiProperty()
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
   createdAt: Date;
 
   @ApiProperty()
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
   updatedAt: Date;
 
   @ApiProperty()
-  @Column()
+  @Column('text')
   json: string;
 
   @ApiProperty()
   @Column()
-  group: string;
+  namespace: string;
 
-  @BeforeUpdate()
-  updateTimestamp() {
-    this.updatedAt = new Date();
-  }
+  @ApiProperty()
+  @Column()
+  author_email: string;
+
+  @ApiProperty()
+  @Column({ default: () => 'PRIVATE' })
+  accessTag: string;
 }

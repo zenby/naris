@@ -13,18 +13,20 @@ import { BooleanToStringPipe } from './pipes/boolean-to-string.pipe';
 import { TypeFormatPipe } from './pipes/type-format.pipe';
 import { BlockService } from './services/block.service';
 import { TextareaAutoresizeDirective } from './textarea-autoresize.directive';
+import { PreviewBlockComponent } from './components/preview-block/preview-block.component';
 
 @NgModule({
   imports: [CommonModule, MarkdownModule.forRoot(), FormsModule, NzIconModule, NzButtonModule, NzToolTipModule],
   declarations: [
     BlockEditorComponent,
     BlockEditorControlsComponent,
+    PreviewBlockComponent,
     BooleanToStringPipe,
     EditorComponent,
     TextareaAutoresizeDirective,
     TypeFormatPipe,
   ],
   providers: [BlockService],
-  exports: [EditorComponent],
+  exports: [EditorComponent, PreviewBlockComponent],
 })
 export class SrEditorModule {}

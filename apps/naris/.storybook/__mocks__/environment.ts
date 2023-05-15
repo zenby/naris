@@ -1,3 +1,4 @@
+import { dev } from '../../src/environments/feature-flags';
 import { EnvironmentInterface } from '../../src/environments/environment.interface';
 
 const HOST = '';
@@ -11,4 +12,5 @@ export const environment: EnvironmentInterface = {
   assetsUrl: HOST + '/assets/',
   privateAssetsUrl: HOST + '/assets/private/',
   payServiceUrl: HOST + '/api/v2/seller',
+  features: dev,
 };

@@ -1,6 +1,9 @@
-export interface EnvironmentInterface {
+export interface DynamicConfig {
+  auth_v2?: boolean;
+}
+
+export interface HostVariables {
   host: string;
-  production: boolean;
   googleAuthUrl: string;
   patreonAuthUrl: string;
   yandexAuthUrl: string;
@@ -8,4 +11,9 @@ export interface EnvironmentInterface {
   assetsUrl: string;
   privateAssetsUrl: string;
   payServiceUrl: string;
+}
+
+export interface EnvironmentInterface extends HostVariables {
+  production: boolean;
+  features: DynamicConfig;
 }

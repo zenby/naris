@@ -2,6 +2,62 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.8.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.7.0...naris-0.8.0) (2023-04-21)
+
+
+### Features
+
+* **abstracte:** display blocks by type ([28ad18e](https://gitlog.ru:2222/Naris/soermono/commit/28ad18e1ca567ba25baf3f6c5ae232ab64dc26f8))
+
+## [0.7.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.6.0...naris-0.7.0) (2023-04-21)
+
+
+### Features
+
+* **abstract:** change fast download mechanism ([d994a62](https://gitlog.ru:2222/Naris/soermono/commit/d994a62d58177da557cd0df6b7c79fa470c6ddd1))
+* add apiRoot to BusEmitter interface ([8a019f9](https://gitlog.ru:2222/Naris/soermono/commit/8a019f92256cac61772bd13fb651954bf409e13c))
+* add configs for feature flags ([23b0277](https://gitlog.ru:2222/Naris/soermono/commit/23b027747eee02d8b3a49c636f4776100909613f))
+* add confirmation when close edit mode in workbook ([f596cf3](https://gitlog.ru:2222/Naris/soermono/commit/f596cf37dd7d867c6e443c7940fc448149b685af))
+* add observer for description change ([4833f94](https://gitlog.ru:2222/Naris/soermono/commit/4833f9458236eaaef9776e9b475b123a65a40fbf))
+* add save workbook as pdf feature ([498e16d](https://gitlog.ru:2222/Naris/soermono/commit/498e16da9226b47b4a9d93ed6a68a88cdaca0735))
+* **edit-abstracte-page:** add a confirmation before leaving the page ([9dbb990](https://gitlog.ru:2222/Naris/soermono/commit/9dbb990972697461585a4200c8c6a98a04629358))
+* modify project.json ([f959c82](https://gitlog.ru:2222/Naris/soermono/commit/f959c82841e702a391f453064445536aea836f10))
+* **overview:** add latest materials tab ([8fcdde5](https://gitlog.ru:2222/Naris/soermono/commit/8fcdde5570dd79b93e9af546c2fbe92a1751fb43))
+* **overview:** add video playback on latest tab ([63deb42](https://gitlog.ru:2222/Naris/soermono/commit/63deb42c0883c1ed7c4a83f615a75c5fec6328e3))
+* show diagram when preview workbook ([5761fcd](https://gitlog.ru:2222/Naris/soermono/commit/5761fcd14d2d35406597dc0d33e7e57768830b2b))
+* **target-description:** add edit mode ([d7941e8](https://gitlog.ru:2222/Naris/soermono/commit/d7941e8099f71f0a8e4226989ef8e481decf808f)), closes [#279](https://gitlog.ru:2222/Naris/soermono/issues/279)
+* use diagram-block in editor ([e1125ad](https://gitlog.ru:2222/Naris/soermono/commit/e1125ad07ddd393447d63deef67cbb0c05c8bc57))
+
+
+### Bug Fixes
+
+* storyname typos ([cbeea0d](https://gitlog.ru:2222/Naris/soermono/commit/cbeea0d4d8c43e3c302bde05b13dd98f0823d3aa))
+* **tabs:** change logic of active tab selection ([451df67](https://gitlog.ru:2222/Naris/soermono/commit/451df67c24a552d935cda8ff2ecc00574cbf05b4))
+* typescript errors ([5f84e89](https://gitlog.ru:2222/Naris/soermono/commit/5f84e899a18e6d683d6f47d870ce1457aca24193))
+
+## [0.8.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.7.0...naris-0.8.0) (2023-04-18)
+
+
+### Features
+
+* add confirmation when close edit mode in workbook ([f596cf3](https://gitlog.ru:2222/Naris/soermono/commit/f596cf37dd7d867c6e443c7940fc448149b685af))
+* add observer for description change ([4833f94](https://gitlog.ru:2222/Naris/soermono/commit/4833f9458236eaaef9776e9b475b123a65a40fbf))
+* **edit-abstracte-page:** add a confirmation before leaving the page ([9dbb990](https://gitlog.ru:2222/Naris/soermono/commit/9dbb990972697461585a4200c8c6a98a04629358))
+* show diagram when preview workbook ([5761fcd](https://gitlog.ru:2222/Naris/soermono/commit/5761fcd14d2d35406597dc0d33e7e57768830b2b))
+* **target-description:** add edit mode ([d7941e8](https://gitlog.ru:2222/Naris/soermono/commit/d7941e8099f71f0a8e4226989ef8e481decf808f)), closes [#279](https://gitlog.ru:2222/Naris/soermono/issues/279)
+* use diagram-block in editor ([e1125ad](https://gitlog.ru:2222/Naris/soermono/commit/e1125ad07ddd393447d63deef67cbb0c05c8bc57))
+
+## [0.8.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.7.0...naris-0.8.0) (2023-04-18)
+
+
+### Features
+
+* add confirmation when close edit mode in workbook ([f596cf3](https://gitlog.ru:2222/Naris/soermono/commit/f596cf37dd7d867c6e443c7940fc448149b685af))
+* **edit-abstracte-page:** add a confirmation before leaving the page ([9dbb990](https://gitlog.ru:2222/Naris/soermono/commit/9dbb990972697461585a4200c8c6a98a04629358))
+* show diagram when preview workbook ([5761fcd](https://gitlog.ru:2222/Naris/soermono/commit/5761fcd14d2d35406597dc0d33e7e57768830b2b))
+* **target-description:** add edit mode ([d7941e8](https://gitlog.ru:2222/Naris/soermono/commit/d7941e8099f71f0a8e4226989ef8e481decf808f)), closes [#279](https://gitlog.ru:2222/Naris/soermono/issues/279)
+* use diagram-block in editor ([e1125ad](https://gitlog.ru:2222/Naris/soermono/commit/e1125ad07ddd393447d63deef67cbb0c05c8bc57))
+
 ## [0.7.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.6.0...naris-0.7.0) (2023-04-06)
 
 

@@ -1,15 +1,9 @@
 import { EnvironmentInterface } from './environment.interface';
-
-const HOST = 'https://platform.soer.pro';
+import { prod } from './feature-flags';
+import { getProdHostVariables } from './getHostVariables';
 
 export const environment: EnvironmentInterface = {
+  ...getProdHostVariables(),
   production: true,
-  host: HOST,
-  googleAuthUrl: HOST + '/api/auth/google',
-  patreonAuthUrl: HOST + '/api/auth/patreon',
-  yandexAuthUrl: HOST + '/api/auth/yandex',
-  apiUrl: HOST + '/api/',
-  assetsUrl: HOST + '/assets/',
-  privateAssetsUrl: HOST + '/assets/private/',
-  payServiceUrl: HOST + '/api/v2/seller',
+  features: prod,
 };

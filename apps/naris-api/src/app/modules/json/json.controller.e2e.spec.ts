@@ -59,56 +59,58 @@ describe('JsonModule e2e-test', () => {
     await app.close();
   });
 
-  describe('GET /json/:documentGroup/', () => {
+  describe('GET /json/:documentNamespace/', () => {
     it('should find all documents when pass without concrete document id', async () => {
       const document = createFakeDocument();
 
       jsonRepositoryMock.find.mockReturnValueOnce([document]);
 
       await request
-        .get(`/json/${document.group}`)
+        .get(`/json/${document.namespace}`)
         .set(JwtTestHelper.createBearerHeader())
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
-      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({ where: { group: document.group } });
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({ where: { namespace: document.namespace } });
     });
   });
 
-  describe('POST /json/:documentGroup/new', () => {
+  describe('POST /json/:documentNamespace/new', () => {
     it('should create json when passing valid json dto', async () => {
       const document = createFakeDocument();
 
       jsonRepositoryMock.save.mockReturnValueOnce(document);
 
       await request
-        .post(`/json/${document.group}/new`)
+        .post(`/json/${document.namespace}/new`)
         .set(JwtTestHelper.createBearerHeader())
         .send({ json: document.json })
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
-      expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ group: document.group, json: document.json });
+      expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ namespace: document.namespace, json: document.json });
     });
   });
 
-  describe('GET /json/:documentGroup/:documentId', () => {
+  describe('GET /json/:documentNamespace/:documentId', () => {
     it('should find document when the document is in the repository', async () => {
       const document = createFakeDocument();
 
       jsonRepositoryMock.findOne.mockReturnValueOnce(document);
 
       await request
-        .get(`/json/${document.group}/${document.id}`)
+        .get(`/json/${document.namespace}/${document.id}`)
         .set(JwtTestHelper.createBearerHeader())
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
-      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: document.id, group: document.group } });
+      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
+        where: { id: document.id, namespace: document.namespace },
+      });
     });
   });
 
-  describe('PUT /json/:documentGroup/:documentId', () => {
+  describe('PUT /json/:documentNamespace/:documentId', () => {
     it('should update document when pass stored document id', async () => {
       const documentToUpdate = createFakeDocument();
-      const { id, group } = documentToUpdate;
+      const { id, namespace } = documentToUpdate;
       const jsonToUpdate = faker.lorem.text();
 
       const updatedDocument = { ...documentToUpdate, json: jsonToUpdate };
@@ -117,29 +119,29 @@ describe('JsonModule e2e-test', () => {
       jsonRepositoryMock.save.mockImplementationOnce((newDocument) => Object.assign({}, newDocument));
 
       await request
-        .put(`/json/${group}/${id}`)
+        .put(`/json/${namespace}/${id}`)
         .set(JwtTestHelper.createBearerHeader())
         .send({ json: jsonToUpdate })
         .expect({ status: HttpJsonStatus.Ok, items: [updatedDocument] });
 
-      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id, group } });
+      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id, namespace } });
       expect(jsonRepositoryMock.save).toHaveBeenCalledWith(updatedDocument);
     });
   });
 
-  describe('DELETE /json/:documentGroup/:documentId', () => {
+  describe('DELETE /json/:documentNamespace/:documentId', () => {
     it('should delete document when pass stored document id', async () => {
       const storedDocument = createFakeDocument();
 
       jsonRepositoryMock.findOne.mockReturnValueOnce(storedDocument);
 
       await request
-        .delete(`/json/${storedDocument.group}/${storedDocument.id}`)
+        .delete(`/json/${storedDocument.namespace}/${storedDocument.id}`)
         .set(JwtTestHelper.createBearerHeader())
         .expect({ status: HttpJsonStatus.Ok, items: [] });
 
       expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
-        where: { id: storedDocument.id, group: storedDocument.group },
+        where: { id: storedDocument.id, namespace: storedDocument.namespace },
       });
       expect(jsonRepositoryMock.delete).toHaveBeenCalledWith({ id: storedDocument.id });
     });
@@ -150,6 +152,6 @@ function createFakeDocument() {
   return {
     id: faker.datatype.number(),
     json: faker.lorem.text(),
-    group: faker.lorem.word(),
+    namespace: faker.lorem.word(),
   };
 }

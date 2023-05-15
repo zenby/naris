@@ -8,9 +8,9 @@
             suffix: metric['suffix'],
             status:
               metric['suffix'] === '%'
-                ? (metric['value'] | percentStatusStrategy)
-                : (metric['value'] | countStatusStrategy),
-            value: metric['value']
+                ? (metric['value'] | async | percentStatusStrategy)
+                : (metric['value'] | async | countStatusStrategy),
+            value: metric['value'] | async
           }"
         ></soer-tile>
         <ng-template #prefixTpl><i nz-icon [nzType]="metric['icon']"></i></ng-template>

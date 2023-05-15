@@ -3,20 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 import { EnvironmentInterface } from './environment.interface';
+import { dev } from './feature-flags';
+import { getDevHostVariables } from './getHostVariables';
 
-// const HOST = 'http://localhost:4000';
-const HOST = 'https://stage.s0er.ru';
-//const HOST = 'http://api.soer';
 export const environment: EnvironmentInterface = {
+  ...getDevHostVariables(),
   production: false,
-  host: HOST,
-  googleAuthUrl: HOST + '/api/auth/google',
-  patreonAuthUrl: HOST + '/api/auth/patreon',
-  yandexAuthUrl: HOST + '/api/auth/yandex',
-  apiUrl: HOST + '/api/',
-  assetsUrl: HOST + '/assets/',
-  privateAssetsUrl: HOST + '/assets/private/',
-  payServiceUrl: HOST + '/api/v2/seller',
+  features: dev,
 };
 
 /*

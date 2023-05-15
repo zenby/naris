@@ -6,9 +6,7 @@ import { BusKey, BusMessageParams } from '@soer/mixed-bus';
   providedIn: 'root',
 })
 export class UrlBuilderService {
-  constructor(@Inject('UrlBuilderServiceConfig') private options: UrlBuilderOptions) {
-    console.log('Builder start with ', options);
-  }
+  constructor(@Inject('UrlBuilderServiceConfig') private options: UrlBuilderOptions) {}
 
   build(
     apiSuffix: string = '',

@@ -41,7 +41,7 @@ export class BlockService {
   }
 
   format(blockId: string): void {
-    const blockIndex = this.getCurrentPostion(blockId);
+    const blockIndex = this.getCurrentPosition(blockId);
     const beforeBlocksToInsert = this.blocks.slice(0, blockIndex);
     const afterBlocksToInsert = this.blocks.slice(blockIndex + 1);
     const formatedBlock = this.blocks[blockIndex].textBlock;
@@ -99,11 +99,11 @@ export class BlockService {
   }
 
   moveUp(blockId: string): void {
-    this.move(this.getCurrentPostion(blockId), this.getPreviousIndex(blockId));
+    this.move(this.getCurrentPosition(blockId), this.getPreviousIndex(blockId));
   }
 
   moveDown(blockId: string): void {
-    this.move(this.getCurrentPostion(blockId), this.getNextIndex(blockId));
+    this.move(this.getCurrentPosition(blockId), this.getNextIndex(blockId));
   }
 
   addAfter(blockId: string): void {
@@ -128,13 +128,14 @@ export class BlockService {
   }
 
   remove(blockId: string): void {
-    if (this.blocks.length === 1) return;
+    const isBlockCanBeRemoved = this.isBlockCanBeRemoved(blockId);
+    if (!isBlockCanBeRemoved) return;
 
     this.markAsUneditable(blockId);
     const newFocusedBlock = this.findNearestEditingBlock(blockId);
-    const blockIndex = this.getCurrentPostion(blockId);
-    this.blocks = this.blocks.filter((el, index) => blockIndex !== index);
-    if (newFocusedBlock !== false) {
+    const blockIndex = this.getCurrentPosition(blockId);
+    this.blocks = this.blocks.filter((_, index) => blockIndex !== index);
+    if (newFocusedBlock) {
       this.markAsFocused(newFocusedBlock);
     }
 
@@ -146,7 +147,7 @@ export class BlockService {
     this.markAsUneditable(blockId);
     this.resetFocus();
     const nearestEditedBlock = this.findNearestEditingBlock(blockId);
-    if (nearestEditedBlock !== false) {
+    if (nearestEditedBlock) {
       this.markAsFocused(nearestEditedBlock);
     }
 
@@ -154,7 +155,7 @@ export class BlockService {
   }
 
   setBlockText(blockId: string, text: string): void {
-    const blockIndex = this.getCurrentPostion(blockId);
+    const blockIndex = this.getCurrentPosition(blockId);
     this.blocks[blockIndex].textBlock.text = text;
     this.dispatchBlockStatesChangeEvent();
   }
@@ -164,14 +165,14 @@ export class BlockService {
   }
 
   private getPreviousIndex(blockId: string): number {
-    return this.getCurrentPostion(blockId) - 1;
+    return this.getCurrentPosition(blockId) - 1;
   }
 
   private getNextIndex(blockId: string): number {
-    return this.getCurrentPostion(blockId) + 1;
+    return this.getCurrentPosition(blockId) + 1;
   }
 
-  private getCurrentPostion(blockId: string) {
+  private getCurrentPosition(blockId: string) {
     return this.blocks.findIndex((block) => block.id == blockId);
   }
 
@@ -218,7 +219,7 @@ export class BlockService {
   }
 
   private resetFocus(): void {
-    Object.keys(this.blockState).map((blockId) => {
+    Object.keys(this.blockState).forEach((blockId) => {
       this.blockState[blockId].isFocused = false;
     });
   }
@@ -231,9 +232,9 @@ export class BlockService {
     this.blockState[blockId].isEdit = false;
   }
 
-  private findNearestEditingBlock(blockId: string): string | false {
+  private findNearestEditingBlock(blockId: string): string | null {
     let index = 1;
-    const blockIndex = this.getCurrentPostion(blockId);
+    const blockIndex = this.getCurrentPosition(blockId);
     while (index <= this.blocks.length) {
       const upBlockIndex = blockIndex - index;
       const downBlockIndex = blockIndex + index;
@@ -245,6 +246,20 @@ export class BlockService {
       index++;
     }
 
-    return false;
+    return null;
+  }
+
+  private isBlockCanBeRemoved(blockId: string): boolean {
+    const blockToRemove = this.blocks.find(({ id }) => id === blockId);
+    if (this.blocks.length === 1 || !blockToRemove) {
+      return false;
+    }
+
+    const MAX_TEXT_LENGTH_TO_ASK_REMOVE = 20;
+    if (blockToRemove.textBlock.text.length > MAX_TEXT_LENGTH_TO_ASK_REMOVE) {
+      return window.confirm('Вы точно хотите удалить текущий блок?');
+    }
+
+    return true;
   }
 }

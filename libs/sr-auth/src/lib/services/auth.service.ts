@@ -77,9 +77,7 @@ export class AuthService {
 
   checkCookieAuth() {
     if (this.token && this.options.schema.cookieApi) {
-      this.http.get(this.options.schema.cookieApi).subscribe(() => {
-        console.log('Cookie renew');
-      });
+      this.http.get(this.options.schema.cookieApi);
     }
   }
 

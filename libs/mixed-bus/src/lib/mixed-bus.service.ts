@@ -21,16 +21,14 @@ export class MixedBusService {
   public bus$: Subject<IBus>;
 
   constructor() {
-    console.log('Mixed bus system start');
     this.bus$ = new Subject<IBus>();
   }
 
   /**
    * Публикует BusMessage в шине
-   * @param message  - BusMessage
+   * @param message - BusMessage
    */
   public publish(message: BusMessage | BusError): void {
-    console.log('Publish =>', message.owner, message);
     const channel = message.constructor.name;
     this.bus$.next({ channel, message });
   }

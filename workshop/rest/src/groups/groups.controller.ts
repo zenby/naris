@@ -37,7 +37,6 @@ export class GroupsController {
 
   @Get(':groupname/documents')
   findDocumentsByGroupName(@Param('groupname') groupname: string) {
-    console.log(groupname);
     const group = this.groupsService.findOneByName(groupname);
     if (!group) {
       return [];

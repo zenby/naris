@@ -1,5 +1,5 @@
 <div class="description">
-  <ng-container *ngIf="description !== null; else loading">
+  <ng-container *ngIf="(description$ | async) !== null; else loading">
     <ng-container *ngIf="isEditMode; else overview">
       <div class="controls">
         <button nz-button (click)="onCancel()">

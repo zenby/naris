@@ -19,7 +19,7 @@
       </ng-container>
 
       <div class="block-editor" [ngStyle]="{ visibility: !isEdit ? 'visible' : 'hidden' }">
-        <ng-template #editComponent></ng-template>
+        <soer-preview-block [type]="textBlock.type" [text]="textBlock.text"></soer-preview-block>
       </div>
     </div>
     <div class="block-controls" *ngIf="isFocused">

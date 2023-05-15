@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
-import { BusEmitter, isBusMessage, MixedBusService } from '@soer/mixed-bus';
+import { BusEmitter, BusMessage, isBusMessage, MixedBusService } from '@soer/mixed-bus';
 import { CommandCreate, CommandRead, DataStoreService, DtoPack, OK } from '@soer/sr-dto';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { convertToJsonDTO, parseJsonDTOPack } from '../json.dto.helpers';
 import { WatchVideoEvent } from './events/watch-video.event';
 
@@ -13,6 +13,11 @@ export interface PersonalActivity {
   watched: {
     videos: VideoIdModel[];
   };
+}
+
+export interface PersonalActivityRaw extends PersonalActivity {
+  createdAt: string;
+  updatedAt: string;
 }
 
 const EMPTY_ACTIVITY: PersonalActivity = {
@@ -27,6 +32,8 @@ export class PersonalActivityService {
   private activity: PersonalActivity;
 
   public activity$: Observable<DtoPack<PersonalActivity>>;
+  public activityRaw$: Observable<PersonalActivityRaw[]>;
+  public data$ = new BehaviorSubject<PersonalActivity>(EMPTY_ACTIVITY);
 
   constructor(
     public store$: DataStoreService,
@@ -39,8 +46,26 @@ export class PersonalActivityService {
     this.activity$.subscribe((data) => {
       if (data.status === OK) {
         this.activity = this.joinActivityObjects([this.activity, ...data.items]);
+        this.data$.next(this.activity);
       }
     });
+
+    this.activityRaw$ = this.store$.of(this.activityId).pipe(
+      map((data: BusMessage | null) => {
+        const result: PersonalActivityRaw[] = [];
+        if (data?.payload?.status === OK) {
+          data?.payload?.items.forEach((item: { id?: number; json: string; createdAt?: string; updatedAt?: string }) =>
+            result.push({
+              ...JSON.parse(item.json),
+              id: item.id,
+              createdAt: item?.createdAt,
+              updatedAt: item?.updatedAt,
+            })
+          );
+        }
+        return result;
+      })
+    );
 
     bus$.publish(new CommandRead(activityId, {}, { aid: 'personal' }));
 
@@ -77,6 +102,7 @@ export class PersonalActivityService {
     if (this.isEmpty(activity)) {
       return;
     }
+    console.log('???', this.activityId);
 
     this.bus$.publish(new CommandCreate(this.activityId, convertToJsonDTO(activity, ['id']), { aid: 'new' }));
   }

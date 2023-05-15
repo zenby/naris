@@ -134,10 +134,10 @@ export class AuthController {
         return { status: HttpJsonStatus.Error, items: [refreshToken.message] };
       }
 
-      const { cookieName } = this.configService.get<Configuration['jwt']>('jwt');
+      const { cookieName, redirectUrl } = this.configService.get<Configuration['jwt']>('jwt');
       response.cookie(cookieName, refreshToken, { httpOnly: true });
 
-      return { status: HttpJsonStatus.Ok, items: [] };
+      response.redirect(redirectUrl);
     } catch (e) {
       this.logger.error(e);
 

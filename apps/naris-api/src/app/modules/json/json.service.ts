@@ -13,26 +13,26 @@ export class JsonService {
     private readonly jsonRepository: Repository<JsonEntity>
   ) {}
 
-  async getAll(documentGroup: string): Promise<JsonEntity[]> {
-    return this.jsonRepository.find({ where: { group: documentGroup } });
+  async getAll(documentNamespace: string): Promise<JsonEntity[]> {
+    return this.jsonRepository.find({ where: { namespace: documentNamespace } });
   }
 
-  async createJson(documentGroup: string, createJsonDto: CreateJsonDto): Promise<JsonEntity> {
+  async createJson(documentNamespace: string, createJsonDto: CreateJsonDto): Promise<JsonEntity> {
     const document = new JsonEntity();
 
     Object.assign(document, createJsonDto);
 
-    document.group = documentGroup;
+    document.namespace = documentNamespace;
 
     return await this.jsonRepository.save(document);
   }
 
-  async findOne(documentGroup: string, documentId: number): Promise<JsonEntity> {
-    return await this.jsonRepository.findOne({ where: { id: documentId, group: documentGroup } });
+  async findOne(documentNamespace: string, documentId: number): Promise<JsonEntity> {
+    return await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
   }
 
-  async update(documentId: number, documentGroup: string, updateJsonDto: UpdateJsonDto): Promise<JsonEntity> {
-    const document = await this.jsonRepository.findOne({ where: { id: documentId, group: documentGroup } });
+  async update(documentId: number, documentNamespace: string, updateJsonDto: UpdateJsonDto): Promise<JsonEntity> {
+    const document = await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
 
     if (!document) {
       throw new HttpException('Document does not exist', HttpStatus.NOT_FOUND);
@@ -43,8 +43,8 @@ export class JsonService {
     return await this.jsonRepository.save(document);
   }
 
-  async delete(documentId: number, documentGroup: string): Promise<DeleteResult> {
-    const document = await this.jsonRepository.findOne({ where: { id: documentId, group: documentGroup } });
+  async delete(documentId: number, documentNamespace: string): Promise<DeleteResult> {
+    const document = await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
 
     if (!document) {
       throw new HttpException('Document does not exist', HttpStatus.NOT_FOUND);

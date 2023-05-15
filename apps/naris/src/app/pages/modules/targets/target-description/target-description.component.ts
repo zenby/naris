@@ -1,8 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TargetModel } from '../../../../api/targets/target.interface';
 import { BusEmitter } from '@soer/mixed-bus';
 import { DescriptionService } from '../description.service';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'soer-target-description',
@@ -25,15 +26,18 @@ import { DescriptionService } from '../description.service';
     `,
   ],
   templateUrl: 'target-description.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TargetDescriptionComponent implements OnDestroy {
   public isEditMode = false;
+  public description$: Observable<string | null>;
 
   constructor(route: ActivatedRoute, private descriptionService: DescriptionService) {
     const path = route.snapshot.params['path'];
     const targetEmitter = route.snapshot.data['target'] as BusEmitter<TargetModel>;
     this.descriptionService.init(targetEmitter, path);
     this.description = this.descriptionService.getDescription();
+    this.description$ = this.descriptionService.description$.pipe(tap((desc) => (this.isEditMode = desc === '')));
   }
 
   public set description(description: string | null) {
@@ -51,6 +55,7 @@ export class TargetDescriptionComponent implements OnDestroy {
 
   onSave() {
     this.descriptionService.save();
+    this.descriptionService.description$.next(this.description);
     this.isEditMode = false;
   }
 

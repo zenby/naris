@@ -63,14 +63,8 @@ describe('EditAbstracteFormComponent', () => {
       expect(fixture.nativeElement.querySelector('soer-editor')).toBeNull();
     });
 
-    it('should contain markdown blocks with workbook blocks text', async () => {
-      workbook.blocks.forEach((block) => {
-        expect(
-          fixture.debugElement.query(
-            (element) => element.name == 'markdown' && element.nativeElement.textContent == block.text
-          )
-        ).not.toBeNull();
-      });
+    it('should contain soer-preview-block', async () => {
+      expect(fixture.debugElement.query((element) => element.name == 'soer-preview-block')).not.toBeNull();
     });
   });
 
@@ -88,8 +82,8 @@ describe('EditAbstracteFormComponent', () => {
       expect(fixture.nativeElement.querySelector('soer-editor')).not.toBeNull();
     });
 
-    it('should not display markdown blocks', async () => {
-      expect(fixture.nativeElement.querySelector('markdown')).toBeNull();
+    it('should not display soer-preview-block', async () => {
+      expect(fixture.nativeElement.querySelector('soer-preview-block')).toBeNull();
     });
   });
 

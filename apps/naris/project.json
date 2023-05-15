@@ -55,13 +55,62 @@
           ],
           "outputHashing": "all"
         },
-        "development": {
+        "ab": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1500kb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/naris/src/environments/environment.ts",
+              "with": "apps/naris/src/environments/environment.ab.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "dev": {
           "buildOptimizer": false,
           "optimization": false,
           "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
+        },
+        "dev_ab": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/naris/src/environments/environment.ts",
+              "with": "apps/naris/src/environments/environment.dev.ab.ts"
+            }
+          ]
+        },
+        "personal": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/naris/src/environments/environment.ts",
+              "with": "apps/naris/src/environments/environment.personal.ts"
+            }
+          ]
         }
       },
       "defaultConfiguration": "production"
@@ -72,11 +121,20 @@
         "production": {
           "browserTarget": "naris:build:production"
         },
-        "development": {
-          "browserTarget": "naris:build:development"
+        "ab": {
+          "browserTarget": "naris:build:ab"
+        },
+        "dev": {
+          "browserTarget": "naris:build:dev"
+        },
+        "dev_ab": {
+          "browserTarget": "naris:build:dev_ab"
+        },
+        "personal": {
+          "browserTarget": "naris:build:personal"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "dev"
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",

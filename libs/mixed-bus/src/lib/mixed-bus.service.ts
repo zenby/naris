@@ -21,16 +21,14 @@ export class MixedBusService {
   public bus$: Subject<IBus>;
 
   constructor() {
-    console.log('Mixed bus system start');
     this.bus$ = new Subject<IBus>();
   }
 
   /**
    * Публикует BusMessage в шине
-   * @param message  - BusMessage
+   * @param message - BusMessage
    */
   public publish(message: BusMessage | BusError): void {
-    console.log('Publish =>', message.owner, message);
     const channel = message.constructor.name;
     this.bus$.next({ channel, message });
   }
@@ -51,7 +49,9 @@ export class MixedBusService {
    * @returns
    */
   public of(messageType: unknown, eventOwners: BusEmitter[] = []): Observable<BusMessage | BusError> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const channel = (messageType as any).name;
+
     return this.bus$.pipe(
       filter((m) => m != null && m.channel === channel),
       filter((m) => (eventOwners?.length > 0 ? eventOwners.map((o) => o.sid).includes(m.message.owner.sid) : true)),

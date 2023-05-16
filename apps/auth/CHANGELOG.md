@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.3.0](https://gitlog.ru:2222/Naris/soermono/compare/auth-0.2.0...auth-0.3.0) (2023-05-04)
+
+
+### Features
+
+* add cors policy ([b776271](https://gitlog.ru:2222/Naris/soermono/commit/b77627184e49c02e0a91f613f1b236ee6628a915))
+
 ## [0.2.0](https://gitlog.ru:2222/Naris/soermono/compare/auth-0.1.0...auth-0.2.0) (2023-04-25)
 
 

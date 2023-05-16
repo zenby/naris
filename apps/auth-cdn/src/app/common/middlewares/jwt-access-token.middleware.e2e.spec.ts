@@ -2,9 +2,10 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { AppModule } from '../../app.module';
+import { INestApplication } from '@nestjs/common';
 
 describe('JwtAccessTokenMiddleware (e2e)', () => {
-  let app;
+  let app: INestApplication;
   let jwtService: JwtService;
 
   beforeAll(async () => {

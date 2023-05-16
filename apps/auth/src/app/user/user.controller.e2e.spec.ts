@@ -66,7 +66,7 @@ describe('user controller e2e tests', () => {
     });
 
     function isUserEntity(arg: object): arg is UserEntity[] {
-      return arg && arg[0].email && typeof arg[0].email == 'string';
+      return arg && Array.isArray(arg) && arg[0].email && typeof arg[0].email == 'string';
     }
 
     it('should return a list of users when user is an admin', async () => {

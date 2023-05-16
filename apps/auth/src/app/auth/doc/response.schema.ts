@@ -13,7 +13,7 @@ export const responseSchema = {
       items: {
         type: 'string',
       },
-      example: [],
+      example: [] as string[],
     },
   },
 };

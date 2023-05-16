@@ -22,8 +22,6 @@ export abstract class ComposePage {
   public popup = false;
   private updateSID: NodeJS.Timeout | null = null;
 
-  render = () => console.log(Math.random());
-
   constructor(
     protected bus$: MixedBusService,
     protected router: Router,

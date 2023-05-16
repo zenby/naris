@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
-import helmet from 'helmet';
+import * as helmet from 'helmet';
 
 import { AppModule } from './app/app.module';
 import { setupSwagger } from './swagger';
@@ -13,8 +13,17 @@ async function bootstrap() {
 
   const port = configService.get('port');
 
-  // ATTENTION! This call must come before all app.use(...)
-  app.use(helmet());
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  });
+
+  app.use(
+    helmet.default({
+      crossOriginOpenerPolicy: false, // для получения jwt токена
+      contentSecurityPolicy: false,
+    })
+  );
 
   app.use(cookieParser());
 

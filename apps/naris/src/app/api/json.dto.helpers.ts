@@ -4,16 +4,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { JsonDTOModel } from './jsonDto.model';
 
-export function parseJsonDTOPack<T>(messages$: Observable<BusMessage>, id: string): Observable<DtoPack<T>> {
-  console.log(`Start pipe '${id}' => ok`);
+export function parseJsonDTOPack<T>(messages$: Observable<BusMessage>, _id: string): Observable<DtoPack<T>> {
   return messages$.pipe(
     map((data: BusMessage | null) => {
       const result: T[] = [];
-      console.log(`Pipe map '${id}' => `, data);
       if (data?.payload?.status === OK) {
         data?.payload.items.forEach((item: JsonDTOModel) => result.push({ ...JSON.parse(item.json), id: item.id }));
       }
-      console.log(`after pipe '${id}' =>`, result, data);
+
       return { status: data?.payload?.status ?? OK, items: result };
     })
   );

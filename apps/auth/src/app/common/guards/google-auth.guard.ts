@@ -8,7 +8,7 @@ export class GoogleAuthGuard extends AuthGuard('google') {
     return super.canActivate(context);
   }
 
-  handleRequest(err, user) {
+  handleRequest<UserEntity>(err: Error, user: UserEntity) {
     if (err || !user) {
       throw err || new ForbiddenException();
     }

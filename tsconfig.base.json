@@ -13,6 +13,7 @@
     "lib": ["es2021", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "noImplicitAny": true,
     "baseUrl": ".",
     "paths": {
       "@soer/mixed-bus": ["libs/mixed-bus/src/index.ts"],

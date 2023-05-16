@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { MixedBusService } from '@soer/mixed-bus';
-import { ChangeDataEvent, OK } from '@soer/sr-dto';
+import { ChangeDataEvent, DtoPack, OK } from '@soer/sr-dto';
 import { LocalStorageService } from '@soer/sr-local-storage';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable, tap } from 'rxjs';
 import { AuthEmitter } from '../interfaces/auth-options.interface';
 import { EmptyJWTModel, JWTModel } from '../interfaces/jwt.models';
+import { FeatureFlagService } from '@soer/sr-feature-flags';
 
 const TOKEN_KEY = 'token';
 
@@ -25,6 +26,7 @@ export class AuthService {
     @Inject('AuthServiceConfig') private options: AuthEmitter,
     private bus$: MixedBusService,
     private http: HttpClient,
+    private featureFlags: FeatureFlagService,
     private localStorageService: LocalStorageService
   ) {
     this.checkIsAuth();
@@ -57,7 +59,6 @@ export class AuthService {
     const token: string | null = this.localStorageService.getValue(TOKEN_KEY);
 
     this.token = this.isTokenValid(token) ? token : null;
-
     return this.token ? true : false;
   }
 
@@ -77,7 +78,14 @@ export class AuthService {
 
   checkCookieAuth() {
     if (this.token && this.options.schema.cookieApi) {
-      this.http.get(this.options.schema.cookieApi);
+      if (this.featureFlags.isFeatureFlagEnabled('auth_v2')) {
+        console.error('Auth V2 does not support cookie renew method, remove it when auth_v1 will completle removed.');
+        return;
+      }
+
+      this.http.get(this.options.schema.cookieApi).subscribe(() => {
+        console.log('Cookie renew for auth_v1 method');
+      });
     }
   }
 
@@ -85,6 +93,19 @@ export class AuthService {
     return this.http
       .get<{ accessToken: string }>(this.options.schema.renewApi)
       .pipe(tap((result) => (this.token = result.accessToken)));
+  }
+
+  renewTokenV2(): Observable<DtoPack<{ accessToken: string }>> {
+    return this.http
+      .get<DtoPack<{ accessToken: string }>>(this.options.schema.renewApi, { withCredentials: true })
+      .pipe(
+        tap((result) => {
+          if (result.status === OK) {
+            const [{ accessToken }] = result.items;
+            this.token = accessToken;
+          }
+        })
+      );
   }
 
   extractAndParseJWT(jwt: string | null): JWTModel | null {
@@ -118,5 +139,26 @@ export class AuthService {
       this.decodeJWT(this.token);
     }
     return this.decodedJSON.role.toUpperCase();
+  }
+
+  getAuthUrlFor(provider: 'google' | 'yandex'): string {
+    return this.options.schema.authApi + provider;
+  }
+
+  async processAuth(): Promise<{ accessToken: string } | null> {
+    console.log(this.featureFlags.isFeatureFlagEnabled('auth_v2'));
+    if (this.featureFlags.isFeatureFlagEnabled('auth_v2')) {
+      return this.processAuthV2();
+    }
+    return null;
+  }
+
+  private async processAuthV2(): Promise<{ accessToken: string } | null> {
+    const result = await firstValueFrom(this.renewTokenV2());
+    if (result.status === OK) {
+      const [{ accessToken }] = result.items;
+      return { accessToken };
+    }
+    return null;
   }
 }

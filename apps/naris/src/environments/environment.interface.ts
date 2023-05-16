@@ -1,6 +1,13 @@
-export interface DynamicConfig {
-  auth_v2?: boolean;
+export enum featuresEnum {
+  auth_v1 = 'auth_v1',
+  auth_v2 = 'auth_v2',
 }
+
+export type DynamicConfig = {
+  [key in featuresEnum]?: boolean;
+};
+
+export type DynamicConfigKeys = keyof DynamicConfig;
 
 export interface HostVariables {
   host: string;
@@ -8,6 +15,7 @@ export interface HostVariables {
   patreonAuthUrl: string;
   yandexAuthUrl: string;
   apiUrl: string;
+  urlV2: string;
   assetsUrl: string;
   privateAssetsUrl: string;
   payServiceUrl: string;

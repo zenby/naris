@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@soer/sr-auth';
+import { FeatureFlagService } from '@soer/sr-feature-flags';
+import { featuresEnum } from '../../../environments/environment.interface';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -11,7 +13,11 @@ import { environment } from '../../../environments/environment';
 export class LoginComponent implements OnInit {
   public loading = true;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private readonly featureFlags: FeatureFlagService
+  ) {}
 
   ngOnInit(): void {
     const isAuth = this.authService.isAuth;
@@ -25,7 +31,12 @@ export class LoginComponent implements OnInit {
     this.loading = false;
   }
 
-  oAuthLogin(provider: 'patreon' | 'google' | 'yandex'): void {
+  oAuthLogin(provider: 'google' | 'yandex'): void {
+    if (this.featureFlags.isFeatureFlagEnabled(featuresEnum.auth_v2)) {
+      document.location = this.authService.getAuthUrlFor(provider);
+      return;
+    }
+
     const urls = {
       patreon: environment.patreonAuthUrl,
       google: environment.googleAuthUrl,
@@ -33,6 +44,7 @@ export class LoginComponent implements OnInit {
     };
 
     document.location = urls[provider];
+
     return;
   }
 }

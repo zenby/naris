@@ -5,5 +5,6 @@ export interface AuthEmitter extends BusEmitter {
   schema: {
     cookieApi: string;
     renewApi: string;
+    authApi: string;
   };
 }

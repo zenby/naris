@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@soer/sr-auth';
+import { FeatureFlagService } from '@soer/sr-feature-flags';
+import { featuresEnum } from '../../../../environments/environment.interface';
 
 @Component({
   selector: 'soer-auth',
@@ -9,9 +11,20 @@ import { AuthService } from '@soer/sr-auth';
 })
 export class AuthComponent implements OnInit {
   private jwt: string | null = null;
-  constructor(private route: ActivatedRoute, private router: Router, private readonly authService: AuthService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private readonly authService: AuthService,
+    private readonly featureFlags: FeatureFlagService
+  ) {}
 
   ngOnInit(): void {
+    if (this.featureFlags.isFeatureFlagEnabled(featuresEnum.auth_v2)) {
+      this.authService.processAuth().then(() => {
+        this.redirect();
+      });
+      return;
+    }
     this.jwt = this.route.snapshot.queryParams?.['jwt'] ?? null;
     this.checkJWT(this.jwt);
   }

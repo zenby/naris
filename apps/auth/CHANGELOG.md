@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.4.0](https://gitlog.ru:2222/Naris/soermono/compare/auth-0.3.0...auth-0.4.0) (2023-05-16)
+
+
+### Features
+
+* **auth:** add fields to user entity ([701b091](https://gitlog.ru:2222/Naris/soermono/commit/701b091fa84091378ce5d4dd34b236c3ab8affc3))
+
 ## [0.3.0](https://gitlog.ru:2222/Naris/soermono/compare/auth-0.2.0...auth-0.3.0) (2023-05-04)
 
 

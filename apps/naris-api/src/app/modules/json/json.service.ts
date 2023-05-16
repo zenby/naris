@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateJsonDto } from './dto/create-json.dto';
-import { HttpJsonResponse, HttpJsonStatus } from '../../common/types/http-json-response.interface';
+import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { UpdateJsonDto } from './dto/update-json.dto';
 
 @Injectable()
@@ -53,7 +53,7 @@ export class JsonService {
     return await this.jsonRepository.delete({ id: documentId });
   }
 
-  prepareResponse(status: HttpJsonStatus, list: JsonEntity[]): HttpJsonResponse<JsonEntity> {
+  prepareResponse(status: HttpJsonStatus, list: JsonEntity[]): HttpJsonResult<JsonEntity> {
     return { status, items: list };
   }
 }

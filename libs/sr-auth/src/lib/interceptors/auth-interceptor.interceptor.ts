@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BusError, MixedBusService } from '@soer/mixed-bus';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
@@ -36,6 +36,20 @@ export class AuthInterceptor implements HttpInterceptor {
     const idToken = this.auth.token;
 
     if (idToken) {
+      // Если вышел срок действия токена, то перед запросом надо его обновить
+      if (!this.auth.isAuth) {
+        return this.auth.renewTokenV2().pipe(
+          switchMap((data) => {
+            const [{ accessToken }] = data.items;
+            const cloned = req.clone({
+              headers: req.headers.set('Authorization', 'Bearer ' + accessToken),
+            });
+            return next.handle(cloned);
+          })
+        );
+      }
+
+      // Если токен действующий, то используем его
       const cloned = req.clone({
         headers: req.headers.set('Authorization', 'Bearer ' + idToken),
       });

@@ -77,21 +77,21 @@
     "migration-generate": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli migration:generate migrations/{args.name} -d src/app/config/ormconfig.ts",
+        "command": "ts-node -r tsconfig-paths/register --project tsconfig.app.json ../../node_modules/typeorm/cli migration:generate migrations/{args.name} -d src/app/config/ormconfig.ts",
         "cwd": "apps/auth"
       }
     },
     "migration-run": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli migration:run -d src/app/config/ormconfig.ts",
+        "command": "ts-node  -r tsconfig-paths/register --project tsconfig.app.json ../../node_modules/typeorm/cli migration:run -d src/app/config/ormconfig.ts",
         "cwd": "apps/auth"
       }
     },
     "migration-revert": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli migration:revert -d src/app/config/ormconfig.ts",
+        "command": "ts-node  -r tsconfig-paths/register --project tsconfig.app.json ../../node_modules/typeorm/cli migration:revert -d src/app/config/ormconfig.ts",
         "cwd": "apps/auth"
       }
     }

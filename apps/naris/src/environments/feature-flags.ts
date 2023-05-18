@@ -1,10 +1,12 @@
-import { DynamicConfig } from './environment.interface';
+import { DynamicConfig, featuresEnum } from './environment.interface';
 
-export const prod: DynamicConfig = {};
+export const prod: DynamicConfig = {
+  [featuresEnum.auth_v2]: true,
+};
 
 export const ab: DynamicConfig = {
   ...prod,
-  auth_v2: true,
+  [featuresEnum.auth_v2]: true,
 };
 
 export const dev: DynamicConfig = {
@@ -17,4 +19,6 @@ export const dev_ab: DynamicConfig = {
 
 export const personal: DynamicConfig = {
   ...dev,
+  [featuresEnum.auth_v1]: false,
+  [featuresEnum.auth_v2]: true,
 };

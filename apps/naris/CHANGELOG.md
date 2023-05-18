@@ -2,6 +2,34 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.9.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.9.0...naris-0.9.1) (2023-05-17)
+
+## [0.9.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.8.0...naris-0.9.0) (2023-05-17)
+
+
+### Features
+
+* add calendar component into libs ([a4b3ce4](https://gitlog.ru:2222/Naris/soermono/commit/a4b3ce41160706217f41494e5bdea3bc72abcbb4))
+* add calendar story ([b5dfe80](https://gitlog.ru:2222/Naris/soermono/commit/b5dfe801169e1eff9d8849a573fdd2bf2a19ae63))
+* add calendar tab to overview page ([609de79](https://gitlog.ru:2222/Naris/soermono/commit/609de794b76b7abe91a43f5b5a3b54966097cac1))
+* add observers to metrics ([4170408](https://gitlog.ru:2222/Naris/soermono/commit/4170408514c4438685da3ea095a7cb4adf3f60f9))
+* **app:** add feature flags service and guard to app ([3505ea3](https://gitlog.ru:2222/Naris/soermono/commit/3505ea3b8f4f339a7c00d57fd39b8fba6126d7b5))
+* **auth:** add access_token from new auth service ([5910324](https://gitlog.ru:2222/Naris/soermono/commit/591032403d389d9dfca2e2d4ae7fe8c9e520a6f3))
+* **auth:** add features list ([efc2d5a](https://gitlog.ru:2222/Naris/soermono/commit/efc2d5abe5c5515997068d2a6a32a798b6e8ece8))
+* **auth:** support auth_v1 way to login ([6d1e0fd](https://gitlog.ru:2222/Naris/soermono/commit/6d1e0fd9b1fc894f1458bae3cb9bd402af5bc9fe))
+* **calendar:** add display watched videos on calendar ([2e3c733](https://gitlog.ru:2222/Naris/soermono/commit/2e3c7334d6e20d3c6056d866e6f314a15c417d6f))
+* **edit-abstract-page:** update page leave guard ([dc4cffd](https://gitlog.ru:2222/Naris/soermono/commit/dc4cffd04e601d96c42bd58db82706ff9926ee58))
+* **login:** add login via auth v2 ([5d3c589](https://gitlog.ru:2222/Naris/soermono/commit/5d3c58978e1e84261b22fa7bdf2a79805dd77304))
+* rename calendar component to calendar-page and reuse calendar from libs on calendar page ([f78e30a](https://gitlog.ru:2222/Naris/soermono/commit/f78e30ad453490e8807eb62aa1480d6653f61132))
+
+
+### Bug Fixes
+
+* **activity-calendar:** add ru_RU local ([b1ed511](https://gitlog.ru:2222/Naris/soermono/commit/b1ed511d2440460d7b4ddd967e7b52fa05f58e25))
+* **calendar:** ignore user activity for future dates ([304919f](https://gitlog.ru:2222/Naris/soermono/commit/304919f94b95206c20a3b04584e75b2dfbf45241))
+* remove unnecessary console.log ([542f3f4](https://gitlog.ru:2222/Naris/soermono/commit/542f3f46c09524dfec9d4e6bbf77f2a9b4f9953b))
+* **video-service:** add check for video existence when grouping watched videos by date ([02f8ee6](https://gitlog.ru:2222/Naris/soermono/commit/02f8ee66c067b5836557512ce8c6d08d2c819a4d))
+
 ## [0.8.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.7.0...naris-0.8.0) (2023-04-21)
 
 

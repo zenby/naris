@@ -20,6 +20,8 @@ import { ActivityKey } from './api/progress/progress.const';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApplicationService } from './services/application.service';
+import { SrFeatureFlagsModule } from '@soer/sr-feature-flags';
+import { DynamicConfig, featuresEnum } from '../environments/environment.interface';
 
 registerLocaleData(ru);
 
@@ -28,13 +30,28 @@ registerLocaleData(ru);
   imports: [
     BrowserModule,
     MixedBusModule,
-    SrAuthModule.forRoot({
-      sid: AUTH_ID,
-      schema: {
-        cookieApi: `${environment.apiUrl}auth/cookie`,
-        renewApi: `${environment.apiUrl}auth/renew`,
-      },
-    }),
+    SrAuthModule.forRoot(
+      ((options) => {
+        if (options.features[featuresEnum.auth_v2]) {
+          return {
+            sid: AUTH_ID,
+            schema: {
+              cookieApi: `${options.urlV2}auth/cookie`,
+              renewApi: `${options.urlV2}auth/access_token`,
+              authApi: `${options.urlV2}auth/login/`,
+            },
+          };
+        }
+        return {
+          sid: AUTH_ID,
+          schema: {
+            cookieApi: `${environment.apiUrl}auth/cookie`,
+            renewApi: `${environment.apiUrl}auth/renew`,
+            authApi: `${environment.apiUrl}auth/renew`,
+          },
+        };
+      })(environment)
+    ),
     SrUrlBuilderModule.forRoot({ apiRoot: environment.apiUrl }),
     HttpClientModule,
     FormsModule,
@@ -44,7 +61,7 @@ registerLocaleData(ru);
     NzLayoutModule,
     NzMenuModule,
     NzMessageModule,
-
+    SrFeatureFlagsModule.forRoot<DynamicConfig>(environment.features),
     SrDTOModule.forChild<ActivityKey>({
       namespace: 'activity',
       schema: { url: 'v2/json/activity/:aid' },

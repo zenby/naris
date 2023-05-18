@@ -21,7 +21,7 @@ export class UserTestRepository {
     return null;
   }
 
-  async save(entity: UserEntity, options?: SaveOptions): Promise<UserEntity> {
+  async save(entity: UserEntity, _options?: SaveOptions): Promise<UserEntity> {
     if (this.users.includes(entity)) {
       return null;
     }

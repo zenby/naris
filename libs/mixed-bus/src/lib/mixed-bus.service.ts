@@ -49,7 +49,9 @@ export class MixedBusService {
    * @returns
    */
   public of(messageType: unknown, eventOwners: BusEmitter[] = []): Observable<BusMessage | BusError> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const channel = (messageType as any).name;
+
     return this.bus$.pipe(
       filter((m) => m != null && m.channel === channel),
       filter((m) => (eventOwners?.length > 0 ? eventOwners.map((o) => o.sid).includes(m.message.owner.sid) : true)),

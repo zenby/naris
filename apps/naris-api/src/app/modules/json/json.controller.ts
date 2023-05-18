@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UseGuards } fr
 import { JsonService } from './json.service';
 import { JsonEntity } from './json.entity';
 import { CreateJsonDto } from './dto/create-json.dto';
-import { HttpJsonResponse, HttpJsonStatus } from '../../common/types/http-json-response.interface';
+import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { UpdateJsonDto } from './dto/update-json.dto';
 import { JsonParams } from './types/json-params.type';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
@@ -20,7 +20,7 @@ export class JsonController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAll(@Param('documentNamespace') documentNamespace: string): Promise<HttpJsonResponse<JsonEntity>> {
+  async getAll(@Param('documentNamespace') documentNamespace: string): Promise<HttpJsonResult<JsonEntity>> {
     try {
       const documents = await this.jsonService.getAll(documentNamespace);
 
@@ -39,7 +39,7 @@ export class JsonController {
   async createJson(
     @Param('documentNamespace') documentNamespace: string,
     @Body() createJsonDto: CreateJsonDto
-  ): Promise<HttpJsonResponse<JsonEntity>> {
+  ): Promise<HttpJsonResult<JsonEntity>> {
     try {
       const document = await this.jsonService.createJson(documentNamespace, createJsonDto);
 
@@ -57,7 +57,7 @@ export class JsonController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get(':documentId')
-  async findOne(@Param() params: JsonParams): Promise<HttpJsonResponse<JsonEntity>> {
+  async findOne(@Param() params: JsonParams): Promise<HttpJsonResult<JsonEntity>> {
     try {
       const document = await this.jsonService.findOne(params.documentNamespace, +params.documentId);
 
@@ -81,7 +81,7 @@ export class JsonController {
   async updateJson(
     @Param() params: JsonParams,
     @Body() updateJsonDto: UpdateJsonDto
-  ): Promise<HttpJsonResponse<JsonEntity>> {
+  ): Promise<HttpJsonResult<JsonEntity>> {
     try {
       const document = await this.jsonService.update(+params.documentId, params.documentNamespace, updateJsonDto);
 
@@ -102,7 +102,7 @@ export class JsonController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':documentId')
-  async deleteJson(@Param() params: JsonParams): Promise<HttpJsonResponse<JsonEntity>> {
+  async deleteJson(@Param() params: JsonParams): Promise<HttpJsonResult<JsonEntity>> {
     try {
       await this.jsonService.delete(+params.documentId, params.documentNamespace);
 

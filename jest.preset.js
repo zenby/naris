@@ -13,6 +13,7 @@ module.exports = {
     '@soer/sr-editor': '<rootDir>/../../libs/sr-editor/src/index.ts',
     '@soer/sr-common-interfaces': '<rootDir>/../../libs/sr-common-interfaces/src/index.ts',
     '@soer/sr-code-runner': '<rootDir>/../../libs/sr-code-runner/src/index.ts',
+    '@soer/sr-feature-flags': '<rootDir>/../../libs/sr-feature-flags/src/index.ts',
   },
   /* TODO: Update to latest Jest snapshotFormat
    * By default Nx has kept the older style of Jest Snapshot formats

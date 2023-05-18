@@ -27,7 +27,7 @@ export class AuthOpenIdController {
     description: "Requires body { login, password }. Returns HTTP_ONLY cookie['refresh_token']",
   })
   async googleLogin() {
-    return { status: HttpJsonStatus.Ok, items: [] };
+    return { status: HttpJsonStatus.Ok, items: [] as string[] };
   }
 
   @Get('google/callback')
@@ -61,7 +61,7 @@ export class AuthOpenIdController {
     description: 'Requires user. Redirects to yandex',
   })
   async yandexLogin() {
-    return { status: HttpJsonStatus.Ok, items: [] };
+    return { status: HttpJsonStatus.Ok, items: [] as string[] };
   }
 
   @Get('yandex/callback')

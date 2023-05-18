@@ -1,5 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { ExpressRequestInterface } from '../types/express-request.interface';
+import { UserEntity } from '../../user/user.entity';
 
 export const User = createParamDecorator((data: string, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest<ExpressRequestInterface>();
@@ -9,7 +10,7 @@ export const User = createParamDecorator((data: string, ctx: ExecutionContext) =
   }
 
   if (data) {
-    return request.user[data];
+    return request.user[data as keyof UserEntity];
   }
 
   return request.user;

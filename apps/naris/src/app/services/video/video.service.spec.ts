@@ -112,7 +112,7 @@ function createVideoModel(childrenCount = 3): VideoModel {
   return childrenCount
     ? ({
         title: faker.random.words(2),
-        children: faker.datatype.array(childrenCount).map((el) => createVideoModel(0)),
+        children: faker.datatype.array(childrenCount).map(() => createVideoModel(0)),
       } as unknown as VideoModel)
     : ({
         youtube_id: faker.helpers.unique(faker.random.word),

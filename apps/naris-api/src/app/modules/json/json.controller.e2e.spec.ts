@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
 
 import { Test } from '@nestjs/testing';
-import { HttpJsonStatus } from '../../common/types/http-json-response.interface';
+import { HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { DataSource } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { JwtConfig } from '../../config/jwt.config';

@@ -13,6 +13,7 @@
     "lib": ["es2021", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "noImplicitAny": true,
     "baseUrl": ".",
     "paths": {
       "@soer/mixed-bus": ["libs/mixed-bus/src/index.ts"],
@@ -23,6 +24,7 @@
       "@soer/sr-dto": ["libs/sr-dto/src/index.ts"],
       "@soer/sr-editor": ["libs/sr-editor/src/index.ts"],
       "@soer/sr-editor-blocks": ["libs/sr-editor-blocks/src/index.ts"],
+      "@soer/sr-feature-flags": ["libs/sr-feature-flags/src/index.ts"],
       "@soer/sr-local-storage": ["libs/sr-local-storage/src/index.ts"],
       "@soer/sr-storybook-host": ["libs/sr-storybook-host/src/index.ts"],
       "@soer/sr-url-builder": ["libs/sr-url-builder/src/index.ts"]

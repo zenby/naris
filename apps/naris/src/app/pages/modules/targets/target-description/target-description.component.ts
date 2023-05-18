@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TargetModel } from '../../../../api/targets/target.interface';
 import { BusEmitter } from '@soer/mixed-bus';
 import { DescriptionService } from '../description.service';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'soer-target-description',

@@ -1,19 +1,35 @@
-import { BeforeInsert, Column, Entity, Generated, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Generated,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { genSalt, hash } from 'bcrypt';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { Role, UserRole } from '@soer/sr-common-interfaces';
 
-@Entity({ name: 'users' })
+@Entity({ name: 'Users' })
 export class UserEntity implements Role {
   @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
   @ApiProperty()
+  @Column({ nullable: true })
+  firstName: string;
+
+  @ApiProperty()
+  @Column({ nullable: true })
+  lastName: string;
+
+  @ApiProperty()
   @IsNotEmpty()
   @IsEmail()
-  @Column({ unique: true })
+  @Column()
   email: string;
 
   @ApiProperty()
@@ -26,6 +42,10 @@ export class UserEntity implements Role {
   password: string;
 
   @ApiProperty()
+  @Column({ nullable: true })
+  phone: string;
+
+  @ApiProperty()
   @Column()
   @Generated('uuid')
   uuid: string;
@@ -34,7 +54,7 @@ export class UserEntity implements Role {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.USER,
+    default: UserRole.GUEST,
   })
   role: UserRole;
 
@@ -44,6 +64,14 @@ export class UserEntity implements Role {
     default: false,
   })
   isBlocked: boolean;
+
+  @ApiProperty()
+  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP(6)' })
+  createdAt: Date;
+
+  @ApiProperty()
+  @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
+  updatedAt: Date;
 
   @BeforeInsert()
   async hashPassword() {

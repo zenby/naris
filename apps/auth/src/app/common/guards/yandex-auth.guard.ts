@@ -8,7 +8,7 @@ export class YandexAuthGuard extends AuthGuard('yandex') {
     return activate;
   }
 
-  handleRequest(err, user) {
+  handleRequest<UserEntity>(err: Error, user: UserEntity) {
     if (err || !user) {
       throw err || new ForbiddenException();
     }

@@ -20,6 +20,7 @@ export class AuthComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.featureFlags.isFeatureFlagEnabled(featuresEnum.auth_v2)) {
+      this.authService.token = null;
       this.authService.processAuth().then(() => {
         this.redirect();
       });

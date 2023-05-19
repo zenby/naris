@@ -9,8 +9,6 @@ export class AuthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 
   canActivate(): boolean | UrlTree {
-    // TODO: сделать обновление cookie когда грузятся модули, которые могут использовать эти куки
-    this.auth.checkCookieAuth();
     return !!this.auth.token || this.router.createUrlTree(['/']);
   }
 }

@@ -8,7 +8,7 @@ import { AuthEmitter } from '../interfaces/auth-options.interface';
 import { EmptyJWTModel, JWTModel } from '../interfaces/jwt.models';
 import { FeatureFlagService } from '@soer/sr-feature-flags';
 
-const TOKEN_KEY = 'token';
+const TOKEN_KEY = 'tokenV2';
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +57,6 @@ export class AuthService {
 
   private checkIsAuth(): boolean {
     const token: string | null = this.localStorageService.getValue(TOKEN_KEY);
-
     this.token = this.isTokenValid(token) ? token : null;
     return this.token ? true : false;
   }
@@ -97,7 +96,10 @@ export class AuthService {
 
   renewTokenV2(): Observable<DtoPack<{ accessToken: string }>> {
     return this.http
-      .get<DtoPack<{ accessToken: string }>>(this.options.schema.renewApi, { withCredentials: true })
+      .get<DtoPack<{ accessToken: string }>>(this.options.schema.renewApi, {
+        withCredentials: true,
+        params: { skipAuth: true },
+      })
       .pipe(
         tap((result) => {
           if (result.status === OK) {
@@ -146,7 +148,6 @@ export class AuthService {
   }
 
   async processAuth(): Promise<{ accessToken: string } | null> {
-    console.log(this.featureFlags.isFeatureFlagEnabled('auth_v2'));
     if (this.featureFlags.isFeatureFlagEnabled('auth_v2')) {
       return this.processAuthV2();
     }

@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.9.2](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.9.1...naris-0.9.2) (2023-05-19)
+
+
+### Bug Fixes
+
+* problem with old token when login via v2 auth ([065a248](https://gitlog.ru:2222/Naris/soermono/commit/065a248a83b198ca7ebd803bc60bb45511d5147c))
+
 ### [0.9.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.9.0...naris-0.9.1) (2023-05-17)
 
 ## [0.9.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.8.0...naris-0.9.0) (2023-05-17)

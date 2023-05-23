@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.3.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-api-0.3.0...naris-api-0.3.1) (2023-05-23)
+
+
+### Bug Fixes
+
+* default value for accessTag ([ece67d8](https://gitlog.ru:2222/Naris/soermono/commit/ece67d88932b6015ba9789dc1262e991bff10505))
+
 ## [0.3.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-api-0.2.0...naris-api-0.3.0) (2023-05-23)
 
 

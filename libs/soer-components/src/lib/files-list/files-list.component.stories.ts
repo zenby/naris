@@ -6,6 +6,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { FilesListComponent } from './files-list.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
+// @ts-ignore
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AccessDeniedModule } from '../access-denied/access-denied.module';
 import { RouterTestingModule } from '@angular/router/testing';

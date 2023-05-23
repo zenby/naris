@@ -28,6 +28,6 @@ export class JsonEntity {
   author_email: string;
 
   @ApiProperty()
-  @Column({ default: () => 'PRIVATE' })
+  @Column({ default: 'PRIVATE' })
   accessTag: string;
 }

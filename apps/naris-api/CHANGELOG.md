@@ -2,6 +2,30 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.3.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-api-0.2.0...naris-api-0.3.0) (2023-05-23)
+
+
+### Features
+
+* **auth:** add fields to user entity ([701b091](https://gitlog.ru:2222/Naris/soermono/commit/701b091fa84091378ce5d4dd34b236c3ab8affc3))
+* change createdAt and updatedAt field types ([608371b](https://gitlog.ru:2222/Naris/soermono/commit/608371bab4c08b3db4bceb48e789097a4b45be6a))
+* **loggin:** add logging for json controller ([89ec218](https://gitlog.ru:2222/Naris/soermono/commit/89ec218a732f90817e1455c55508d4adf7e1dce4))
+* **loggin:** make logger as private field ([8cfe323](https://gitlog.ru:2222/Naris/soermono/commit/8cfe323b1859e1c33e00851655ffa1c8a3262aea))
+* **naris-api:images:** add JwtAuthGuard ([08c7851](https://gitlog.ru:2222/Naris/soermono/commit/08c78512f0c0ead435b98d8a8c95d2c6f793869e))
+* **naris-api:json:** add jwtAuthGuard ([7db2082](https://gitlog.ru:2222/Naris/soermono/commit/7db20823d95fe0e65597368e1444b65411025e93))
+* **naris-api:pdf:** add JwtAuthGuard ([d6e901b](https://gitlog.ru:2222/Naris/soermono/commit/d6e901b4f19fb517d3a11cb2cb72f5254f6187da))
+* **naris-api:** add JwtTestHelper ([862a3cf](https://gitlog.ru:2222/Naris/soermono/commit/862a3cff6adf15ea5404e88848a7988e63c5c932))
+* **naris-api:** setup jwt functional ([226e22d](https://gitlog.ru:2222/Naris/soermono/commit/226e22d3d307cafb7dd9ec02ff5cd940d00a50c9))
+* rename group to namespace ([4d1de02](https://gitlog.ru:2222/Naris/soermono/commit/4d1de0243784b00e5a2dbeafccdfb581994d0cc2))
+* rework json entity fields ([5c706fc](https://gitlog.ru:2222/Naris/soermono/commit/5c706fce73be6e2cf20c090126e07dcfe6605d8f))
+
+
+### Bug Fixes
+
+* fixed uuid moduleNameMapper in jest.config.ts ([981b845](https://gitlog.ru:2222/Naris/soermono/commit/981b845b030d1ae3aee7f0e85b916f9b81e30478))
+* removed unused eslint-disable in jest.config.ts ([373963d](https://gitlog.ru:2222/Naris/soermono/commit/373963d1fe77580e814fe30d4e70833fe1dac4d5))
+* restore jwt guards for images controller ([6873a71](https://gitlog.ru:2222/Naris/soermono/commit/6873a71bfc52312949e66fa8ea60c2fec74273ab))
+
 ## [0.2.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-api-0.1.0...naris-api-0.2.0) (2023-03-07)
 
 

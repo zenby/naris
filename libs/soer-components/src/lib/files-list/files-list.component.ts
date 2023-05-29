@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
-type WebFile = {
+export type WebFile = {
   title: string;
   labels: string[];
   url: string;
@@ -17,6 +17,8 @@ type WebFile = {
 })
 export class FilesListComponent {
   @Input() webFiles: WebFile[] = [];
+  @Input() loadingFiles: { [key: string]: boolean } = {};
+
   @Input() assetsUrl = '';
   @Output() download = new EventEmitter<{ file: string; url: string }>();
   constructor(private message: NzMessageService) {}
@@ -28,15 +30,25 @@ export class FilesListComponent {
     return `${this.assetsUrl}${level}/${file}`;
   }
 
-  downloadHandle(event: Event, file: WebFile): void {
+  isLoading(key: string): boolean {
+    return !!this.loadingFiles[key];
+  }
+
+  hasAccess(event: Event, file: WebFile): boolean {
     if (file.icon === 'lock') {
       this.message.error(`Для скачивания этого файла нужен уровень ${file.level.toUpperCase()}`);
       event.preventDefault();
-      return;
+      return false;
     }
-    this.download.emit({
-      file: file.url,
-      url: this.getUrl(file.url, file.level),
-    });
+    return true;
+  }
+
+  downloadHandle(event: Event, file: WebFile): void {
+    if (this.hasAccess(event, file)) {
+      this.download.emit({
+        file: file.url,
+        url: this.getUrl(file.url, file.level),
+      });
+    }
   }
 }

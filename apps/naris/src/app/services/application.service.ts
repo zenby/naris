@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BusEmitter } from '@soer/mixed-bus';
+import { WebFile } from '@soer/soer-components';
 import { AuthService, JWTModel } from '@soer/sr-auth';
 import { DataStoreService, DtoPack, extractDtoPackFromBus } from '@soer/sr-dto';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
@@ -18,6 +19,7 @@ export class ApplicationService {
 
   public user: UserModel = { id: -1, role: 'guest', email: '' };
   public user$: Observable<DtoPack<JWTModel>>;
+  public loadingFiles: { [key: string]: boolean } = {};
 
   constructor(
     @Inject('manifest') private manifestId: BusEmitter,
@@ -42,6 +44,13 @@ export class ApplicationService {
   }
 
   public download(url: string, file: string): void {
+    const loadingProgress: boolean | undefined = this.loadingFiles[file];
+    if (!loadingProgress) {
+      this.loadingFiles[file] = true;
+    } else {
+      return;
+    }
+
     const newHeaders = (): HttpHeaders => {
       const headers: HttpHeaders = new HttpHeaders();
       const token = this.auth.token;
@@ -51,13 +60,17 @@ export class ApplicationService {
       }
       return headers;
     };
-    this.http.get(url, { headers: newHeaders(), responseType: 'blob' }).subscribe((blob) => {
-      const a = document.createElement('a');
-      const objectUrl = URL.createObjectURL(blob);
-      a.href = objectUrl;
-      a.download = file;
-      a.click();
-      URL.revokeObjectURL(objectUrl);
-    });
+    this.http.get(url, { headers: newHeaders(), responseType: 'blob' }).subscribe(
+      (blob) => {
+        this.loadingFiles[file] = false;
+        const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+        a.href = objectUrl;
+        a.download = file;
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      () => (this.loadingFiles[file] = false)
+    );
   }
 }

@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.10.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.9.3...naris-0.10.0) (2023-05-29)
+
+
+### Features
+
+* add information about file loading ([70cef5a](https://gitlog.ru:2222/Naris/soermono/commit/70cef5ad94b9698536b71b346727dac9615da522))
+
 ### [0.9.3](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.9.2...naris-0.9.3) (2023-05-29)
 
 

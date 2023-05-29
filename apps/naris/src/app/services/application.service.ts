@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BusEmitter } from '@soer/mixed-bus';
 import { AuthService, JWTModel } from '@soer/sr-auth';
@@ -21,7 +22,8 @@ export class ApplicationService {
   constructor(
     @Inject('manifest') private manifestId: BusEmitter,
     public auth: AuthService,
-    public store$: DataStoreService
+    public store$: DataStoreService,
+    private http: HttpClient
   ) {
     this.user$ = extractDtoPackFromBus<JWTModel>(this.store$.of(this.manifestId)).pipe(
       tap((dtoPack) => {
@@ -37,5 +39,25 @@ export class ApplicationService {
 
   public pageControls(controls: MenuControl[]): void {
     this.control$.next(controls);
+  }
+
+  public download(url: string, file: string): void {
+    const newHeaders = (): HttpHeaders => {
+      const headers: HttpHeaders = new HttpHeaders();
+      const token = this.auth.token;
+      if (token) {
+        const tokenValue = 'Bearer ' + token;
+        headers.set('Authorization', tokenValue);
+      }
+      return headers;
+    };
+    this.http.get(url, { headers: newHeaders(), responseType: 'blob' }).subscribe((blob) => {
+      const a = document.createElement('a');
+      const objectUrl = URL.createObjectURL(blob);
+      a.href = objectUrl;
+      a.download = file;
+      a.click();
+      URL.revokeObjectURL(objectUrl);
+    });
   }
 }

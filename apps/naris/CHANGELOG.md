@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.10.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.10.0...naris-0.10.1) (2023-05-29)
+
+
+### Bug Fixes
+
+* remove listing of sources ([e970f52](https://gitlog.ru:2222/Naris/soermono/commit/e970f52cb2976c2f02404496fdd678f51c87fe06))
+
 ## [0.10.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.9.3...naris-0.10.0) (2023-05-29)
 
 

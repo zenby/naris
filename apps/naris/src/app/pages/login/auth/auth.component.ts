@@ -11,6 +11,7 @@ import { featuresEnum } from '../../../../environments/environment.interface';
 })
 export class AuthComponent implements OnInit {
   private jwt: string | null = null;
+  private accesstoken: string | null = null;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -19,6 +20,13 @@ export class AuthComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.accesstoken = this.route.snapshot.queryParams?.['accesstoken'] ?? null;
+    if (this.accesstoken) {
+      this.authService.token = this.accesstoken;
+      this.redirect();
+      return;
+    }
+
     if (this.featureFlags.isFeatureFlagEnabled(featuresEnum.auth_v2)) {
       this.authService.token = null;
       this.authService.processAuth().then(() => {
@@ -27,6 +35,7 @@ export class AuthComponent implements OnInit {
       return;
     }
     this.jwt = this.route.snapshot.queryParams?.['jwt'] ?? null;
+
     this.checkJWT(this.jwt);
   }
 

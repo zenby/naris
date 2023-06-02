@@ -8,7 +8,10 @@
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "apps/naris-e2e/cypress.json",
-        "devServerTarget": "naris:serve:dev"
+        "devServerTarget": "naris:serve:dev",
+        "env":{
+          "host": "https://stage.s0er.ru"
+        }
       },
       "configurations": {
         "production": {

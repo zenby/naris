@@ -116,6 +116,7 @@ export class DefaultComponent implements OnInit, OnDestroy {
             const queryParams = { ...child.snapshot.queryParams };
             if (ctrl['action']) {
               queryParams['action'] = ctrl['action'];
+              queryParams['startAt'] = Date.now();
             }
 
             if (ctrl.toggle) {

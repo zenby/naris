@@ -1,4 +1,4 @@
-import { compare } from 'bcrypt';
+import { compareSync } from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -73,22 +73,10 @@ export class AuthService {
       return user;
     }
 
-    const isPasswordsMatch = await this.compareUsersByPassword(password, user);
-
-    if (isPasswordsMatch instanceof Error) {
-      return isPasswordsMatch;
-    }
-
-    return user;
+    return this.isPasswordMatch(password, user) ? user : new UnauthorizedException('Invalid password');
   }
 
-  async compareUsersByPassword(password: string, userFromDb: UserEntity): Promise<boolean | Error> {
-    const isPasswordsMatch = await compare(password, userFromDb.password);
-
-    if (!isPasswordsMatch) {
-      return new UnauthorizedException('Invalid password');
-    }
-
-    return true;
+  private isPasswordMatch(password: string, userFromDb: UserEntity): boolean {
+    return compareSync(password, userFromDb.password);
   }
 }

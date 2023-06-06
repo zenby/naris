@@ -15,5 +15,7 @@ export const environment: EnvironmentInterface = {
   assetsUrl: HOST + '/assets/',
   privateAssetsUrl: HOST + '/assets/private/',
   payServiceUrl: HOST + '/api/v2/seller',
-  features: dev,
+  features: {
+    auth_v2: true,
+  },
 };

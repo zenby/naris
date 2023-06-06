@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoNgZorroAntdModule, Role } from '@soer/soer-components';
 import { RouterTestingModule } from '@angular/router/testing';
+import { SrFeatureFlagsModule } from '@soer/sr-feature-flags';
 
 const mockDataStoreService = {
   of: (manifestId: BusEmitter) =>
@@ -43,13 +44,20 @@ export default {
         BrowserAnimationsModule,
         NoopAnimationsModule,
         FormsModule,
-        SrAuthModule,
+        SrAuthModule.forRoot({
+          sid: Symbol('Test'),
+          schema: {
+            cookieApi: '',
+            renewApi: '',
+            authApi: '',
+          },
+        }),
+        SrFeatureFlagsModule.forRoot({ auth_v2: true }),
         SrDTOModule,
       ],
       providers: [
         { provide: 'manifest', useValue: ANY_SERVICE },
         { provide: DataStoreService, useValue: mockDataStoreService },
-        { provide: 'AuthServiceConfig', useValue: {} },
       ],
     }),
   ],

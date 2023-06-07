@@ -2,9 +2,20 @@
   width: 100%;
   text-align: center;
   position: relative;
-  height: 3.5rem;
   margin-top: -1rem;
   a {
     margin: 5px;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .icon-tabs {
+    height: 4.5rem;
+  }
+}
+
+@media screen and (min-width: 461px) {
+  .icon-tabs {
+    height: 7rem;
   }
 }

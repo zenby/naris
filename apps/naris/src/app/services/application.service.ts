@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BusEmitter } from '@soer/mixed-bus';
-import { WebFile } from '@soer/soer-components';
 import { AuthService, JWTModel } from '@soer/sr-auth';
 import { DataStoreService, DtoPack, extractDtoPackFromBus } from '@soer/sr-dto';
 import { BehaviorSubject, Observable, tap } from 'rxjs';

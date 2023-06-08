@@ -122,7 +122,6 @@ export class DefaultComponent implements OnInit, OnDestroy {
             if (ctrl.toggle) {
               queryParams[ctrl.toggle] = !(child.snapshot.queryParams[ctrl.toggle] === 'true') ? 'true' : undefined;
             }
-
             this.router.navigate(ctrl.path, { relativeTo: child, queryParams });
           })
       );

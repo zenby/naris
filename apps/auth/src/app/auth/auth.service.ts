@@ -9,6 +9,7 @@ import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { TokenExpiredError } from 'jsonwebtoken';
 
+import { AccessTokenPayload } from './access-token-payload.interface';
 import { RefreshTokenPayload } from './refresh-token-payload.interface';
 
 @Injectable()
@@ -26,10 +27,14 @@ export class AuthService {
   async getAccessToken(user: UserEntity): Promise<string> {
     const { jwtSecret: secret, expiresInAccess: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
 
-    return this.jwtService.signAsync(
-      { id: user.id, uuid: user.uuid, email: user.email, userRole: user.role },
-      { secret, expiresIn }
-    );
+    const payload: AccessTokenPayload = {
+      id: user.id,
+      uuid: user.uuid,
+      email: user.email,
+      userRole: user.role,
+    };
+
+    return this.jwtService.signAsync(payload, { secret, expiresIn });
   }
 
   async getRefreshToken(user: UserEntity | Error): Promise<string | Error> {

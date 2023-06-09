@@ -8,11 +8,12 @@ import { AuthService } from '../auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { RefreshCookieStrategy } from '../common/strategies/refreshCookie.strategy';
+import { RefreshTokenService } from '../auth/refresh-token.service';
 
 @Global()
 @Module({
   controllers: [UserController],
-  providers: [UserService, RolesGuard, AuthService, ConfigService, RefreshCookieStrategy],
+  providers: [UserService, RolesGuard, AuthService, ConfigService, RefreshCookieStrategy, RefreshTokenService],
   imports: [TypeOrmModule.forFeature([UserEntity]), JwtModule.register({})],
   exports: [UserService, TypeOrmModule.forFeature([UserEntity])],
 })

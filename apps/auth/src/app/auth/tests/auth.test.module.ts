@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from '../auth.service';
 import { LocalStrategy } from '../../common/strategies/local.strategy';
 import { RefreshCookieStrategy } from '../../common/strategies/refreshCookie.strategy';
+import { RefreshTokenService } from '../refresh-token.service';
 import { AuthController } from '../auth.controller';
 import { Configuration } from '../../config/config';
 import { ConfigService } from '@nestjs/config';
@@ -15,6 +16,7 @@ import * as jwt from 'jsonwebtoken';
   imports: [PassportModule.register({ defaultStrategy: 'cookie' }), JwtModule.register({}), UserTestModule],
   providers: [
     AuthService,
+    RefreshTokenService,
     LocalStrategy,
     RefreshCookieStrategy,
     {

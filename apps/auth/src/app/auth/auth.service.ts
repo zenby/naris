@@ -7,17 +7,17 @@ import { Configuration } from '../config/config';
 import { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { TokenExpiredError } from 'jsonwebtoken';
+import { RefreshTokenService } from './refresh-token.service';
 
 import { AccessTokenPayload } from './access-token-payload.interface';
-import { RefreshTokenPayload } from './refresh-token-payload.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly refreshTokenService: RefreshTokenService
   ) {}
 
   async signUp(createUserDto: CreateUserDto) {
@@ -38,42 +38,11 @@ export class AuthService {
   }
 
   async getRefreshToken(user: UserEntity | Error): Promise<string | Error> {
-    if (user instanceof Error) {
-      return user;
-    }
-
-    const { jwtSecret: secret, expiresInRefresh: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
-
-    const payload: RefreshTokenPayload = {
-      userId: user.id,
-      userEmail: user.email,
-      userRole: user.role,
-    };
-
-    return await this.jwtService.signAsync(payload, { secret, expiresIn });
+    return await this.refreshTokenService.generateRefreshToken(user);
   }
 
   async getVerifiedUserByRefreshToken(refreshToken: string): Promise<UserEntity | Error> {
-    try {
-      const { jwtSecret: secret, expiresInRefresh: maxAge } = this.configService.get<Configuration['jwt']>('jwt');
-
-      const { userEmail, userId } = this.jwtService.verify<{ userId: number; userEmail: string }>(refreshToken, {
-        secret,
-        maxAge,
-      });
-
-      const userOrError = await this.userService.findByIdAndEmail({
-        id: userId,
-        email: userEmail,
-      });
-      if (userOrError instanceof Error) return userOrError;
-
-      return userOrError;
-    } catch (error) {
-      if (error instanceof TokenExpiredError) return error;
-
-      throw error;
-    }
+    return await this.refreshTokenService.verifyRefreshToken(refreshToken);
   }
 
   async validateUser(login: string, password: string): Promise<UserEntity | Error> {

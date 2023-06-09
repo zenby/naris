@@ -117,6 +117,9 @@ export class DefaultComponent implements OnInit, OnDestroy {
             if (ctrl['action']) {
               queryParams['action'] = ctrl['action'];
               queryParams['startAt'] = Date.now();
+            } else {
+              delete queryParams['action'];
+              delete queryParams['startAt'];
             }
 
             if (ctrl.toggle) {

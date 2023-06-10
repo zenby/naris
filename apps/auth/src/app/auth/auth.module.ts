@@ -5,12 +5,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from '../common/strategies/local.strategy';
 import { RefreshCookieStrategy } from '../common/strategies/refreshCookie.strategy';
-import { RefreshTokenService } from './refresh-token.service';
 import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [PassportModule.register({ defaultStrategy: 'cookie' }), JwtModule.register({}), UserModule],
-  providers: [AuthService, LocalStrategy, RefreshCookieStrategy, RefreshTokenService],
+  providers: [AuthService, LocalStrategy, RefreshCookieStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

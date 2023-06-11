@@ -1,6 +1,6 @@
 import { compareSync } from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Configuration } from '../config/config';
 import { ConfigService } from '@nestjs/config';
 
 import { UserEntity } from '../user/user.entity';
@@ -16,13 +16,11 @@ export class AuthService {
   private readonly accessTokenHelper: AccessTokenHelper;
   private readonly refreshTokenHelper: RefreshTokenHelper;
 
-  constructor(
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
-    private readonly userService: UserService
-  ) {
-    this.accessTokenHelper = new AccessTokenHelper(configService, jwtService);
-    this.refreshTokenHelper = new RefreshTokenHelper(configService, jwtService);
+  constructor(private readonly configService: ConfigService, private readonly userService: UserService) {
+    const jwtConfig = configService.get<Configuration['jwt']>('jwt');
+
+    this.accessTokenHelper = new AccessTokenHelper(jwtConfig);
+    this.refreshTokenHelper = new RefreshTokenHelper(jwtConfig);
   }
 
   async signUp(createUserDto: CreateUserDto) {
@@ -33,12 +31,12 @@ export class AuthService {
     return await this.accessTokenHelper.generate(user);
   }
 
-  async getRefreshToken(user: UserEntity | Error): Promise<string | Error> {
+  getRefreshToken(user: UserEntity | Error): string | Error {
     if (user instanceof Error) {
       return user;
     }
 
-    return await this.refreshTokenHelper.generate(user);
+    return this.refreshTokenHelper.generate(user);
   }
 
   async getVerifiedUserByRefreshToken(refreshToken: string): Promise<UserEntity | Error> {

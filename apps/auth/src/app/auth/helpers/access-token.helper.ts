@@ -1,15 +1,14 @@
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
-import { Configuration } from '../../config/config';
+import { Jwt } from '@soer/sr-common-interfaces';
 import { AccessTokenPayload } from '../types/access-token-payload.interface';
 import { UserEntity } from '../../user/user.entity';
+import { sign } from 'jsonwebtoken';
 
 export class AccessTokenHelper {
   private readonly secret: string;
   private readonly expiresIn: string | number | undefined;
 
-  constructor(private readonly configService: ConfigService, private readonly jwtService: JwtService) {
-    const { jwtSecret, expiresInAccess } = configService.get<Configuration['jwt']>('jwt');
+  constructor(private readonly jwtConfig: Jwt) {
+    const { jwtSecret, expiresInAccess } = jwtConfig;
 
     this.secret = jwtSecret;
     this.expiresIn = expiresInAccess;
@@ -23,6 +22,6 @@ export class AccessTokenHelper {
       userRole: user.role,
     };
 
-    return await this.jwtService.signAsync(payload, { secret: this.secret, expiresIn: this.expiresIn });
+    return sign(payload, this.secret, { expiresIn: this.expiresIn });
   }
 }

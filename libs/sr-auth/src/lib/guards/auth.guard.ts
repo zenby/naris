@@ -18,13 +18,13 @@ export class AuthGuard implements CanActivate {
         .renewTokenV2()
         .pipe(
           tap(() => {
-            this.router.navigate(['pages']);
+            const urlTree = this.router.createUrlTree(['pages']);
+            this.router.navigateByUrl(urlTree);
           })
         )
         .subscribe();
 
-      this.router.navigate(['login']);
-      return false;
+      return this.router.createUrlTree(['/', 'login']);
     }
   }
 }

@@ -11,7 +11,7 @@ $hover-color: #1890ff;
   border-left: $item-border;
   border-right: $item-border;
   padding-left: 24px;
-  height: 56px;
+  min-height: 56px;
   align-items: center;
 
   &:last-child {

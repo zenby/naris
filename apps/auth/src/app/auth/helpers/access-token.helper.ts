@@ -1,27 +1,23 @@
 import { Jwt } from '@soer/sr-common-interfaces';
 import { AccessTokenPayload } from '../types/access-token-payload.interface';
+import { BaseTokenHelper } from './base-token.helper';
 import { UserEntity } from '../../user/user.entity';
-import { sign } from 'jsonwebtoken';
 
-export class AccessTokenHelper {
-  private readonly secret: string;
-  private readonly expiresIn: string | number | undefined;
-
-  constructor(private readonly jwtConfig: Jwt) {
-    const { jwtSecret, expiresInAccess } = jwtConfig;
-
-    this.secret = jwtSecret;
-    this.expiresIn = expiresInAccess;
+export class AccessTokenHelper extends BaseTokenHelper<AccessTokenPayload> {
+  constructor(protected readonly jwtConfig: Jwt) {
+    super(jwtConfig);
   }
 
-  async generate(user: UserEntity): Promise<string> {
-    const payload: AccessTokenPayload = {
+  protected getExpiration(jwtConfig: Jwt): string | number | undefined {
+    return jwtConfig.expiresInAccess;
+  }
+
+  protected getPayload(user: UserEntity): AccessTokenPayload {
+    return {
       id: user.id,
       uuid: user.uuid,
       email: user.email,
       userRole: user.role,
     };
-
-    return sign(payload, this.secret, { expiresIn: this.expiresIn });
   }
 }

@@ -13,6 +13,7 @@ $hover-color: #1890ff;
   padding-left: 24px;
   min-height: 56px;
   align-items: center;
+  overflow: hidden;
 
   &:last-child {
     border-bottom: $item-border;

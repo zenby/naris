@@ -43,6 +43,6 @@ jobs:
       - name: Test
         run: npm run test
 
-      # - name: Frontend E2E Tests
-      #   if: steps.filter.outputs.frontend == 'true' || steps.filter.outputs.frontend-e2e == 'true'
-      #   run: npx nx run naris-e2e:e2e
+      - name: Frontend E2E Tests
+        if: steps.filter.outputs.frontend == 'true' || steps.filter.outputs.frontend-e2e == 'true'
+        run: npx nx run naris-e2e:e2e

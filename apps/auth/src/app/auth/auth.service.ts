@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   async getAccessToken(user: UserEntity): Promise<string> {
-    return await this.accessTokenHelper.generate(user);
+    return this.accessTokenHelper.generate(user);
   }
 
   getRefreshToken(user: UserEntity | Error): string | Error {

@@ -78,7 +78,7 @@
   padding: 2px 0 2px 1em;
   border-radius: 5%;
   box-shadow: 0 0 2px rgb(147 151 173 / 10%), 0px 2px 5px 2px rgb(147 151 173 / 30%);
-  background-color: rgba($color: #fff, $alpha: 0.3);
+  background-color: rgba($color: #fff, $alpha: 0.9);
 }
 
 .main-menu {
@@ -92,11 +92,9 @@
   flex-grow: 1;
   justify-content: flex-end;
   align-items: flex-end;
-  background-color: #fff;
   .control {
     margin: 2px;
   }
   .ant-btn {
-    background-color: rgba(139, 139, 141, 0.168);
   }
 }

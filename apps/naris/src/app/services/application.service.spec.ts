@@ -5,6 +5,7 @@ import { DataStoreService } from '@soer/sr-dto';
 
 import { ApplicationService } from './application.service';
 import { MenuControl } from './menu/MenuControl.class';
+import { HttpClient } from '@angular/common/http';
 
 describe('ApplicationService', () => {
   let service: ApplicationService;
@@ -26,6 +27,10 @@ describe('ApplicationService', () => {
               // empty
             },
           },
+        },
+        {
+          provide: HttpClient,
+          useValue: {},
         },
         DataStoreService,
         { provide: 'manifest', useValue: ANY_SERVICE },

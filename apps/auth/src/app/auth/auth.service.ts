@@ -1,4 +1,4 @@
-import { compare } from 'bcrypt';
+import { compareSync } from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -8,6 +8,9 @@ import { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { TokenExpiredError } from 'jsonwebtoken';
+
+import { AccessTokenPayload } from './access-token-payload.interface';
+import { RefreshTokenPayload } from './refresh-token-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -24,10 +27,14 @@ export class AuthService {
   async getAccessToken(user: UserEntity): Promise<string> {
     const { jwtSecret: secret, expiresInAccess: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
 
-    return this.jwtService.signAsync(
-      { id: user.id, uuid: user.uuid, email: user.email, userRole: user.role },
-      { secret, expiresIn }
-    );
+    const payload: AccessTokenPayload = {
+      id: user.id,
+      uuid: user.uuid,
+      email: user.email,
+      userRole: user.role,
+    };
+
+    return this.jwtService.signAsync(payload, { secret, expiresIn });
   }
 
   async getRefreshToken(user: UserEntity | Error): Promise<string | Error> {
@@ -37,10 +44,13 @@ export class AuthService {
 
     const { jwtSecret: secret, expiresInRefresh: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
 
-    return await this.jwtService.signAsync(
-      { userId: user.id, userEmail: user.email, userRole: user.role },
-      { secret, expiresIn }
-    );
+    const payload: RefreshTokenPayload = {
+      userId: user.id,
+      userEmail: user.email,
+      userRole: user.role,
+    };
+
+    return await this.jwtService.signAsync(payload, { secret, expiresIn });
   }
 
   async getVerifiedUserByRefreshToken(refreshToken: string): Promise<UserEntity | Error> {
@@ -73,22 +83,10 @@ export class AuthService {
       return user;
     }
 
-    const isPasswordsMatch = await this.compareUsersByPassword(password, user);
-
-    if (isPasswordsMatch instanceof Error) {
-      return isPasswordsMatch;
-    }
-
-    return user;
+    return this.isPasswordMatch(password, user) ? user : new UnauthorizedException('Invalid password');
   }
 
-  async compareUsersByPassword(password: string, userFromDb: UserEntity): Promise<boolean | Error> {
-    const isPasswordsMatch = await compare(password, userFromDb.password);
-
-    if (!isPasswordsMatch) {
-      return new UnauthorizedException('Invalid password');
-    }
-
-    return true;
+  private isPasswordMatch(password: string, userFromDb: UserEntity): boolean {
+    return compareSync(password, userFromDb.password);
   }
 }

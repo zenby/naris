@@ -22,7 +22,7 @@
               <ng-container *ngIf="task.children">
                 <p *ngFor="let child of task.children">
                   <span *ngIf="!child.file">{{ child.title }}</span>
-                  <a *ngIf="child.file" [href]="url(child.file)" target="_blank">
+                  <a *ngIf="child.file" href="javascript:void(0)" (click)="download(child.file)">
                     {{ child.title }}
                     <i
                       *ngIf="child.file.split('.').pop() === 'pdf'"

@@ -33,8 +33,11 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const idToken = this.auth.token;
+    if (req.params.get('skipAuth')) {
+      return next.handle(req).pipe();
+    }
 
+    const idToken = this.auth.token;
     if (idToken) {
       // Если вышел срок действия токена, то перед запросом надо его обновить
       if (!this.auth.isAuth) {

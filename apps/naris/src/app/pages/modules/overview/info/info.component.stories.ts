@@ -52,7 +52,7 @@ export default {
                       icon: 'team',
                       title: 'VK',
                       text: 'Сообщество с уроками по программированию',
-                      url: 'https://vk.com/codeartblog',
+                      url: 'https://vk.com/soerdevs',
                     },
                   ],
                 },

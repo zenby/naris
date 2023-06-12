@@ -1,0 +1,161 @@
+import { articleTitle, articleTextWithMd, modifiedArticleTitle } from '../support/articleConstants';
+
+describe('naris articles', () => {
+  beforeEach(() => {
+    cy.intercept('GET', '**/*.svg').as('signIn');
+
+    cy.login('user', 'user');
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+
+    cy.removeAllExistingArticles();
+  });
+
+  it('should check mouse interaction on create article page', () => {
+    cy.visit('/#!/pages/workbook/articles/create/new');
+
+    cy.get('input[placeholder="Тема"]').type(articleTitle, { force: true });
+    cy.get('textarea').first().type(articleTextWithMd, { force: true });
+
+    cy.get('.anticon-appstore-add').click();
+
+    cy.get('soer-block-editor').should('have.length', 2);
+    cy.get('.anticon-up').click();
+
+    cy.get('textarea').eq(1).should('have.value', articleTextWithMd);
+
+    cy.get('textarea').first().click();
+    cy.get('.anticon-down').click();
+
+    cy.get('textarea').first().should('have.value', articleTextWithMd);
+    cy.get('.anticon-edit').click();
+
+    cy.get('textarea').eq(1).should('not.to.have.focus');
+  });
+
+  it('should check keyboard interaction on create article page', () => {
+    cy.visit('/#!/pages/workbook/articles/create/new');
+
+    cy.get('textarea').first().type(articleTextWithMd, { force: true });
+
+    cy.get('textarea').type('{alt}{enter}');
+    cy.get('soer-block-editor').should('have.length', 2);
+
+    cy.get('textarea').eq(1).type('{alt}{uparrow}');
+    cy.get('textarea').eq(1).should('have.value', `${articleTextWithMd}\n`);
+
+    cy.get('textarea').eq(1).type('{alt}{uparrow}');
+    cy.get('textarea').first().should('have.value', `${articleTextWithMd}\n`);
+
+    cy.get('textarea').first().type('{esc}');
+    cy.get('textarea').first().should('not.to.have.focus');
+
+    cy.get('soer-mobile-menu .ng-star-inserted').first().click();
+    cy.get('soer-mobile-menu textarea').should('not.exist');
+  });
+
+  it('should check article creation', () => {
+    cy.visit('/#!/pages/workbook/articles');
+
+    cy.get('.anticon-plus').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+
+    cy.get('input[placeholder="Тема"]').type('Test', { force: true });
+    cy.get('.anticon-save').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    cy.get('a[title="Статьи"]').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    cy.contains('Test').should('exist');
+  });
+
+  it('should check view mode from main page', () => {
+    cy.visit('/#!/pages/workbook/articles');
+
+    cy.get('.anticon-plus').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+
+    cy.get('input[placeholder="Тема"]').type('Test', { force: true });
+    cy.get('.anticon-save').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    cy.get('a[title="Статьи"]').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(200);
+
+    cy.get('.anticon-eye').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    cy.get('.workbooks').should('not.exist');
+  });
+
+  it('should edit existing article', () => {
+    cy.visit('/#!/pages/workbook/articles');
+
+    cy.get('.anticon-plus').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+
+    cy.get('input[placeholder="Тема"]').type('Test', { force: true });
+    cy.get('.anticon-save').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    cy.get('a[title="Статьи"]').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    cy.get('.anticon-edit').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+
+    cy.get('input[placeholder="Тема"]').clear();
+    cy.get('input[placeholder="Тема"]').type(modifiedArticleTitle);
+
+    cy.get('.anticon-save').click();
+    cy.visit('/#!/pages/workbook/articles');
+
+    cy.contains(modifiedArticleTitle).should('exist');
+  });
+
+  it('should check warning after changing article without save', () => {
+    cy.on('window:confirm', () => false);
+    cy.visit('/#!/pages/workbook/articles');
+
+    cy.get('.anticon-plus').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+
+    cy.get('input[placeholder="Тема"]').type('Test', { force: true });
+    cy.get('.anticon-save').click();
+    cy.visit('/#!/pages/workbook/articles');
+
+    cy.get('a[title="Статьи"]').click();
+    cy.get('.anticon-edit').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+    cy.get('input[placeholder="Тема"]').clear();
+    cy.get('input[placeholder="Тема"]').type(modifiedArticleTitle);
+
+    cy.get('.anticon-rollback').click();
+    cy.get('.anticon-rollback').should('exist');
+  });
+
+  it('should check article delete', () => {
+    cy.visit('/#!/pages/workbook/articles');
+
+    cy.get('.anticon-plus').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500);
+
+    cy.get('input[placeholder="Тема"]').type('Test', { force: true });
+    cy.get('.anticon-save').click();
+    cy.visit('/#!/pages/workbook/articles');
+
+    cy.get('.anticon-delete').click();
+
+    cy.contains('OK').click();
+    cy.contains('Начать').should('exist');
+  });
+});

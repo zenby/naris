@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
 import { CommandCreate, CommandUpdate } from '@soer/sr-dto';
 import { convertToJsonDTO } from '../../../../api/json.dto.helpers';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'soer-question-form',
@@ -20,7 +21,8 @@ export class QuestionFormComponent {
     @Inject('question') private questionId: BusEmitter,
     private bus$: MixedBusService,
     private formBuilder: UntypedFormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private errorMessage: NzNotificationService
   ) {
     this.route.queryParams.subscribe((params) => {
       if (params['action'] === 'save') {
@@ -34,6 +36,12 @@ export class QuestionFormComponent {
   }
 
   onSubmit(): void {
+    if (this.form.invalid) {
+      const errorTitle = 'Превышено допустимое количество символов';
+      const errorNotification = `Число символов в вопросе не должно превышать ${this.questionMaxLength}`;
+      this.errorMessage.create('error', errorTitle, errorNotification);
+      return;
+    }
     if (this.form.value.id === null) {
       this.bus$.publish(new CommandCreate(this.questionId, this.form.value, { afterCommandDoneRedirectTo: ['.'] }));
     } else {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PersonalTarget, RoadmapTask } from '../../../api/targets/target.interface';
 import { environment } from '../../../../environments/environment';
+import { ApplicationService } from '../../../services/application.service';
 
 @Component({
   selector: 'soer-roadmap',
@@ -17,7 +18,7 @@ export class RoadmapComponent implements OnInit {
   };
   total = 0;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, public app: ApplicationService) {}
 
   ngOnInit(): void {
     this.target = this.route.snapshot.data['target'] || this.target;
@@ -38,5 +39,9 @@ export class RoadmapComponent implements OnInit {
       return Math.floor((value.real / value.total) * 100);
     }
     return 0;
+  }
+
+  download(file: string): void {
+    this.app.download(this.url(file), file);
   }
 }

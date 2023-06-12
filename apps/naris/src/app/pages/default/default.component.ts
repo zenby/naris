@@ -116,12 +116,15 @@ export class DefaultComponent implements OnInit, OnDestroy {
             const queryParams = { ...child.snapshot.queryParams };
             if (ctrl['action']) {
               queryParams['action'] = ctrl['action'];
+              queryParams['startAt'] = Date.now();
+            } else {
+              delete queryParams['action'];
+              delete queryParams['startAt'];
             }
 
             if (ctrl.toggle) {
               queryParams[ctrl.toggle] = !(child.snapshot.queryParams[ctrl.toggle] === 'true') ? 'true' : undefined;
             }
-
             this.router.navigate(ctrl.path, { relativeTo: child, queryParams });
           })
       );

@@ -2,6 +2,34 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.10.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.10.0...naris-0.10.1) (2023-05-29)
+
+
+### Bug Fixes
+
+* remove listing of sources ([e970f52](https://gitlog.ru:2222/Naris/soermono/commit/e970f52cb2976c2f02404496fdd678f51c87fe06))
+
+## [0.10.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.9.3...naris-0.10.0) (2023-05-29)
+
+
+### Features
+
+* add information about file loading ([70cef5a](https://gitlog.ru:2222/Naris/soermono/commit/70cef5ad94b9698536b71b346727dac9615da522))
+
+### [0.9.3](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.9.2...naris-0.9.3) (2023-05-29)
+
+
+### Bug Fixes
+
+* download sources and articles ([cf411d0](https://gitlog.ru:2222/Naris/soermono/commit/cf411d05b05744ce4a57565617eeffc220019852))
+
+### [0.9.2](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.9.1...naris-0.9.2) (2023-05-19)
+
+
+### Bug Fixes
+
+* problem with old token when login via v2 auth ([065a248](https://gitlog.ru:2222/Naris/soermono/commit/065a248a83b198ca7ebd803bc60bb45511d5147c))
+
 ### [0.9.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.9.0...naris-0.9.1) (2023-05-17)
 
 ## [0.9.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.8.0...naris-0.9.0) (2023-05-17)

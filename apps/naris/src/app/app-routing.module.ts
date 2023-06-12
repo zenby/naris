@@ -13,7 +13,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/pages.module').then((m) => m.PagesModule),
     resolve: {
       manifest: 'manifestEmitter',
-      issues: 'issuesEmitter',
     },
     canActivate: [AuthGuard],
   },
@@ -31,13 +30,6 @@ const routes: Routes = [
       schema: { url: 'user/manifest' },
       keys: {
         manifest: {},
-      },
-    }),
-    SrDTOModule.forChild({
-      namespace: 'issues',
-      schema: { url: 'github' },
-      keys: {
-        issues: {},
       },
     }),
   ],

@@ -28,7 +28,7 @@ export class JsonController {
   @ApiOkResponse({ type: JsonResponseDto })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get(':accessTag')
+  // @Get(':accessTag')
   async findByAccessTag(
     @Param('documentNamespace') documentNamespace: string,
     @Param('accessTag') accessTag: string

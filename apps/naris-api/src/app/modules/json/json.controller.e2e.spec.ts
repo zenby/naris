@@ -74,6 +74,7 @@ describe('JsonModule e2e-test', () => {
     });
   });
 
+  /*
   describe('GET /json/:documentNamespace/:accessTag', () => {
     it('should find all documents with the public tag when accessTag is passed as "public"', async () => {
       const document = { ...createFakeDocument(), accessTag: 'PUBLIC' };
@@ -129,6 +130,7 @@ describe('JsonModule e2e-test', () => {
       expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ ...document, accessTag: 'PUBLIC' });
     });
   });
+   */
 
   describe('POST /json/:documentNamespace/new', () => {
     it('should create json when passing valid json dto', async () => {

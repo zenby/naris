@@ -13,6 +13,7 @@ function getHostVariables(host: string): HostVariables {
     patreonAuthUrl: host + '/api/auth/patreon',
     yandexAuthUrl: host + '/api/auth/yandex',
     apiUrl: host + '/api/',
+    narisApiUrl: host + '/naris/api/',
     urlV2: host + '/v2/',
     assetsUrl: host + '/assets/',
     privateAssetsUrl: host + '/assets/private/',

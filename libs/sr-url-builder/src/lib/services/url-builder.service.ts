@@ -36,6 +36,14 @@ export class UrlBuilderService {
       .filter((value) => value !== '');
     const urlResultParams = urlMappedParams.length ? `?${urlMappedParams.join('&')}` : '';
     const apiRoot = externalApiRoot ? externalApiRoot : this.options.apiRoot;
+
+    const customHost = apiSuffix.match(/%%([^%]+)%%/);
+    if (customHost) {
+      const customHostName = customHost[1];
+      const customHostValue = this.options[customHostName as keyof UrlBuilderOptions] || this.options.apiRoot;
+      return `${urlSegments.join('/')}${urlResultParams}`.replace(/%%([^%]+)%%/, customHostValue);
+    }
+
     return `${apiRoot}${urlSegments.join('/')}${urlResultParams}`;
   }
 }

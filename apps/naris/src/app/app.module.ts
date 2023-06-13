@@ -52,7 +52,7 @@ registerLocaleData(ru);
         };
       })(environment)
     ),
-    SrUrlBuilderModule.forRoot({ apiRoot: environment.apiUrl }),
+    SrUrlBuilderModule.forRoot({ apiRoot: environment.apiUrl, narisApiUrl: environment.narisApiUrl }),
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,

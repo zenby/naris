@@ -128,10 +128,9 @@ const routes: Routes = [
     SrDTOModule.forChild<WorkbookKey>({
       namespace: 'articles',
       schema: { url: '%%narisApiUrl%%v3/json/article/:wid' },
-      apiRoot: '/naris/',
       keys: {
         article: { wid: '?' },
-        articles: { wid: 'personal' },
+        articles: { wid: '' },
       },
     }),
 

@@ -12,24 +12,28 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   const port = configService.get('port');
+  const NODE_ENV = configService.get('NODE_ENV');
 
-  app.enableCors({
-    origin: true,
-    credentials: true,
-  });
+  if (NODE_ENV === 'development') {
+    app.enableCors({
+      origin: true,
+      credentials: true,
+    });
 
-  app.use(
-    helmet.default({
-      crossOriginOpenerPolicy: false, // для получения jwt токена
-      contentSecurityPolicy: false,
-    })
-  );
+    app.use(
+      helmet.default({
+        crossOriginOpenerPolicy: false, // для получения jwt токена
+        contentSecurityPolicy: false,
+      })
+    );
+
+    setupSwagger(app, port);
+  }
 
   app.use(cookieParser());
 
-  setupSwagger(app, port);
-
   await app.listen(port);
+  Logger.log(`Application is running in "${NODE_ENV}" mode`);
   Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }
 

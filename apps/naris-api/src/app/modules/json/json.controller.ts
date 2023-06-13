@@ -17,6 +17,60 @@ export class JsonController {
 
   private logger = new Logger(JsonController.name);
 
+  @ApiOperation({
+    summary: 'Find by access tag',
+    description:
+      'accessTag can take the following values: ' +
+      'public - indicates that the method returns documents from the namespace with the "public" tag. ' +
+      'private - indicates that the method returns documents authored by the current user. ' +
+      'all - indicates that the method returns documents from the namespace with both private and public access.',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get(':accessTag')
+  async findByAccessTag(
+    @Param('documentNamespace') documentNamespace: string,
+    @Param('accessTag') accessTag: string
+  ): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      if (accessTag === 'all') {
+        const documents = await this.jsonService.findByAllAccessTag(documentNamespace);
+
+        return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+      }
+
+      const documents = await this.jsonService.findByAccessTag(documentNamespace, accessTag);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Updates the value of accessTag to private/public',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Put(':documentId/:accessTag')
+  async changeAccessTag(@Param() params: JsonParams): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const document = await this.jsonService.updateAccessTag(
+        +params.documentId,
+        params.documentNamespace,
+        params.accessTag
+      );
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
   @ApiOperation({ summary: 'Get all', description: 'Get a list of documents of a specific group' })
   @ApiOkResponse({ type: JsonResponseDto })
   @ApiBearerAuth()

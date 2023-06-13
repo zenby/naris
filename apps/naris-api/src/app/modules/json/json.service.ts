@@ -28,6 +28,30 @@ export class JsonService {
     return await this.jsonRepository.save(document);
   }
 
+  async findByAccessTag(documentNamespace: string, accessTag: string): Promise<JsonEntity[]> {
+    const upperCaseAccessTag = accessTag.toUpperCase();
+    return await this.jsonRepository.find({ where: { namespace: documentNamespace, accessTag: upperCaseAccessTag } });
+  }
+
+  async findByAllAccessTag(documentNamespace: string): Promise<JsonEntity[]> {
+    const conditionPublic = { namespace: documentNamespace, accessTag: 'PUBLIC' };
+    const conditionPrivate = { namespace: documentNamespace, accessTag: 'PRIVATE' };
+
+    return await this.jsonRepository.find({ where: [conditionPublic, conditionPrivate] });
+  }
+
+  async updateAccessTag(documentId: number, documentNamespace: string, accessTag: string): Promise<JsonEntity> {
+    const document = await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
+
+    if (!document) {
+      throw new HttpException('Document does not exist', HttpStatus.NOT_FOUND);
+    }
+
+    document.accessTag = accessTag.toUpperCase();
+
+    return await this.jsonRepository.save(document);
+  }
+
   async findOne(documentNamespace: string, documentId: number): Promise<JsonEntity> {
     return await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
   }

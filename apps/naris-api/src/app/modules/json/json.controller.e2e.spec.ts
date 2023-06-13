@@ -74,6 +74,62 @@ describe('JsonModule e2e-test', () => {
     });
   });
 
+  describe('GET /json/:documentNamespace/:accessTag', () => {
+    it('should find all documents with the public tag when accessTag is passed as "public"', async () => {
+      const document = { ...createFakeDocument(), accessTag: 'PUBLIC' };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([document]);
+
+      await request
+        .get(`/json/${document.namespace}/public`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        where: { namespace: document.namespace, accessTag: 'PUBLIC' },
+      });
+    });
+
+    it.todo('should find all documents of the current user when accessTag is passed as "private"');
+
+    it('should find all documents from the namespace with both private and public access when accessTag is passed as "all"', async () => {
+      const namespace = faker.lorem.word();
+      const publicDocument = { ...createFakeDocument(), namespace: namespace, accessTag: 'PUBLIC' };
+      const privateDocument = { ...createFakeDocument(), namespace: namespace, accessTag: 'PRIVATE' };
+      const conditionPublic = { namespace: namespace, accessTag: 'PUBLIC' };
+      const conditionPrivate = { namespace: namespace, accessTag: 'PRIVATE' };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([publicDocument, privateDocument]);
+
+      await request
+        .get(`/json/${namespace}/all`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [publicDocument, privateDocument] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        where: [conditionPublic, conditionPrivate],
+      });
+    });
+  });
+
+  describe('PUT /json/:documentNamespace/:documentId/:accessTag', () => {
+    it('should change the value of accessTag to public for private document', async () => {
+      const document = createFakeDocument();
+      const { id, namespace } = document;
+
+      jsonRepositoryMock.findOne.mockReturnValueOnce({ ...document, accessTag: 'PRIVATE' });
+      jsonRepositoryMock.save.mockImplementationOnce((newDocument) => Object.assign({}, newDocument));
+
+      await request
+        .put(`/json/${namespace}/${id}/public`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [{ ...document, accessTag: 'PUBLIC' }] });
+
+      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id, namespace } });
+      expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ ...document, accessTag: 'PUBLIC' });
+    });
+  });
+
   describe('POST /json/:documentNamespace/new', () => {
     it('should create json when passing valid json dto', async () => {
       const document = createFakeDocument();
@@ -158,5 +214,6 @@ function createFakeDocument() {
     json: faker.lorem.text(),
     author_email: faker.internet.email(),
     namespace: faker.lorem.word(),
+    accessTag: faker.helpers.arrayElement(['PUBLIC', 'PRIVATE']),
   };
 }

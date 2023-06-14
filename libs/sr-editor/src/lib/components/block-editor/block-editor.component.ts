@@ -1,4 +1,13 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { TextBlock } from '../../interfaces/document.model';
 import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor-blocks-config';
 import { ControlBtn } from '../block-editor-controls/block-editor-controls.component';
@@ -9,7 +18,7 @@ import { BlockService } from '../../services/block.service';
   templateUrl: './block-editor.component.html',
   styleUrls: ['./block-editor.component.scss'],
 })
-export class BlockEditorComponent implements OnInit {
+export class BlockEditorComponent implements OnInit, AfterViewInit {
   @Input() id = '';
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
   @Input() blocksLength = 0;
@@ -71,6 +80,10 @@ export class BlockEditorComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit() {
+    this.resizeEdit();
+  }
+
   startEdit(): void {
     this.isEdit = true;
     this.isFocused = true;
@@ -79,6 +92,12 @@ export class BlockEditorComponent implements OnInit {
 
   handleTextChange(): void {
     this.blockService.setBlockText(this.id, this.textBlock.text);
+    this.resizeEdit();
+  }
+
+  resizeEdit(): void {
+    this.edit.nativeElement.style.height = 'auto';
+    this.edit.nativeElement.style.height = this.edit.nativeElement.scrollHeight + 'px';
   }
 
   command(event: KeyboardEvent): void {

@@ -47,6 +47,7 @@
     padding: 0.5rem;
     border: 1px solid gray;
     background-color: rgb(247, 247, 247);
+    overflow: hidden;
 
     ::ng-deep img {
       height: 2.5rem;

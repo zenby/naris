@@ -8,13 +8,7 @@ import {
 import { VideoModel } from '../../api/streams/stream.model';
 import { StreamService } from '../../api/streams/stream.service';
 import { WorkshopsService } from '../../api/workshops/workshops.service';
-import { VideoIdAndSource } from './video.models';
-
-export interface WathcedVideo {
-  id: string;
-  title: string;
-  date: string;
-}
+import { VideoIdAndSource, WatchedVideo } from './video.models';
 
 interface VideosById {
   [id: string]: VideoModel & { id: string };
@@ -61,7 +55,7 @@ export class VideoService {
     });
   }
 
-  getWathcedVideos(): Observable<Array<WathcedVideo>> {
+  getWatchedVideos(): Observable<Array<WatchedVideo>> {
     return combineLatest([this.getAllVideos(), this.personalActivity.activityRaw$]).pipe(
       map(([videos, activity]) => {
         const videoById = this.groupVideosById(videos);
@@ -85,15 +79,16 @@ export class VideoService {
     return result;
   }
 
-  private findWatchedVideos(videosById: VideosById, activity: PersonalActivityRaw[]): WathcedVideo[] {
-    const result: Array<WathcedVideo> = [];
+  private findWatchedVideos(videosById: VideosById, activity: PersonalActivityRaw[]): WatchedVideo[] {
+    const result: Array<WatchedVideo> = [];
     activity.forEach((activity) => {
       if (activity?.watched?.videos?.length) {
         activity.watched.videos.forEach((videoIdModel: VideoIdModel) => {
           const id = videoIdModel.videoId;
           if (videosById[id]) {
             result.push({
-              id: videosById[id].id,
+              activityId: activity.id,
+              videoId: videosById[id].id,
               title: videosById[id].title,
               date: activity.createdAt,
             });

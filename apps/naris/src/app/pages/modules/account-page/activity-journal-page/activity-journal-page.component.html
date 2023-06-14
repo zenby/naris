@@ -1,0 +1,6 @@
+<div class="activity-journal-wrap">
+  <ng-container *ngIf="activities$ | async as activitiesUser">
+    <soer-list [items]="activitiesUser"></soer-list>
+  </ng-container>
+  <soer-confirm></soer-confirm>
+</div>

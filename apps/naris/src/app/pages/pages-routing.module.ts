@@ -23,6 +23,7 @@ import { TargetKey, TemplateKey } from './modules/targets/targets.const';
 import { ComposeTabPageComponent } from './router-compose/compose-tab-page/compose-tab-page.component';
 import { environment } from '../../environments/environment';
 import { featuresEnum } from '../../environments/environment.interface';
+import { ActivityJournalPageComponent } from './modules/account-page/activity-journal-page/activity-journal-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'prefix' },
@@ -100,6 +101,13 @@ const routes: Routes = [
           header: { title: 'Профиль', subtitle: 'основная информация' },
         },
         component: ProfilePageComponent,
+      },
+      {
+        path: 'activity-journal',
+        data: {
+          header: { title: 'Журнал активности', subtitle: 'пользователя' },
+        },
+        component: ActivityJournalPageComponent,
       },
     ],
   },

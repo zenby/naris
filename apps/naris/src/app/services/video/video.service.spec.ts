@@ -6,6 +6,7 @@ import { StreamService } from '../../api/streams/stream.service';
 import { WorkshopsService } from '../../api/workshops/workshops.service';
 import { VideoService } from './video.service';
 import { faker } from '@faker-js/faker';
+import { WatchedVideo } from './video.models';
 
 describe('VideoService', () => {
   let sut: VideoService | null = null;
@@ -67,9 +68,9 @@ describe('VideoService', () => {
     });
   });
 
-  describe('getWathcedVideos', () => {
-    it('should return wathced videos', (done) => {
-      const streams = createVideoModel(2);
+  describe('getWatchedVideos', () => {
+    it('should return Watched videos', (done) => {
+      const streams = createVideoModel(2) as VideoModel & { children: VideoModel[] };
       const workshops = createVideoModel(2);
       const removedVideo = createVideoModel(1);
       const today = new Date().toISOString();
@@ -78,19 +79,19 @@ describe('VideoService', () => {
       });
       configureService(streams, workshops, activity);
 
-      let result = {};
-      sut?.getWathcedVideos().subscribe((videos) => {
+      let result: WatchedVideo[] = [];
+      sut?.getWatchedVideos().subscribe((videos) => {
         result = videos;
         done();
       });
 
-      expect(result).toStrictEqual(
-        streams.children?.map((video) => ({
-          id: video.youtube_id,
-          title: video.title,
-          date: today,
-        }))
-      );
+      expect(result.length).toBe(2);
+      expect(result[0]).toMatchObject({
+        videoId: streams.children[0].youtube_id,
+        title: streams.children[0].title,
+        date: today,
+      });
+      expect(result[0]).toHaveProperty('activityId');
     });
   });
 });

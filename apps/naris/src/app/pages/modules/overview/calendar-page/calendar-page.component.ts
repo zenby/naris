@@ -18,7 +18,7 @@ export class CalendarPageComponent {
   constructor(private videoService: VideoService) {
     this.activities$ = new BehaviorSubject([] as Activity[]);
     this.videoService
-      .getWathcedVideos()
+      .getWatchedVideos()
       .pipe(
         map((videos) => {
           return videos.map((video) => ({

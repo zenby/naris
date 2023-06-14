@@ -45,6 +45,9 @@ $hover-color: #1890ff;
 .title,
 .icon {
   transition: all 0.5s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .title:hover,

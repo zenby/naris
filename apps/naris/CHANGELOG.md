@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.11.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.11.0...naris-0.11.1) (2023-06-15)
+
+
+### Bug Fixes
+
+* change redirect page for webroot ([a558482](https://gitlog.ru:2222/Naris/soermono/commit/a55848239ec0db8f4f19a52fc6c8f5f00b57d08a))
+
 ## [0.11.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.10.1...naris-0.11.0) (2023-06-15)
 
 

@@ -17,8 +17,8 @@ export class QuestionsService {
     throw new Error('Not implemented');
   }
 
-  async getAll() {
-    throw new Error('Not implemented');
+  async getQuestions(): Promise<QuestionEntity[]> {
+    return await this.questionRepository.find();
   }
 
   async getForExecutor(executor: JwtPayload) {

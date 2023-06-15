@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.11.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.10.1...naris-0.11.0) (2023-06-15)
+
+
+### Features
+
+* add startAt param to menu actions ([ff0d6bc](https://gitlog.ru:2222/Naris/soermono/commit/ff0d6bce797dc282ffe5081f9ded7fd437c68db2))
+* **urlbuilder:** add host placeholder ([97d4e70](https://gitlog.ru:2222/Naris/soermono/commit/97d4e7045f994946ee613a591b65a680f3214293))
+
+
+### Bug Fixes
+
+* add space around buttons ([7af1ffb](https://gitlog.ru:2222/Naris/soermono/commit/7af1ffbf5385e010f427a0b61fec1f29c0086f9e))
+* change broken link to VK to the correct one ([7fa3a28](https://gitlog.ru:2222/Naris/soermono/commit/7fa3a28fb7a4da397fe675bfaf9a76f62a04f3b3))
+* fix authentication bug ([8efdabd](https://gitlog.ru:2222/Naris/soermono/commit/8efdabdb9340a9c2f2624a84f144713871acc861))
+* remove apiRoot from articles smartId ([c94bb9c](https://gitlog.ru:2222/Naris/soermono/commit/c94bb9c0ceb7c293a256930c7c1a4ea71064b57c))
+* update storybook env file with common variables ([a8eeb48](https://gitlog.ru:2222/Naris/soermono/commit/a8eeb48ee2d62eb01b9116ec0ab8ee3d92272550))
+
 ### [0.10.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.10.0...naris-0.10.1) (2023-05-29)
 
 

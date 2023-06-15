@@ -6,7 +6,7 @@ import { SrDTOModule } from '@soer/sr-dto';
 import { DefaultComponent } from './pages/default/default.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/pages' },
+  { path: '', pathMatch: 'full', redirectTo: '/pages/overview/info' },
   {
     path: 'pages',
     component: DefaultComponent,

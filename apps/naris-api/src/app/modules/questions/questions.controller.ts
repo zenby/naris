@@ -8,7 +8,7 @@ import { JwtPayload } from '../../common/types/jwt-payload.interface';
 const questionIdParam = 'questionId';
 
 @ApiTags('QuestionsAnswers')
-@Controller('questions')
+@Controller('v1/questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 

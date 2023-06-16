@@ -18,8 +18,7 @@ import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { QuestionEntity } from './question.entity';
 import { QuestionSavingResult } from '../../common/types/question-saving-result';
-
-const questionIdParam = 'questionId';
+import { QuestionDeleteResult } from '../../common/types/question-delete-result';
 
 @ApiTags('QuestionsAnswers')
 @Controller('v1/questions')
@@ -71,8 +70,14 @@ export class QuestionsController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Delete(`:${questionIdParam}`)
-  async removeQuestion(@Param(questionIdParam) questionId: number, @JwtPayloadFromRequest() jwtPayload: JwtPayload) {
-    await this.questionsService.remove({ questionId }, jwtPayload);
+  @Delete(':qid')
+  async removeQuestion(@Param('qid') questionId: number): Promise<HttpJsonResult<string> | Error> {
+    const result = await this.questionsService.remove({ questionId });
+
+    if (result === QuestionDeleteResult.NotFoundError) {
+      return { status: HttpJsonStatus.Error, items: ['The question to delete was not found'] };
+    }
+
+    return { status: HttpJsonStatus.Ok, items: ['The question has been deleted'] };
   }
 }

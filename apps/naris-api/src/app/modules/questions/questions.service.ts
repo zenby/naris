@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Equal } from 'typeorm';
+import { Equal, DeleteResult } from 'typeorm';
 import { Repository } from 'typeorm';
 
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { QuestionEntity } from './question.entity';
 import { QuestionSavingResult } from '../../common/types/question-saving-result';
+import { QuestionDeleteResult } from '../../common/types/question-delete-result';
 
 @Injectable()
 export class QuestionsService {
@@ -31,8 +32,14 @@ export class QuestionsService {
     return QuestionSavingResult.Ok;
   }
 
-  async remove({ questionId }: { questionId: number }, executor: JwtPayload) {
-    throw new Error('Not implemented');
+  async remove({ questionId }: { questionId: number }): Promise<QuestionDeleteResult> {
+    const result = await this.questionRepository.delete({ id: questionId });
+
+    if (!this.isQuestionDeleted(result)) {
+      return QuestionDeleteResult.NotFoundError;
+    }
+
+    return QuestionDeleteResult.Ok;
   }
 
   async getQuestions(userIdParam: string | null = null, currentUser: JwtPayload): Promise<QuestionEntity[]> {
@@ -57,5 +64,9 @@ export class QuestionsService {
 
   private isQuestionValid(question: string): boolean {
     return question.length > 0;
+  }
+
+  private isQuestionDeleted(deleteResult: DeleteResult): boolean {
+    return deleteResult.affected > 0;
   }
 }

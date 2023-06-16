@@ -54,10 +54,6 @@ export class QuestionsService {
     return [];
   }
 
-  async getForExecutor(executor: JwtPayload) {
-    throw new Error('Not implemented');
-  }
-
   private isCurrentUserId(userIdParam: number, currentUser: JwtPayload): boolean {
     return +userIdParam === currentUser.id;
   }

@@ -42,13 +42,6 @@ export class QuestionsController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get('my')
-  async getMyQuestions() {
-    throw new Error('Not implemented');
-  }
-
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
   @Post()
   async createQuestion(
     @JwtPayloadFromRequest() jwtPayload: JwtPayload,

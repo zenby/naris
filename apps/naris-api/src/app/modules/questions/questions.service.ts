@@ -4,13 +4,30 @@ import { Repository } from 'typeorm';
 
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { QuestionEntity } from './question.entity';
+import { QuestionSavingResult } from '../../common/types/question-saving-result';
 
 @Injectable()
 export class QuestionsService {
   constructor(@InjectRepository(QuestionEntity) private readonly questionRepository: Repository<QuestionEntity>) {}
 
-  async create({ question }: { question: string }, executor: JwtPayload) {
-    throw new Error('Not implemented');
+  async create(
+    { question, userId }: { question: string; userId: number },
+    currentUser: JwtPayload
+  ): Promise<QuestionSavingResult> {
+    if (!this.isQuestionValid(question)) {
+      return QuestionSavingResult.EmpryQuestionError;
+    }
+
+    if (!this.isCurrentUserId(userId, currentUser)) {
+      return QuestionSavingResult.UnauthorizedUserError;
+    }
+
+    const userUuid = currentUser.uuid;
+    const url = ''; // TODO: get data for url from auth-cdn
+    const newQuestion = this.questionRepository.create({ question, url, userUuid });
+    await this.questionRepository.insert(newQuestion);
+
+    return QuestionSavingResult.Ok;
   }
 
   async remove({ questionId }: { questionId: number }, executor: JwtPayload) {
@@ -23,5 +40,13 @@ export class QuestionsService {
 
   async getForExecutor(executor: JwtPayload) {
     throw new Error('Not implemented');
+  }
+
+  private isCurrentUserId(userIdParam: number, currentUser: JwtPayload): boolean {
+    return +userIdParam === currentUser.id;
+  }
+
+  private isQuestionValid(question: string): boolean {
+    return question.length > 0;
   }
 }

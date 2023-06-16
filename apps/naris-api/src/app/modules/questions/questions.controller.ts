@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards, InternalServerErrorException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { QuestionsService } from './questions.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
@@ -6,6 +16,7 @@ import { JwtPayloadFromRequest } from '../../common/decorators/user.decorator';
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { QuestionEntity } from './question.entity';
+import { QuestionSavingResult } from '../../common/types/question-saving-result';
 
 const questionIdParam = 'questionId';
 
@@ -36,8 +47,22 @@ export class QuestionsController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
-  async createQuestion(@JwtPayloadFromRequest() jwtPayload: JwtPayload, @Body() { question }: { question: string }) {
-    await this.questionsService.create({ question }, jwtPayload);
+  async createQuestion(
+    @JwtPayloadFromRequest() jwtPayload: JwtPayload,
+    @Body() { question, userId }: { question: string; userId: number }
+  ): Promise<HttpJsonResult<string> | Error> {
+    const questionData = { question, userId };
+    const result = await this.questionsService.create(questionData, jwtPayload);
+
+    if (result === QuestionSavingResult.UnauthorizedUserError) {
+      throw new UnauthorizedException('userId must be the same as the current authorized user id');
+    }
+
+    if (result === QuestionSavingResult.EmpryQuestionError) {
+      return { status: HttpJsonStatus.Error, items: ['The question cannot be empty'] };
+    }
+
+    return { status: HttpJsonStatus.Ok, items: ['The question has been created'] };
   }
 
   @ApiBearerAuth()

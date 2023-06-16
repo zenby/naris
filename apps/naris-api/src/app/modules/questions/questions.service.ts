@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Equal } from 'typeorm';
 import { Repository } from 'typeorm';
 
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
@@ -34,8 +35,16 @@ export class QuestionsService {
     throw new Error('Not implemented');
   }
 
-  async getQuestions(): Promise<QuestionEntity[]> {
-    return await this.questionRepository.find();
+  async getQuestions(userIdParam: string | null = null, currentUser: JwtPayload): Promise<QuestionEntity[]> {
+    if (!userIdParam) {
+      return await this.questionRepository.find();
+    }
+
+    if (this.isCurrentUserId(+userIdParam, currentUser)) {
+      return await this.questionRepository.findBy({ userUuid: Equal(currentUser.uuid) });
+    }
+
+    return [];
   }
 
   async getForExecutor(executor: JwtPayload) {

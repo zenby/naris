@@ -8,6 +8,7 @@ import {
   UseGuards,
   InternalServerErrorException,
   UnauthorizedException,
+  Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { QuestionsService } from './questions.service';
@@ -27,9 +28,12 @@ export class QuestionsController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getQuestions(): Promise<HttpJsonResult<QuestionEntity> | Error> {
+  async getQuestions(
+    @JwtPayloadFromRequest() jwtPayload: JwtPayload,
+    @Query('userId') userIdParam?: string
+  ): Promise<HttpJsonResult<QuestionEntity> | Error> {
     try {
-      const questions = await this.questionsService.getQuestions();
+      const questions = await this.questionsService.getQuestions(userIdParam, jwtPayload);
 
       return { status: HttpJsonStatus.Ok, items: questions };
     } catch {

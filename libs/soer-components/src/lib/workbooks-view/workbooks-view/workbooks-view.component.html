@@ -6,7 +6,7 @@
           nz-tooltip
           nzTooltipPlacement="bottomLeft"
           nzTooltipTrigger="hover"
-          [nzTooltipTitle]="workbook.question"
+          [nzTooltipTitle]="workbook.question.length > 30 ? workbook.question : ''"
           class="title"
           (click)="this.workbookEdit.emit(workbook)"
         >

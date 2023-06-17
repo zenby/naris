@@ -27,7 +27,7 @@ export class AuthService {
     return await this.userService.createUser(createUserDto);
   }
 
-  async getAccessToken(user: UserEntity): Promise<string> {
+  getAccessToken(user: UserEntity): string {
     return this.accessTokenHelper.generate(user);
   }
 

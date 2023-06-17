@@ -8,6 +8,8 @@ import { JsonParams } from './types/json-params.type';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { JsonResponseDto } from './dto/json-response.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { JwtPayload } from '../../common/types/jwt-payload.interface';
+import { AuthUser } from '../../common/decorators';
 
 @Controller({ version: '3', path: 'json/:documentNamespace' })
 export class JsonController {
@@ -37,17 +39,28 @@ export class JsonController {
   @UseGuards(JwtAuthGuard)
   @Post('new')
   async createJson(
+    @AuthUser() user: JwtPayload,
     @Param('documentNamespace') documentNamespace: string,
     @Body() createJsonDto: CreateJsonDto
   ): Promise<HttpJsonResult<JsonEntity>> {
     try {
-      const document = await this.jsonService.createJson(documentNamespace, createJsonDto);
+      const document = await this.jsonService.createJson(user.email, documentNamespace, createJsonDto);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
       this.logger.error(e);
       return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
     }
+  }
+
+  @ApiOperation({ summary: 'Get empty list', description: 'Empty list of elements' })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiParam({ name: 'documentNamespace' })
+  @ApiBearerAuth()
+  //  @UseGuards(JwtAuthGuard)
+  @Get('new')
+  async newItems(): Promise<HttpJsonResult<JsonEntity>> {
+    return this.jsonService.prepareResponse(HttpJsonStatus.Ok, []);
   }
 
   @ApiOperation({ summary: 'Get one', description: 'Getting a document by id and belonging to a specific group' })

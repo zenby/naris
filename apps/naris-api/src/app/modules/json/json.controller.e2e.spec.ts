@@ -86,7 +86,11 @@ describe('JsonModule e2e-test', () => {
         .send({ json: document.json })
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
-      expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ namespace: document.namespace, json: document.json });
+      expect(jsonRepositoryMock.save).toHaveBeenCalledWith({
+        author_email: JwtTestHelper.defaultPayload.email,
+        namespace: document.namespace,
+        json: document.json,
+      });
     });
   });
 
@@ -152,6 +156,7 @@ function createFakeDocument() {
   return {
     id: faker.datatype.number(),
     json: faker.lorem.text(),
+    author_email: faker.internet.email(),
     namespace: faker.lorem.word(),
   };
 }

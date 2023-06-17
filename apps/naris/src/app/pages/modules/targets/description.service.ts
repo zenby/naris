@@ -80,6 +80,6 @@ export class DescriptionService {
   destroy() {
     this._description = null;
     this.subscription?.unsubscribe();
-    this.busMessageSubject$?.complete();
+    this.busMessageSubject$ = undefined;
   }
 }

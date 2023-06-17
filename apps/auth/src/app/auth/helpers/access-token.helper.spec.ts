@@ -1,13 +1,13 @@
 import { adminUser } from '../../user/tests/test.users';
+import { AccessTokenHelper } from './access-token.helper';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
-import { RefreshTokenHelper } from './refresh-token.helper';
 import { testConfig } from '../tests/auth.test.config';
 
-describe('RefreshTokenHelper', () => {
+describe('AccessTokenHelper', () => {
   describe('generate', () => {
     it('should generate a valid token for a user with the specified secret', () => {
-      const refreshTokenHelper = new RefreshTokenHelper(testConfig);
-      const token = refreshTokenHelper.generate(adminUser);
+      const accessTokenHelper = new AccessTokenHelper(testConfig);
+      const token = accessTokenHelper.generate(adminUser);
 
       expect(typeof token).toBe('string');
       expect(token).not.toBe('');
@@ -16,16 +16,17 @@ describe('RefreshTokenHelper', () => {
 
   describe('verify', () => {
     it('should successfully verify a valid token with the matching secret', () => {
-      const refreshTokenHelper = new RefreshTokenHelper(testConfig);
-      const token = refreshTokenHelper.generate(adminUser);
+      const accessTokenHelper = new AccessTokenHelper(testConfig);
+      const token = accessTokenHelper.generate(adminUser);
 
-      const result = refreshTokenHelper.verify(token);
+      const result = accessTokenHelper.verify(token);
 
       expect(result).toBeDefined();
       expect(result).toEqual(
         expect.objectContaining({
-          userId: adminUser.id,
-          userEmail: adminUser.email,
+          id: adminUser.id,
+          uuid: adminUser.uuid,
+          email: adminUser.email,
           userRole: adminUser.role,
         })
       );
@@ -35,24 +36,24 @@ describe('RefreshTokenHelper', () => {
       const wrongSecret = 'wrong_secret';
       const jwtWithWrongSecret = { ...testConfig, jwtSecret: wrongSecret };
 
-      const refreshTokenHelper = new RefreshTokenHelper(testConfig);
+      const accessTokenHelper = new AccessTokenHelper(testConfig);
 
-      const wrongRefreshTokenHelper = new RefreshTokenHelper(jwtWithWrongSecret);
-      const wrongToken = wrongRefreshTokenHelper.generate(adminUser);
+      const wrongAccessTokenHelper = new AccessTokenHelper(jwtWithWrongSecret);
+      const wrongToken = wrongAccessTokenHelper.generate(adminUser);
 
-      expect(() => refreshTokenHelper.verify(wrongToken)).toThrow(JsonWebTokenError);
+      expect(() => accessTokenHelper.verify(wrongToken)).toThrow(JsonWebTokenError);
     });
 
     it('should fail to verify an expired token', () => {
-      const jwtShotTimeConfig = { ...testConfig, expiresInRefresh: '1 second' };
+      const jwtShotTimeConfig = { ...testConfig, expiresInAccess: '1 second' };
 
-      const refreshTokenHelper = new RefreshTokenHelper(jwtShotTimeConfig);
-      const token = refreshTokenHelper.generate(adminUser);
+      const accessTokenHelper = new AccessTokenHelper(jwtShotTimeConfig);
+      const token = accessTokenHelper.generate(adminUser);
 
       jest.useFakeTimers();
       jest.advanceTimersByTime(1000);
 
-      const result = refreshTokenHelper.verify(token);
+      const result = accessTokenHelper.verify(token);
 
       expect(result).toEqual(expect.objectContaining({ name: 'TokenExpiredError' }));
       expect(result).toBeInstanceOf(TokenExpiredError);

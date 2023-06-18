@@ -87,14 +87,19 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
 
 Cypress.Commands.add('createArticle', () => {
   cy.visit('/#!/pages/workbook/articles');
+  cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + '#!/pages/workbook/articles');
+
+  cy.get('.anticon-plus', { timeout: 10000 }).should('be.visible').click();
+  cy.location('href', { timeout: 10000 }).should(
+    'eq',
+    Cypress.config().baseUrl + '#!/pages/workbook/articles/create/new'
+  );
 
   cy.get('input[placeholder="Тема"]').type('Test', { force: true });
   cy.get('.anticon-save').click();
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(500);
-  cy.get('a[title="Статьи"]').click();
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(500);
+  cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + '#!/pages/workbook/conspects');
+  cy.get('a[title="Статьи"]', { timeout: 10000 }).should('be.visible').click();
+  cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + '#!/pages/workbook/articles');
 });
 //
 // -- This is a child command --

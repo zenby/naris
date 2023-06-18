@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.12.0](https://gitlog.ru/Naris/soermono/compare/naris-0.11.1...naris-0.12.0) (2023-06-18)
+
+
+### Features
+
+* add feature flag api_v2 ([7e96ca5](https://gitlog.ru/Naris/soermono/commit/7e96ca527a879884eba00bc725f4d094d8c03ed7))
+
 ### [0.11.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.11.0...naris-0.11.1) (2023-06-15)
 
 

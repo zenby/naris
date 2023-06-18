@@ -1,12 +1,12 @@
 import { articleTitle, articleTextWithMd, modifiedArticleTitle } from '../support/articleConstants';
+import { createNewArticlePath, editArticlePath, allArticlesPath } from '../support/pathConstants';
 
 describe('naris articles', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/*.svg').as('signIn');
 
     cy.login('user', 'user');
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
+    cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + '#!/pages/overview/info');
 
     cy.removeAllExistingArticles();
   });

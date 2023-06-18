@@ -76,6 +76,8 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
           cy.contains('OK', { timeout: 10000 }).should('be.visible').click();
           delBtnLen--;
           cy.wait(['@deleteRequest', '@personalArticlesAfterDelete', '@deleteArticle']);
+          // eslint-disable-next-line cypress/no-unnecessary-waiting
+          cy.wait(1000);
           deleteArticle();
         }
 

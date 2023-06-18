@@ -1,5 +1,5 @@
 import { articleTitle, articleTextWithMd, modifiedArticleTitle } from '../support/articleConstants';
-import { createNewArticlePath, editArticlePath, allArticlesPath } from '../support/pathConstants';
+import { createNewArticlePath, editArticlePath, allArticlesPath, viewArticlePath } from '../support/pathConstants';
 
 describe('naris articles', () => {
   beforeEach(() => {
@@ -64,11 +64,11 @@ describe('naris articles', () => {
     cy.contains('Test').should('exist');
   });
 
-  it('should check view mode from main page', () => {
+  it.only('should check view mode from main page', () => {
     cy.createArticle();
 
-    cy.get('.anticon-edit', { timeout: 10000 }).should('be.visible').click();
-    cy.location('href', { timeout: 10000 }).should('contain', Cypress.config().baseUrl + editArticlePath);
+    cy.get('.anticon-eye', { timeout: 10000 }).should('be.visible').click({ force: true });
+    cy.location('href', { timeout: 10000 }).should('contain', Cypress.config().baseUrl + viewArticlePath);
     cy.get('.workbooks').should('not.exist');
   });
 

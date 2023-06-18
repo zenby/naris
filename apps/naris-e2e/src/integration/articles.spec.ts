@@ -103,6 +103,8 @@ describe('naris articles', () => {
 
   it('should check article delete', () => {
     cy.createArticle();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
     cy.removeAllExistingArticles();
 
     cy.contains('Начать').should('exist');

@@ -103,10 +103,8 @@ describe('naris articles', () => {
 
   it('should check article delete', () => {
     cy.createArticle();
+    cy.removeAllExistingArticles();
 
-    cy.get('.anticon-delete').click();
-
-    cy.contains('OK').click();
     cy.contains('Начать').should('exist');
   });
 });

@@ -14,6 +14,7 @@ declare namespace Cypress {
   interface Chainable<Subject> {
     login(email: string, password: string): void;
     removeAllExistingArticles(): void;
+    createArticle(): void;
   }
 }
 //
@@ -74,6 +75,22 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
       });
     }
   });
+});
+
+Cypress.Commands.add('createArticle', () => {
+  cy.visit('/#!/pages/workbook/articles');
+
+  cy.get('.anticon-plus').click();
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(500);
+
+  cy.get('input[placeholder="Тема"]').type('Test', { force: true });
+  cy.get('.anticon-save').click();
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(500);
+  cy.get('a[title="Статьи"]').click();
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(500);
 });
 //
 // -- This is a child command --

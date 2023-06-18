@@ -21,6 +21,8 @@ import { StreamsComponent } from './modules/streams/streams.component';
 import { TargetsRoutingModule } from './modules/targets/targets-routing.module';
 import { TargetKey, TemplateKey } from './modules/targets/targets.const';
 import { ComposeTabPageComponent } from './router-compose/compose-tab-page/compose-tab-page.component';
+import { environment } from '../../environments/environment';
+import { featuresEnum } from '../../environments/environment.interface';
 
 const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'prefix' },
@@ -125,14 +127,25 @@ const routes: Routes = [
       },
     }),
 
-    SrDTOModule.forChild<WorkbookKey>({
-      namespace: 'articles',
-      schema: { url: '%%narisApiUrl%%v3/json/article/:wid' },
-      keys: {
-        article: { wid: '?' },
-        articles: { wid: '' },
-      },
-    }),
+    SrDTOModule.forChild<WorkbookKey>(
+      environment.features[featuresEnum.api_v2]
+        ? {
+            namespace: 'articles',
+            schema: { url: '%%narisApiUrl%%v3/json/article/:wid' },
+            keys: {
+              article: { wid: '?' },
+              articles: { wid: '' },
+            },
+          }
+        : {
+            namespace: 'articles',
+            schema: { url: 'v2/json/article/:wid' },
+            keys: {
+              article: { wid: '?' },
+              articles: { wid: 'personal' },
+            },
+          }
+    ),
 
     SrDTOModule.forChild<QuestionKey>({
       namespace: 'qa',

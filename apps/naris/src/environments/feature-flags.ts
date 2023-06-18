@@ -21,4 +21,6 @@ export const personal: DynamicConfig = {
   ...dev,
   [featuresEnum.auth_v1]: false,
   [featuresEnum.auth_v2]: true,
+  [featuresEnum.api_v1]: false,
+  [featuresEnum.api_v2]: true,
 };

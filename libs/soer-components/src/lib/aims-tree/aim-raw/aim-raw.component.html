@@ -1,4 +1,4 @@
-<div class="task">
+<div class="task" [ngClass]="{ even: !!(aimIndex % 2) }">
   <div class="task-container">
     <ng-container *ngIf="aim.tasks.length > 0; else aimDone">
       <nz-row *ngIf="!isTitleEdit; else aimDone">

@@ -64,7 +64,7 @@ describe('naris articles', () => {
     cy.contains('Test').should('exist');
   });
 
-  it.only('should check view mode from main page', () => {
+  it('should check view mode from main page', () => {
     cy.createArticle();
 
     cy.get('.anticon-eye', { timeout: 10000 }).should('be.visible').click({ force: true });
@@ -75,7 +75,7 @@ describe('naris articles', () => {
   it('should edit existing article', () => {
     cy.createArticle();
 
-    cy.get('.anticon-edit', { timeout: 10000 }).should('be.visible').click();
+    cy.get('.anticon-edit', { timeout: 10000 }).should('be.visible').click({ force: true });
     cy.location('href', { timeout: 10000 }).should('contain', Cypress.config().baseUrl + editArticlePath);
 
     cy.get('input[placeholder="Тема"]').clear();
@@ -92,7 +92,7 @@ describe('naris articles', () => {
     cy.on('window:confirm', () => false);
     cy.createArticle();
 
-    cy.get('.anticon-edit', { timeout: 10000 }).should('be.visible').click();
+    cy.get('.anticon-edit', { timeout: 10000 }).should('be.visible').click({ force: true });
     cy.location('href', { timeout: 10000 }).should('contain', Cypress.config().baseUrl + editArticlePath);
     cy.get('input[placeholder="Тема"]').clear();
     cy.get('input[placeholder="Тема"]').type(modifiedArticleTitle);

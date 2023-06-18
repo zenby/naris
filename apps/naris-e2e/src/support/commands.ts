@@ -61,16 +61,19 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
   cy.wait(1000);
   cy.get('body').then(($body) => {
     if ($body.find('.anticon-delete').length) {
-      cy.get('.anticon-delete').then(($elements) => {
-        if ($elements?.length > 0) {
-          $elements.each(() => {
-            cy.get('.anticon-delete').eq(0).click({ force: true });
-            // eslint-disable-next-line cypress/no-unnecessary-waiting
-            cy.wait(200);
-            cy.contains('OK').click();
-            // eslint-disable-next-line cypress/no-unnecessary-waiting
-            cy.wait(300);
-          });
+      cy.get('.anticon-delete').then((delBtnList) => {
+        let delBtnLen = Cypress.$(delBtnList).length;
+
+        while (delBtnLen) {
+          cy.get('.anticon-delete').eq(0).click();
+          // eslint-disable-next-line cypress/no-unnecessary-waiting
+          cy.wait(300);
+          cy.contains('OK').click();
+          // eslint-disable-next-line cypress/no-unnecessary-waiting
+          cy.wait(300);
+          delBtnLen--;
+          // eslint-disable-next-line cypress/no-unnecessary-waiting
+          cy.wait(1000);
         }
       });
     }

@@ -56,25 +56,30 @@ Cypress.Commands.add('login', (login, password) => {
 });
 
 Cypress.Commands.add('removeAllExistingArticles', () => {
+  cy.intercept('GET', 'api/v2/json/article/personal').as('personalArticles');
   cy.visit('/#!/pages/workbook/articles');
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(1000);
+  cy.wait('@personalArticles');
+
   cy.get('body').then(($body) => {
     if ($body.find('.anticon-delete').length) {
       cy.get('.anticon-delete').then((delBtnList) => {
         let delBtnLen = Cypress.$(delBtnList).length;
 
-        while (delBtnLen) {
-          cy.get('.anticon-delete').eq(0).click();
-          // eslint-disable-next-line cypress/no-unnecessary-waiting
-          cy.wait(300);
-          cy.contains('OK').click();
-          // eslint-disable-next-line cypress/no-unnecessary-waiting
-          cy.wait(300);
+        function deleteArticle() {
+          if (delBtnLen == 0) {
+            return;
+          }
+          cy.intercept('https://stage.s0er.ru/api/v2/json/article/**').as('deleteArticle');
+          cy.intercept('GET', 'api/v2/json/article/personal').as('personalArticlesAfterDelete');
+          cy.intercept('DELETE', '/api/v2/json/article/**').as('deleteRequest');
+          cy.get('.anticon-delete', { timeout: 10000 }).should('be.visible').eq(0).click();
+          cy.contains('OK', { timeout: 10000 }).should('be.visible').click();
           delBtnLen--;
-          // eslint-disable-next-line cypress/no-unnecessary-waiting
-          cy.wait(1000);
+          cy.wait(['@deleteRequest', '@personalArticlesAfterDelete', '@deleteArticle']);
+          deleteArticle();
         }
+
+        deleteArticle();
       });
     }
   });
@@ -82,10 +87,6 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
 
 Cypress.Commands.add('createArticle', () => {
   cy.visit('/#!/pages/workbook/articles');
-
-  cy.get('.anticon-plus').click();
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(500);
 
   cy.get('input[placeholder="Тема"]').type('Test', { force: true });
   cy.get('.anticon-save').click();

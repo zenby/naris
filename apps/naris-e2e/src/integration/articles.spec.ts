@@ -12,8 +12,10 @@ describe('naris articles', () => {
   });
 
   it('should check mouse interaction on create article page', () => {
-    cy.visit('/#!/pages/workbook/articles/create/new');
+    cy.visit(`/${createNewArticlePath}`);
+    cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + createNewArticlePath);
 
+    cy.get('.edit', { timeout: 10000 }).should('be.visible');
     cy.get('input[placeholder="Тема"]').type(articleTitle, { force: true });
     cy.get('textarea').first().type(articleTextWithMd, { force: true });
 
@@ -34,7 +36,10 @@ describe('naris articles', () => {
   });
 
   it('should check keyboard interaction on create article page', () => {
-    cy.visit('/#!/pages/workbook/articles/create/new');
+    cy.visit(`/${createNewArticlePath}`);
+    cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + createNewArticlePath);
+
+    cy.get('.edit', { timeout: 10000 }).should('be.visible');
 
     cy.get('textarea').first().type(articleTextWithMd, { force: true });
 

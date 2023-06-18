@@ -81,5 +81,6 @@ export class DescriptionService {
     this._description = null;
     this.subscription?.unsubscribe();
     this.busMessageSubject$ = undefined;
+    this.targetModel = undefined;
   }
 }

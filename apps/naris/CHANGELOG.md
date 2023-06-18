@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.12.1](https://gitlog.ru/Naris/soermono/compare/naris-0.12.0...naris-0.12.1) (2023-06-18)
+
+
+### Bug Fixes
+
+* correct markdown  variable binding ([558a362](https://gitlog.ru/Naris/soermono/commit/558a362b90ba951f8ab3b45be68c1cea3952cb98))
+* don't complete behavior subject from the store ([70bb1b1](https://gitlog.ru/Naris/soermono/commit/70bb1b1757dfc4e5fef0286defcfa24ff748b649))
+
 ## [0.12.0](https://gitlog.ru/Naris/soermono/compare/naris-0.11.1...naris-0.12.0) (2023-06-18)
 
 

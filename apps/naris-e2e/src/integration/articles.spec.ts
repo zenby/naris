@@ -4,6 +4,8 @@ import { createNewArticlePath, editArticlePath, allArticlesPath, viewArticlePath
 describe('naris articles', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/*.svg').as('signIn');
+    cy.intercept('GET', '**/api/v2/json/article/personal').as('personalArticles');
+    cy.intercept('DELETE', '/api/v2/json/article/**').as('deleteRequest');
 
     cy.login('user', 'user');
     cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + '#!/pages/overview/info');

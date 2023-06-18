@@ -56,7 +56,6 @@ Cypress.Commands.add('login', (login, password) => {
 });
 
 Cypress.Commands.add('removeAllExistingArticles', () => {
-  cy.intercept('GET', 'api/v2/json/article/personal').as('personalArticles');
   cy.visit('/#!/pages/workbook/articles');
   cy.wait('@personalArticles');
 
@@ -69,13 +68,10 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
           if (delBtnLen == 0) {
             return;
           }
-          cy.intercept('https://stage.s0er.ru/api/v2/json/article/**').as('deleteArticle');
-          cy.intercept('GET', 'api/v2/json/article/personal').as('personalArticlesAfterDelete');
-          cy.intercept('DELETE', '/api/v2/json/article/**').as('deleteRequest');
           cy.get('.anticon-delete', { timeout: 10000 }).should('be.visible').eq(0).click();
           cy.contains('OK', { timeout: 10000 }).should('be.visible').click();
           delBtnLen--;
-          cy.wait(['@deleteRequest', '@personalArticlesAfterDelete', '@deleteArticle']);
+          cy.wait('@deleteRequest');
           // eslint-disable-next-line cypress/no-unnecessary-waiting
           cy.wait(1000);
           deleteArticle();

@@ -4,10 +4,12 @@ import { RefreshTokenHelper } from './refresh-token.helper';
 import { testConfig } from '../tests/auth.test.config';
 
 describe('RefreshTokenHelper', () => {
+  const fingerprint = '5eb63bbbe01eeed093cb22bb8f5acdc3';
+
   describe('generate', () => {
     it('should generate a valid token for a user with the specified secret', () => {
       const refreshTokenHelper = new RefreshTokenHelper(testConfig);
-      const token = refreshTokenHelper.generate(adminUser);
+      const token = refreshTokenHelper.generate(adminUser, fingerprint);
 
       expect(typeof token).toBe('string');
       expect(token).not.toBe('');
@@ -17,7 +19,7 @@ describe('RefreshTokenHelper', () => {
   describe('verify', () => {
     it('should successfully verify a valid token with the matching secret', () => {
       const refreshTokenHelper = new RefreshTokenHelper(testConfig);
-      const token = refreshTokenHelper.generate(adminUser);
+      const token = refreshTokenHelper.generate(adminUser, fingerprint);
 
       const result = refreshTokenHelper.verify(token);
 
@@ -27,6 +29,7 @@ describe('RefreshTokenHelper', () => {
           userId: adminUser.id,
           userEmail: adminUser.email,
           userRole: adminUser.role,
+          fingerprint: fingerprint,
         })
       );
     });
@@ -38,7 +41,7 @@ describe('RefreshTokenHelper', () => {
       const refreshTokenHelper = new RefreshTokenHelper(testConfig);
 
       const wrongRefreshTokenHelper = new RefreshTokenHelper(jwtWithWrongSecret);
-      const wrongToken = wrongRefreshTokenHelper.generate(adminUser);
+      const wrongToken = wrongRefreshTokenHelper.generate(adminUser, fingerprint);
 
       expect(() => refreshTokenHelper.verify(wrongToken)).toThrow(JsonWebTokenError);
     });
@@ -47,7 +50,7 @@ describe('RefreshTokenHelper', () => {
       const jwtShotTimeConfig = { ...testConfig, expiresInRefresh: '1 second' };
 
       const refreshTokenHelper = new RefreshTokenHelper(jwtShotTimeConfig);
-      const token = refreshTokenHelper.generate(adminUser);
+      const token = refreshTokenHelper.generate(adminUser, fingerprint);
 
       jest.useFakeTimers();
       jest.advanceTimersByTime(1000);

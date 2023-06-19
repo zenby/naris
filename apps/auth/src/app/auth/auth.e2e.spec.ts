@@ -6,13 +6,20 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
-import { AuthTestModule, getJWTTokenForUser, expired10MinAgo } from './tests/auth.test.module';
+import { AuthTestModule, expired10MinAgo } from './tests/auth.test.module';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import { UserEntity } from '../user/user.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { testUsers, adminUser, regularUser, regularUserCredentials } from '../user/tests/user.test.module';
+import {
+  testUsers,
+  adminUser,
+  regularUser,
+  regularUserCredentials,
+  requestFingerprint,
+} from '../user/tests/test.users';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/config';
+import { getJWTTokenForUserWithFingerprint } from './tests/get-jwt.test.helper';
 
 describe('Auth e2e-test', () => {
   let app: INestApplication;
@@ -42,11 +49,9 @@ describe('Auth e2e-test', () => {
 
   describe('POST /auth/signin', () => {
     it('should signin user when pass valid credentials', async () => {
-      const validCredentials = regularUserCredentials;
-
       await request
         .post('/auth/signin')
-        .send(validCredentials)
+        .send(regularUserCredentials)
         .expect('Set-Cookie', new RegExp(`${cookieName}=.*; HttpOnly`))
         .expect(302)
         .expect('Location', redirectUrl);
@@ -99,11 +104,14 @@ describe('Auth e2e-test', () => {
 
   describe('GET /auth/access_token', () => {
     it('should generate access token when pass valid refresh token', async () => {
-      const jwtToken = await getJWTTokenForUser(users[0]);
+      const jwtToken = getJWTTokenForUserWithFingerprint(users[0], requestFingerprint);
       const response = await request
         .get('/auth/access_token')
         .set('Cookie', [`${cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .expect(200);
+
       const body: HttpJsonResult<{ accessToken: string }> = response.body;
       const accessToken = body.items[0]?.accessToken;
 
@@ -112,10 +120,12 @@ describe('Auth e2e-test', () => {
     });
 
     it('should return 401 error when pass old refresh token', async () => {
-      const jwtToken = await getJWTTokenForUser(users[0], expired10MinAgo);
+      const jwtToken = getJWTTokenForUserWithFingerprint(users[0], requestFingerprint, expired10MinAgo);
       await request
         .get('/auth/access_token')
         .set('Cookie', [`${cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .expect(401);
     });
 
@@ -126,11 +136,13 @@ describe('Auth e2e-test', () => {
 
   describe('POST /auth/access_token_for_user_request', () => {
     it('should generate an access_token for requested user', async () => {
-      const jwtToken = await getJWTTokenForUser(adminUser);
+      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, requestFingerprint);
 
       const response = await request
         .post('/auth/access_token_for_user_request')
         .set('Cookie', [`${cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .send({ switch_to_user_by_email: regularUser.email })
         .expect(201);
 
@@ -144,21 +156,25 @@ describe('Auth e2e-test', () => {
     });
 
     it('should return 401 error when pass old refresh token', async () => {
-      const jwtToken = await getJWTTokenForUser(adminUser, expired10MinAgo);
+      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, requestFingerprint, expired10MinAgo);
 
       await request
         .post('/auth/access_token_for_user_request')
         .set('Cookie', [`${cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .send({ switch_to_user_by_email: users[0].email })
         .expect(401);
     });
 
     it('should return 403 error when user role is USER', async () => {
-      const jwtToken = await getJWTTokenForUser(regularUser);
+      const jwtToken = getJWTTokenForUserWithFingerprint(regularUser, requestFingerprint);
 
       await request
         .post('/auth/access_token_for_user_request')
         .set('Cookie', [`${cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .send({ switch_to_user_by_email: regularUser.email })
         .expect(403);
     });
@@ -171,20 +187,24 @@ describe('Auth e2e-test', () => {
     });
 
     it('should return 404 error when no params passed', async () => {
-      const jwtToken = await getJWTTokenForUser(adminUser);
+      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, requestFingerprint);
 
       await request
         .post('/auth/access_token_for_user_request')
         .set('Cookie', [`${cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .expect(404);
     });
 
     it('should return 404 error when empty email passed', async () => {
-      const jwtToken = await getJWTTokenForUser(adminUser);
+      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, requestFingerprint);
 
       await request
         .post('/auth/access_token_for_user_request')
         .set('Cookie', [`${cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .send({ switch_to_user_by_email: '' })
         .expect(404);
     });

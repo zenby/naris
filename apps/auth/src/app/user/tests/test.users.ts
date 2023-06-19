@@ -3,6 +3,12 @@ import { UserEntity } from '../user.entity';
 import { faker } from '@faker-js/faker';
 import { genSaltSync, hashSync } from 'bcrypt';
 import { LoginUserDto } from '../dto/login-user.dto';
+import { RequestFingerprint } from '../../auth/types/request-fingerprint.interface';
+
+export const requestFingerprint: RequestFingerprint = {
+  userAgent: 'Test User Agent',
+  ipAddresses: ['127.0.0.1', '127.0.0.2'],
+};
 
 export const regularUserCredentials: LoginUserDto = {
   login: 'regularUser',

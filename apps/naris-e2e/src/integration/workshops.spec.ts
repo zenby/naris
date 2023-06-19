@@ -1,4 +1,6 @@
-const screenSizes = ['iphone-6', 'macbook-11']; //macbook-11 is 1366x768
+import ViewportPreset = Cypress.ViewportPreset;
+
+const screenSizes: ViewportPreset[] = ['iphone-6', 'macbook-11']; //macbook-11 is 1366x768
 
 describe('module workshops', () => {
   screenSizes.forEach((screenSize) => {
@@ -29,7 +31,7 @@ describe('module workshops', () => {
       cy.visit('#!/pages/workshops');
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(1000);
-      cy.get('nz-card').each(($card, index, $cards) => {
+      cy.get('nz-card').each(($card, _, __) => {
         cy.wrap($card).click();
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(1000);
@@ -44,7 +46,7 @@ describe('module workshops', () => {
       cy.visit('#!/pages/workshops');
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(1000);
-      cy.get('nz-card').each(($card, index, $cards) => {
+      cy.get('nz-card').each(($card, _, __) => {
         cy.wrap($card).click();
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(1000);
@@ -56,11 +58,11 @@ describe('module workshops', () => {
       cy.visit('#!/pages/workshops');
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(1000);
-      cy.get('nz-card').each(($card, index, $cards) => {
+      cy.get('nz-card').each(($card, _, __) => {
         cy.wrap($card).click();
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(1000);
-        cy.get('nz-card').each(($card1, index, $cards1) => {
+        cy.get('nz-card').each(($card1, index, _) => {
           if (index > 0) {
             // FIXME filter elements using more functional approach
             cy.wrap($card1).click();

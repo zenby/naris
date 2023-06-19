@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import {
   Body,
   Controller,
@@ -8,6 +8,7 @@ import {
   InternalServerErrorException,
   Logger,
   Post,
+  Req,
   Res,
   UnauthorizedException,
   UseGuards,
@@ -41,15 +42,20 @@ import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 import { RolesGuard } from '../common/guards/roles-guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { UserService } from '../user/user.service';
+import { FingerprintRequestHelper } from './helpers/fingerprint-request.helper';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
+  private readonly fingerprintRequestHelper: FingerprintRequestHelper;
+
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
     private readonly userService: UserService
-  ) {}
+  ) {
+    this.fingerprintRequestHelper = new FingerprintRequestHelper();
+  }
 
   logger = new Logger(AuthController.name);
   internalErrorMessage = 'Something went wrong. Try it later';
@@ -125,10 +131,12 @@ export class AuthController {
   @ApiUnauthorizedResponse({ schema: responseErrorSchema('Invalid password') })
   async signIn(
     @User() user: UserEntity | Error,
-    @Res({ passthrough: true }) response: Response
+    @Res({ passthrough: true }) response: Response,
+    @Req() request: Request
   ): Promise<HttpJsonResult<string>> {
     try {
-      const refreshToken = this.authService.getRefreshToken(user);
+      const requestFingerprint = this.fingerprintRequestHelper.extractRequestFingerprint(request);
+      const refreshToken = this.authService.getRefreshToken(user, requestFingerprint);
 
       if (refreshToken instanceof Error) {
         return { status: HttpJsonStatus.Error, items: [refreshToken.message] };

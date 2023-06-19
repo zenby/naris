@@ -11,12 +11,13 @@ import { UserEntity } from './user.entity';
 import { UserModule } from './user.module';
 import { HttpJsonResult, UserRole } from '@soer/sr-common-interfaces';
 import { faker } from '@faker-js/faker';
+import { getJWTTokenForUserWithRole } from '../auth/tests/get-jwt.test.helper';
+import { requestFingerprint } from './tests/test.users';
 
 describe('user controller e2e tests', () => {
   let app: INestApplication;
   let request: ReturnType<typeof supertest>;
   let userRepo: Repository<UserEntity>;
-  let jwtService: JwtService;
 
   const config: Configuration['jwt'] = {
     cookieName: 'refreshToken',
@@ -52,7 +53,6 @@ describe('user controller e2e tests', () => {
     await app.init();
 
     userRepo = app.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
-    jwtService = app.get<JwtService>(JwtService);
     request = supertest(app.getHttpServer());
   });
 
@@ -70,7 +70,7 @@ describe('user controller e2e tests', () => {
     }
 
     it('should return a list of users when user is an admin', async () => {
-      const jwtToken = await getJWTTokenForUser(adminUser);
+      const jwtToken = getJWTTokenForUserWithRole(adminUser, requestFingerprint);
 
       jest.spyOn(userRepo, 'find').mockResolvedValueOnce(users);
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
@@ -78,6 +78,8 @@ describe('user controller e2e tests', () => {
       const response = await request
         .get('/users')
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .send()
         .expect(200);
 
@@ -90,7 +92,7 @@ describe('user controller e2e tests', () => {
     it('should return 403 error when user not an admin', async () => {
       const user = getTestUser();
 
-      const jwtToken = await getJWTTokenForUser(user);
+      const jwtToken = getJWTTokenForUserWithRole(adminUser, requestFingerprint);
 
       jest.spyOn(userRepo, 'find').mockResolvedValueOnce(users);
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(user);
@@ -98,12 +100,19 @@ describe('user controller e2e tests', () => {
       await request
         .get('/users')
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .send()
         .expect(403);
     });
 
     it('should return 401 error when not authorized', async () => {
-      await request.get('/users').send().expect(401);
+      await request
+        .get('/users')
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
+        .send()
+        .expect(401);
     });
   });
 
@@ -112,7 +121,7 @@ describe('user controller e2e tests', () => {
       const adminUser = getTestUser({ role: UserRole.ADMIN });
       const userToDelete = getTestUser();
 
-      const jwtToken = await getJWTTokenForUser(adminUser);
+      const jwtToken = getJWTTokenForUserWithRole(adminUser, requestFingerprint);
 
       const userRepositoryDeleteSpy = jest.spyOn(userRepo, 'delete').mockResolvedValueOnce({} as DeleteResult);
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
@@ -120,6 +129,8 @@ describe('user controller e2e tests', () => {
       const response = await request
         .delete(`/user/${userToDelete.id}`)
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .send()
         .expect(200);
 
@@ -133,13 +144,15 @@ describe('user controller e2e tests', () => {
       const user = getTestUser();
       const userToDelete = getTestUser();
 
-      const jwtToken = await getJWTTokenForUser(user);
+      const jwtToken = getJWTTokenForUserWithRole(user, requestFingerprint);
 
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(user);
 
       await request
         .delete(`/user/${userToDelete.id}`)
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .send()
         .expect(403);
     });
@@ -156,13 +169,15 @@ describe('user controller e2e tests', () => {
       const adminUser = getTestUser({ role: UserRole.ADMIN });
       const userId = faker.random.numeric();
 
-      const jwtToken = await getJWTTokenForUser(adminUser);
+      const jwtToken = getJWTTokenForUserWithRole(adminUser, requestFingerprint);
 
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
 
       await request
         .put(`/user/${userId}`)
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .send({ isBlocked: true })
         .expect(200);
 
@@ -173,13 +188,15 @@ describe('user controller e2e tests', () => {
       const adminUser = getTestUser({ role: UserRole.ADMIN });
       const userId = faker.random.numeric();
 
-      const jwtToken = await getJWTTokenForUser(adminUser);
+      const jwtToken = getJWTTokenForUserWithRole(adminUser, requestFingerprint);
 
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
 
       await request
         .put(`/user/${userId}`)
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
+        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
+        .set('user-agent', requestFingerprint.userAgent)
         .send({ isBlocked: false })
         .expect(200);
 
@@ -204,15 +221,5 @@ describe('user controller e2e tests', () => {
       role: userInfo.role ?? UserRole.USER,
     });
     return user;
-  }
-
-  async function getJWTTokenForUser(user: UserEntity) {
-    const { jwtSecret: secret, expiresInRefresh: expiresIn } = config;
-
-    const jwtToken = await jwtService.signAsync(
-      { userId: user.id, userEmail: user.email, userRole: user.role },
-      { secret, expiresIn }
-    );
-    return jwtToken;
   }
 });

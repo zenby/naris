@@ -10,17 +10,21 @@ import { TokenExpiredError } from 'jsonwebtoken';
 
 import { AccessTokenHelper } from './helpers/access-token.helper';
 import { RefreshTokenHelper } from './helpers/refresh-token.helper';
+import { FingerprintHelper } from './helpers/fingerprint.helper';
+import { RequestFingerprint } from './types/request-fingerprint.interface';
 
 @Injectable()
 export class AuthService {
   private readonly accessTokenHelper: AccessTokenHelper;
   private readonly refreshTokenHelper: RefreshTokenHelper;
+  private readonly fingerprintHelper: FingerprintHelper;
 
   constructor(private readonly configService: ConfigService, private readonly userService: UserService) {
     const jwtConfig = configService.get<Configuration['jwt']>('jwt');
 
     this.accessTokenHelper = new AccessTokenHelper(jwtConfig);
     this.refreshTokenHelper = new RefreshTokenHelper(jwtConfig);
+    this.fingerprintHelper = new FingerprintHelper();
   }
 
   async signUp(createUserDto: CreateUserDto) {
@@ -31,22 +35,32 @@ export class AuthService {
     return this.accessTokenHelper.generate(user);
   }
 
-  getRefreshToken(user: UserEntity | Error): string | Error {
+  getRefreshToken(user: UserEntity | Error, requestFingerprint: RequestFingerprint): string | Error {
     if (user instanceof Error) {
       return user;
     }
 
-    return this.refreshTokenHelper.generate(user);
+    const fingerprint = this.fingerprintHelper.generateFingerprint(requestFingerprint);
+    return this.refreshTokenHelper.generate(user, fingerprint);
   }
 
-  async getVerifiedUserByRefreshToken(refreshToken: string): Promise<UserEntity | Error> {
+  async getVerifiedUserByRefreshToken(
+    refreshToken: string,
+    requestFingerprint: RequestFingerprint
+  ): Promise<UserEntity | Error> {
     const verifiedToken = await this.refreshTokenHelper.verify(refreshToken);
 
     if (verifiedToken instanceof TokenExpiredError) {
       return verifiedToken;
     }
 
-    const { userId, userEmail } = verifiedToken;
+    const { userId, userEmail, fingerprint } = verifiedToken;
+
+    const isValidFingerprint = this.fingerprintHelper.compareFingerprint(requestFingerprint, fingerprint);
+
+    if (!isValidFingerprint) {
+      return new UnauthorizedException('Invalid fingerprint');
+    }
 
     const userOrError = await this.userService.findByIdAndEmail({
       id: userId,

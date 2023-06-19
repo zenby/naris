@@ -1,10 +1,9 @@
 import { Jwt } from '@soer/sr-common-interfaces';
-import { TokenExpiredError, sign, verify } from 'jsonwebtoken';
-import { UserEntity } from '../../user/user.entity';
+import { TokenExpiredError, verify } from 'jsonwebtoken';
 
 export abstract class BaseTokenHelper<TPayload extends object> {
-  private readonly expiresIn: string | number | undefined;
-  private readonly secret: string;
+  protected readonly expiresIn: string | number | undefined;
+  protected readonly secret: string;
 
   protected constructor(protected readonly jwtConfig: Jwt) {
     this.expiresIn = this.getExpiration(jwtConfig);
@@ -12,12 +11,6 @@ export abstract class BaseTokenHelper<TPayload extends object> {
   }
 
   protected abstract getExpiration(jwtConfig: Jwt): string | number | undefined;
-  protected abstract getPayload(user: UserEntity): TPayload;
-
-  generate(user: UserEntity): string {
-    const payload: TPayload = this.getPayload(user);
-    return sign(payload, this.secret, { expiresIn: this.expiresIn });
-  }
 
   verify(token: string): TPayload | TokenExpiredError {
     try {

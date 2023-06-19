@@ -1,0 +1,54 @@
+@naris_api_host = http://localhost:3200
+@auth_host = http://0.0.0.0:3100
+@version = v1
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXVpZCI6ImFiN2YyMmQ2LWZiZTktNDY0Yi04YWYyLWI5YjZiODRkODM2YSIsImVtYWlsIjoiYmFyQGZvby5jb20iLCJ1c2VyUm9sZSI6InVzZXIiLCJpYXQiOjE2ODY5MTk4ODAsImV4cCI6MTY4NjkyMDc4MH0.ZN1Up0XBgyptj96elT2q11ZwVQOTJtLzQ-XFd2tthmI
+
+# #####################################
+# You need db and auth services running
+# #####################################
+
+
+# #####################################
+# Preparation works start
+# #####################################
+
+### Register a user in the db
+POST {{auth_host}}/auth/signup
+Content-Type: application/json
+
+{ "login": "login", "email": "bar@foo.com", "password": "password" }
+
+### Sign in
+POST {{auth_host}}/auth/signin
+Content-Type: application/json
+
+{ "login": "login", "email": "bar@foo.com", "password": "password" }
+
+### Get an access token
+# save a received token in @access_token
+# every time when an unauthorized error is received in a response from naris-api
+GET {{auth_host}}/auth/access_token
+
+# #####################################
+# Preparation works end
+# #####################################
+
+### Get questions
+GET {{naris_api_host}}/api/{{version}}/questions
+Authorization: Bearer {{access_token}}
+
+### Get the questions for a current user
+GET {{naris_api_host}}/api/{{version}}/questions?userId=1
+Authorization: Bearer {{access_token}}
+
+### Create a question
+POST {{naris_api_host}}/api/{{version}}/questions
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{ "question": "text", "userId": 1 }
+
+### Delete a question
+@question_id = 3
+DELETE {{naris_api_host}}/api/{{version}}/questions/{{question_id}}
+Authorization: Bearer {{access_token}}

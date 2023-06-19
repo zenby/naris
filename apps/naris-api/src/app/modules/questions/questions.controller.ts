@@ -9,6 +9,7 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
   Query,
+  Logger,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { QuestionsService } from './questions.service';
@@ -26,6 +27,8 @@ import { CreateQuestionDto } from './dto/create-question.dto';
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
+  private logger = new Logger(QuestionsController.name);
+
   @UseGuards(JwtAuthGuard)
   @Get()
   async getQuestions(
@@ -36,7 +39,9 @@ export class QuestionsController {
       const questions = await this.questionsService.getQuestions(userIdParam, jwtPayload);
 
       return { status: HttpJsonStatus.Ok, items: questions };
-    } catch {
+    } catch (e) {
+      this.logger.error(e);
+
       throw new InternalServerErrorException('Something went wrong. Please, reload the page.');
     }
   }
@@ -48,29 +53,44 @@ export class QuestionsController {
     @JwtPayloadFromRequest() jwtPayload: JwtPayload,
     @Body() createQuestionDto: CreateQuestionDto
   ): Promise<HttpJsonResult<string> | Error> {
-    const result = await this.questionsService.create(createQuestionDto, jwtPayload);
+    try {
+      const result = await this.questionsService.create(createQuestionDto, jwtPayload);
 
-    if (result === QuestionSavingResult.UnauthorizedUserError) {
-      throw new UnauthorizedException('userId must be the same as the current authorized user id');
+      if (result === QuestionSavingResult.UnauthorizedUserError) {
+        throw new UnauthorizedException(
+          'The question has not been saved. A userId must be the same as the current authorized user id'
+        );
+      }
+
+      if (result === QuestionSavingResult.EmptyQuestionError) {
+        return { status: HttpJsonStatus.Error, items: ['The question cannot be empty'] };
+      }
+
+      return { status: HttpJsonStatus.Ok, items: ['The question has been created'] };
+    } catch (e) {
+      this.logger.error(e);
+
+      const message = e.message || 'The question has not been saved. Please, try again later';
+      throw new InternalServerErrorException(message);
     }
-
-    if (result === QuestionSavingResult.EmptyQuestionError) {
-      return { status: HttpJsonStatus.Error, items: ['The question cannot be empty'] };
-    }
-
-    return { status: HttpJsonStatus.Ok, items: ['The question has been created'] };
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':qid')
   async removeQuestion(@Param('qid') questionId: number): Promise<HttpJsonResult<string> | Error> {
-    const result = await this.questionsService.remove({ questionId });
+    try {
+      const result = await this.questionsService.remove({ questionId });
 
-    if (result === QuestionDeleteResult.NotFoundError) {
-      return { status: HttpJsonStatus.Error, items: ['The question to delete was not found'] };
+      if (result === QuestionDeleteResult.NotFoundError) {
+        return { status: HttpJsonStatus.Error, items: ['The question to delete was not found'] };
+      }
+
+      return { status: HttpJsonStatus.Ok, items: ['The question has been deleted'] };
+    } catch (e) {
+      this.logger.error(e);
+
+      throw new InternalServerErrorException('The question has not been deleted. Please, try again later');
     }
-
-    return { status: HttpJsonStatus.Ok, items: ['The question has been deleted'] };
   }
 }

@@ -4,5 +4,5 @@ export interface RefreshTokenPayload {
   userId: number;
   userEmail: string;
   userRole: UserRole;
-  fingerprint?: string;
+  fingerprint: string;
 }

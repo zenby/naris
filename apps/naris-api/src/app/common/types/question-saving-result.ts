@@ -1,5 +1,5 @@
 export enum QuestionSavingResult {
   Ok,
-  EmpryQuestionError,
+  EmptyQuestionError,
   UnauthorizedUserError,
 }

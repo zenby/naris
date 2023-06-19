@@ -54,7 +54,7 @@ export class QuestionsController {
       throw new UnauthorizedException('userId must be the same as the current authorized user id');
     }
 
-    if (result === QuestionSavingResult.EmpryQuestionError) {
+    if (result === QuestionSavingResult.EmptyQuestionError) {
       return { status: HttpJsonStatus.Error, items: ['The question cannot be empty'] };
     }
 

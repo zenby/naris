@@ -17,7 +17,7 @@ export class QuestionsService {
     currentUser: JwtPayload
   ): Promise<QuestionSavingResult> {
     if (!this.isQuestionValid(question)) {
-      return QuestionSavingResult.EmpryQuestionError;
+      return QuestionSavingResult.EmptyQuestionError;
     }
 
     if (!this.isCurrentUserId(userId, currentUser)) {

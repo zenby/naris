@@ -53,7 +53,7 @@ export class QuestionsService {
   }
 
   private isCurrentUserId(userIdParam: number, currentUser: JwtPayload): boolean {
-    return +userIdParam === currentUser.id;
+    return userIdParam === currentUser.id;
   }
 
   private isQuestionValid(question: string): boolean {

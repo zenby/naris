@@ -7,15 +7,13 @@ import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { QuestionEntity } from './question.entity';
 import { QuestionSavingResult } from '../../common/types/question-saving-result';
 import { QuestionDeleteResult } from '../../common/types/question-delete-result';
+import { CreateQuestionDto } from './dto/create-question.dto';
 
 @Injectable()
 export class QuestionsService {
   constructor(@InjectRepository(QuestionEntity) private readonly questionRepository: Repository<QuestionEntity>) {}
 
-  async create(
-    { question, userId }: { question: string; userId: number },
-    currentUser: JwtPayload
-  ): Promise<QuestionSavingResult> {
+  async create({ question, userId }: CreateQuestionDto, currentUser: JwtPayload): Promise<QuestionSavingResult> {
     if (!this.isQuestionValid(question)) {
       return QuestionSavingResult.EmptyQuestionError;
     }

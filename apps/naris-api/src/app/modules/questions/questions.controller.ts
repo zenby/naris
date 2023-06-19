@@ -19,6 +19,7 @@ import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { QuestionEntity } from './question.entity';
 import { QuestionSavingResult } from '../../common/types/question-saving-result';
 import { QuestionDeleteResult } from '../../common/types/question-delete-result';
+import { CreateQuestionDto } from './dto/create-question.dto';
 
 @ApiTags('QuestionsAnswers')
 @Controller('v1/questions')
@@ -45,10 +46,9 @@ export class QuestionsController {
   @Post()
   async createQuestion(
     @JwtPayloadFromRequest() jwtPayload: JwtPayload,
-    @Body() { question, userId }: { question: string; userId: number }
+    @Body() createQuestionDto: CreateQuestionDto
   ): Promise<HttpJsonResult<string> | Error> {
-    const questionData = { question, userId };
-    const result = await this.questionsService.create(questionData, jwtPayload);
+    const result = await this.questionsService.create(createQuestionDto, jwtPayload);
 
     if (result === QuestionSavingResult.UnauthorizedUserError) {
       throw new UnauthorizedException('userId must be the same as the current authorized user id');

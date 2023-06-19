@@ -1,4 +1,5 @@
 import * as supertest from 'supertest';
+import * as superagent from 'superagent';
 import * as cookieParser from 'cookie-parser';
 import * as jwt from 'jsonwebtoken';
 import { Repository } from 'typeorm';
@@ -11,11 +12,11 @@ import { LoginUserDto } from '../user/dto/login-user.dto';
 import { UserEntity } from '../user/user.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import {
-  testUsers,
   adminUser,
   regularUser,
   regularUserCredentials,
   requestFingerprint,
+  testUsers,
 } from '../user/tests/test.users';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/config';
@@ -105,12 +106,9 @@ describe('Auth e2e-test', () => {
   describe('GET /auth/access_token', () => {
     it('should generate access token when pass valid refresh token', async () => {
       const jwtToken = getJWTTokenForUserWithFingerprint(users[0], requestFingerprint);
-      const response = await request
-        .get('/auth/access_token')
-        .set('Cookie', [`${cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
-        .expect(200);
+      const authRequest = makeAuthRequest(request.get('/auth/access_token'), jwtToken);
+
+      const response = await authRequest.expect(200);
 
       const body: HttpJsonResult<{ accessToken: string }> = response.body;
       const accessToken = body.items[0]?.accessToken;
@@ -121,30 +119,22 @@ describe('Auth e2e-test', () => {
 
     it('should return 401 error when pass old refresh token', async () => {
       const jwtToken = getJWTTokenForUserWithFingerprint(users[0], requestFingerprint, expired10MinAgo);
-      await request
-        .get('/auth/access_token')
-        .set('Cookie', [`${cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
-        .expect(401);
+      const authRequest = makeAuthRequest(request.get('/auth/access_token'), jwtToken);
+
+      await authRequest.expect(401);
     });
 
     it('should return 401 error when no pass refresh token', async () => {
-      await request.get('/auth/access_token').expect(401);
+      makeAuthRequest(request.get('/auth/access_token')).expect(401);
     });
   });
 
   describe('POST /auth/access_token_for_user_request', () => {
     it('should generate an access_token for requested user', async () => {
       const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, requestFingerprint);
+      const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
-      const response = await request
-        .post('/auth/access_token_for_user_request')
-        .set('Cookie', [`${cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
-        .send({ switch_to_user_by_email: regularUser.email })
-        .expect(201);
+      const response = await authRequest.send({ switch_to_user_by_email: regularUser.email }).expect(201);
 
       const body: HttpJsonResult<{ accessToken: string }> = response.body;
       const accessToken = body.items[0]?.accessToken;
@@ -157,56 +147,50 @@ describe('Auth e2e-test', () => {
 
     it('should return 401 error when pass old refresh token', async () => {
       const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, requestFingerprint, expired10MinAgo);
+      const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
-      await request
-        .post('/auth/access_token_for_user_request')
-        .set('Cookie', [`${cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
-        .send({ switch_to_user_by_email: users[0].email })
-        .expect(401);
+      await authRequest.send({ switch_to_user_by_email: users[0].email }).expect(401);
     });
 
     it('should return 403 error when user role is USER', async () => {
       const jwtToken = getJWTTokenForUserWithFingerprint(regularUser, requestFingerprint);
+      const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
-      await request
-        .post('/auth/access_token_for_user_request')
-        .set('Cookie', [`${cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
-        .send({ switch_to_user_by_email: regularUser.email })
-        .expect(403);
+      await authRequest.send({ switch_to_user_by_email: regularUser.email }).expect(403);
     });
 
     it('should return 401 error when not authorized user', async () => {
-      await request
-        .post('/auth/access_token_for_user_request')
-        .send({ switch_to_user_by_email: users[0].email })
-        .expect(401);
+      const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'));
+
+      await authRequest.send({ switch_to_user_by_email: users[0].email }).expect(401);
     });
 
     it('should return 404 error when no params passed', async () => {
       const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, requestFingerprint);
+      const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
-      await request
-        .post('/auth/access_token_for_user_request')
-        .set('Cookie', [`${cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
-        .expect(404);
+      await authRequest.expect(404);
     });
 
     it('should return 404 error when empty email passed', async () => {
       const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, requestFingerprint);
+      const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
-      await request
-        .post('/auth/access_token_for_user_request')
-        .set('Cookie', [`${cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
-        .send({ switch_to_user_by_email: '' })
-        .expect(404);
+      await authRequest.send({ switch_to_user_by_email: '' }).expect(404);
     });
   });
+
+  const makeAuthRequest = <TRequest extends superagent.SuperAgentRequest>(request: TRequest, jwtToken?: string) => {
+    const headers = getAuthHeaders(jwtToken);
+    return request.set(headers);
+  };
+
+  const getAuthHeaders = (jwtToken?: string) => {
+    const result: { [key: string]: string } = {
+      'x-original-forwarded-for': requestFingerprint.ipAddresses.join(','),
+      'user-agent': requestFingerprint.userAgent,
+    };
+
+    return jwtToken ? { ...result, Cookie: [`${cookieName}=${jwtToken}`] } : result;
+  };
 });

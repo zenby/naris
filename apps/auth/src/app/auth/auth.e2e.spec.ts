@@ -127,6 +127,17 @@ describe('Auth e2e-test', () => {
     it('should return 401 error when no pass refresh token', async () => {
       makeAuthRequest(request.get('/auth/access_token')).expect(401);
     });
+
+    it('should return 401 error when fingerprint data changed', async () => {
+      const jwtToken = getJWTTokenForUserWithFingerprint(
+        users[0],
+        { ...requestFingerprint, userAgent: 'New Agent' },
+        expired10MinAgo
+      );
+      const authRequest = makeAuthRequest(request.get('/auth/access_token'), jwtToken);
+
+      await authRequest.expect(401);
+    });
   });
 
   describe('POST /auth/access_token_for_user_request', () => {
@@ -161,6 +172,13 @@ describe('Auth e2e-test', () => {
 
     it('should return 401 error when not authorized user', async () => {
       const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'));
+
+      await authRequest.send({ switch_to_user_by_email: users[0].email }).expect(401);
+    });
+
+    it('should return 401 error when fingerprint data changed', async () => {
+      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, { ...requestFingerprint, userAgent: 'New Agent' });
+      const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
       await authRequest.send({ switch_to_user_by_email: users[0].email }).expect(401);
     });

@@ -1,7 +1,7 @@
 @naris_api_host = http://localhost:3200
-@auth_host = http://0.0.0.0:3100
+@auth_host = http://localhost:3100
 @version = v1
-@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXVpZCI6ImFiN2YyMmQ2LWZiZTktNDY0Yi04YWYyLWI5YjZiODRkODM2YSIsImVtYWlsIjoiYmFyQGZvby5jb20iLCJ1c2VyUm9sZSI6InVzZXIiLCJpYXQiOjE2ODY5MTk4ODAsImV4cCI6MTY4NjkyMDc4MH0.ZN1Up0XBgyptj96elT2q11ZwVQOTJtLzQ-XFd2tthmI
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXVpZCI6ImFiN2YyMmQ2LWZiZTktNDY0Yi04YWYyLWI5YjZiODRkODM2YSIsImVtYWlsIjoiYmFyQGZvby5jb20iLCJ1c2VyUm9sZSI6InVzZXIiLCJpYXQiOjE2ODcxNzg5NTMsImV4cCI6MTY4NzE3OTg1M30.p1ehti6bFPamoI74h5MyUJzqywvSg0EzB1cz0nDPRSI
 
 # #####################################
 # You need db and auth services running
@@ -9,7 +9,7 @@
 
 
 # #####################################
-# Preparation works start
+# Preparation works begin
 # #####################################
 
 ### Register a user in the db
@@ -22,7 +22,10 @@ Content-Type: application/json
 POST {{auth_host}}/auth/signin
 Content-Type: application/json
 
-{ "login": "login", "email": "bar@foo.com", "password": "password" }
+{ "login": "login", "password": "password" }
+
+### Sign out
+GET {{auth_host}}/auth/signout
 
 ### Get an access token
 # save a received token in @access_token

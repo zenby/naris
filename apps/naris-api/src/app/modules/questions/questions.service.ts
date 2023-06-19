@@ -5,8 +5,8 @@ import { Repository } from 'typeorm';
 
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { QuestionEntity } from './question.entity';
-import { QuestionSavingResult } from '../../common/types/question-saving-result';
-import { QuestionDeleteResult } from '../../common/types/question-delete-result';
+import { QuestionSavingResult } from './types/question-saving-result';
+import { QuestionDeleteResult } from './types/question-delete-result';
 import { CreateQuestionDto } from './dto/create-question.dto';
 
 @Injectable()

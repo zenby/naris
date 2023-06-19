@@ -18,8 +18,8 @@ import { JwtPayloadFromRequest } from '../../common/decorators/user.decorator';
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { QuestionEntity } from './question.entity';
-import { QuestionSavingResult } from '../../common/types/question-saving-result';
-import { QuestionDeleteResult } from '../../common/types/question-delete-result';
+import { QuestionSavingResult } from './types/question-saving-result';
+import { QuestionDeleteResult } from './types/question-delete-result';
 import { CreateQuestionDto } from './dto/create-question.dto';
 
 @ApiTags('QuestionsAnswers')

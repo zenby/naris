@@ -21,6 +21,7 @@ import { QuestionEntity } from './question.entity';
 import { QuestionSavingResult } from './types/question-saving-result';
 import { QuestionDeleteResult } from './types/question-delete-result';
 import { CreateQuestionDto } from './dto/create-question.dto';
+import messages from './constants/messages';
 
 @ApiTags('QuestionsAnswers')
 @Controller('v1/questions')
@@ -42,7 +43,7 @@ export class QuestionsController {
     } catch (e) {
       this.logger.error(e);
 
-      throw new InternalServerErrorException('Something went wrong. Please, reload the page.');
+      throw new InternalServerErrorException(messages.questionsGettingError);
     }
   }
 
@@ -57,16 +58,14 @@ export class QuestionsController {
       const result = await this.questionsService.create(createQuestionDto, jwtPayload);
 
       if (result === QuestionSavingResult.UnauthorizedUserError) {
-        throw new UnauthorizedException(
-          'The question has not been saved. A userId must be the same as the current authorized user id'
-        );
+        throw new UnauthorizedException(messages.unauthorisizedQuestionCreation);
       }
 
       if (result === QuestionSavingResult.EmptyQuestionError) {
-        return { status: HttpJsonStatus.Error, items: ['The question cannot be empty'] };
+        return { status: HttpJsonStatus.Error, items: [messages.emptyQuestion] };
       }
 
-      return { status: HttpJsonStatus.Ok, items: ['The question has been created'] };
+      return { status: HttpJsonStatus.Ok, items: [messages.questionCreated] };
     } catch (e) {
       if (e instanceof UnauthorizedException) {
         throw e;
@@ -74,8 +73,7 @@ export class QuestionsController {
 
       this.logger.error(e);
 
-      const message = e.message || 'The question has not been saved. Please, try again later';
-      throw new InternalServerErrorException(message);
+      throw new InternalServerErrorException(messages.questionCreationError);
     }
   }
 
@@ -87,14 +85,14 @@ export class QuestionsController {
       const result = await this.questionsService.remove({ questionId });
 
       if (result === QuestionDeleteResult.NotFoundError) {
-        return { status: HttpJsonStatus.Error, items: ['The question to delete was not found'] };
+        return { status: HttpJsonStatus.Error, items: [messages.questionNotFound] };
       }
 
-      return { status: HttpJsonStatus.Ok, items: ['The question has been deleted'] };
+      return { status: HttpJsonStatus.Ok, items: [messages.questionDeleted] };
     } catch (e) {
       this.logger.error(e);
 
-      throw new InternalServerErrorException('The question has not been deleted. Please, try again later');
+      throw new InternalServerErrorException(messages.questionDeleteError);
     }
   }
 }

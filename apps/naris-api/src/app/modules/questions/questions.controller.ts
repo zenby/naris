@@ -68,6 +68,10 @@ export class QuestionsController {
 
       return { status: HttpJsonStatus.Ok, items: ['The question has been created'] };
     } catch (e) {
+      if (e instanceof UnauthorizedException) {
+        throw e;
+      }
+
       this.logger.error(e);
 
       const message = e.message || 'The question has not been saved. Please, try again later';

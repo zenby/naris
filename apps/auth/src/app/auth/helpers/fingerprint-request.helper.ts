@@ -16,7 +16,7 @@ export class FingerprintRequestHelper {
     if (Array.isArray(xForwardedFor)) {
       ipAddresses.push(...xForwardedFor);
     } else if (typeof xForwardedFor === 'string') {
-      const addresses = xForwardedFor.split(',');
+      const addresses = xForwardedFor.split(',').map((v) => v.trim());
       ipAddresses.push(...addresses);
     }
 

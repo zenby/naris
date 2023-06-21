@@ -1,3 +1,4 @@
+import { createNewArticlePath, workbookPath, allArticlesPath } from './pathConstants';
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -9,12 +10,15 @@
 // ***********************************************
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace Cypress {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface Chainable<Subject> {
-    login(email: string, password: string): void;
-    removeAllExistingArticles(): void;
-    createArticle(): void;
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface Chainable<Subject> {
+      login(email: string, password: string): void;
+      removeAllExistingArticles(): void;
+      createArticle(): void;
+    }
   }
 }
 //
@@ -56,7 +60,7 @@ Cypress.Commands.add('login', (login, password) => {
 });
 
 Cypress.Commands.add('removeAllExistingArticles', () => {
-  cy.visit('/#!/pages/workbook/articles');
+  cy.visit(`/${allArticlesPath}`);
   cy.wait('@personalArticles');
 
   cy.get('.anticon-delete')
@@ -81,15 +85,15 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
 });
 
 Cypress.Commands.add('createArticle', () => {
-  cy.visit('/#!/pages/workbook/articles');
-  cy.location('href').should('eq', Cypress.config().baseUrl + '#!/pages/workbook/articles');
+  cy.visit(`/${allArticlesPath}`);
+  cy.location('href').should('eq', Cypress.config().baseUrl + allArticlesPath);
 
   cy.get('.anticon-plus').should('be.visible').click();
-  cy.location('href').should('eq', Cypress.config().baseUrl + '#!/pages/workbook/articles/create/new');
+  cy.location('href').should('eq', Cypress.config().baseUrl + createNewArticlePath);
 
   cy.get('input[placeholder="Тема"]').type('Test', { force: true });
   cy.get('.anticon-save').click();
-  cy.location('href').should('eq', Cypress.config().baseUrl + '#!/pages/workbook/conspects');
+  cy.location('href').should('eq', Cypress.config().baseUrl + workbookPath);
   cy.get('a[title="Статьи"]').should('be.visible').click();
   cy.wait('@personalArticles');
 });

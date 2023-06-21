@@ -1,5 +1,11 @@
 import { articleTitle, articleTextWithMd, modifiedArticleTitle } from '../support/articleConstants';
-import { createNewArticlePath, editArticlePath, allArticlesPath, viewArticlePath } from '../support/pathConstants';
+import {
+  createNewArticlePath,
+  editArticlePath,
+  allArticlesPath,
+  viewArticlePath,
+  infoPath,
+} from '../support/pathConstants';
 
 describe('naris articles', () => {
   beforeEach(() => {
@@ -9,7 +15,7 @@ describe('naris articles', () => {
     cy.intercept('DELETE', '/api/v2/json/article/**').as('deleteRequest');
 
     cy.login('user', 'user');
-    cy.location('href').should('eq', Cypress.config().baseUrl + '#!/pages/overview/info');
+    cy.location('href').should('eq', Cypress.config().baseUrl + infoPath);
 
     cy.removeAllExistingArticles();
   });
@@ -89,7 +95,7 @@ describe('naris articles', () => {
       .should('have.value', modifiedArticleTitle);
 
     cy.get('.anticon-save').click();
-    cy.visit('/#!/pages/workbook/articles');
+    cy.visit(`/${allArticlesPath}`);
     cy.wait('@personalArticles');
 
     cy.contains(modifiedArticleTitle).should('exist');

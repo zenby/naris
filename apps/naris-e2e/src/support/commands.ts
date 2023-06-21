@@ -1,4 +1,4 @@
-import { createNewArticlePath, workbookPath, allArticlesPath } from './pathConstants';
+import { createNewArticlePath, allArticlesPath } from './pathConstants';
 import { testTitle } from '../support/articleConstants';
 // ***********************************************
 // This example commands.js shows you how to
@@ -67,21 +67,13 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
   cy.get('.anticon-delete')
     .should('have.length.gte', 0)
     .then(($delBtnList) => {
-      let delBtnLen = $delBtnList.length;
+      const delBtnLen = $delBtnList.length;
 
-      function deleteArticle() {
-        if (delBtnLen == 0) {
-          return;
-        }
-        cy.get('.anticon-delete').should('be.visible').eq(0).click({ force: true });
+      for (let i = 0; i < delBtnLen; i++) {
+        cy.get('.anticon-delete').eq(0).click({ force: true });
         cy.contains('OK').should('be.visible').click({ force: true });
-        delBtnLen--;
         cy.wait(['@deleteRequest', '@personalArticles', '@personalArticles']);
-
-        deleteArticle();
       }
-
-      deleteArticle();
     });
 });
 

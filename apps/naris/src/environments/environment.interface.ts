@@ -3,6 +3,7 @@ export enum featuresEnum {
   auth_v2 = 'auth_v2',
   api_v1 = 'api_v1',
   api_v2 = 'api_v2',
+  personal_activity_journal = 'personal_activity_journal',
 }
 
 export type DynamicConfig = {

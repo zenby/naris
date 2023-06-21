@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Route, RouterModule, Routes } from '@angular/router';
 import { SrDTOModule } from '@soer/sr-dto';
 import { NoContentComponent } from '@soer/soer-components';
 import { ByRoutePathResolver } from '../api/by-route-path.resolver';
@@ -93,23 +93,31 @@ const routes: Routes = [
     path: 'account',
     component: ComposeTabPageComponent,
     data: { header: { title: 'Личный кабинет', subtitle: 'данные пользователя' } },
-    children: [
-      { path: '', redirectTo: 'profile', pathMatch: 'full' },
-      {
-        path: 'profile',
-        data: {
-          header: { title: 'Профиль', subtitle: 'основная информация' },
+    children: (() => {
+      const routes: Route[] = [
+        { path: '', redirectTo: 'profile', pathMatch: 'full' },
+        {
+          path: 'profile',
+          data: {
+            header: { title: 'Профиль', subtitle: 'основная информация' },
+          },
+          component: ProfilePageComponent,
         },
-        component: ProfilePageComponent,
-      },
-      {
-        path: 'activity-journal',
-        data: {
-          header: { title: 'Журнал активности', subtitle: 'пользователя' },
-        },
-        component: ActivityJournalPageComponent,
-      },
-    ],
+      ];
+
+      return environment.features[featuresEnum.personal_activity_journal]
+        ? [
+            ...routes,
+            {
+              path: 'activity-journal',
+              data: {
+                header: { title: 'Журнал активности', subtitle: 'пользователя' },
+              },
+              component: ActivityJournalPageComponent,
+            },
+          ]
+        : routes;
+    })(),
   },
 ];
 

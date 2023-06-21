@@ -56,15 +56,11 @@ export class QuestionsController {
   async createQuestion(
     @JwtPayloadFromRequest() jwtPayload: JwtPayload,
     @Body() createQuestionDto: CreateQuestionDto
-  ): Promise<HttpJsonResult<string> | Error> {
+  ): Promise<HttpJsonResult<QuestionEntity> | Error> {
     try {
       const result = await this.questionsService.create(createQuestionDto, jwtPayload);
 
-      if (result === QuestionSavingResult.UnauthorizedUserError) {
-        throw new UnauthorizedException(messages.unauthorisizedQuestionCreation);
-      }
-
-      return { status: HttpJsonStatus.Ok, items: [messages.questionCreated] };
+      return { status: HttpJsonStatus.Ok, items: [result] };
     } catch (e) {
       if (e instanceof UnauthorizedException) {
         throw e;

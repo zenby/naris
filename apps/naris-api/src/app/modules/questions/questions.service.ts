@@ -13,7 +13,7 @@ import { CreateQuestionDto } from './dto/create-question.dto';
 export class QuestionsService {
   constructor(@InjectRepository(QuestionEntity) private readonly questionRepository: Repository<QuestionEntity>) {}
 
-  async create({ question, userId }: CreateQuestionDto, currentUser: JwtPayload): Promise<QuestionSavingResult> {
+  async create({ question, userId }: CreateQuestionDto, currentUser: JwtPayload): Promise<QuestionEntity> {
     if (!this.isCurrentUserId(userId, currentUser)) {
       return QuestionSavingResult.UnauthorizedUserError;
     }
@@ -21,9 +21,7 @@ export class QuestionsService {
     const userUuid = currentUser.uuid;
     const url = ''; // TODO: get data for url from auth-cdn
     const newQuestion = this.questionRepository.create({ question, url, userUuid });
-    await this.questionRepository.insert(newQuestion);
-
-    return QuestionSavingResult.Ok;
+    return await this.questionRepository.save(newQuestion);
   }
 
   async remove({ questionId }: { questionId: number }): Promise<QuestionDeleteResult> {

@@ -90,6 +90,7 @@ Cypress.Commands.add('createArticle', () => {
   cy.get('input[placeholder="Тема"]').type('Test', { force: true });
   cy.get('.anticon-save').click();
   cy.location('href').should('eq', Cypress.config().baseUrl + '#!/pages/workbook/conspects');
+  cy.get('a[title="Статьи"]').should('be.visible').click();
   cy.wait('@personalArticles');
 });
 //

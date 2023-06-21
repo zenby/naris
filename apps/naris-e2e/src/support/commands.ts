@@ -68,8 +68,8 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
         if (delBtnLen == 0) {
           return;
         }
-        cy.get('.anticon-delete', { timeout: 10000 }).should('be.visible').eq(0).click();
-        cy.contains('OK', { timeout: 10000 }).should('be.visible').click();
+        cy.get('.anticon-delete', { timeout: 10000 }).should('be.visible').eq(0).click({ force: true });
+        cy.contains('OK', { timeout: 10000 }).should('be.visible').click({ force: true });
         delBtnLen--;
         cy.wait(['@deleteRequest', '@personalArticles', '@personalArticles']);
 

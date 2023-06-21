@@ -10,6 +10,8 @@ import {
   UnauthorizedException,
   Query,
   Logger,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { QuestionsService } from './questions.service';
@@ -49,6 +51,7 @@ export class QuestionsController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe())
   @Post()
   async createQuestion(
     @JwtPayloadFromRequest() jwtPayload: JwtPayload,
@@ -59,10 +62,6 @@ export class QuestionsController {
 
       if (result === QuestionSavingResult.UnauthorizedUserError) {
         throw new UnauthorizedException(messages.unauthorisizedQuestionCreation);
-      }
-
-      if (result === QuestionSavingResult.EmptyQuestionError) {
-        return { status: HttpJsonStatus.Error, items: [messages.emptyQuestion] };
       }
 
       return { status: HttpJsonStatus.Ok, items: [messages.questionCreated] };

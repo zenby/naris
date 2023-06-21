@@ -14,10 +14,6 @@ export class QuestionsService {
   constructor(@InjectRepository(QuestionEntity) private readonly questionRepository: Repository<QuestionEntity>) {}
 
   async create({ question, userId }: CreateQuestionDto, currentUser: JwtPayload): Promise<QuestionSavingResult> {
-    if (!this.isQuestionValid(question)) {
-      return QuestionSavingResult.EmptyQuestionError;
-    }
-
     if (!this.isCurrentUserId(userId, currentUser)) {
       return QuestionSavingResult.UnauthorizedUserError;
     }
@@ -54,10 +50,6 @@ export class QuestionsService {
 
   private isCurrentUserId(userIdParam: number, currentUser: JwtPayload): boolean {
     return userIdParam === currentUser.id;
-  }
-
-  private isQuestionValid(question: string): boolean {
-    return question.length > 0;
   }
 
   private isQuestionDeleted(deleteResult: DeleteResult): boolean {

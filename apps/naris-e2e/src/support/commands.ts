@@ -59,28 +59,25 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
   cy.visit('/#!/pages/workbook/articles');
   cy.wait('@personalArticles');
 
-  cy.get('body').then(($body) => {
-    if ($body.find('.anticon-delete').length) {
-      cy.get('.anticon-delete').then((delBtnList) => {
-        let delBtnLen = Cypress.$(delBtnList).length;
+  cy.get('.anticon-delete')
+    .should('have.length.gte', 0)
+    .then(($delBtnList) => {
+      let delBtnLen = $delBtnList.length;
 
-        function deleteArticle() {
-          if (delBtnLen == 0) {
-            return;
-          }
-          cy.get('.anticon-delete', { timeout: 10000 }).should('be.visible').eq(0).click();
-          cy.contains('OK', { timeout: 10000 }).should('be.visible').click();
-          delBtnLen--;
-          cy.wait('@deleteRequest');
-          // eslint-disable-next-line cypress/no-unnecessary-waiting
-          cy.wait(1000);
-          deleteArticle();
+      function deleteArticle() {
+        if (delBtnLen == 0) {
+          return;
         }
+        cy.get('.anticon-delete', { timeout: 10000 }).should('be.visible').eq(0).click();
+        cy.contains('OK', { timeout: 10000 }).should('be.visible').click();
+        delBtnLen--;
+        cy.wait(['@deleteRequest', '@personalArticles', '@personalArticles']);
 
         deleteArticle();
-      });
-    }
-  });
+      }
+
+      deleteArticle();
+    });
 });
 
 Cypress.Commands.add('createArticle', () => {

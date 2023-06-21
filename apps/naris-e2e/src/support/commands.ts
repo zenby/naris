@@ -68,8 +68,8 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
         if (delBtnLen == 0) {
           return;
         }
-        cy.get('.anticon-delete', { timeout: 10000 }).should('be.visible').eq(0).click({ force: true });
-        cy.contains('OK', { timeout: 10000 }).should('be.visible').click({ force: true });
+        cy.get('.anticon-delete').should('be.visible').eq(0).click({ force: true });
+        cy.contains('OK').should('be.visible').click({ force: true });
         delBtnLen--;
         cy.wait(['@deleteRequest', '@personalArticles', '@personalArticles']);
 
@@ -82,19 +82,15 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
 
 Cypress.Commands.add('createArticle', () => {
   cy.visit('/#!/pages/workbook/articles');
-  cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + '#!/pages/workbook/articles');
+  cy.location('href').should('eq', Cypress.config().baseUrl + '#!/pages/workbook/articles');
 
-  cy.get('.anticon-plus', { timeout: 10000 }).should('be.visible').click();
-  cy.location('href', { timeout: 10000 }).should(
-    'eq',
-    Cypress.config().baseUrl + '#!/pages/workbook/articles/create/new'
-  );
+  cy.get('.anticon-plus').should('be.visible').click();
+  cy.location('href').should('eq', Cypress.config().baseUrl + '#!/pages/workbook/articles/create/new');
 
   cy.get('input[placeholder="Тема"]').type('Test', { force: true });
   cy.get('.anticon-save').click();
-  cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + '#!/pages/workbook/conspects');
-  cy.get('a[title="Статьи"]', { timeout: 10000 }).should('be.visible').click();
-  cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + '#!/pages/workbook/articles');
+  cy.location('href').should('eq', Cypress.config().baseUrl + '#!/pages/workbook/conspects');
+  cy.get('a[title="Статьи"]').should('be.visible').click();
 });
 //
 // -- This is a child command --

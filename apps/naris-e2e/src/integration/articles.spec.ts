@@ -8,16 +8,16 @@ describe('naris articles', () => {
     cy.intercept('DELETE', '/api/v2/json/article/**').as('deleteRequest');
 
     cy.login('user', 'user');
-    cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + '#!/pages/overview/info');
+    cy.location('href').should('eq', Cypress.config().baseUrl + '#!/pages/overview/info');
 
     cy.removeAllExistingArticles();
   });
 
   it('should check mouse interaction on create article page', () => {
     cy.visit(`/${createNewArticlePath}`);
-    cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + createNewArticlePath);
+    cy.location('href').should('eq', Cypress.config().baseUrl + createNewArticlePath);
 
-    cy.get('.edit', { timeout: 10000 }).should('be.visible');
+    cy.get('.edit').should('be.visible');
     cy.get('input[placeholder="Тема"]').type(articleTitle, { force: true });
     cy.get('textarea').first().type(articleTextWithMd, { force: true });
 
@@ -39,9 +39,9 @@ describe('naris articles', () => {
 
   it('should check keyboard interaction on create article page', () => {
     cy.visit(`/${createNewArticlePath}`);
-    cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + createNewArticlePath);
+    cy.location('href').should('eq', Cypress.config().baseUrl + createNewArticlePath);
 
-    cy.get('.edit', { timeout: 10000 }).should('be.visible');
+    cy.get('.edit').should('be.visible');
 
     cy.get('textarea').first().type(articleTextWithMd, { force: true });
 
@@ -69,23 +69,23 @@ describe('naris articles', () => {
   it('should check view mode from main page', () => {
     cy.createArticle();
 
-    cy.get('.anticon-eye', { timeout: 10000 }).should('be.visible').click({ force: true });
-    cy.location('href', { timeout: 10000 }).should('contain', Cypress.config().baseUrl + viewArticlePath);
+    cy.get('.anticon-eye').should('be.visible').click({ force: true });
+    cy.location('href').should('contain', Cypress.config().baseUrl + viewArticlePath);
     cy.get('.workbooks').should('not.exist');
   });
 
   it('should edit existing article', () => {
     cy.createArticle();
 
-    cy.get('.anticon-edit', { timeout: 10000 }).should('be.visible').click({ force: true });
-    cy.location('href', { timeout: 10000 }).should('contain', Cypress.config().baseUrl + editArticlePath);
+    cy.get('.anticon-edit').should('be.visible').click({ force: true });
+    cy.location('href').should('contain', Cypress.config().baseUrl + editArticlePath);
 
     cy.get('input[placeholder="Тема"]').clear();
     cy.get('input[placeholder="Тема"]').type(modifiedArticleTitle);
 
     cy.get('.anticon-save').click();
     cy.visit('/#!/pages/workbook/articles');
-    cy.location('href', { timeout: 10000 }).should('eq', Cypress.config().baseUrl + allArticlesPath);
+    cy.wait('@personalArticles');
 
     cy.contains(modifiedArticleTitle).should('exist');
   });
@@ -94,8 +94,8 @@ describe('naris articles', () => {
     cy.on('window:confirm', () => false);
     cy.createArticle();
 
-    cy.get('.anticon-edit', { timeout: 10000 }).should('be.visible').click({ force: true });
-    cy.location('href', { timeout: 10000 }).should('contain', Cypress.config().baseUrl + editArticlePath);
+    cy.get('.anticon-edit').should('be.visible').click({ force: true });
+    cy.location('href').should('contain', Cypress.config().baseUrl + editArticlePath);
     cy.get('input[placeholder="Тема"]').clear();
     cy.get('input[placeholder="Тема"]').type(modifiedArticleTitle);
 

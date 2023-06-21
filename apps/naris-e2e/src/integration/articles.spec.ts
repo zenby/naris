@@ -5,6 +5,7 @@ describe('naris articles', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/*.svg').as('signIn');
     cy.intercept('GET', '**/api/v2/json/article/personal').as('personalArticles');
+    cy.intercept('GET', '**/api/v2/json/article/**').as('editArticle');
     cy.intercept('DELETE', '/api/v2/json/article/**').as('deleteRequest');
 
     cy.login('user', 'user');
@@ -78,10 +79,14 @@ describe('naris articles', () => {
     cy.createArticle();
 
     cy.get('.anticon-edit').should('be.visible').click({ force: true });
-    cy.location('href').should('contain', Cypress.config().baseUrl + editArticlePath);
+    cy.wait('@editArticle', { timeout: 10000 });
 
-    cy.get('input[placeholder="Тема"]').clear();
-    cy.get('input[placeholder="Тема"]').type(modifiedArticleTitle);
+    cy.get('input[placeholder="Тема"]').should('not.be.disabled');
+    cy.get('input[placeholder="Тема"]')
+      .click()
+      .clear()
+      .type(modifiedArticleTitle)
+      .should('have.value', modifiedArticleTitle);
 
     cy.get('.anticon-save').click();
     cy.visit('/#!/pages/workbook/articles');

@@ -1,4 +1,4 @@
-import { articleTitle, articleTextWithMd, modifiedArticleTitle } from '../support/articleConstants';
+import { articleTitle, articleTextWithMd, modifiedArticleTitle, testTitle } from '../support/articleConstants';
 import {
   createNewArticlePath,
   editArticlePath,
@@ -70,7 +70,7 @@ describe('naris articles', () => {
 
   it('should check article creation', () => {
     cy.createArticle();
-    cy.contains('Test').should('exist');
+    cy.contains(testTitle).should('exist');
   });
 
   it('should check view mode from main page', () => {

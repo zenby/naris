@@ -1,4 +1,5 @@
 import { createNewArticlePath, workbookPath, allArticlesPath } from './pathConstants';
+import { testTitle } from '../support/articleConstants';
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -91,7 +92,7 @@ Cypress.Commands.add('createArticle', () => {
   cy.get('.anticon-plus').should('be.visible').click();
   cy.location('href').should('eq', Cypress.config().baseUrl + createNewArticlePath);
 
-  cy.get('input[placeholder="Тема"]').type('Test', { force: true });
+  cy.get('input[placeholder="Тема"]').type(testTitle, { force: true });
   cy.get('.anticon-save').click();
   cy.location('href').should('eq', Cypress.config().baseUrl + workbookPath);
   cy.get('a[title="Статьи"]').should('be.visible').click();

@@ -34,10 +34,10 @@ export class QuestionsController {
   @Get()
   async getQuestions(
     @JwtPayloadFromRequest() jwtPayload: JwtPayload,
-    @Query('userId') userIdParam?: string
+    @Query('userUuid') userUuidParam?: string
   ): Promise<HttpJsonResult<QuestionEntity> | Error> {
     try {
-      const questions = await this.questionsService.getQuestions(userIdParam, jwtPayload);
+      const questions = await this.questionsService.getQuestions(userUuidParam, jwtPayload);
 
       return { status: HttpJsonStatus.Ok, items: questions };
     } catch (e) {

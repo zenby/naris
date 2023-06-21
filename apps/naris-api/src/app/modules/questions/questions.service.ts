@@ -40,8 +40,8 @@ export class QuestionsService {
     return QuestionDeleteResult.Ok;
   }
 
-  async getQuestions(userIdParam: string | null = null, currentUser: JwtPayload): Promise<QuestionEntity[]> {
-    if (!userIdParam) {
+  async getQuestions(userUuidParam: string | null = null, currentUser: JwtPayload): Promise<QuestionEntity[]> {
+    if (!userUuidParam) {
       return await this.questionRepository.find();
     }
 

@@ -16,6 +16,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { QuestionsService } from './questions.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { QuestionAccessibilityGuard } from './guards/question-accessibility.guards';
 import { JwtPayloadFromRequest } from '../../common/decorators/user.decorator';
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
@@ -73,17 +74,17 @@ export class QuestionsController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, QuestionAccessibilityGuard)
   @Delete(':qid')
   async removeQuestion(@Param('qid') questionId: number): Promise<HttpJsonResult<string> | Error> {
     try {
       const result = await this.questionsService.remove({ questionId });
 
-      if (result === QuestionDeleteResult.NotFoundError) {
-        return { status: HttpJsonStatus.Error, items: [messages.questionNotFound] };
+      if (result instanceof Error) {
+        return { status: HttpJsonStatus.Error, items: [result.message] };
       }
 
-      return { status: HttpJsonStatus.Ok, items: [messages.questionDeleted] };
+      return { status: HttpJsonStatus.Ok, items: [] };
     } catch (e) {
       this.logger.error(e);
 

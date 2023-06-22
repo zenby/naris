@@ -24,14 +24,8 @@ export class QuestionsService {
     return await this.questionRepository.save(newQuestion);
   }
 
-  async remove({ questionId }: { questionId: number }): Promise<QuestionDeleteResult> {
-    const result = await this.questionRepository.delete({ id: questionId });
-
-    if (!this.isQuestionDeleted(result)) {
-      return QuestionDeleteResult.NotFoundError;
-    }
-
-    return QuestionDeleteResult.Ok;
+  async remove({ questionId }: { questionId: number }): Promise<DeleteResult | Error> {
+    return await this.questionRepository.delete({ id: questionId });
   }
 
   async getQuestions(userUuidParam: string | null = null, currentUser: JwtPayload): Promise<QuestionEntity[]> {
@@ -48,9 +42,5 @@ export class QuestionsService {
 
   private isCurrentUserId(userIdParam: number, currentUser: JwtPayload): boolean {
     return userIdParam === currentUser.id;
-  }
-
-  private isQuestionDeleted(deleteResult: DeleteResult): boolean {
-    return deleteResult.affected > 0;
   }
 }

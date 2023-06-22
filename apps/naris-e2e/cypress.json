@@ -9,5 +9,9 @@
   "videosFolder": "../../dist/cypress/apps/naris-e2e/videos",
   "screenshotsFolder": "../../dist/cypress/apps/naris-e2e/screenshots",
   "chromeWebSecurity": false,
-  "experimentalSessionAndOrigin": true
+  "experimentalSessionAndOrigin": true,
+  "baseUrl": "http://localhost:4200",
+  "env": {
+    "host": "https://stage.s0er.ru"
+  }
 }

@@ -25,6 +25,8 @@ import { QuestionSavingResult } from './types/question-saving-result';
 import { QuestionDeleteResult } from './types/question-delete-result';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import messages from './constants/messages';
+import { QuestionGettingAuthGuard } from './guards/question-getting-auth.guard';
+import { QuestionCreationAuthGuard } from './guards/question-creation-auth.guard';
 
 @ApiTags('QuestionsAnswers')
 @Controller('v1/questions')
@@ -33,14 +35,11 @@ export class QuestionsController {
 
   private logger = new Logger(QuestionsController.name);
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, QuestionGettingAuthGuard)
   @Get()
-  async getQuestions(
-    @JwtPayloadFromRequest() jwtPayload: JwtPayload,
-    @Query('userUuid') userUuidParam?: string
-  ): Promise<HttpJsonResult<QuestionEntity> | Error> {
+  async getQuestions(@Query('userUuid') userUuidParam?: string): Promise<HttpJsonResult<QuestionEntity> | Error> {
     try {
-      const questions = await this.questionsService.getQuestions(userUuidParam, jwtPayload);
+      const questions = await this.questionsService.getQuestions(userUuidParam);
 
       return { status: HttpJsonStatus.Ok, items: questions };
     } catch (e) {
@@ -51,22 +50,22 @@ export class QuestionsController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, QuestionCreationAuthGuard)
   @UsePipes(new ValidationPipe())
   @Post()
   async createQuestion(
     @JwtPayloadFromRequest() jwtPayload: JwtPayload,
     @Body() createQuestionDto: CreateQuestionDto
-  ): Promise<HttpJsonResult<QuestionEntity> | Error> {
+  ): Promise<HttpJsonResult<QuestionEntity | string>> {
     try {
-      const result = await this.questionsService.create(createQuestionDto, jwtPayload);
+      const result = await this.questionsService.create(createQuestionDto);
+
+      if (result instanceof Error) {
+        return { status: HttpJsonStatus.Error, items: [result.message] };
+      }
 
       return { status: HttpJsonStatus.Ok, items: [result] };
     } catch (e) {
-      if (e instanceof UnauthorizedException) {
-        throw e;
-      }
-
       this.logger.error(e);
 
       throw new InternalServerErrorException(messages.questionCreationError);

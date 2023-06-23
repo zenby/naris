@@ -13,12 +13,7 @@ import { CreateQuestionDto } from './dto/create-question.dto';
 export class QuestionsService {
   constructor(@InjectRepository(QuestionEntity) private readonly questionRepository: Repository<QuestionEntity>) {}
 
-  async create({ question, userId }: CreateQuestionDto, currentUser: JwtPayload): Promise<QuestionEntity> {
-    if (!this.isCurrentUserId(userId, currentUser)) {
-      return QuestionSavingResult.UnauthorizedUserError;
-    }
-
-    const userUuid = currentUser.uuid;
+  async create({ question, userUuid }: CreateQuestionDto): Promise<QuestionEntity | Error> {
     const url = ''; // TODO: get data for url from auth-cdn
     const newQuestion = this.questionRepository.create({ question, url, userUuid });
     return await this.questionRepository.save(newQuestion);
@@ -28,19 +23,11 @@ export class QuestionsService {
     return await this.questionRepository.delete({ id: questionId });
   }
 
-  async getQuestions(userUuidParam: string | null = null, currentUser: JwtPayload): Promise<QuestionEntity[]> {
-    if (!userUuidParam) {
-      return await this.questionRepository.find();
+  async getQuestions(userUuidParam: string | null = null): Promise<QuestionEntity[]> {
+    if (userUuidParam) {
+      return await this.questionRepository.findBy({ userUuid: Equal(userUuidParam) });
     }
 
-    if (this.isCurrentUserId(+userIdParam, currentUser)) {
-      return await this.questionRepository.findBy({ userUuid: Equal(currentUser.uuid) });
-    }
-
-    return [];
-  }
-
-  private isCurrentUserId(userIdParam: number, currentUser: JwtPayload): boolean {
-    return userIdParam === currentUser.id;
+    return await this.questionRepository.find();
   }
 }

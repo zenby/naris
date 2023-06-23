@@ -113,6 +113,9 @@ const routes: Routes = [
             header: { title: 'Журнал активности', subtitle: 'пользователя' },
           },
           component: ActivityJournalPageComponent,
+          resolve: {
+            activitys: 'activitysEmitter',
+          },
         });
       }
 

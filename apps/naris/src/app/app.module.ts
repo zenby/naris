@@ -67,6 +67,7 @@ registerLocaleData(ru);
       schema: { url: 'v2/json/activity/:aid' },
       keys: {
         activity: { aid: '?' },
+        activitys: { aid: 'personal' },
       },
     }),
   ],

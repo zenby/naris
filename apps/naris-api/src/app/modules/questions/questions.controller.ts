@@ -7,7 +7,6 @@ import {
   Post,
   UseGuards,
   InternalServerErrorException,
-  UnauthorizedException,
   Query,
   Logger,
   UsePipes,
@@ -21,8 +20,6 @@ import { JwtPayloadFromRequest } from '../../common/decorators/user.decorator';
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { QuestionEntity } from './question.entity';
-import { QuestionSavingResult } from './types/question-saving-result';
-import { QuestionDeleteResult } from './types/question-delete-result';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import messages from './constants/messages';
 import { QuestionGettingAuthGuard } from './guards/question-getting-auth.guard';

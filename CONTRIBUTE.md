@@ -303,5 +303,5 @@ __требуется описание__
 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)  
 [How to Write a Git Commit Message](https://cbea.ms/git-commit/)  
 [Pull Requests with Rebase](https://devblogs.microsoft.com/devops/pull-requests-with-rebase/)  
-[Лучшие практики тестирования](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme-ru.md) ([оригинал](https://github.com/goldbergyoni/javascript-testing-best-practices))
-[сypress best practices](https://docs.cypress.io/guides/references/best-practices)
+[Лучшие практики тестирования](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme-ru.md) ([оригинал](https://github.com/goldbergyoni/javascript-testing-best-practices))  
+[Cypress best practices](https://docs.cypress.io/guides/references/best-practices)

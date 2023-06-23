@@ -304,3 +304,4 @@ __требуется описание__
 [How to Write a Git Commit Message](https://cbea.ms/git-commit/)  
 [Pull Requests with Rebase](https://devblogs.microsoft.com/devops/pull-requests-with-rebase/)  
 [Лучшие практики тестирования](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme-ru.md) ([оригинал](https://github.com/goldbergyoni/javascript-testing-best-practices))
+[сypress best practices](https://docs.cypress.io/guides/references/best-practices)

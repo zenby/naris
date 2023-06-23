@@ -2,14 +2,7 @@
   <div>
     <ng-container *ngFor="let workbook of workbooks">
       <div class="item">
-        <div
-          nz-tooltip
-          nzTooltipPlacement="bottomLeft"
-          nzTooltipTrigger="hover"
-          [nzTooltipTitle]="workbook.question.length > 30 ? workbook.question : ''"
-          class="title"
-          (click)="this.workbookEdit.emit(workbook)"
-        >
+        <div class="title" (click)="this.workbookEdit.emit(workbook)">
           {{ workbook.question }}
         </div>
         <div class="actions">

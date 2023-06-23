@@ -79,15 +79,3 @@ $hover-color: #1890ff;
 .empty-list {
   text-align: center;
 }
-
-::ng-deep .ant-tooltip-inner {
-  min-width: 60vw;
-  max-width: 70vw;
-}
-
-@media (min-width: 1200px) {
-  ::ng-deep .ant-tooltip-inner {
-    min-width: 50vw;
-    max-width: 60vw;
-  }
-}

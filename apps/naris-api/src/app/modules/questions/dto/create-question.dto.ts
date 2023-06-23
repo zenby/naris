@@ -5,5 +5,5 @@ export class CreateQuestionDto {
   readonly question: string;
 
   @IsNotEmpty()
-  readonly userId: number;
+  readonly userUuid: string;
 }

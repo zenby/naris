@@ -16,7 +16,9 @@ describe('naris articles', () => {
 
     cy.login('user', 'user');
     cy.location('href').should('eq', Cypress.config().baseUrl + infoPath);
-
+    cy.visit(`/${allArticlesPath}`);
+    cy.wait('@personalArticles');
+    cy.get('a[title="Статьи"]').should('be.visible');
     cy.removeAllExistingArticles();
   });
 

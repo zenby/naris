@@ -61,9 +61,6 @@ Cypress.Commands.add('login', (login, password) => {
 });
 
 Cypress.Commands.add('removeAllExistingArticles', () => {
-  cy.visit(`/${allArticlesPath}`);
-  cy.wait('@personalArticles');
-
   cy.get('.anticon-delete')
     .should('have.length.gte', 0)
     .then(($delBtnList) => {

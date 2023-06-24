@@ -61,6 +61,8 @@ Cypress.Commands.add('login', (login, password) => {
 });
 
 Cypress.Commands.add('removeAllExistingArticles', () => {
+  cy.get('a[title="Статьи"]').should('have.attr', 'disabled');
+  cy.get('.ant-spin-dot').should('not.exist');
   cy.get('.anticon-delete')
     .should('have.length.gte', 0)
     .then(($delBtnList) => {
@@ -86,6 +88,8 @@ Cypress.Commands.add('createArticle', () => {
   cy.wait(['@personalArticles', '@personalArticles']);
   cy.get('a[title="Статьи"]').should('be.visible').click();
   cy.wait('@personalArticles');
+  cy.get('a[title="Статьи"]').should('have.attr', 'disabled');
+  cy.get('.ant-spin-dot').should('not.exist');
 });
 //
 // -- This is a child command --

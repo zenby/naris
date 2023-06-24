@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
 import { DeleteResult, Repository } from 'typeorm';
@@ -43,11 +43,11 @@ export class JsonService {
     return await this.jsonRepository.find({ where: [conditionPublic, conditionPrivate] });
   }
 
-  async switchAccessTag(documentId: number, documentNamespace: string): Promise<JsonEntity> {
+  async switchAccessTag(documentId: number, documentNamespace: string): Promise<JsonEntity | Error> {
     const document = await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
 
     if (!document) {
-      throw new HttpException('Document does not exist', HttpStatus.NOT_FOUND);
+      return new NotFoundException(`Document ${documentId} does not exist`);
     }
 
     document.accessTag = document.accessTag === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC';
@@ -59,11 +59,15 @@ export class JsonService {
     return await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
   }
 
-  async update(documentId: number, documentNamespace: string, updateJsonDto: UpdateJsonDto): Promise<JsonEntity> {
+  async update(
+    documentId: number,
+    documentNamespace: string,
+    updateJsonDto: UpdateJsonDto
+  ): Promise<JsonEntity | Error> {
     const document = await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
 
     if (!document) {
-      throw new HttpException('Document does not exist', HttpStatus.NOT_FOUND);
+      return new NotFoundException(`Document ${documentId} does not exist`);
     }
 
     Object.assign(document, updateJsonDto);
@@ -71,11 +75,11 @@ export class JsonService {
     return await this.jsonRepository.save(document);
   }
 
-  async delete(documentId: number, documentNamespace: string): Promise<DeleteResult> {
+  async delete(documentId: number, documentNamespace: string): Promise<DeleteResult | Error> {
     const document = await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
 
     if (!document) {
-      throw new HttpException('Document does not exist', HttpStatus.NOT_FOUND);
+      return new NotFoundException(`Document ${documentId} does not exist`);
     }
 
     return await this.jsonRepository.delete({ id: documentId });

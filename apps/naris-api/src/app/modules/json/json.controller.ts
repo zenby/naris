@@ -90,6 +90,7 @@ export class JsonController {
   async switchAccessTag(@Param() params: JsonParams): Promise<HttpJsonResult<JsonEntity>> {
     try {
       const document = await this.jsonService.switchAccessTag(+params.documentId, params.documentNamespace);
+      if (document instanceof Error) throw document;
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
@@ -178,6 +179,7 @@ export class JsonController {
   ): Promise<HttpJsonResult<JsonEntity>> {
     try {
       const document = await this.jsonService.update(+params.documentId, params.documentNamespace, updateJsonDto);
+      if (document instanceof Error) throw document;
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
@@ -198,7 +200,8 @@ export class JsonController {
   @Delete(':documentId')
   async deleteJson(@Param() params: JsonParams): Promise<HttpJsonResult<JsonEntity>> {
     try {
-      await this.jsonService.delete(+params.documentId, params.documentNamespace);
+      const result = await this.jsonService.delete(+params.documentId, params.documentNamespace);
+      if (result instanceof Error) throw result;
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, []);
     } catch (e) {

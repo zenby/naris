@@ -18,29 +18,60 @@ export class JsonController {
   private logger = new Logger(JsonController.name);
 
   @ApiOperation({
-    summary: 'Find by access tag',
-    description:
-      'accessTag can take the following values: ' +
-      'public - indicates that the method returns documents from the namespace with the "public" tag. ' +
-      'private - indicates that the method returns documents authored by the current user. ' +
-      'all - indicates that the method returns documents from the namespace with both private and public access.',
+    summary: 'Find documents from the namespace with the "public" tag',
   })
   @ApiOkResponse({ type: JsonResponseDto })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  // @Get(':accessTag')
-  async findByAccessTag(
-    @Param('documentNamespace') documentNamespace: string,
-    @Param('accessTag') accessTag: string
+  @Get('public')
+  async findPublicDocuments(
+    @AuthUser() user: JwtPayload,
+    @Param('documentNamespace') documentNamespace: string
   ): Promise<HttpJsonResult<JsonEntity>> {
     try {
-      if (accessTag === 'all') {
-        const documents = await this.jsonService.findByAllAccessTag(documentNamespace);
+      const documents = await this.jsonService.findPublicDocuments(documentNamespace);
 
-        return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
-      }
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
 
-      const documents = await this.jsonService.findByAccessTag(documentNamespace, accessTag);
+  @ApiOperation({
+    summary: 'Find documents authored by the current user',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('private')
+  async findCurrentUserDocuments(
+    @AuthUser() user: JwtPayload,
+    @Param('documentNamespace') documentNamespace: string
+  ): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const documents = await this.jsonService.findCurrentUserDocuments(documentNamespace, user.email);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Find documents from the namespace with both private and public access',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('all')
+  async findPrivateAndPublicDocuments(
+    @AuthUser() user: JwtPayload,
+    @Param('documentNamespace') documentNamespace: string
+  ): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const documents = await this.jsonService.findPrivateAndPublicDocuments(documentNamespace);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
     } catch (e) {
@@ -55,14 +86,10 @@ export class JsonController {
   @ApiOkResponse({ type: JsonResponseDto })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Put(':documentId/:accessTag')
-  async changeAccessTag(@Param() params: JsonParams): Promise<HttpJsonResult<JsonEntity>> {
+  @Put(':documentId/accessTag')
+  async switchAccessTag(@Param() params: JsonParams): Promise<HttpJsonResult<JsonEntity>> {
     try {
-      const document = await this.jsonService.updateAccessTag(
-        +params.documentId,
-        params.documentNamespace,
-        params.accessTag
-      );
+      const document = await this.jsonService.switchAccessTag(+params.documentId, params.documentNamespace);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {

@@ -8,4 +8,6 @@ export class CreateJsonDto {
   })
   @IsNotEmpty()
   readonly json: string;
+  @IsNotEmpty()
+  readonly author_email: string;
 }

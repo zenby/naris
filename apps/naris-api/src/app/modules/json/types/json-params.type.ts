@@ -1,5 +1,4 @@
 export type JsonParams = {
-  documentId: string;
+  documentId: number;
   documentNamespace: string;
-  accessTag: string;
 };

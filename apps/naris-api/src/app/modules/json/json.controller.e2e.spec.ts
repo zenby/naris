@@ -74,7 +74,6 @@ describe('JsonModule e2e-test', () => {
     });
   });
 
-  /*
   describe('GET /json/:documentNamespace/:accessTag', () => {
     it('should find all documents with the public tag when accessTag is passed as "public"', async () => {
       const document = { ...createFakeDocument(), accessTag: 'PUBLIC' };
@@ -91,7 +90,20 @@ describe('JsonModule e2e-test', () => {
       });
     });
 
-    it.todo('should find all documents of the current user when accessTag is passed as "private"');
+    it('should find all documents of the current user when accessTag is passed as "private', async () => {
+      const document = { ...createFakeDocument(), author_email: JwtTestHelper.defaultPayload.email };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([document]);
+
+      await request
+        .get(`/json/${document.namespace}/private`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        where: { namespace: document.namespace, author_email: JwtTestHelper.defaultPayload.email },
+      });
+    });
 
     it('should find all documents from the namespace with both private and public access when accessTag is passed as "all"', async () => {
       const namespace = faker.lorem.word();
@@ -122,7 +134,7 @@ describe('JsonModule e2e-test', () => {
       jsonRepositoryMock.save.mockImplementationOnce((newDocument) => Object.assign({}, newDocument));
 
       await request
-        .put(`/json/${namespace}/${id}/public`)
+        .put(`/json/${namespace}/${id}/accessTag`)
         .set(JwtTestHelper.createBearerHeader())
         .expect({ status: HttpJsonStatus.Ok, items: [{ ...document, accessTag: 'PUBLIC' }] });
 
@@ -130,7 +142,6 @@ describe('JsonModule e2e-test', () => {
       expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ ...document, accessTag: 'PUBLIC' });
     });
   });
-   */
 
   describe('POST /json/:documentNamespace/new', () => {
     it('should create json when passing valid json dto', async () => {

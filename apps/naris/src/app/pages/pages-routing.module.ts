@@ -89,6 +89,7 @@ const routes: Routes = [
       webfiles: ByRoutePathResolver,
     },
   },
+
   {
     path: 'account',
     component: ComposeTabPageComponent,
@@ -105,18 +106,27 @@ const routes: Routes = [
         },
       ];
 
-      return environment.features[featuresEnum.personal_activity_journal]
-        ? [
-            ...routes,
-            {
-              path: 'activity-journal',
-              data: {
-                header: { title: 'Журнал активности', subtitle: 'пользователя' },
-              },
-              component: ActivityJournalPageComponent,
-            },
-          ]
-        : routes;
+      if (environment.features[featuresEnum.personal_activity_journal]) {
+        routes.push({
+          path: 'activity-journal',
+          data: {
+            header: { title: 'Журнал активности', subtitle: 'пользователя' },
+          },
+          component: ActivityJournalPageComponent,
+        });
+      }
+
+      if (environment.features[featuresEnum.subscription]) {
+        routes.push({
+          path: 'subscription',
+          data: {
+            header: { title: 'Подписка' },
+          },
+          component: PayFormComponent,
+        });
+      }
+
+      return routes;
     })(),
   },
 ];

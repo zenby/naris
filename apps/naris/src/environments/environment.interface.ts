@@ -4,6 +4,7 @@ export enum featuresEnum {
   api_v1 = 'api_v1',
   api_v2 = 'api_v2',
   personal_activity_journal = 'personal_activity_journal',
+  subscription = 'subscription',
 }
 
 export type DynamicConfig = {

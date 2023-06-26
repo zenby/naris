@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.13.0](https://gitlog.ru/Naris/soermono/compare/naris-0.12.1...naris-0.13.0) (2023-06-26)
+
+
+### Features
+
+* **activity-journal:** add ability change visibility journal of personal activity by feature flag ([3e00e97](https://gitlog.ru/Naris/soermono/commit/3e00e9754e8c50e89d950cc533a97284af4a2e01))
+* add activity journal page ([f5bc277](https://gitlog.ru/Naris/soermono/commit/f5bc27733b64c3996a08c56bb52581d096a2081f))
+* add subscription tab in profile ([b174140](https://gitlog.ru/Naris/soermono/commit/b174140f90c2146125bcd3dce2277a5ff0208889)), closes [#392](https://gitlog.ru/Naris/soermono/issues/392)
+* remove overview from task edit ([9001212](https://gitlog.ru/Naris/soermono/commit/90012122d193604277416d44869d2b8c3d4cbe1f))
+
 ## [0.12.1](https://gitlog.ru/Naris/soermono/compare/naris-0.12.0...naris-0.12.1) (2023-06-18)
 
 

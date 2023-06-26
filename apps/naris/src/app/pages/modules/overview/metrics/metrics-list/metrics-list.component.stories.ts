@@ -6,7 +6,7 @@ import { PercentStatusStrategyPipe } from './strategies/percent-status-strategy.
 import { CountStatusStrategyPipe } from './strategies/count-status-strategy.pipe';
 
 export default {
-  title: 'MetricsListComponent',
+  title: 'Naris/Pages/MetricsList',
   component: MetricsListComponent,
   decorators: [
     moduleMetadata({

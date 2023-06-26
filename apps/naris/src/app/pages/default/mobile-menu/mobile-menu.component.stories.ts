@@ -6,7 +6,7 @@ import { DemoNgZorroAntdModule } from '@soer/soer-components';
 import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
-  title: 'MobileMenuComponent',
+  title: 'Naris/Components/MobileMenuComponent',
   component: MobileMenuComponent,
   decorators: [
     moduleMetadata({

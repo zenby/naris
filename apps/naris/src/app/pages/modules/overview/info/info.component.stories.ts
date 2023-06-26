@@ -6,7 +6,7 @@ import { DemoNgZorroAntdModule } from '@soer/soer-components';
 import { RouterTestingModule } from '@angular/router/testing';
 
 export default {
-  title: 'InfoComponent',
+  title: 'Naris/Pages/Info',
   component: InfoComponent,
   decorators: [
     moduleMetadata({

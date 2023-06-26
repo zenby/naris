@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SrFeatureFlagsModule } from '@soer/sr-feature-flags';
 
 export default {
-  title: 'LoginComponent',
+  title: 'Naris/Pages/Login',
   component: LoginComponent,
   decorators: [
     moduleMetadata({

@@ -20,6 +20,11 @@ export class FingerprintRequestHelper {
       ipAddresses.push(...addresses);
     }
 
-    return ipAddresses;
+    return this.sortAndUniqueIpAddresses(ipAddresses);
+  }
+
+  private sortAndUniqueIpAddresses(ipAddresses: string[]): string[] {
+    const uniqueIps = [...new Set(ipAddresses)];
+    return uniqueIps.sort();
   }
 }

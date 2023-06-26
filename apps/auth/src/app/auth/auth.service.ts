@@ -10,21 +10,18 @@ import { TokenExpiredError } from 'jsonwebtoken';
 
 import { AccessTokenHelper } from './helpers/access-token.helper';
 import { RefreshTokenHelper } from './helpers/refresh-token.helper';
-import { FingerprintHelper } from './helpers/fingerprint.helper';
 import { RequestFingerprint } from './types/request-fingerprint.interface';
 
 @Injectable()
 export class AuthService {
   private readonly accessTokenHelper: AccessTokenHelper;
   private readonly refreshTokenHelper: RefreshTokenHelper;
-  private readonly fingerprintHelper: FingerprintHelper;
 
   constructor(private readonly configService: ConfigService, private readonly userService: UserService) {
     const jwtConfig = configService.get<Configuration['jwt']>('jwt');
 
     this.accessTokenHelper = new AccessTokenHelper(jwtConfig);
     this.refreshTokenHelper = new RefreshTokenHelper(jwtConfig);
-    this.fingerprintHelper = new FingerprintHelper();
   }
 
   async signUp(createUserDto: CreateUserDto) {
@@ -40,8 +37,7 @@ export class AuthService {
       return user;
     }
 
-    const fingerprint = this.fingerprintHelper.generateFingerprint(requestFingerprint);
-    return this.refreshTokenHelper.generate(user, fingerprint);
+    return this.refreshTokenHelper.generate(user, requestFingerprint);
   }
 
   async getVerifiedUserByRefreshToken(
@@ -54,9 +50,9 @@ export class AuthService {
       return verifiedToken;
     }
 
-    const { userId, userEmail, fingerprint } = verifiedToken;
+    const { userId, userEmail, fingerprint: jwtFingerprint } = verifiedToken;
 
-    const isValidFingerprint = this.fingerprintHelper.compareFingerprint(requestFingerprint, fingerprint);
+    const isValidFingerprint = this.compareFingerprint(requestFingerprint, jwtFingerprint);
 
     if (!isValidFingerprint) {
       return new UnauthorizedException('Invalid fingerprint');
@@ -86,5 +82,16 @@ export class AuthService {
 
   private isPasswordMatch(password: string, userFromDb: UserEntity): boolean {
     return compareSync(password, userFromDb.password);
+  }
+
+  private compareFingerprint(requestFingerprint: RequestFingerprint, jwtFingerprint: RequestFingerprint): boolean {
+    const requestFingerprintString = this.concatRequestFingerprint(requestFingerprint);
+    const jwtFingerprintString = this.concatRequestFingerprint(jwtFingerprint);
+
+    return requestFingerprintString === jwtFingerprintString;
+  }
+
+  private concatRequestFingerprint(requestFingerprint: RequestFingerprint): string {
+    return `${requestFingerprint.ipAddresses.join('')}${requestFingerprint.userAgent}`;
   }
 }

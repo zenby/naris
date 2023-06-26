@@ -44,13 +44,6 @@ export class TaskEditFormComponent {
 
   onCreateTemplate(target: TargetModel): void {
     this.router.navigate(['/pages/targets', { outlets: { popup: ['target', target.id, 'template', 'create'] } }]);
-    /*this.bus$.publish(
-      new CommandCreate(
-        this.templateId,
-        { ...convertToJsonDTO({overview: 'Some text here', target}, ['id']), accessTag: 'ALL'},
-        {skipRoute: true, skipInfo: true}
-      )
-    );*/
   }
 
   onCancel(): void {

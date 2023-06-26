@@ -25,13 +25,36 @@ export class TaskTreeEditFormComponent implements OnChanges {
   @Output() readonly delete = new EventEmitter<TargetModel>();
 
   public activeTarget: TargetModel | undefined;
-  public isEdit = true;
+  public isEditDescription = false;
   public isEditTask = false;
-  public editTaskByIndex = -1;
+  public editTaskIndex = -1;
+
+  private _tempDescription = '';
 
   ngOnChanges(): void {
     this.applyHistory(this.history);
     this.autoEditTask();
+  }
+
+  autoEditTask(): boolean {
+    const items = this.activeTarget?.tasks || [];
+    items.forEach((task, index) => {
+      if (task.title === '') {
+        this.editTaskIndex = index;
+      }
+    });
+    return false;
+  }
+
+  setEditTaskIndex(ind: number): void {
+    this.editTaskIndex = ind;
+  }
+
+  createTask(target: TargetModel): void {
+    target.tasks = target.tasks || [];
+    target.tasks.push({ title: '', overview: '', progress: 0, tasks: [] });
+    updateProgress(this.target);
+    this.save.next(this.target);
   }
 
   onActiveTask(target: TargetModel, ind: number): void {
@@ -40,32 +63,11 @@ export class TaskTreeEditFormComponent implements OnChanges {
     this.applyHistory(this.history);
   }
 
-  autoEditTask(): boolean {
-    const items = this.activeTarget?.tasks || [];
-    items.forEach((task, index) => {
-      if (task.title === '') {
-        this.editTaskByIndex = index;
-      }
-    });
-    return false;
-  }
-
-  onCancelEdit(value: string): void {
+  onCancelEdit(target: TargetModel, value: string): void {
     if (value === '') {
-      this.onDeleteTask(this.target, this.editTaskByIndex);
+      this.onDeleteTask(target, this.editTaskIndex);
     }
-    this.editTask(-1);
-  }
-
-  editTask(ind: number): void {
-    this.editTaskByIndex = ind;
-  }
-
-  createTask(target: TargetModel): void {
-    target.tasks = target.tasks || [];
-    target.tasks.push({ title: '', overview: '', progress: 0, tasks: [] });
-    updateProgress(this.target);
-    this.save.next(this.target);
+    this.editTaskIndex = -1;
   }
 
   onDeleteTask(target: TargetModel, ind: number): void {
@@ -77,9 +79,9 @@ export class TaskTreeEditFormComponent implements OnChanges {
   onSaveTask(target: TargetModel, item: string): void {
     if (item.length > 0) {
       this.save.emit(target);
-      this.editTaskByIndex = -1;
+      this.editTaskIndex = -1;
     } else {
-      this.onDeleteTask(this.target, this.editTaskByIndex);
+      this.onDeleteTask(this.target, this.editTaskIndex);
     }
   }
 
@@ -93,6 +95,16 @@ export class TaskTreeEditFormComponent implements OnChanges {
     this.history = this.history.filter((_, i) => i < ind);
     this.historyChange.next(this.history);
     this.applyHistory(this.history);
+  }
+
+  onStartEditDescription(description: string) {
+    this._tempDescription = description;
+    this.isEditDescription = true;
+  }
+
+  onCancelEditDescription() {
+    this.target.overview = this._tempDescription;
+    this.isEditDescription = false;
   }
 
   private applyHistory(history: { ind: number; title: string }[] = []): void {

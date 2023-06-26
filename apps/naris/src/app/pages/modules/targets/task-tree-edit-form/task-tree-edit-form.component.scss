@@ -47,13 +47,11 @@ button {
 
 header {
   flex-grow: 1;
-  max-height: 5rem;
-  height: 5rem;
 }
 
 content {
   flex-grow: 1;
-  overflow: auto;
+  display: block;
   padding: 2rem 10px 0rem 10px;
   margin: 1rem 0;
   background: #fbfbfb;
@@ -65,4 +63,8 @@ footer {
   height: 2.5rem;
   max-height: 2.5rem;
   flex-grow: 1;
+}
+
+.inline-block {
+  display: inline-block;
 }

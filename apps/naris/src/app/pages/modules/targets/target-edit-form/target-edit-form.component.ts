@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Inject, Input, ViewChild } from '
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { convertToJsonDTO } from '../../../../api/json.dto.helpers';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
-import { CommandCreate, CommandUpdate, DataStoreService } from '@soer/sr-dto';
+import { CommandCreate, CommandUpdate } from '@soer/sr-dto';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -19,7 +19,6 @@ export class TargetEditFormComponent implements AfterViewInit {
   constructor(
     @Inject('target') private targetId: BusEmitter,
     private bus$: MixedBusService,
-    private store$: DataStoreService,
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute
   ) {

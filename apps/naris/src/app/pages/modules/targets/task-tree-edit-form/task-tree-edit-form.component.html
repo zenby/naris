@@ -1,23 +1,26 @@
 <div class="task_form">
-  <header *ngIf="activeTarget">
-    <h5
-      class="target-title"
-      nz-typography
-      nzEditable
-      [nzEditTooltip]="null"
-      [(nzContent)]="activeTarget.title"
-      (nzContentChange)="save.emit(target)"
-    ></h5>
-    <p
-      class="target-title"
-      nz-typography
-      nzEditable
-      [nzEditTooltip]="null"
-      [(nzContent)]="activeTarget.overview"
-      (nzContentChange)="save.emit(target)"
-    ></p>
-  </header>
   <ng-container *ngIf="activeTarget">
+    <header>
+      <h5
+        class="target-title"
+        nz-typography
+        nzEditable
+        [nzEditTooltip]="null"
+        [(nzContent)]="activeTarget.title"
+        (nzContentChange)="save.emit(target)"
+      ></h5>
+      <ng-container *ngIf="isEditDescription; else overview">
+        <div class="controls">
+          <button nz-button (click)="onCancelEditDescription()">
+            <i nz-icon nzType="stop"></i>
+          </button>
+          <button nz-button (click)="save.emit(target)">
+            <i nz-icon nzType="save"></i>
+          </button>
+        </div>
+        <textarea nz-input [(ngModel)]="activeTarget.overview" [nzAutosize]="{ minRows: 8 }"> </textarea>
+      </ng-container>
+    </header>
     <content>
       <nz-timeline *ngIf="activeTarget !== undefined && activeTarget.tasks.length > 0">
         <nz-timeline-item
@@ -25,17 +28,17 @@
           [nzDot]="task.progress === 100 ? complete : working"
         >
           <soer-inline-text-edit
-            *ngIf="editTaskByIndex === ind"
+            *ngIf="editTaskIndex === ind"
             [(text)]="task.title"
             (ok)="onSaveTask(target, $event)"
-            (cancel)="onCancelEdit($event)"
+            (cancel)="onCancelEdit(target, $event)"
           ></soer-inline-text-edit>
-          <nz-row *ngIf="editTaskByIndex !== ind">
+          <nz-row *ngIf="editTaskIndex !== ind">
             <nz-col nzFlex="1">
-              <p class="task-item">{{ task.title }}</p>
+              <markdown [data]="task.title"></markdown>
             </nz-col>
             <nz-col nzFlex="none">
-              <button nz-button nzType="default" nzSize="small" nzShape="circle" (click)="editTask(ind)">
+              <button nz-button nzType="default" nzSize="small" nzShape="circle" (click)="setEditTaskIndex(ind)">
                 <i nz-icon nzType="edit" nzTheme="outline"></i>
               </button>
               <button
@@ -126,3 +129,14 @@
 
 <ng-template #complete><i nz-icon nzType="check-circle" nzTheme="outline" style="color: green"></i></ng-template>
 <ng-template #working><i nz-icon nzType="info-circle" nzTheme="outline"></i></ng-template>
+
+<ng-template #overview>
+  <div class="inline-block">
+    <markdown [data]="target.overview"> </markdown>
+  </div>
+  <div class="controls inline-block">
+    <button nz-button nzType="link" nzSize="large" nzTheme="outline" (click)="onStartEditDescription(target.overview)">
+      <i nz-icon nzType="edit"></i>
+    </button>
+  </div>
+</ng-template>

@@ -36,7 +36,6 @@ export class TargetDescriptionComponent implements OnDestroy {
     const path = route.snapshot.params['path'];
     const targetEmitter = route.snapshot.data['target'] as BusEmitter<TargetModel>;
     this.descriptionService.init(targetEmitter, path);
-    this.description = this.descriptionService.getDescription();
     this.description$ = this.descriptionService.description$.pipe(tap((desc) => (this.isEditMode = desc === '')));
   }
 

@@ -2,6 +2,55 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.13.0](https://gitlog.ru/Naris/soermono/compare/naris-0.12.1...naris-0.13.0) (2023-06-26)
+
+
+### Features
+
+* **activity-journal:** add ability change visibility journal of personal activity by feature flag ([3e00e97](https://gitlog.ru/Naris/soermono/commit/3e00e9754e8c50e89d950cc533a97284af4a2e01))
+* add activity journal page ([f5bc277](https://gitlog.ru/Naris/soermono/commit/f5bc27733b64c3996a08c56bb52581d096a2081f))
+* add subscription tab in profile ([b174140](https://gitlog.ru/Naris/soermono/commit/b174140f90c2146125bcd3dce2277a5ff0208889)), closes [#392](https://gitlog.ru/Naris/soermono/issues/392)
+* remove overview from task edit ([9001212](https://gitlog.ru/Naris/soermono/commit/90012122d193604277416d44869d2b8c3d4cbe1f))
+
+## [0.12.1](https://gitlog.ru/Naris/soermono/compare/naris-0.12.0...naris-0.12.1) (2023-06-18)
+
+
+### Bug Fixes
+
+* correct markdown  variable binding ([558a362](https://gitlog.ru/Naris/soermono/commit/558a362b90ba951f8ab3b45be68c1cea3952cb98))
+* don't complete behavior subject from the store ([70bb1b1](https://gitlog.ru/Naris/soermono/commit/70bb1b1757dfc4e5fef0286defcfa24ff748b649))
+
+## [0.12.0](https://gitlog.ru/Naris/soermono/compare/naris-0.11.1...naris-0.12.0) (2023-06-18)
+
+
+### Features
+
+* add feature flag api_v2 ([7e96ca5](https://gitlog.ru/Naris/soermono/commit/7e96ca527a879884eba00bc725f4d094d8c03ed7))
+
+### [0.11.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.11.0...naris-0.11.1) (2023-06-15)
+
+
+### Bug Fixes
+
+* change redirect page for webroot ([a558482](https://gitlog.ru:2222/Naris/soermono/commit/a55848239ec0db8f4f19a52fc6c8f5f00b57d08a))
+
+## [0.11.0](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.10.1...naris-0.11.0) (2023-06-15)
+
+
+### Features
+
+* add startAt param to menu actions ([ff0d6bc](https://gitlog.ru:2222/Naris/soermono/commit/ff0d6bce797dc282ffe5081f9ded7fd437c68db2))
+* **urlbuilder:** add host placeholder ([97d4e70](https://gitlog.ru:2222/Naris/soermono/commit/97d4e7045f994946ee613a591b65a680f3214293))
+
+
+### Bug Fixes
+
+* add space around buttons ([7af1ffb](https://gitlog.ru:2222/Naris/soermono/commit/7af1ffbf5385e010f427a0b61fec1f29c0086f9e))
+* change broken link to VK to the correct one ([7fa3a28](https://gitlog.ru:2222/Naris/soermono/commit/7fa3a28fb7a4da397fe675bfaf9a76f62a04f3b3))
+* fix authentication bug ([8efdabd](https://gitlog.ru:2222/Naris/soermono/commit/8efdabdb9340a9c2f2624a84f144713871acc861))
+* remove apiRoot from articles smartId ([c94bb9c](https://gitlog.ru:2222/Naris/soermono/commit/c94bb9c0ceb7c293a256930c7c1a4ea71064b57c))
+* update storybook env file with common variables ([a8eeb48](https://gitlog.ru:2222/Naris/soermono/commit/a8eeb48ee2d62eb01b9116ec0ab8ee3d92272550))
+
 ### [0.10.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-0.10.0...naris-0.10.1) (2023-05-29)
 
 

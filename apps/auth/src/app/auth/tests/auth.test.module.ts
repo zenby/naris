@@ -9,6 +9,7 @@ import { AuthController } from '../auth.controller';
 import { Configuration } from '../../config/config';
 import { ConfigService } from '@nestjs/config';
 import { UserEntity } from '../../user/user.entity';
+import { testConfig } from './auth.test.config';
 import * as jwt from 'jsonwebtoken';
 
 @Module({
@@ -29,22 +30,14 @@ import * as jwt from 'jsonwebtoken';
 })
 export class AuthTestModule {}
 
-export const config: Configuration['jwt'] = {
-  cookieName: 'refreshToken',
-  expiresInAccess: 10,
-  expiresInRefresh: 10,
-  jwtSecret: 'secret',
-  redirectUrl: '/success',
-};
-
 const configMock = {
-  get: (): Configuration['jwt'] => config,
+  get: (): Configuration['jwt'] => testConfig,
 };
 
 export const expired10MinAgo = -10 * 60;
 
 export async function getJWTTokenForUser(user: UserEntity, expiredInSec = 3600) {
-  const { jwtSecret: secret } = config;
+  const { jwtSecret: secret } = testConfig;
   const iat = Math.floor(Date.now() / 1000) + expiredInSec;
   const jwtToken = jwt.sign({ userId: user.id, userEmail: user.email, iat }, secret);
   return jwtToken;

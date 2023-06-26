@@ -59,6 +59,9 @@ nz-card {
   }
 }
 
+.task.even {
+  background-color: rgb(245, 245, 245);
+}
 .task {
   padding: 0.5rem 0 0.5rem 0;
   .tasks_expander i {

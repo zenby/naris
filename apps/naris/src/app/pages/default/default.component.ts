@@ -110,6 +110,7 @@ export class DefaultComponent implements OnInit, OnDestroy {
         }
         return ctrl.icon;
       };
+
       const controlsMenu = controls.map(
         (ctrl) =>
           new MenuControl(ctrl['title'], renderIcon(ctrl), () => {
@@ -121,10 +122,10 @@ export class DefaultComponent implements OnInit, OnDestroy {
               delete queryParams['action'];
               delete queryParams['startAt'];
             }
-
             if (ctrl.toggle) {
               queryParams[ctrl.toggle] = !(child.snapshot.queryParams[ctrl.toggle] === 'true') ? 'true' : undefined;
             }
+
             this.router.navigate(ctrl.path, { relativeTo: child, queryParams });
           })
       );

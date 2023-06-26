@@ -1,3 +1,9 @@
+:host ::ng-deep .ant-card-body {
+  padding: 0;
+}
+:host .aim-tree_container {
+  padding: 0.5rem 1rem 1rem 1rem;
+}
 nz-card {
   height: 100%;
 }
@@ -6,19 +12,55 @@ nz-card {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
+  &_progress {
+    flex: 0 0 auto;
+    background-color: rgb(233, 233, 233);
+    height: 4px;
+  }
 
-  &_title {
+  &-header {
     display: flex;
+    width: 100%;
+    flex-direction: row;
     justify-items: center;
     justify-content: center;
     align-items: center;
-    a {
-      overflow: hidden;
-      text-overflow: ellipsis;
+
+    .title-icon-dot {
+      width: 3px;
+      border: 3px solid orange;
+      border-radius: 100px;
+      margin-right: 0.5rem;
     }
-    .description-icon {
-      cursor: pointer;
-      margin-left: 0.5rem;
+
+    &_toolbar {
+      flex: 0 0 auto;
+      text-align: right;
+    }
+
+    &_title {
+      flex: 1 1 auto;
+      text-align: center;
+      overflow: hidden;
+
+      .title-container {
+        display: flex;
+        padding: 0.4rem 0 0 1rem;
+        min-width: 0;
+        justify-items: center;
+        justify-content: left;
+        align-items: center;
+
+        a {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .description-icon {
+          cursor: pointer;
+          margin-left: 0.5rem;
+        }
+      }
     }
   }
 
@@ -30,10 +72,5 @@ nz-card {
     a {
       margin: 0 5px;
     }
-  }
-
-  &_progress {
-    width: 50%;
-    margin: 0 auto;
   }
 }

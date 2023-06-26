@@ -66,7 +66,7 @@ export class AuthController {
   @Get('access_token')
   async getAccessToken(@User() user: UserEntity): Promise<HttpJsonResult<{ accessToken: string }>> {
     try {
-      const accessToken = await this.authService.getAccessToken(user);
+      const accessToken = this.authService.getAccessToken(user);
 
       return { status: HttpJsonStatus.Ok, items: [{ accessToken }] };
     } catch (e) {
@@ -103,7 +103,7 @@ export class AuthController {
     const user = await this.userService.findByEmail(email);
     if (user instanceof Error) throw user;
     try {
-      const accessToken = await this.authService.getAccessToken(user);
+      const accessToken = this.authService.getAccessToken(user);
 
       return { status: HttpJsonStatus.Ok, items: [{ accessToken }] };
     } catch (e) {
@@ -128,7 +128,7 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response
   ): Promise<HttpJsonResult<string>> {
     try {
-      const refreshToken = await this.authService.getRefreshToken(user);
+      const refreshToken = this.authService.getRefreshToken(user);
 
       if (refreshToken instanceof Error) {
         return { status: HttpJsonStatus.Error, items: [refreshToken.message] };

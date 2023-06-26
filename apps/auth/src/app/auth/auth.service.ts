@@ -1,79 +1,63 @@
 import { compareSync } from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Configuration } from '../config/config';
 import { ConfigService } from '@nestjs/config';
 
-import { Configuration } from '../config/config';
 import { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { TokenExpiredError } from 'jsonwebtoken';
 
-import { AccessTokenPayload } from './access-token-payload.interface';
-import { RefreshTokenPayload } from './refresh-token-payload.interface';
+import { AccessTokenHelper } from './helpers/access-token.helper';
+import { RefreshTokenHelper } from './helpers/refresh-token.helper';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
-    private readonly userService: UserService
-  ) {}
+  private readonly accessTokenHelper: AccessTokenHelper;
+  private readonly refreshTokenHelper: RefreshTokenHelper;
+
+  constructor(private readonly configService: ConfigService, private readonly userService: UserService) {
+    const jwtConfig = configService.get<Configuration['jwt']>('jwt');
+
+    this.accessTokenHelper = new AccessTokenHelper(jwtConfig);
+    this.refreshTokenHelper = new RefreshTokenHelper(jwtConfig);
+  }
 
   async signUp(createUserDto: CreateUserDto) {
     return await this.userService.createUser(createUserDto);
   }
 
-  async getAccessToken(user: UserEntity): Promise<string> {
-    const { jwtSecret: secret, expiresInAccess: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
-
-    const payload: AccessTokenPayload = {
-      id: user.id,
-      uuid: user.uuid,
-      email: user.email,
-      userRole: user.role,
-    };
-
-    return this.jwtService.signAsync(payload, { secret, expiresIn });
+  getAccessToken(user: UserEntity): string {
+    return this.accessTokenHelper.generate(user);
   }
 
-  async getRefreshToken(user: UserEntity | Error): Promise<string | Error> {
+  getRefreshToken(user: UserEntity | Error): string | Error {
     if (user instanceof Error) {
       return user;
     }
 
-    const { jwtSecret: secret, expiresInRefresh: expiresIn } = this.configService.get<Configuration['jwt']>('jwt');
-
-    const payload: RefreshTokenPayload = {
-      userId: user.id,
-      userEmail: user.email,
-      userRole: user.role,
-    };
-
-    return await this.jwtService.signAsync(payload, { secret, expiresIn });
+    return this.refreshTokenHelper.generate(user);
   }
 
   async getVerifiedUserByRefreshToken(refreshToken: string): Promise<UserEntity | Error> {
-    try {
-      const { jwtSecret: secret, expiresInRefresh: maxAge } = this.configService.get<Configuration['jwt']>('jwt');
+    const verifiedToken = await this.refreshTokenHelper.verify(refreshToken);
 
-      const { userEmail, userId } = this.jwtService.verify<{ userId: number; userEmail: string }>(refreshToken, {
-        secret,
-        maxAge,
-      });
-
-      const userOrError = await this.userService.findByIdAndEmail({
-        id: userId,
-        email: userEmail,
-      });
-      if (userOrError instanceof Error) return userOrError;
-
-      return userOrError;
-    } catch (error) {
-      if (error instanceof TokenExpiredError) return error;
-
-      throw error;
+    if (verifiedToken instanceof TokenExpiredError) {
+      return verifiedToken;
     }
+
+    const { userId, userEmail } = verifiedToken;
+
+    const userOrError = await this.userService.findByIdAndEmail({
+      id: userId,
+      email: userEmail,
+    });
+
+    if (userOrError instanceof Error) {
+      return userOrError;
+    }
+
+    return userOrError;
   }
 
   async validateUser(login: string, password: string): Promise<UserEntity | Error> {

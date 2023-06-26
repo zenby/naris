@@ -2,7 +2,13 @@
   <div>
     <ng-container *ngFor="let workbook of workbooks">
       <div class="item">
-        <div class="title" (click)="this.workbookEdit.emit(workbook)">{{ workbook.question }}</div>
+        <div
+          class="title"
+          [title]="workbook.question.length > 30 ? workbook.question : ''"
+          (click)="this.workbookEdit.emit(workbook)"
+        >
+          {{ workbook.question }}
+        </div>
         <div class="actions">
           <i nz-icon nzType="edit" class="icon" (click)="this.workbookEdit.emit(workbook)"></i>
           <i nz-icon nzType="eye" class="icon" (click)="this.workbookView.emit(workbook)"></i>

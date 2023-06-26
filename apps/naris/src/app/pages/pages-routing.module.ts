@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Route, RouterModule, Routes } from '@angular/router';
 import { SrDTOModule } from '@soer/sr-dto';
 import { NoContentComponent } from '@soer/soer-components';
 import { ByRoutePathResolver } from '../api/by-route-path.resolver';
@@ -21,6 +21,9 @@ import { StreamsComponent } from './modules/streams/streams.component';
 import { TargetsRoutingModule } from './modules/targets/targets-routing.module';
 import { TargetKey, TemplateKey } from './modules/targets/targets.const';
 import { ComposeTabPageComponent } from './router-compose/compose-tab-page/compose-tab-page.component';
+import { environment } from '../../environments/environment';
+import { featuresEnum } from '../../environments/environment.interface';
+import { ActivityJournalPageComponent } from './modules/account-page/activity-journal-page/activity-journal-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'prefix' },
@@ -86,20 +89,45 @@ const routes: Routes = [
       webfiles: ByRoutePathResolver,
     },
   },
+
   {
     path: 'account',
     component: ComposeTabPageComponent,
     data: { header: { title: 'Личный кабинет', subtitle: 'данные пользователя' } },
-    children: [
-      { path: '', redirectTo: 'profile', pathMatch: 'full' },
-      {
-        path: 'profile',
-        data: {
-          header: { title: 'Профиль', subtitle: 'основная информация' },
+    children: (() => {
+      const routes: Route[] = [
+        { path: '', redirectTo: 'profile', pathMatch: 'full' },
+        {
+          path: 'profile',
+          data: {
+            header: { title: 'Профиль', subtitle: 'основная информация' },
+          },
+          component: ProfilePageComponent,
         },
-        component: ProfilePageComponent,
-      },
-    ],
+      ];
+
+      if (environment.features[featuresEnum.personal_activity_journal]) {
+        routes.push({
+          path: 'activity-journal',
+          data: {
+            header: { title: 'Журнал активности', subtitle: 'пользователя' },
+          },
+          component: ActivityJournalPageComponent,
+        });
+      }
+
+      if (environment.features[featuresEnum.subscription]) {
+        routes.push({
+          path: 'subscription',
+          data: {
+            header: { title: 'Подписка' },
+          },
+          component: PayFormComponent,
+        });
+      }
+
+      return routes;
+    })(),
   },
 ];
 
@@ -125,14 +153,25 @@ const routes: Routes = [
       },
     }),
 
-    SrDTOModule.forChild<WorkbookKey>({
-      namespace: 'articles',
-      schema: { url: 'v2/json/article/:wid' },
-      keys: {
-        article: { wid: '?' },
-        articles: { wid: 'personal' },
-      },
-    }),
+    SrDTOModule.forChild<WorkbookKey>(
+      environment.features[featuresEnum.api_v2]
+        ? {
+            namespace: 'articles',
+            schema: { url: '%%narisApiUrl%%v3/json/article/:wid' },
+            keys: {
+              article: { wid: '?' },
+              articles: { wid: '' },
+            },
+          }
+        : {
+            namespace: 'articles',
+            schema: { url: 'v2/json/article/:wid' },
+            keys: {
+              article: { wid: '?' },
+              articles: { wid: 'personal' },
+            },
+          }
+    ),
 
     SrDTOModule.forChild<QuestionKey>({
       namespace: 'qa',

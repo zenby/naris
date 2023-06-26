@@ -21,3 +21,6 @@ export * from './lib/demo-ng-zorro-antd/demo-ng-zorro-antd.module';
 export * from './lib/workbooks-view/workbooks-view.module';
 export * from './lib/thumbnail-card/thumbnail-card.module';
 export * from './lib/activity-calendar/activity-calendar.module';
+export * from './lib/list/list.module';
+export * from './lib/confirm/confirm.module';
+export * from './lib/confirm/confirm.service';

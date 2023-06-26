@@ -17,12 +17,13 @@ export class JsonService {
     return this.jsonRepository.find({ where: { namespace: documentNamespace } });
   }
 
-  async createJson(documentNamespace: string, createJsonDto: CreateJsonDto): Promise<JsonEntity> {
+  async createJson(author_email: string, documentNamespace: string, createJsonDto: CreateJsonDto): Promise<JsonEntity> {
     const document = new JsonEntity();
 
     Object.assign(document, createJsonDto);
 
     document.namespace = documentNamespace;
+    document.author_email = author_email;
 
     return await this.jsonRepository.save(document);
   }

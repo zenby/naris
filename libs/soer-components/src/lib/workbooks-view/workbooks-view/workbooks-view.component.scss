@@ -4,6 +4,7 @@ $icon-size: 48px;
 $hover-color: #1890ff;
 
 .item {
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -11,7 +12,6 @@ $hover-color: #1890ff;
   border-left: $item-border;
   border-right: $item-border;
   padding-left: 24px;
-  height: 56px;
   align-items: center;
 
   &:last-child {
@@ -44,6 +44,9 @@ $hover-color: #1890ff;
 .title,
 .icon {
   transition: all 0.5s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .title:hover,
@@ -76,4 +79,18 @@ $hover-color: #1890ff;
 
 .empty-list {
   text-align: center;
+}
+
+div[title]:hover:after {
+  content: attr(title);
+  position: absolute;
+  left: 40px;
+  top: 80%;
+  right: 10px;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: max-content;
+  background: rgb(241, 245, 247);
+  border: 1px dashed $hover-color;
+  z-index: 1;
 }

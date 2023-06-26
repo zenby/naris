@@ -1,6 +1,10 @@
 export enum featuresEnum {
   auth_v1 = 'auth_v1',
   auth_v2 = 'auth_v2',
+  api_v1 = 'api_v1',
+  api_v2 = 'api_v2',
+  personal_activity_journal = 'personal_activity_journal',
+  subscription = 'subscription',
 }
 
 export type DynamicConfig = {
@@ -15,6 +19,7 @@ export interface HostVariables {
   patreonAuthUrl: string;
   yandexAuthUrl: string;
   apiUrl: string;
+  narisApiUrl: string;
   urlV2: string;
   assetsUrl: string;
   privateAssetsUrl: string;

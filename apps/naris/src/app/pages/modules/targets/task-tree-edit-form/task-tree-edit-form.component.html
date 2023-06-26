@@ -1,23 +1,15 @@
 <div class="task_form">
-  <header *ngIf="activeTarget">
-    <h5
-      class="target-title"
-      nz-typography
-      nzEditable
-      [nzEditTooltip]="null"
-      [(nzContent)]="activeTarget.title"
-      (nzContentChange)="save.emit(target)"
-    ></h5>
-    <p
-      class="target-title"
-      nz-typography
-      nzEditable
-      [nzEditTooltip]="null"
-      [(nzContent)]="activeTarget.overview"
-      (nzContentChange)="save.emit(target)"
-    ></p>
-  </header>
   <ng-container *ngIf="activeTarget">
+    <header>
+      <h5
+        class="target-title"
+        nz-typography
+        nzEditable
+        [nzEditTooltip]="null"
+        [(nzContent)]="activeTarget.title"
+        (nzContentChange)="save.emit(target)"
+      ></h5>
+    </header>
     <content>
       <nz-timeline *ngIf="activeTarget !== undefined && activeTarget.tasks.length > 0">
         <nz-timeline-item
@@ -25,17 +17,17 @@
           [nzDot]="task.progress === 100 ? complete : working"
         >
           <soer-inline-text-edit
-            *ngIf="editTaskByIndex === ind"
+            *ngIf="editTaskIndex === ind"
             [(text)]="task.title"
             (ok)="onSaveTask(target, $event)"
-            (cancel)="onCancelEdit($event)"
+            (cancel)="onCancelEdit(target, $event)"
           ></soer-inline-text-edit>
-          <nz-row *ngIf="editTaskByIndex !== ind">
+          <nz-row *ngIf="editTaskIndex !== ind">
             <nz-col nzFlex="1">
-              <p class="task-item">{{ task.title }}</p>
+              <markdown [data]="task.title"></markdown>
             </nz-col>
             <nz-col nzFlex="none">
-              <button nz-button nzType="default" nzSize="small" nzShape="circle" (click)="editTask(ind)">
+              <button nz-button nzType="default" nzSize="small" nzShape="circle" (click)="setEditTaskIndex(ind)">
                 <i nz-icon nzType="edit" nzTheme="outline"></i>
               </button>
               <button

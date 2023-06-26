@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { BusEmitter, BusMessage, isBusMessage, MixedBusService } from '@soer/mixed-bus';
-import { CommandCreate, CommandRead, DataStoreService, DtoPack, OK } from '@soer/sr-dto';
+import { CommandCreate, CommandDelete, CommandRead, DataStoreService, DtoPack, OK } from '@soer/sr-dto';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { convertToJsonDTO, parseJsonDTOPack } from '../json.dto.helpers';
 import { WatchVideoEvent } from './events/watch-video.event';
@@ -102,8 +102,6 @@ export class PersonalActivityService {
     if (this.isEmpty(activity)) {
       return;
     }
-    console.log('???', this.activityId);
-
     this.bus$.publish(new CommandCreate(this.activityId, convertToJsonDTO(activity, ['id']), { aid: 'new' }));
   }
   public watchVideo(id: string): PersonalActivity {
@@ -117,5 +115,9 @@ export class PersonalActivityService {
 
   public getWatchedVideos(): VideoIdModel[] {
     return this.activity.watched.videos;
+  }
+
+  public remove(activity: PersonalActivity) {
+    this.bus$.publish(new CommandDelete(this.activityId, convertToJsonDTO(activity, ['id']), { aid: activity.id }));
   }
 }

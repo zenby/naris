@@ -1,3 +1,5 @@
+import { createNewArticlePath, allArticlesPath } from './pathConstants';
+import { testTitle } from '../support/articleConstants';
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -9,64 +11,85 @@
 // ***********************************************
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace Cypress {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface Chainable<Subject> {
-    login(email: string, password: string): void;
-    removeAllExistingArticles(): void;
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface Chainable<Subject> {
+      login(email: string, password: string): void;
+      removeAllExistingArticles(): void;
+      createArticle(): void;
+    }
   }
 }
 //
 // -- This is a parent command --
 Cypress.Commands.add('login', (login, password) => {
-  cy.request({
-    method: 'POST',
-    url: `${Cypress.env('host')}/v2/auth/signin`,
-    form: true,
-    followRedirect: false,
-    body: {
-      login,
-      password,
-    },
-  }).then((response) => {
-    const [cookieStr] = response['headers']['set-cookie'];
-    console.log(cookieStr);
-    cy.request({
-      method: 'GET',
-      url: `${Cypress.env('host')}/v2/auth/access_token`,
-      form: true,
-      followRedirect: false,
-      headers: {
-        Cookie: cookieStr,
-      },
-    }).then((response2) => {
-      const [result] = response2.body.items;
-      localStorage.setItem('tokenV2', result.accessToken);
-      cy.visit('#!/login/auth?accesstoken=' + result.accessToken);
-    });
+  cy.session([login, password], () => {
+    cy
+      .request({
+        method: 'POST',
+        url: `${Cypress.env('host')}/v2/auth/signin`,
+        form: true,
+        followRedirect: false,
+        body: {
+          login,
+          password,
+        },
+      })
+      .then((response) => {
+        const [cookieStr] = response['headers']['set-cookie'];
+        console.log(cookieStr);
+        cy.request({
+          method: 'GET',
+          url: `${Cypress.env('host')}/v2/auth/access_token`,
+          form: true,
+          followRedirect: false,
+          headers: {
+            Cookie: cookieStr,
+          },
+        }).then((response2) => {
+          const [result] = response2.body.items;
+          localStorage.setItem('tokenV2', result.accessToken);
+          cy.visit('#!/login/auth?accesstoken=' + result.accessToken);
+        });
+      }),
+      {
+        cacheAcrossSpecs: true,
+      };
   });
 });
 
 Cypress.Commands.add('removeAllExistingArticles', () => {
-  cy.visit('/#!/pages/workbook/articles');
-  // eslint-disable-next-line cypress/no-unnecessary-waiting
-  cy.wait(1000);
-  cy.get('body').then(($body) => {
-    if ($body.find('.anticon-delete').length) {
-      cy.get('.anticon-delete').then(($elements) => {
-        if ($elements?.length > 0) {
-          $elements.each(() => {
-            cy.get('.anticon-delete').eq(0).click({ force: true });
-            // eslint-disable-next-line cypress/no-unnecessary-waiting
-            cy.wait(200);
-            cy.contains('OK').click();
-            // eslint-disable-next-line cypress/no-unnecessary-waiting
-            cy.wait(300);
-          });
-        }
-      });
-    }
-  });
+  cy.get('a[title="Статьи"]').should('have.attr', 'disabled');
+  cy.get('.ant-spin-dot').should('not.exist');
+  cy.get('.anticon-delete')
+    .should('have.length.gte', 0)
+    .then(($delBtnList) => {
+      const delBtnLen = $delBtnList.length;
+
+      for (let i = 0; i < delBtnLen; i++) {
+        cy.get('.anticon-delete').eq(0).click({ force: true });
+        cy.contains('OK').should('be.visible').click({ force: true });
+        cy.wait(['@deleteRequest', '@personalArticles', '@personalArticles']);
+      }
+    });
+});
+
+Cypress.Commands.add('createArticle', () => {
+  cy.visit(`/${allArticlesPath}`);
+  cy.location('href').should('eq', Cypress.config().baseUrl + allArticlesPath);
+
+  cy.get('.anticon-plus').should('be.visible').click();
+  cy.location('href').should('eq', Cypress.config().baseUrl + createNewArticlePath);
+
+  cy.get('input[placeholder="Тема"]').type(testTitle, { force: true });
+  cy.get('.anticon-save').click();
+  cy.wait(['@personalArticles', '@personalArticles']);
+  cy.get('a[title="Статьи"]').should('be.visible').click();
+  cy.wait('@personalArticles');
+  cy.get('a[title="Статьи"]').should('have.attr', 'disabled');
+  cy.get('.ant-spin-dot').should('not.exist');
 });
 //
 // -- This is a child command --

@@ -46,7 +46,7 @@ button {
 }
 
 header {
-  flex-grow: 1;
+  flex-grow: 0;
 }
 
 content {
@@ -57,12 +57,13 @@ content {
   background: #fbfbfb;
   border: 1px solid #d9d9d9;
   border-radius: 6px;
+  overflow: auto;
 }
 
 footer {
   height: 2.5rem;
   max-height: 2.5rem;
-  flex-grow: 1;
+  flex-grow: 0;
 }
 
 .inline-block {

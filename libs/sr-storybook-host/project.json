@@ -30,7 +30,8 @@
           "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
           "apps/naris/src/styles.scss"
         ],
-        "compodoc": false
+        "compodoc": true,
+        "compodocArgs": ["-e", "json", "-d", "docs/web"]
       },
       "configurations": {
         "ci": {
@@ -51,7 +52,8 @@
           "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
           "apps/naris/src/styles.scss"
         ],
-        "compodoc": false
+        "compodoc": true,
+        "compodocArgs": ["-e", "json", "-d", "docs/web"]
       },
       "configurations": {
         "ci": {

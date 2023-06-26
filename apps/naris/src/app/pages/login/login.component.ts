@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 })
 export class LoginComponent implements OnInit {
   public loading = true;
+  public version = '0.13.0';
 
   constructor(
     private authService: AuthService,

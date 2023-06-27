@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.13.1](https://gitlog.ru/Naris/soermono/compare/naris-0.13.0...naris-0.13.1) (2023-06-27)
+
+
+### Bug Fixes
+
+* add styles to prevent input height change on save ([4f9ac72](https://gitlog.ru/Naris/soermono/commit/4f9ac72e7d19f5fb449a4357fa9a03aaf1f7c6b9))
+
 ## [0.13.0](https://gitlog.ru/Naris/soermono/compare/naris-0.12.1...naris-0.13.0) (2023-06-26)
 
 

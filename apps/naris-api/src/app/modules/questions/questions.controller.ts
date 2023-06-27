@@ -15,7 +15,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { QuestionsService } from './questions.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
-import { QuestionAccessibilityGuard } from './guards/question-accessibility.guards';
+import { QuestionAuthGuard } from './guards/question-auth.guard';
 import { JwtPayloadFromRequest } from '../../common/decorators/user.decorator';
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
@@ -70,7 +70,7 @@ export class QuestionsController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, QuestionAccessibilityGuard)
+  @UseGuards(JwtAuthGuard, QuestionAuthGuard)
   @Delete(':qid')
   async removeQuestion(@Param('qid') questionId: number): Promise<HttpJsonResult<string> | Error> {
     try {

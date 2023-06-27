@@ -5,7 +5,7 @@ import { QuestionEntity } from '../question.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class QuestionAccessibilityGuard implements CanActivate {
+export class QuestionAuthGuard implements CanActivate {
   constructor(@InjectRepository(QuestionEntity) private readonly questionRepository: Repository<QuestionEntity>) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

@@ -18,7 +18,8 @@
     "typeorm:migrate": "npm run typeorm migration:generate -n",
     "typeorm:create": "npm run typeorm migration:create -n",
     "typeorm:run": "npm run typeorm migration:run",
-    "typeorm:revert": "npm run typeorm migration:revert"
+    "typeorm:revert": "npm run typeorm migration:revert",
+    "createNarisVersion": "node apps/naris/create-version.js"
   },
   "private": true,
   "dependencies": {

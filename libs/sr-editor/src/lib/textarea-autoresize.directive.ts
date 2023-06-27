@@ -18,6 +18,9 @@ export class TextareaAutoresizeDirective implements OnInit {
   }
 
   adjust(): void {
-    this.element.nativeElement.style.height = this.element.nativeElement.children[0].scrollHeight + 2 + 'px';
+    // делаем скрытый элемент для textarea чтобы знать всегда высоту текста
+    const heightText = this.element.nativeElement.children[2].scrollHeight;
+    const heightPreview = this.element.nativeElement.children[1].scrollHeight;
+    this.element.nativeElement.style.height = Math.max(heightText, heightPreview) + 2 + 'px';
   }
 }

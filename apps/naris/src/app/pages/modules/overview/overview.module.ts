@@ -27,6 +27,7 @@ import { PercentStatusStrategyPipe } from './metrics/metrics-list/strategies/per
 import { CountStatusStrategyPipe } from './metrics/metrics-list/strategies/count-status-strategy.pipe';
 import { LatestComponent } from './latest/latest.component';
 import { CalendarPageComponent } from './calendar-page/calendar-page.component';
+import { CalendarDataService } from './calendar-page/calendar-page.service';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,7 @@ import { CalendarPageComponent } from './calendar-page/calendar-page.component';
     NzCalendarModule,
     ActivityCalendarModule,
   ],
-  providers: [StreamService, WorkshopsService, ByRoutePathResolver, VideoService],
+  providers: [StreamService, WorkshopsService, ByRoutePathResolver, VideoService, CalendarDataService],
   exports: [],
 })
 export class OverviewModule {}

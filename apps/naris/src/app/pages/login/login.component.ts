@@ -4,6 +4,7 @@ import { AuthService } from '@soer/sr-auth';
 import { FeatureFlagService } from '@soer/sr-feature-flags';
 import { featuresEnum } from '../../../environments/environment.interface';
 import { environment } from '../../../environments/environment';
+import { narisVersion } from '../../../environments/version';
 
 @Component({
   selector: 'soer-login',
@@ -12,7 +13,7 @@ import { environment } from '../../../environments/environment';
 })
 export class LoginComponent implements OnInit {
   public loading = true;
-  public version = '0.13.0';
+  public version = narisVersion;
 
   constructor(
     private authService: AuthService,

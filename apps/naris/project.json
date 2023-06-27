@@ -198,6 +198,14 @@
       "options": {
         "preset": "conventional"
       }
+    },
+    "setVersion": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "node apps/naris/create-version.js"
+        ]
+      }
     }
   },
   "tags": []

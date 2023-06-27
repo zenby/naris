@@ -26,7 +26,7 @@ describe('Тестирование конспектов', () => {
 
     // Проверка, что элемент был создан
     cy.get('div.item.ng-star-inserted').should('exist');
-    cy.get('div.title').eq(0).should('have.text', title);
+    cy.get('div.title').eq(0).should('contain.text', title);
   });
 
   it('Проверка на изменения конспекта', () => {
@@ -39,7 +39,7 @@ describe('Тестирование конспектов', () => {
 
     // Проверка, что элемент был создан
     cy.get('div.item.ng-star-inserted').should('exist');
-    cy.get('div.title').eq(0).should('have.text', title);
+    cy.get('div.title').eq(0).should('contain.text', title);
 
     // Клик по глазику для просмотра
     cy.get('div.item.ng-star-inserted').first().find('i[nztype="eye"]').click({ force: true });

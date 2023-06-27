@@ -23,7 +23,9 @@ export class BlockEditorComponent implements OnInit {
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
   @Input() blocksLength = 0;
 
+  @ViewChild('shadowEdit') shadowEdit!: ElementRef;
   @ViewChild('edit') edit!: ElementRef;
+  @ViewChild('editView') editView!: ElementRef;
 
   isEdit = false;
   isFocused = false;
@@ -84,6 +86,12 @@ export class BlockEditorComponent implements OnInit {
     this.isEdit = true;
     this.isFocused = true;
     this.blockService.saveFocused(this.id);
+
+    const curretnHeight = this.editView.nativeElement.scrollHeight;
+    const heightText = this.editView.nativeElement.children[2].scrollHeight;
+    if (curretnHeight < heightText) {
+      this.editView.nativeElement.style.height = heightText + 2 + 'px';
+    }
   }
 
   handleTextChange(): void {
@@ -91,6 +99,14 @@ export class BlockEditorComponent implements OnInit {
   }
 
   command(event: KeyboardEvent): void {
+    if (event.code === 'Home') {
+      this.setCaretToPos(0);
+      event.preventDefault();
+    }
+    if (event.code === 'End') {
+      event.preventDefault();
+    }
+
     if (event.altKey && event.code === 'Enter') {
       this.addBlockDown();
       event.preventDefault();
@@ -172,6 +188,7 @@ export class BlockEditorComponent implements OnInit {
 
   stopEdit() {
     this.blockService.stopEdit(this.id);
+    this.editView.nativeElement.style.height = 'auto';
   }
 
   private formatBlock() {
@@ -218,8 +235,28 @@ export class BlockEditorComponent implements OnInit {
   }
 
   private getCountOfLines(text: string) {
-    const lineBreakRegExp = new RegExp(/\r\n|\r|\n/gm);
+    //   const lineBreakRegExp = new RegExp(/\r\n|\r|\n/gm);
 
-    return text.split(lineBreakRegExp).length;
+    this.shadowEdit.nativeElement.value = text;
+    return Math.round((this.shadowEdit.nativeElement.scrollHeight - 17) / 21);
+
+    //    return text.split(lineBreakRegExp).length;
+  }
+
+  private setSelectionRange(input: ElementRef, selectionStart: number, selectionEnd: number): void {
+    if (input.nativeElement.setSelectionRange) {
+      input.nativeElement.focus();
+      input.nativeElement.setSelectionRange(selectionStart, selectionEnd);
+    } else if (input.nativeElement.createTextRange) {
+      const range = input.nativeElement.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', selectionEnd);
+      range.moveStart('character', selectionStart);
+      range.select();
+    }
+  }
+
+  setCaretToPos(pos: number): void {
+    this.setSelectionRange(this.edit, pos, pos);
   }
 }

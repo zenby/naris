@@ -22,8 +22,6 @@ import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { QuestionEntity } from './question.entity';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import messages from './constants/messages';
-import { QuestionGettingAuthGuard } from './guards/question-getting-auth.guard';
-import { QuestionCreationAuthGuard } from './guards/question-creation-auth.guard';
 
 @ApiTags('QuestionsAnswers')
 @Controller('v1/questions')
@@ -32,7 +30,7 @@ export class QuestionsController {
 
   private logger = new Logger(QuestionsController.name);
 
-  @UseGuards(JwtAuthGuard, QuestionGettingAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getQuestions(@Query('userUuid') userUuidParam?: string): Promise<HttpJsonResult<QuestionEntity> | Error> {
     try {
@@ -47,7 +45,7 @@ export class QuestionsController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, QuestionCreationAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe())
   @Post()
   async createQuestion(

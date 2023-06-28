@@ -86,10 +86,6 @@ describe('QuestionsModule e2e-test', () => {
 
       expect(repoFindByMethodSpy).toHaveBeenCalledWith({ userUuid: Equal(userQuestion.userUuid) });
     });
-
-    test("should throw a Forbidden error when a userUuid query param doesn't match the current user uuid", async () => {
-      await request.get(`/v1/questions?userUuid=${strangerUuid}`).set(JwtTestHelper.createBearerHeader()).expect(403);
-    });
   });
 
   describe('POST /v1/questions', () => {

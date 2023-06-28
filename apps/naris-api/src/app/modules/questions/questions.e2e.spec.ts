@@ -96,7 +96,7 @@ describe('QuestionsModule e2e-test', () => {
       await request
         .post('/v1/questions')
         .set(JwtTestHelper.createBearerHeader())
-        .send({ question: newQuestionText, userUuid: JwtTestHelper.defaultPayload.uuid })
+        .send({ question: newQuestionText })
         .expect(201, { status: HttpJsonStatus.Ok, items: [expectedNewQuestion] });
 
       expect(repoCreateMethodSpy).toHaveBeenCalledWith({
@@ -108,19 +108,7 @@ describe('QuestionsModule e2e-test', () => {
     });
 
     test('should return a Bad Request error when an empty question is passed', async () => {
-      await request
-        .post('/v1/questions')
-        .set(JwtTestHelper.createBearerHeader())
-        .send({ question: '', userUuid: JwtTestHelper.defaultPayload.uuid })
-        .expect(400);
-    });
-
-    test("should return a Forbidden error when creator uuid doens't match the current user uuid", async () => {
-      await request
-        .post('/v1/questions')
-        .set(JwtTestHelper.createBearerHeader())
-        .send({ question: newUserQuestion.question, userUuid: strangerUuid })
-        .expect(403);
+      await request.post('/v1/questions').set(JwtTestHelper.createBearerHeader()).send({ question: '' }).expect(400);
     });
   });
 

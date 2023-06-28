@@ -199,11 +199,11 @@
         "preset": "conventional"
       }
     },
-    "setVersion": {
+    "updateVersion": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": [
-          "node apps/naris/create-version.js"
+          "node ./scripts/update-naris-version.js"
         ]
       }
     }

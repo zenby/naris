@@ -19,7 +19,7 @@
     "typeorm:create": "npm run typeorm migration:create -n",
     "typeorm:run": "npm run typeorm migration:run",
     "typeorm:revert": "npm run typeorm migration:revert",
-    "initNarisVersion": "nx run naris:version && nx run naris:setVersion"
+    "updateNarisVersion": "nx run naris:version && nx run naris:updateVersion"
   },
   "private": true,
   "dependencies": {

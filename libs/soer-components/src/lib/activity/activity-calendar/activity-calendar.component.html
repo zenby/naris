@@ -1,0 +1,14 @@
+<nz-calendar>
+  <ng-container *nzDateFullCell="let date">
+    <div class="day-wrapper" [ngClass]="dayEvents | arrayFilter: date:isDatesMatch | dayClass: date">
+      <div class="ant-picker-calendar-date-value ng-star-inserted date-header">{{ date | date: 'd' }}</div>
+      <div class="ant-picker-calendar-date-content ng-star-inserted">
+        <ol class="activity-list">
+          <li *ngFor="let dayEvent of dayEvents | arrayFilter: date:isDatesMatch">
+            {{ dayEvent.title }}
+          </li>
+        </ol>
+      </div>
+    </div>
+  </ng-container>
+</nz-calendar>

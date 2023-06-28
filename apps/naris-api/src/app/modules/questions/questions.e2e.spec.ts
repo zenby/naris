@@ -16,7 +16,6 @@ import {
   strangerQuestionId,
   nonexistentQuestionId,
   userQuestionId,
-  strangerUuid,
 } from './tests/questions-test-data';
 import { QuestionEntity } from './question.entity';
 import { JwtConfig } from '../../config/jwt.config';

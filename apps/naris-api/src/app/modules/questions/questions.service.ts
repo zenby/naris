@@ -5,14 +5,15 @@ import { Repository } from 'typeorm';
 
 import { QuestionEntity } from './question.entity';
 import { CreateQuestionDto } from './dto/create-question.dto';
+import { JwtPayload } from '../../common/types/jwt-payload.interface';
 
 @Injectable()
 export class QuestionsService {
   constructor(@InjectRepository(QuestionEntity) private readonly questionRepository: Repository<QuestionEntity>) {}
 
-  async create({ question, userUuid }: CreateQuestionDto): Promise<QuestionEntity | Error> {
+  async create({ question }: CreateQuestionDto, user: JwtPayload): Promise<QuestionEntity | Error> {
     const url = ''; // TODO: get data for url from auth-cdn
-    const newQuestion = this.questionRepository.create({ question, url, userUuid });
+    const newQuestion = this.questionRepository.create({ question, url, userUuid: user.uuid });
     return await this.questionRepository.save(newQuestion);
   }
 

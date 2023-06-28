@@ -53,7 +53,7 @@ export class QuestionsController {
     @Body() createQuestionDto: CreateQuestionDto
   ): Promise<HttpJsonResult<QuestionEntity | string>> {
     try {
-      const result = await this.questionsService.create(createQuestionDto);
+      const result = await this.questionsService.create(createQuestionDto, jwtPayload);
 
       if (result instanceof Error) {
         return { status: HttpJsonStatus.Error, items: [result.message] };

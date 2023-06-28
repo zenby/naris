@@ -22,7 +22,7 @@
       >
       </soer-thumbnail-card>
       <ng-template #folder>
-        <nz-card nzHoverable [nzCover]="coverTemplate" (click)="showVideoOrOpenFolder(video, i)">
+        <nz-card data-cy="openFolder" nzHoverable [nzCover]="coverTemplate" (click)="showVideoOrOpenFolder(video, i)">
           <nz-card-meta [nzTitle]="video.title" [nzDescription]="video.desc"></nz-card-meta>
         </nz-card>
         <ng-template #coverTemplate>

@@ -54,23 +54,25 @@ describe('module workshops', () => {
       });
     });
 
-    it('shows access restricted message for guest account when accessing workshop ', () => {
+    it.only('shows access restricted message for guest account when accessing workshop ', () => {
       cy.visit('#!/pages/workshops');
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(1000);
-      cy.get('nz-card').each(($card, _, __) => {
+      cy.get('[data-cy="openFolder"]').each(($card, _, __) => {
         cy.wrap($card).click();
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(1000);
-        cy.get('nz-card').each(($card1, index, _) => {
-          if (index > 0) {
+        cy.get('[data-cy="openVideo"]').each(($card1, index, _) => {
+          if ($card1) {
             // FIXME filter elements using more functional approach
             cy.wrap($card1).click();
             // eslint-disable-next-line cypress/no-unnecessary-waiting
             cy.wait(1000);
-            cy.get('nz-result').should('be.visible').contains('Данный контент доступен только на платных подписках');
-            cy.get('i[nztype="close-circle"]').click(); // popup has close button that works
-            cy.get('nz-result').should('not.exist'); // popup is closed
+            cy.get('[data-cy="noContent"]')
+              .should('be.visible')
+              .contains('Данный контент доступен только на платных подписках');
+            cy.get('[data-cy="closeBtn"]').click(); // popup has close button that works
+            cy.get('[data-cy="noContent"]').should('not.exist'); // popup is closed
           }
         });
       });

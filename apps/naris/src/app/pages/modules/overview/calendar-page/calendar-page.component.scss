@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.activity-item {
+  padding: 10px;
+
+  flex: 50%;
+}

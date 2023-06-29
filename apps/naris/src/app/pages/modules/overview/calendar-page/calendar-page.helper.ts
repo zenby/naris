@@ -1,17 +1,17 @@
-import { WathcedVideo } from '../../../../services/video/video.service';
-import { ActivityModel } from './activity-model';
+import { ActivityEventModel } from '@soer/soer-components';
+import { WatchedVideo } from '../../../../services/video/video.models';
 
 export class CalendarPageHelper {
-  public static mapWatchedVideosToActivities(videos: WathcedVideo[]): ActivityModel[] {
-    return videos.map((video: WathcedVideo) => this.mapWatchedVideoModelToActivityModel(video));
+  public static mapWatchedVideosToActivities(videos: WatchedVideo[]): ActivityEventModel[] {
+    return videos.map((video: WatchedVideo) => this.mapWatchedVideoModelToActivityEventModel(video));
   }
 
-  private static mapWatchedVideoModelToActivityModel(video: WathcedVideo): ActivityModel {
-    const activityModel: ActivityModel = {
+  private static mapWatchedVideoModelToActivityEventModel(video: WatchedVideo): ActivityEventModel {
+    const activityEvent: ActivityEventModel = {
       title: `Просмотрено видео ${video.title}`,
       date: video.date,
     };
 
-    return activityModel;
+    return activityEvent;
   }
 }

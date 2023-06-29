@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { CalendarDataService } from './calendar-page.service';
-import { ActivityModel } from './activity-model';
+import { ActivityEventModel } from '@soer/soer-components';
 
 @Component({
   selector: 'soer-calendar-page',
@@ -10,7 +10,7 @@ import { ActivityModel } from './activity-model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarPageComponent implements OnInit {
-  public activities$: Observable<ActivityModel[]> = of([]);
+  public activities$: Observable<ActivityEventModel[]> = of([]);
 
   constructor(private calendarDataService: CalendarDataService) {}
 

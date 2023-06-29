@@ -9,23 +9,19 @@ describe('module workshops', () => {
       cy.viewport(screenSize);
       cy.intercept('GET', '**/*.svg').as('signIn');
       cy.login('user', 'user');
+      cy.visit('#!/pages/workshops');
+      cy.wait('@signIn');
     });
 
     it('displays workshop folders list', () => {
-      cy.visit('#!/pages/workshops');
-      cy.wait('@signIn');
       cy.get('soer-streams');
     });
 
     it('displays at least one workshop folder', () => {
-      cy.visit('#!/pages/workshops');
-      cy.wait('@signIn');
       cy.get('nz-card');
     });
 
     it('displays back button on every workshops folder page', () => {
-      cy.visit('#!/pages/workshops');
-      cy.wait('@signIn');
       cy.get('nz-card').each(($card, _, __) => {
         cy.wrap($card).click();
         cy.get('nz-card').first().as('btnBack'); // first card is back to workshops button
@@ -36,8 +32,6 @@ describe('module workshops', () => {
     });
 
     it('has workshops inside every workshops folder', () => {
-      cy.visit('#!/pages/workshops');
-      cy.wait('@signIn');
       cy.get('nz-card').each(($card, _, __) => {
         cy.wrap($card).click();
         cy.get('nz-card').should('have.length.least', 2); // first card is back button, others are supposed to be workshops
@@ -45,8 +39,6 @@ describe('module workshops', () => {
     });
 
     it('shows access restricted message for guest account when accessing workshop ', () => {
-      cy.visit('#!/pages/workshops');
-      cy.wait('@signIn');
       cy.get('[data-cy="openFolder"]').each(($card, _, __) => {
         cy.wrap($card).click();
         cy.get('[data-cy="openVideo"]').each(($card1, index, _) => {

@@ -7,10 +7,10 @@ describe('module workshops', () => {
     // initial login and screen size configuration
     beforeEach(() => {
       cy.viewport(screenSize);
-      cy.intercept('GET', '**/*.svg').as('signIn');
+      cy.intercept('GET', '**/api/kinescope/workshops').as('workshops');
       cy.login('user', 'user');
       cy.visit('#!/pages/workshops');
-      cy.wait('@signIn');
+      cy.wait('@workshops');
     });
 
     it('displays workshop folders list', () => {

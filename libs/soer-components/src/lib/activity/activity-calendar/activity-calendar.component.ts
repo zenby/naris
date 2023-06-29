@@ -1,11 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ru_RU, NzI18nService } from 'ng-zorro-antd/i18n';
-
-export interface DayEvent {
-  title: string;
-  date: string;
-}
+import { ActivityEvent } from '../activity-event';
 
 @Component({
   selector: 'soer-activity-calendar',
@@ -13,13 +9,15 @@ export interface DayEvent {
   styleUrls: ['./activity-calendar.component.scss'],
 })
 export class ActivityCalendarComponent implements OnInit {
-  @Input() dayEvents: DayEvent[] = [];
+  @Input() dayEvents: ActivityEvent[] = [];
+
   constructor(private i18n: NzI18nService) {}
 
   ngOnInit() {
     this.i18n.setLocale(ru_RU);
   }
-  isDatesMatch(dayEvent: DayEvent, date: string): boolean {
+
+  isDatesMatch(dayEvent: ActivityEvent, date: string): boolean {
     return formatDate(dayEvent.date, 'yyyy-MM-dd', 'en') == formatDate(date, 'yyyy-MM-dd', 'en');
   }
 }

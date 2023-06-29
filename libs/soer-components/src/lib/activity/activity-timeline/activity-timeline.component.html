@@ -1,0 +1,5 @@
+<nz-timeline [nzMode]="'left'">
+  <ng-container *ngFor="let activityEvent of activitiesEvents">
+    <nz-timeline-item nzColor="green" [nzLabel]="activityEvent.date">{{ activityEvent.title }}</nz-timeline-item>
+  </ng-container>
+</nz-timeline>

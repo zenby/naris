@@ -27,8 +27,6 @@ describe('module workshops', () => {
       cy.visit('#!/pages/workshops');
       cy.get('nz-card').each(($card, _, __) => {
         cy.wrap($card).click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(1000);
         cy.get('nz-card').first().as('btnBack'); // first card is back to workshops button
         cy.get('@btnBack').should('have.descendants', 'svg[data-icon="arrow-left"]'); // check if icon goback is present
         cy.get('@btnBack').click();
@@ -40,8 +38,6 @@ describe('module workshops', () => {
       cy.visit('#!/pages/workshops');
       cy.get('nz-card').each(($card, _, __) => {
         cy.wrap($card).click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(1000);
         cy.get('nz-card').should('have.length.least', 2); // first card is back button, others are supposed to be workshops
       });
     });
@@ -50,14 +46,10 @@ describe('module workshops', () => {
       cy.visit('#!/pages/workshops');
       cy.get('[data-cy="openFolder"]').each(($card, _, __) => {
         cy.wrap($card).click();
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(1000);
         cy.get('[data-cy="openVideo"]').each(($card1, index, _) => {
           if ($card1) {
             // FIXME filter elements using more functional approach
             cy.wrap($card1).click();
-            // eslint-disable-next-line cypress/no-unnecessary-waiting
-            cy.wait(1000);
             cy.get('[data-cy="noContent"]')
               .should('be.visible')
               .contains('Данный контент доступен только на платных подписках');

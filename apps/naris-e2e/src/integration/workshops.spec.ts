@@ -15,22 +15,16 @@ describe('module workshops', () => {
 
     it('displays workshop folders list', () => {
       cy.visit('#!/pages/workshops');
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(1000);
       cy.get('soer-streams');
     });
 
     it('displays at least one workshop folder', () => {
       cy.visit('#!/pages/workshops');
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(1000);
       cy.get('nz-card');
     });
 
     it('displays back button on every workshops folder page', () => {
       cy.visit('#!/pages/workshops');
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(1000);
       cy.get('nz-card').each(($card, _, __) => {
         cy.wrap($card).click();
         // eslint-disable-next-line cypress/no-unnecessary-waiting
@@ -44,8 +38,6 @@ describe('module workshops', () => {
 
     it('has workshops inside every workshops folder', () => {
       cy.visit('#!/pages/workshops');
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(1000);
       cy.get('nz-card').each(($card, _, __) => {
         cy.wrap($card).click();
         // eslint-disable-next-line cypress/no-unnecessary-waiting
@@ -54,10 +46,8 @@ describe('module workshops', () => {
       });
     });
 
-    it.only('shows access restricted message for guest account when accessing workshop ', () => {
+    it('shows access restricted message for guest account when accessing workshop ', () => {
       cy.visit('#!/pages/workshops');
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(1000);
       cy.get('[data-cy="openFolder"]').each(($card, _, __) => {
         cy.wrap($card).click();
         // eslint-disable-next-line cypress/no-unnecessary-waiting

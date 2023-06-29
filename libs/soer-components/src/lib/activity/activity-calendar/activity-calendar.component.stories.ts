@@ -8,7 +8,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 import { ActivityCalendarComponent } from './activity-calendar.component';
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
-import { ActivityEvent } from '../activity-event';
+import { ActivityEventModel } from '../activity-event-model';
 import { ActivityModule } from '../activity.module';
 
 registerLocaleData(ru);
@@ -28,7 +28,7 @@ export default {
   ],
 } as Meta<ActivityCalendarComponent>;
 
-const videos: ActivityEvent[] = Array(20)
+const videos: ActivityEventModel[] = Array(20)
   .fill(1)
   .map((item, i) => {
     return {

@@ -193,10 +193,18 @@
         }
       }
     },
-    "version": {
+    "update-app-version": {
       "executor": "@jscutlery/semver:version",
       "options": {
         "preset": "conventional"
+      }
+    },
+    "version": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "node ./scripts/update-naris-version.js"
+        ]
       },
       "dependsOn": [
         {
@@ -204,14 +212,6 @@
           "projects": "self"
         }
       ]
-    },
-    "update-app-version": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": [
-          "node ./scripts/update-naris-version.js"
-        ]
-      }
     }
   },
   "tags": []

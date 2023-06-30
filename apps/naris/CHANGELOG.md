@@ -2,6 +2,16 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.14.0](https://gitlog.ru/Naris/soermono/compare/naris-0.13.1...naris-0.14.0) (2023-06-30)
+
+
+### Features
+
+* add new executable script in apps/naris and add script in package.json ([61bd807](https://gitlog.ru/Naris/soermono/commit/61bd807d9ab2ed2c3f911ea8a565bb1bbf8251c2))
+* **apps/naris:** create script for creating version.ts file ([08e338c](https://gitlog.ru/Naris/soermono/commit/08e338cb04646e514e93dc87405b8595ca792846))
+* **apps/naris:** use naris version and add it to login component ([fac44a3](https://gitlog.ru/Naris/soermono/commit/fac44a3fa0165ba1be222ecdfcdd9fac9be92a33))
+* **naris/login:** add version view in login page ([d9516e3](https://gitlog.ru/Naris/soermono/commit/d9516e3c3fa6e6c3a3a0596fb527bfad87c6a4f3))
+
 ## [0.13.1](https://gitlog.ru/Naris/soermono/compare/naris-0.13.0...naris-0.13.1) (2023-06-27)
 
 

@@ -19,7 +19,7 @@ exec('git describe --tags --abbrev=0', (error, stdout, stderr) => {
     `export const narisVersion = "${gitTag}";\n`,
     function (err) {
       if (err) throw err;
-      console.log('Version file is created successfully');
+      console.log('Version file is updated successfully');
     }
   );
 });

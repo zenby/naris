@@ -4,7 +4,7 @@ import { AuthService } from '@soer/sr-auth';
 import { FeatureFlagService } from '@soer/sr-feature-flags';
 import { featuresEnum } from '../../../environments/environment.interface';
 import { environment } from '../../../environments/environment';
-import { narisVersion } from '../../../environments/version';
+import { ApplicationService } from '../../services/application.service';
 
 @Component({
   selector: 'soer-login',
@@ -13,12 +13,13 @@ import { narisVersion } from '../../../environments/version';
 })
 export class LoginComponent implements OnInit {
   public loading = true;
-  public version = narisVersion;
+  public version = this.app.narisVersion;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private readonly featureFlags: FeatureFlagService
+    private readonly featureFlags: FeatureFlagService,
+    private app: ApplicationService
   ) {}
 
   ngOnInit(): void {

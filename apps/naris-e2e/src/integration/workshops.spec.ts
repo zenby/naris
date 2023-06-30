@@ -42,15 +42,12 @@ describe('module workshops', () => {
       cy.get('[data-cy="openFolder"]').each(($card, _, __) => {
         cy.wrap($card).click();
         cy.get('[data-cy="openVideo"]').each(($card1, index, _) => {
-          if ($card1) {
-            // FIXME filter elements using more functional approach
-            cy.wrap($card1).click();
-            cy.get('[data-cy="noContent"]')
-              .should('be.visible')
-              .contains('Данный контент доступен только на платных подписках');
-            cy.get('[data-cy="closeBtn"]').click(); // popup has close button that works
-            cy.get('[data-cy="noContent"]').should('not.exist'); // popup is closed
-          }
+          cy.wrap($card1).click();
+          cy.get('[data-cy="noContent"]')
+            .should('be.visible')
+            .contains('Данный контент доступен только на платных подписках');
+          cy.get('[data-cy="closeBtn"]').click(); // popup has close button that works
+          cy.get('[data-cy="noContent"]').should('not.exist'); // popup is closed
         });
       });
     });

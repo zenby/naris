@@ -22,9 +22,9 @@ describe('module workshops', () => {
     });
 
     it('displays back button on every workshops folder page', () => {
-      cy.get('nz-card').each(($card, _, __) => {
+      cy.get('[data-cy="openFolder"]').each(($card, _, __) => {
         cy.wrap($card).click();
-        cy.get('nz-card').first().as('btnBack'); // first card is back to workshops button
+        cy.get('[data-cy="folderUp"]').first().as('btnBack'); // first card is back to workshops button
         cy.get('@btnBack').should('have.descendants', 'svg[data-icon="arrow-left"]'); // check if icon goback is present
         cy.get('@btnBack').click();
         cy.url().should('contain', '#!/pages/workshops'); // now we are at the page where we started

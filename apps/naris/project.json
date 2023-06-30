@@ -197,9 +197,15 @@
       "executor": "@jscutlery/semver:version",
       "options": {
         "preset": "conventional"
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "update-app-version",
+          "projects": "self"
+        }
+      ]
     },
-    "updateVersion": {
+    "update-app-version": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": [

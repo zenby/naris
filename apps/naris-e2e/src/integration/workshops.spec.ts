@@ -14,11 +14,11 @@ describe('module workshops', () => {
     });
 
     it('displays workshop folders list', () => {
-      cy.get('[data-cy="streamsFolder"]');
+      cy.get('[data-cy="streamsFolderList"]');
     });
 
     it('displays at least one workshop folder', () => {
-      cy.get('nz-card');
+      cy.get('[data-cy="openFolder"]');
     });
 
     it('displays back button on every workshops folder page', () => {

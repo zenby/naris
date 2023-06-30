@@ -1,4 +1,4 @@
-<div data-cy="streamsFolder" nz-row [nzGutter]="[24, 24]">
+<div data-cy="streamsFolderList" nz-row [nzGutter]="[24, 24]">
   <ng-container *ngIf="streams.length > 0; else nocontent">
     <div *ngIf="isFolderOpen >= 0" class="video-info" nz-col nzXs="24" nzSm="12" nzMd="8" nzLg="8" nzXl="8">
       <ng-container *ngTemplateOutlet="folderUp"></ng-container>

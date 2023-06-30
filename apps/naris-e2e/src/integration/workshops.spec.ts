@@ -14,7 +14,7 @@ describe('module workshops', () => {
     });
 
     it('displays workshop folders list', () => {
-      cy.get('soer-streams');
+      cy.get('[data-cy="streamsFolder"]');
     });
 
     it('displays at least one workshop folder', () => {

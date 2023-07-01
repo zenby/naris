@@ -1,9 +1,19 @@
 import { UserEntity } from '../../user/user.entity';
-import { RequestFingerprint } from '../types/request-fingerprint.interface';
+import { Fingerprint } from '../helpers/fingerprint';
 import * as jwt from 'jsonwebtoken';
 import { testConfig } from './auth.test.config';
+import { Request } from 'express';
 
-export const getJWTTokenForUserWithRole = (user: UserEntity, requestFingerprint: RequestFingerprint) => {
+export const createRequest = (ipAddresses: string[], userAgent: string): Request => {
+  return {
+    headers: {
+      'x-original-forwarded-for': ipAddresses.join(', '),
+      'user-agent': userAgent,
+    },
+  } as unknown as Request;
+};
+
+export const getJWTTokenForUserWithRole = (user: UserEntity, requestFingerprint: Fingerprint) => {
   const { jwtSecret, expiresInRefresh } = testConfig;
 
   return jwt.sign({ userId: user.id, userEmail: user.email, fingerprint: requestFingerprint }, jwtSecret, {
@@ -13,7 +23,7 @@ export const getJWTTokenForUserWithRole = (user: UserEntity, requestFingerprint:
 
 export const getJWTTokenForUserWithFingerprint = (
   user: UserEntity,
-  requestFingerprint: RequestFingerprint,
+  requestFingerprint: Fingerprint,
   expiredInSec?: number
 ) => {
   const { jwtSecret: secret } = testConfig;

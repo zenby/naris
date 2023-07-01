@@ -1,98 +1,82 @@
 import { AuthService } from '../../auth/auth.service';
-import { adminUser } from '../../user/tests/test.users';
 import { ConfigService } from '@nestjs/config';
-import { Request } from 'express';
-import { UserEntity } from '../../user/user.entity';
-import { FingerprintRequestHelper } from '../../auth/helpers/fingerprint-request.helper';
 import { RefreshCookieStrategy } from './refreshCookie.strategy';
-import { RequestFingerprint } from '../../auth/types/request-fingerprint.interface';
+import { Test, TestingModule } from '@nestjs/testing';
+import { UserEntity } from '../../user/user.entity';
+import { Fingerprint } from '../../auth/helpers/fingerprint';
+import { adminUser, testRequest } from '../../user/tests/test.users';
 
 describe('RefreshCookieStrategy', () => {
-  let refreshCookieStrategy: RefreshCookieStrategy;
-  let authServiceMock: Partial<AuthService>;
-  let configServiceMock: Partial<ConfigService>;
-  let request: Request;
-  let fingerprintRequestHelperMock: FingerprintRequestHelper;
-  let extractRequestFingerprintMock: jest.Mock;
+  let strategy: RefreshCookieStrategy;
+  let authService: AuthService;
 
-  beforeEach(() => {
-    authServiceMock = {
-      getVerifiedUserByRefreshToken: jest.fn(),
-    };
+  const testRefreshToken = 'testRefreshToken';
 
-    configServiceMock = {
-      get: jest.fn((key: string) => {
-        if (key === 'jwt') {
-          return { cookieName: 'test_cookie' };
-        }
-        return undefined;
-      }),
-    };
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        RefreshCookieStrategy,
+        {
+          provide: AuthService,
+          useValue: {
+            getVerifiedUserByRefreshToken: jest.fn(),
+          },
+        },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: jest.fn((key: string) => {
+              if (key === 'jwt') {
+                return { cookieName: 'test_cookie' };
+              }
+              return undefined;
+            }),
+          },
+        },
+      ],
+    }).compile();
 
-    request = {} as Request;
-
-    extractRequestFingerprintMock = jest.fn();
-
-    fingerprintRequestHelperMock = {
-      extractRequestFingerprint: extractRequestFingerprintMock,
-    } as unknown as FingerprintRequestHelper;
-
-    refreshCookieStrategy = new RefreshCookieStrategy(
-      authServiceMock as AuthService,
-      configServiceMock as ConfigService
-    );
-    (
-      refreshCookieStrategy as unknown as { fingerprintRequestHelper: FingerprintRequestHelper }
-    ).fingerprintRequestHelper = fingerprintRequestHelperMock;
+    strategy = module.get<RefreshCookieStrategy>(RefreshCookieStrategy);
+    authService = module.get<AuthService>(AuthService);
   });
 
   describe('validate', () => {
-    it('should return user entity if refresh token is valid', async () => {
-      const refreshToken = 'valid_refresh_token';
-      const expectedUser: UserEntity = adminUser;
-      const expectedRequestFingerprint = {};
+    it('should return null if no refresh token', async () => {
+      const refreshToken: string = null;
 
-      extractRequestFingerprintMock.mockReturnValue(expectedRequestFingerprint);
-      authServiceMock.getVerifiedUserByRefreshToken = jest.fn().mockResolvedValue(expectedUser);
+      const result = await strategy.validate(testRequest, refreshToken);
 
-      const result = await refreshCookieStrategy.validate(request, refreshToken);
-      expect(result).toEqual(expectedUser);
-      expect(authServiceMock.getVerifiedUserByRefreshToken).toHaveBeenCalledWith(
-        refreshToken,
-        expectedRequestFingerprint
-      );
-      expect(extractRequestFingerprintMock).toHaveBeenCalledWith(request);
+      expect(result).toBeNull();
     });
 
-    it('should return null if refresh token is not provided', async () => {
-      const refreshToken = '';
+    it('should call authService.getVerifiedUserByRefreshToken with correct arguments', async () => {
+      const user: UserEntity = {} as UserEntity;
 
-      const result = await refreshCookieStrategy.validate(request, refreshToken);
-      expect(result).toBeNull();
-      expect(fingerprintRequestHelperMock.extractRequestFingerprint).not.toHaveBeenCalled();
-      expect(authServiceMock.getVerifiedUserByRefreshToken).not.toHaveBeenCalled();
+      authService.getVerifiedUserByRefreshToken = jest.fn().mockResolvedValue(user);
+
+      const spy = jest.spyOn(authService, 'getVerifiedUserByRefreshToken');
+
+      await strategy.validate(testRequest, testRefreshToken);
+
+      expect(spy).toHaveBeenCalledWith(testRefreshToken, expect.any(Fingerprint));
     });
 
-    it('should return null if refresh token is invalid', async () => {
-      const refreshToken = 'invalid_refresh_token';
-      const expectedRequestFingerprint: RequestFingerprint = {
-        ipAddresses: ['127.0.0.1'],
-        userAgent: 'Test User Agent',
-      };
+    it('should return user if authService.getVerifiedUserByRefreshToken returns a user', async () => {
+      authService.getVerifiedUserByRefreshToken = jest.fn().mockResolvedValue(adminUser);
 
-      fingerprintRequestHelperMock.extractRequestFingerprint = jest.fn().mockReturnValue(expectedRequestFingerprint);
-      authServiceMock.getVerifiedUserByRefreshToken = jest.fn().mockResolvedValue(new Error('Invalid refresh token'));
+      const result = await strategy.validate(testRequest, testRefreshToken);
 
-      const result = await refreshCookieStrategy.validate(request, refreshToken);
+      expect(result).toBe(adminUser);
+    });
+
+    it('should return null if authService.getVerifiedUserByRefreshToken returns an error', async () => {
+      const error = new Error('Test error');
+
+      authService.getVerifiedUserByRefreshToken = jest.fn().mockResolvedValue(error);
+
+      const result = await strategy.validate(testRequest, testRefreshToken);
+
       expect(result).toBeNull();
-      expect(authServiceMock.getVerifiedUserByRefreshToken).toHaveBeenCalledWith(
-        refreshToken,
-        expect.objectContaining({
-          ipAddresses: expect.any(Array),
-          userAgent: expect.any(String),
-        })
-      );
-      expect(fingerprintRequestHelperMock.extractRequestFingerprint).toHaveBeenCalledWith(request);
     });
   });
 });

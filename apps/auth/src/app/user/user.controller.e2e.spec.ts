@@ -12,7 +12,7 @@ import { UserModule } from './user.module';
 import { HttpJsonResult, UserRole } from '@soer/sr-common-interfaces';
 import { faker } from '@faker-js/faker';
 import { getJWTTokenForUserWithRole } from '../auth/tests/get-jwt.test.helper';
-import { requestFingerprint } from './tests/test.users';
+import { testFingerprint } from './tests/test.users';
 
 describe('user controller e2e tests', () => {
   let app: INestApplication;
@@ -70,7 +70,7 @@ describe('user controller e2e tests', () => {
     }
 
     it('should return a list of users when user is an admin', async () => {
-      const jwtToken = getJWTTokenForUserWithRole(adminUser, requestFingerprint);
+      const jwtToken = getJWTTokenForUserWithRole(adminUser, testFingerprint);
 
       jest.spyOn(userRepo, 'find').mockResolvedValueOnce(users);
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
@@ -78,8 +78,8 @@ describe('user controller e2e tests', () => {
       const response = await request
         .get('/users')
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
+        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
+        .set('user-agent', testFingerprint.userAgent)
         .send()
         .expect(200);
 
@@ -92,7 +92,7 @@ describe('user controller e2e tests', () => {
     it('should return 403 error when user not an admin', async () => {
       const user = getTestUser();
 
-      const jwtToken = getJWTTokenForUserWithRole(adminUser, requestFingerprint);
+      const jwtToken = getJWTTokenForUserWithRole(adminUser, testFingerprint);
 
       jest.spyOn(userRepo, 'find').mockResolvedValueOnce(users);
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(user);
@@ -100,8 +100,8 @@ describe('user controller e2e tests', () => {
       await request
         .get('/users')
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
+        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
+        .set('user-agent', testFingerprint.userAgent)
         .send()
         .expect(403);
     });
@@ -109,8 +109,8 @@ describe('user controller e2e tests', () => {
     it('should return 401 error when not authorized', async () => {
       await request
         .get('/users')
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
+        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
+        .set('user-agent', testFingerprint.userAgent)
         .send()
         .expect(401);
     });
@@ -121,7 +121,7 @@ describe('user controller e2e tests', () => {
       const adminUser = getTestUser({ role: UserRole.ADMIN });
       const userToDelete = getTestUser();
 
-      const jwtToken = getJWTTokenForUserWithRole(adminUser, requestFingerprint);
+      const jwtToken = getJWTTokenForUserWithRole(adminUser, testFingerprint);
 
       const userRepositoryDeleteSpy = jest.spyOn(userRepo, 'delete').mockResolvedValueOnce({} as DeleteResult);
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
@@ -129,8 +129,8 @@ describe('user controller e2e tests', () => {
       const response = await request
         .delete(`/user/${userToDelete.id}`)
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
+        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
+        .set('user-agent', testFingerprint.userAgent)
         .send()
         .expect(200);
 
@@ -144,15 +144,15 @@ describe('user controller e2e tests', () => {
       const user = getTestUser();
       const userToDelete = getTestUser();
 
-      const jwtToken = getJWTTokenForUserWithRole(user, requestFingerprint);
+      const jwtToken = getJWTTokenForUserWithRole(user, testFingerprint);
 
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(user);
 
       await request
         .delete(`/user/${userToDelete.id}`)
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
+        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
+        .set('user-agent', testFingerprint.userAgent)
         .send()
         .expect(403);
     });
@@ -169,15 +169,15 @@ describe('user controller e2e tests', () => {
       const adminUser = getTestUser({ role: UserRole.ADMIN });
       const userId = faker.random.numeric();
 
-      const jwtToken = getJWTTokenForUserWithRole(adminUser, requestFingerprint);
+      const jwtToken = getJWTTokenForUserWithRole(adminUser, testFingerprint);
 
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
 
       await request
         .put(`/user/${userId}`)
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
+        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
+        .set('user-agent', testFingerprint.userAgent)
         .send({ isBlocked: true })
         .expect(200);
 
@@ -188,15 +188,15 @@ describe('user controller e2e tests', () => {
       const adminUser = getTestUser({ role: UserRole.ADMIN });
       const userId = faker.random.numeric();
 
-      const jwtToken = getJWTTokenForUserWithRole(adminUser, requestFingerprint);
+      const jwtToken = getJWTTokenForUserWithRole(adminUser, testFingerprint);
 
       jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
 
       await request
         .put(`/user/${userId}`)
         .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', requestFingerprint.ipAddresses.join(','))
-        .set('user-agent', requestFingerprint.userAgent)
+        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
+        .set('user-agent', testFingerprint.userAgent)
         .send({ isBlocked: false })
         .expect(200);
 

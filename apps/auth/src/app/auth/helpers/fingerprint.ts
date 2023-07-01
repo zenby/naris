@@ -1,12 +1,20 @@
 import { Request } from 'express';
-import { RequestFingerprint } from '../types/request-fingerprint.interface';
 
-export class FingerprintRequestHelper {
-  extractRequestFingerprint(request: Request): RequestFingerprint {
-    const ipAddresses: string[] = this.extractIpAddresses(request);
-    const userAgent = request.headers['user-agent'];
+export class Fingerprint {
+  readonly ipAddresses: string[];
+  readonly userAgent: string;
 
-    return { ipAddresses: ipAddresses, userAgent: userAgent };
+  constructor(request: Request) {
+    this.ipAddresses = this.extractIpAddresses(request);
+    this.userAgent = request.headers['user-agent'];
+  }
+
+  static validateCompare(fingerprint: Fingerprint, jwtFingerprint: Fingerprint): boolean {
+    return this.asString(fingerprint) === this.asString(jwtFingerprint);
+  }
+
+  private static asString(fingerprint: Fingerprint): string {
+    return `${fingerprint.ipAddresses.join('')}${fingerprint.userAgent}`;
   }
 
   private extractIpAddresses(request: Request): string[] {

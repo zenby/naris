@@ -3,12 +3,12 @@ import { UserEntity } from '../user.entity';
 import { faker } from '@faker-js/faker';
 import { genSaltSync, hashSync } from 'bcrypt';
 import { LoginUserDto } from '../dto/login-user.dto';
-import { RequestFingerprint } from '../../auth/types/request-fingerprint.interface';
+import { Fingerprint } from '../../auth/helpers/fingerprint';
+import { Request } from 'express';
+import { createRequest } from '../../auth/tests/get-jwt.test.helper';
 
-export const requestFingerprint: RequestFingerprint = {
-  userAgent: 'Test User Agent',
-  ipAddresses: ['127.0.0.1', '127.0.0.2'],
-};
+export const testRequest: Request = createRequest(['127.0.0.1', '192.168.0.1'], 'Mozilla/5.0');
+export const testFingerprint = new Fingerprint(testRequest);
 
 export const regularUserCredentials: LoginUserDto = {
   login: 'regularUser',

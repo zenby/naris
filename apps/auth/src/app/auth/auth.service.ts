@@ -10,7 +10,7 @@ import { TokenExpiredError } from 'jsonwebtoken';
 
 import { AccessTokenHelper } from './helpers/access-token.helper';
 import { RefreshTokenHelper } from './helpers/refresh-token.helper';
-import { RequestFingerprint } from './types/request-fingerprint.interface';
+import { Fingerprint } from './helpers/fingerprint';
 
 @Injectable()
 export class AuthService {
@@ -32,18 +32,15 @@ export class AuthService {
     return this.accessTokenHelper.generate(user);
   }
 
-  getRefreshToken(user: UserEntity | Error, requestFingerprint: RequestFingerprint): string | Error {
+  getRefreshToken(user: UserEntity | Error, fingerprint: Fingerprint): string | Error {
     if (user instanceof Error) {
       return user;
     }
 
-    return this.refreshTokenHelper.generate(user, requestFingerprint);
+    return this.refreshTokenHelper.generate(user, fingerprint);
   }
 
-  async getVerifiedUserByRefreshToken(
-    refreshToken: string,
-    requestFingerprint: RequestFingerprint
-  ): Promise<UserEntity | Error> {
+  async getVerifiedUserByRefreshToken(refreshToken: string, fingerprint: Fingerprint): Promise<UserEntity | Error> {
     const verifiedToken = await this.refreshTokenHelper.verify(refreshToken);
 
     if (verifiedToken instanceof TokenExpiredError) {
@@ -52,7 +49,7 @@ export class AuthService {
 
     const { userId, userEmail, fingerprint: jwtFingerprint } = verifiedToken;
 
-    const isValidFingerprint = this.compareFingerprint(requestFingerprint, jwtFingerprint);
+    const isValidFingerprint = Fingerprint.validateCompare(fingerprint, jwtFingerprint);
 
     if (!isValidFingerprint) {
       return new UnauthorizedException('Invalid fingerprint');
@@ -82,16 +79,5 @@ export class AuthService {
 
   private isPasswordMatch(password: string, userFromDb: UserEntity): boolean {
     return compareSync(password, userFromDb.password);
-  }
-
-  private compareFingerprint(requestFingerprint: RequestFingerprint, jwtFingerprint: RequestFingerprint): boolean {
-    const requestFingerprintString = this.concatRequestFingerprint(requestFingerprint);
-    const jwtFingerprintString = this.concatRequestFingerprint(jwtFingerprint);
-
-    return requestFingerprintString === jwtFingerprintString;
-  }
-
-  private concatRequestFingerprint(requestFingerprint: RequestFingerprint): string {
-    return `${requestFingerprint.ipAddresses.join('')}${requestFingerprint.userAgent}`;
   }
 }

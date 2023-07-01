@@ -1,19 +1,23 @@
-import { CanActivate, ExecutionContext, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-
-import { QuestionEntity } from '../question.entity';
-import { Repository } from 'typeorm';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+  Inject,
+} from '@nestjs/common';
+import { QuestionsService } from '../questions.service';
 
 @Injectable()
 export class QuestionAuthGuard implements CanActivate {
-  constructor(@InjectRepository(QuestionEntity) private readonly questionRepository: Repository<QuestionEntity>) {}
+  constructor(@Inject(QuestionsService) private readonly questionsService: QuestionsService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const { user } = request;
     const { qid } = request.params;
 
-    const question = await this.questionRepository.findOneBy({ id: +qid });
+    const question = await this.questionsService.getQuestionById(+qid);
 
     if (!question) {
       throw new NotFoundException();

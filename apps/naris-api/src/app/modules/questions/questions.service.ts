@@ -28,4 +28,8 @@ export class QuestionsService {
 
     return await this.questionRepository.find();
   }
+
+  async getQuestionById(questionId: number): Promise<QuestionEntity | null> {
+    return await this.questionRepository.findOneBy({ id: questionId });
+  }
 }

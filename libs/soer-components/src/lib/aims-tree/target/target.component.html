@@ -1,5 +1,9 @@
 <nz-card>
-  <div class="card_progress" [ngStyle]="{ width: target.progress + '%' }"></div>
+  <div class="card_progress">
+    <div class="card_progress--bg" [ngStyle]="{ width: '100%' }"></div>
+    <div class="card_progress--val" [ngStyle]="{ width: target.progress + '%' }"></div>
+  </div>
+
   <div class="card-header">
     <div class="card-header_title">
       <div class="title-container">
@@ -31,9 +35,7 @@
       <a *ngIf="isEdit" nzSize="small" nz-button nzType="link" (click)="onSave()"><i nz-icon [nzType]="'save'"></i></a>
     </div>
   </div>
-  <!-- <div class="card_progress">
-    <nz-progress [nzStrokeColor]="gradientColors" [nzPercent]="target.progress"></nz-progress>
-    </div>-->
+
   <div class="aim-tree_container">
     <soer-aims-tree
       [isEdit]="isEdit"

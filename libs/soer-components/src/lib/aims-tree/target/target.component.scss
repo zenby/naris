@@ -13,9 +13,25 @@ nz-card {
   align-items: center;
   margin-bottom: 0.5rem;
   &_progress {
-    flex: 0 0 auto;
-    background-color: rgb(233, 233, 233);
+    position: relative;
     height: 4px;
+
+    &--val,
+    &--bg {
+      border-top-right-radius: 1px;
+      border-top-left-radius: 1px;
+      position: absolute;
+      height: 4px;
+      top: 0;
+    }
+
+    &--val {
+      background-image: linear-gradient(to right, rgb(255, 0, 0) 0%, rgb(255, 153, 0) 30%, rgb(0, 255, 0) 70%);
+    }
+
+    &--bg {
+      background-color: rgb(233, 233, 233);
+    }
   }
 
   &-header {

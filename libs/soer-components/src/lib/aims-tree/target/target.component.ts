@@ -9,8 +9,6 @@ import { TargetService } from '../target.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TargetComponent {
-  public readonly gradientColors = { '0%': '#ff0000', '50%': '#ff0000', '75%': '#ff9900', '100%': '#0f0' };
-
   public isEdit = false;
 
   @Input() target: AimModel = EMPTY_AIM;

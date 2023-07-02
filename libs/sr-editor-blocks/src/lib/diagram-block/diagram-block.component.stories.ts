@@ -1,15 +1,19 @@
 import { moduleMetadata, StoryFn, Meta } from '@storybook/angular';
+import { CommonModule } from '@angular/common';
 import { DiagramBlockComponent } from './diagram-block.component';
+import { SrDiagramBlockModule } from './diagram-block.module';
 
-export default {
+const meta: Meta<typeof DiagramBlockComponent> = {
   title: 'Libs/Components/DiagramBlockComponent',
   component: DiagramBlockComponent,
   decorators: [
     moduleMetadata({
-      imports: [],
+      imports: [CommonModule, SrDiagramBlockModule],
     }),
   ],
-} as Meta<DiagramBlockComponent>;
+};
+
+export default meta;
 
 const diagram = `
 flowchart TD
@@ -29,4 +33,15 @@ export const Primary: StoryFn = () => ({
   props: {
     text: diagram,
   },
+});
+
+export const DiagramWithError: StoryFn = () => ({
+  props: {
+    text: diagram,
+    error: 'Ошибка',
+  },
+});
+
+export const EmptyDiagram: StoryFn = () => ({
+  props: {},
 });

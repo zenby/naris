@@ -127,7 +127,7 @@ describe('JsonModule e2e-test', () => {
 
   describe('PUT /json/:documentNamespace/:documentId/:accessTag', () => {
     it('should change the value of accessTag to public for private document', async () => {
-      const document = createFakeDocument();
+      const document = { ...createFakeDocument(), author_email: JwtTestHelper.defaultPayload.email };
       const { id, namespace } = document;
 
       jsonRepositoryMock.findOne.mockReturnValueOnce({ ...document, accessTag: 'PRIVATE' });
@@ -136,9 +136,14 @@ describe('JsonModule e2e-test', () => {
       await request
         .put(`/json/${namespace}/${id}/accessTag`)
         .set(JwtTestHelper.createBearerHeader())
-        .expect({ status: HttpJsonStatus.Ok, items: [{ ...document, accessTag: 'PUBLIC' }] });
+        .expect({
+          status: HttpJsonStatus.Ok,
+          items: [{ ...document, accessTag: 'PUBLIC' }],
+        });
 
-      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id, namespace } });
+      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
+        where: { id, namespace, author_email: JwtTestHelper.defaultPayload.email },
+      });
       expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ ...document, accessTag: 'PUBLIC' });
     });
   });

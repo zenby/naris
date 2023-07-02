@@ -29,25 +29,51 @@ export class JsonService {
   }
 
   async findPublicDocuments(documentNamespace: string): Promise<JsonEntity[]> {
-    return await this.jsonRepository.find({ where: { namespace: documentNamespace, accessTag: 'PUBLIC' } });
+    return await this.jsonRepository.find({
+      where: {
+        namespace: documentNamespace,
+        accessTag: 'PUBLIC',
+      },
+    });
   }
 
   async findCurrentUserDocuments(documentNamespace: string, author_email: string): Promise<JsonEntity[]> {
-    return await this.jsonRepository.find({ where: { namespace: documentNamespace, author_email: author_email } });
+    return await this.jsonRepository.find({
+      where: {
+        namespace: documentNamespace,
+        author_email: author_email,
+      },
+    });
   }
 
   async findPrivateAndPublicDocuments(documentNamespace: string): Promise<JsonEntity[]> {
-    const conditionPublic = { namespace: documentNamespace, accessTag: 'PUBLIC' };
-    const conditionPrivate = { namespace: documentNamespace, accessTag: 'PRIVATE' };
+    const conditionPublic = {
+      namespace: documentNamespace,
+      accessTag: 'PUBLIC',
+    };
+    const conditionPrivate = {
+      namespace: documentNamespace,
+      accessTag: 'PRIVATE',
+    };
 
     return await this.jsonRepository.find({ where: [conditionPublic, conditionPrivate] });
   }
 
-  async switchAccessTag(documentId: number, documentNamespace: string): Promise<JsonEntity | Error> {
-    const document = await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
+  async switchAccessTag(
+    documentId: number,
+    documentNamespace: string,
+    author_email: string
+  ): Promise<JsonEntity | Error> {
+    const document = await this.jsonRepository.findOne({
+      where: {
+        id: documentId,
+        namespace: documentNamespace,
+        author_email: author_email,
+      },
+    });
 
     if (!document) {
-      return new NotFoundException(`Document ${documentId} does not exist`);
+      return new NotFoundException(`Document ${documentId} for author ${author_email} does not exist`);
     }
 
     document.accessTag = document.accessTag === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC';
@@ -56,7 +82,12 @@ export class JsonService {
   }
 
   async findOne(documentNamespace: string, documentId: number): Promise<JsonEntity> {
-    return await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
+    return await this.jsonRepository.findOne({
+      where: {
+        id: documentId,
+        namespace: documentNamespace,
+      },
+    });
   }
 
   async update(
@@ -64,7 +95,12 @@ export class JsonService {
     documentNamespace: string,
     updateJsonDto: UpdateJsonDto
   ): Promise<JsonEntity | Error> {
-    const document = await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
+    const document = await this.jsonRepository.findOne({
+      where: {
+        id: documentId,
+        namespace: documentNamespace,
+      },
+    });
 
     if (!document) {
       return new NotFoundException(`Document ${documentId} does not exist`);
@@ -76,7 +112,12 @@ export class JsonService {
   }
 
   async delete(documentId: number, documentNamespace: string): Promise<DeleteResult | Error> {
-    const document = await this.jsonRepository.findOne({ where: { id: documentId, namespace: documentNamespace } });
+    const document = await this.jsonRepository.findOne({
+      where: {
+        id: documentId,
+        namespace: documentNamespace,
+      },
+    });
 
     if (!document) {
       return new NotFoundException(`Document ${documentId} does not exist`);
@@ -86,6 +127,9 @@ export class JsonService {
   }
 
   prepareResponse(status: HttpJsonStatus, list: JsonEntity[]): HttpJsonResult<JsonEntity> {
-    return { status, items: list };
+    return {
+      status,
+      items: list,
+    };
   }
 }

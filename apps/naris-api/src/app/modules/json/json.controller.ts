@@ -87,9 +87,12 @@ export class JsonController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Put(':documentId/accessTag')
-  async switchAccessTag(@Param() params: JsonParams): Promise<HttpJsonResult<JsonEntity>> {
+  async switchAccessTag(
+    @AuthUser() user: JwtPayload,
+    @Param() params: JsonParams
+  ): Promise<HttpJsonResult<JsonEntity>> {
     try {
-      const document = await this.jsonService.switchAccessTag(+params.documentId, params.documentNamespace);
+      const document = await this.jsonService.switchAccessTag(+params.documentId, params.documentNamespace, user.email);
       if (document instanceof Error) throw document;
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);

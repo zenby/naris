@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.16.0](https://gitlog.ru/Naris/soermono/compare/naris-0.15.0...naris-0.16.0) (2023-07-02)
+
+
+### Features
+
+* activate personal activity journal ([3ec8abf](https://gitlog.ru/Naris/soermono/commit/3ec8abf9271bdf054b38b66260d1b87e926f5e00))
+
 ## [0.15.0](https://gitlog.ru/Naris/soermono/compare/naris-0.14.0...naris-0.15.0) (2023-07-02)
 
 

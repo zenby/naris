@@ -6,7 +6,11 @@ describe('module workshops', () => {
   screenSizes.forEach((screenSize) => {
     // initial login and screen size configuration
     beforeEach(() => {
-      cy.viewport(screenSize);
+      if (Cypress._.isArray(screenSize)) {
+        cy.viewport(screenSize[0], screenSize[1]);
+      } else {
+        cy.viewport(screenSize);
+      }
       cy.intercept('GET', '**/api/kinescope/workshops').as('workshops');
       cy.login('user', 'user');
       cy.visit('#!/pages/workshops');

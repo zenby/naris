@@ -24,17 +24,17 @@ describe('module workshops', () => {
     it('displays back button on every workshops folder page', () => {
       cy.get('[data-cy="openFolder"]').each(($card, _, __) => {
         cy.wrap($card).click();
-        cy.get('[data-cy="folderUp"]').first().as('btnBack'); // first card is back to workshops button
-        cy.get('@btnBack').should('have.descendants', 'svg[data-icon="arrow-left"]'); // check if icon goback is present
-        cy.get('@btnBack').click();
+        cy.get('[data-cy="folderUp"]').first().as('folderUp'); // first card is back to workshops button
+        cy.get('@folderUp').should('have.descendants', 'svg[data-icon="arrow-left"]'); // check if icon goback is present
+        cy.get('@folderUp').click();
         cy.url().should('contain', '#!/pages/workshops'); // now we are at the page where we started
       });
     });
 
     it('has workshops inside every workshops folder', () => {
-      cy.get('nz-card').each(($card, _, __) => {
+      cy.get('[data-cy="openFolder"]').each(($card, _, __) => {
         cy.wrap($card).click();
-        cy.get('nz-card').should('have.length.least', 2); // first card is back button, others are supposed to be workshops
+        cy.get('[data-cy="openVideo"]').should('have.length.least', 1); // first card is back button, others are supposed to be workshops
       });
     });
 

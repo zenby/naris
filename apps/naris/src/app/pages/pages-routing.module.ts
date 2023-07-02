@@ -114,7 +114,7 @@ const routes: Routes = [
           },
           component: ActivityJournalPageComponent,
           resolve: {
-            activitys: 'activitysEmitter',
+            activites: 'activitesEmitter',
           },
         });
       }

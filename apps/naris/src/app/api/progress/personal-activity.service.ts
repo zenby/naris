@@ -40,11 +40,11 @@ export class PersonalActivityService {
     public store$: DataStoreService,
     public bus$: MixedBusService,
     @Inject('activity') private activityId: BusEmitter,
-    @Inject('activitys') private activitysId: BusEmitter
+    @Inject('activites') private activitesId: BusEmitter
   ) {
     this.activity = EMPTY_ACTIVITY;
 
-    this.activity$ = parseJsonDTOPack<PersonalActivity>(this.store$.of(this.activitysId), 'activitys');
+    this.activity$ = parseJsonDTOPack<PersonalActivity>(this.store$.of(this.activitesId), 'activites');
     this.activity$.subscribe((data) => {
       if (data.status === OK) {
         this.activity = this.joinActivityObjects([this.activity, ...data.items]);
@@ -52,7 +52,7 @@ export class PersonalActivityService {
       }
     });
 
-    this.activityRaw$ = this.store$.of(this.activitysId).pipe(
+    this.activityRaw$ = this.store$.of(this.activitesId).pipe(
       map((data: BusMessage | null) => {
         const result: PersonalActivityRaw[] = [];
         if (data?.payload?.status === OK) {
@@ -69,7 +69,7 @@ export class PersonalActivityService {
       })
     );
 
-    bus$.publish(new CommandRead(activitysId));
+    bus$.publish(new CommandRead(activitesId));
 
     bus$.of(WatchVideoEvent).subscribe((watchVideoEvent) => {
       if (isBusMessage(watchVideoEvent)) {

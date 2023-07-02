@@ -1,12 +1,15 @@
 import { Jwt } from '@soer/sr-common-interfaces';
 import { AccessTokenPayload } from '../types/access-token-payload.interface';
-import { BaseTokenHelper } from './base-token.helper';
 import { UserEntity } from '../../user/user.entity';
-import { sign } from 'jsonwebtoken';
+import { sign, TokenExpiredError, verify } from 'jsonwebtoken';
 
-export class AccessTokenHelper extends BaseTokenHelper<AccessTokenPayload> {
-  constructor(protected readonly jwtConfig: Jwt) {
-    super(jwtConfig);
+export class AccessTokenHelper {
+  private readonly expiresIn: string | number | undefined;
+  private readonly secret: string;
+
+  constructor(jwtConfig: Jwt) {
+    this.expiresIn = this.getExpiration(jwtConfig);
+    this.secret = jwtConfig.jwtSecret;
   }
 
   generate(user: UserEntity): string {
@@ -14,7 +17,18 @@ export class AccessTokenHelper extends BaseTokenHelper<AccessTokenPayload> {
     return sign(payload, this.secret, { expiresIn: this.expiresIn });
   }
 
-  protected getExpiration(jwtConfig: Jwt): string | number | undefined {
+  verify(token: string): AccessTokenPayload | TokenExpiredError {
+    try {
+      return verify(token, this.secret, { maxAge: this.expiresIn }) as AccessTokenPayload;
+    } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        return error;
+      }
+      throw error;
+    }
+  }
+
+  private getExpiration(jwtConfig: Jwt): string | number | undefined {
     return jwtConfig.expiresInAccess;
   }
 

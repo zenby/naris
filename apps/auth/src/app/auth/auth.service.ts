@@ -41,20 +41,17 @@ export class AuthService {
   }
 
   async getVerifiedUserByRefreshToken(refreshToken: string, fingerprint: Fingerprint): Promise<UserEntity | Error> {
-    const verifiedToken = await this.refreshTokenHelper.verify(refreshToken);
+    const verifiedToken = await this.refreshTokenHelper.verify(refreshToken, fingerprint);
 
     if (verifiedToken instanceof TokenExpiredError) {
       return verifiedToken;
     }
 
-    const { userId, userEmail, fingerprint: jwtFingerprint } = verifiedToken;
-
-    const isValidFingerprint = Fingerprint.validateCompare(fingerprint, jwtFingerprint);
-
-    if (!isValidFingerprint) {
-      return new UnauthorizedException('Invalid fingerprint');
+    if (verifiedToken instanceof UnauthorizedException) {
+      return verifiedToken;
     }
 
+    const { userId, userEmail } = verifiedToken;
     const userOrError = await this.userService.findByIdAndEmail({
       id: userId,
       email: userEmail,

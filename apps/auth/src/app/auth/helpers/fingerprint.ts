@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import { Request } from 'express';
 
 export class Fingerprint {
@@ -9,12 +10,10 @@ export class Fingerprint {
     this.userAgent = request.headers['user-agent'];
   }
 
-  static validateCompare(fingerprint: Fingerprint, jwtFingerprint: Fingerprint): boolean {
-    return this.asString(fingerprint) === this.asString(jwtFingerprint);
-  }
-
-  private static asString(fingerprint: Fingerprint): string {
-    return `${fingerprint.ipAddresses.join('')}${fingerprint.userAgent}`;
+  toString(): string {
+    return createHash('md5')
+      .update(`${this.ipAddresses.join('')}${this.userAgent}`)
+      .digest('hex');
   }
 
   private extractIpAddresses(request: Request): string[] {

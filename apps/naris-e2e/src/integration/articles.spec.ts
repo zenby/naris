@@ -1,11 +1,5 @@
 import { articleTitle, articleTextWithMd, modifiedArticleTitle, testTitle } from '../support/articleConstants';
-import {
-  createNewArticlePath,
-  editArticlePath,
-  allArticlesPath,
-  viewArticlePath,
-  infoPath,
-} from '../support/pathConstants';
+import { createNewArticlePath, editArticlePath, allArticlesPath, viewArticlePath } from '../support/pathConstants';
 
 describe('naris articles', () => {
   beforeEach(() => {

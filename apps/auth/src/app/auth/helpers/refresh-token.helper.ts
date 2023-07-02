@@ -1,13 +1,17 @@
 import { Jwt } from '@soer/sr-common-interfaces';
-import { BaseTokenHelper } from './base-token.helper';
 import { RefreshTokenPayload } from '../types/refresh-token-payload.interface';
 import { UserEntity } from '../../user/user.entity';
-import { sign } from 'jsonwebtoken';
+import { sign, TokenExpiredError, verify } from 'jsonwebtoken';
 import { Fingerprint } from './fingerprint';
+import { UnauthorizedException } from '@nestjs/common';
 
-export class RefreshTokenHelper extends BaseTokenHelper<RefreshTokenPayload> {
-  constructor(protected readonly jwtConfig: Jwt) {
-    super(jwtConfig);
+export class RefreshTokenHelper {
+  private readonly expiresIn: string | number | undefined;
+  private readonly secret: string;
+
+  constructor(jwtConfig: Jwt) {
+    this.expiresIn = this.getExpiration(jwtConfig);
+    this.secret = jwtConfig.jwtSecret;
   }
 
   generate(user: UserEntity, requestFingerprint: Fingerprint): string {
@@ -15,7 +19,28 @@ export class RefreshTokenHelper extends BaseTokenHelper<RefreshTokenPayload> {
     return sign(payload, this.secret, { expiresIn: this.expiresIn });
   }
 
-  protected getExpiration(jwtConfig: Jwt): string | number | undefined {
+  verify(
+    token: string,
+    requestFingerprint: Fingerprint
+  ): RefreshTokenPayload | TokenExpiredError | UnauthorizedException {
+    try {
+      const result = verify(token, this.secret, { maxAge: this.expiresIn }) as RefreshTokenPayload;
+      const isValidFingerprint = result.fingerprint === requestFingerprint.toString();
+
+      if (!isValidFingerprint) {
+        return new UnauthorizedException('Invalid fingerprint');
+      }
+
+      return result;
+    } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        return error;
+      }
+      throw error;
+    }
+  }
+
+  private getExpiration(jwtConfig: Jwt): string | number | undefined {
     return jwtConfig.expiresInRefresh;
   }
 
@@ -24,7 +49,7 @@ export class RefreshTokenHelper extends BaseTokenHelper<RefreshTokenPayload> {
       userId: user.id,
       userEmail: user.email,
       userRole: user.role,
-      fingerprint: requestFingerprint,
+      fingerprint: requestFingerprint.toString(),
     };
   }
 }

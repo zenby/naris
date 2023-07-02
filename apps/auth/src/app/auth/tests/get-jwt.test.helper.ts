@@ -16,7 +16,7 @@ export const createRequest = (ipAddresses: string[], userAgent: string): Request
 export const getJWTTokenForUserWithRole = (user: UserEntity, requestFingerprint: Fingerprint) => {
   const { jwtSecret, expiresInRefresh } = testConfig;
 
-  return jwt.sign({ userId: user.id, userEmail: user.email, fingerprint: requestFingerprint }, jwtSecret, {
+  return jwt.sign({ userId: user.id, userEmail: user.email, fingerprint: requestFingerprint.toString() }, jwtSecret, {
     expiresIn: expiresInRefresh,
   });
 };
@@ -28,5 +28,5 @@ export const getJWTTokenForUserWithFingerprint = (
 ) => {
   const { jwtSecret: secret } = testConfig;
   const iat = Math.floor(Date.now() / 1000) + expiredInSec;
-  return jwt.sign({ userId: user.id, userEmail: user.email, fingerprint: requestFingerprint, iat }, secret);
+  return jwt.sign({ userId: user.id, userEmail: user.email, fingerprint: requestFingerprint.toString(), iat }, secret);
 };

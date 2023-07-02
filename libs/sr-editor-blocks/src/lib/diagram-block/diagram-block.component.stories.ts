@@ -2,7 +2,7 @@ import { moduleMetadata, StoryFn, Meta } from '@storybook/angular';
 import { DiagramBlockComponent } from './diagram-block.component';
 
 export default {
-  title: 'DiagramBlockComponent',
+  title: 'Libs/Components/DiagramBlockComponent',
   component: DiagramBlockComponent,
   decorators: [
     moduleMetadata({

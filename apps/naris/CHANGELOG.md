@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.15.0](https://gitlog.ru/Naris/soermono/compare/naris-0.14.0...naris-0.15.0) (2023-07-02)
+
+
+### Features
+
+* вынес валидацию Fingerprint в хелпер и добавил приведение к MD5 для Fingerprint ([ce5c097](https://gitlog.ru/Naris/soermono/commit/ce5c097c4b398299dac7906bdaf99bc2c43df2a2))
+
+
+### Bug Fixes
+
+* activity journal page update ([fa71855](https://gitlog.ru/Naris/soermono/commit/fa718559b65ffae7d4590238710084fd1594cd15))
+
 ## [0.14.0](https://gitlog.ru/Naris/soermono/compare/naris-0.13.1...naris-0.14.0) (2023-06-30)
 
 

@@ -2,6 +2,7 @@ import { DynamicConfig, featuresEnum } from './environment.interface';
 
 export const prod: DynamicConfig = {
   [featuresEnum.auth_v2]: true,
+  [featuresEnum.personal_activity_journal]: true,
 };
 
 export const ab: DynamicConfig = {

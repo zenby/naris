@@ -10,7 +10,7 @@ import { StoreCrudService } from './services/store.crud.service';
 export type CRUDMethods = { create: string; read: string; update: string; delete: string };
 export type UrlSchema = { url: string; params?: Record<string, string> };
 
-type EmittersPatchedWindow = Window & { emitters?: Record<string, CRUDBusEmitter> };
+type EmittersPatchedWindow = Window & { naris?: { emitters?: Record<string, CRUDBusEmitter> } };
 
 export interface CRUDBusEmitter extends BusEmitter {
   schema: UrlSchema;
@@ -61,8 +61,15 @@ function createcrudEmitters<T extends BusKey>(options: CrudOptions<T>): Provider
 
 function createCRUDSBusId(providerName: string, emitter: CRUDBusEmitter): Provider {
   const wnd = window as EmittersPatchedWindow;
-  wnd.emitters = wnd.emitters || {};
-  wnd.emitters[providerName] = emitter;
+
+  try {
+    // для работы из консоли браузера со стором "высовываем" наружу эмиттеры данных
+    wnd.naris = wnd.naris || {};
+    wnd.naris.emitters = wnd.naris.emitters || {};
+    wnd.naris.emitters[providerName] = emitter;
+  } catch (e) {
+    console.error('Не могу создать эмиттеры для консоли');
+  }
 
   return {
     provide: `${providerName}`,

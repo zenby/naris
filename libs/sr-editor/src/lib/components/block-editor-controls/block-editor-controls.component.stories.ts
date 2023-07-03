@@ -1,4 +1,4 @@
-import { moduleMetadata, Meta, StoryFn, StoryObj } from '@storybook/angular';
+import { moduleMetadata, Meta, StoryObj } from '@storybook/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';

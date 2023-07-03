@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { CommandRead } from '../bus-messages/bus.messages';
 import { CRUDBusEmitter } from '../sr-dto.module';
 
-type ResolveEmittersPatchedWindow = Window & { resolvedEmitters?: Record<string, BusEmitter> };
+type ResolveEmittersPatchedWindow = Window & { naris?: { resolvedEmitters?: Record<string, BusEmitter> } };
 
 export class ResolveReadEmitterService implements Resolve<Promise<BusEmitter | undefined>> {
   constructor(private bus$: MixedBusService, private owner: CRUDBusEmitter) {}
@@ -12,8 +12,15 @@ export class ResolveReadEmitterService implements Resolve<Promise<BusEmitter | u
   resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Promise<BusEmitter | undefined> {
     const owner = busEmitterFactory(this.owner, route.params);
     const wnd = window as ResolveEmittersPatchedWindow;
-    wnd.resolvedEmitters = wnd.resolvedEmitters || {};
-    wnd.resolvedEmitters[owner.sid.toString()] = owner;
+
+    try {
+      wnd.naris = wnd.naris || {};
+      wnd.naris.resolvedEmitters = wnd.naris.resolvedEmitters || {};
+      wnd.naris.resolvedEmitters[owner.sid.toString()] = owner;
+    } catch (e) {
+      console.error('Ошибка назначения срезолвенных эмиттеров для консоли');
+    }
+
     this.bus$.publish(new CommandRead(owner));
     //TODO: refactor toPromise to firstValueOf
     return of(owner).toPromise();

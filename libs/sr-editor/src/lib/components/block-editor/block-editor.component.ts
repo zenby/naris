@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Inject,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { TextBlock } from '../../interfaces/document.model';
 import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor-blocks-config';
 import { ControlBtn } from '../block-editor-controls/block-editor-controls.component';

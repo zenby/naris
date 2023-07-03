@@ -9,13 +9,9 @@ import { isCRUDBusEmitter } from '../dto.helpers';
 import { ERROR } from '../interfaces/dto.pack.interface';
 import { CRUDBusEmitter } from '../sr-dto.module';
 
-type PdfConverterPatchedWindow = Window & { store$?: PdfConverterService };
-
 @Injectable({ providedIn: 'root' })
 export class PdfConverterService {
   constructor(private http: HttpClient, private bus$: MixedBusService, private urlBuilder: UrlBuilderService) {
-    const wnd = window as PdfConverterPatchedWindow;
-    wnd.store$ = this;
     bus$.of(CommandConvertMdToPdf).subscribe(this.createPdf.bind(this));
   }
 

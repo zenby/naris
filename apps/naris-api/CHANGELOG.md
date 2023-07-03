@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.4.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.3.1...naris-api-0.4.0) (2023-07-03)
+
+
+### Features
+
+* **naris-api-json:** add getNew method and authro_emaul support ([630c3d8](https://gitlog.ru/Naris/soermono/commit/630c3d82cfa90008faa12551188c8322b68dff48))
+* support access tag for json documents ([0cd3f19](https://gitlog.ru/Naris/soermono/commit/0cd3f1920d880c0deba5a59b7d0b91efe5259023))
+* support accessTag for json service and json repository ([05ed2d3](https://gitlog.ru/Naris/soermono/commit/05ed2d35fe63931566397b6e5d74b1ad8bfc78bf))
+
+
+### Bug Fixes
+
+* switch access_tag logic ([492aa64](https://gitlog.ru/Naris/soermono/commit/492aa6497a0a05dcdfeedefde969f33bb381ff06))
+
 ### [0.3.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-api-0.3.0...naris-api-0.3.1) (2023-05-23)
 
 

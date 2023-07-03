@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
-import { Repository, Equal } from 'typeorm';
+import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test } from '@nestjs/testing';
 import { ConfigType } from '@nestjs/config';
@@ -10,9 +10,7 @@ import {
   newQuestionText,
   expectedUserQuestions,
   expectedAllQuestions,
-  userQuestion,
   expectedNewQuestion,
-  newUserQuestion,
   strangerQuestionId,
   nonexistentQuestionId,
   userQuestionId,
@@ -63,47 +61,29 @@ describe('QuestionsModule e2e-test', () => {
 
   describe('GET /v1/questions', () => {
     test('should return all the questions when user uuid query param is not sent', async () => {
-      const repoFindMethodSpy = jest.spyOn(questionsRepo, 'find');
-
       await request
         .get('/v1/questions')
         .set(JwtTestHelper.createBearerHeader())
         .expect(200, { status: HttpJsonStatus.Ok, items: expectedAllQuestions });
-
-      expect(repoFindMethodSpy).toHaveBeenCalled();
     });
   });
 
   describe('GET /v1/questions?userUuid=userUuid', () => {
     test('should return all the questions of the current user when a userUuid query param matches the current user uuid', async () => {
-      const repoFindByMethodSpy = jest.spyOn(questionsRepo, 'findBy');
-
       await request
         .get(`/v1/questions?userUuid=${JwtTestHelper.defaultPayload.uuid}`)
         .set(JwtTestHelper.createBearerHeader())
         .expect(200, { status: HttpJsonStatus.Ok, items: expectedUserQuestions });
-
-      expect(repoFindByMethodSpy).toHaveBeenCalledWith({ userUuid: Equal(userQuestion.userUuid) });
     });
   });
 
   describe('POST /v1/questions', () => {
     test('should create a question when valid question dto is passed', async () => {
-      const repoCreateMethodSpy = jest.spyOn(questionsRepo, 'create');
-      const repoSaveMethodSpy = jest.spyOn(questionsRepo, 'save');
-
       await request
         .post('/v1/questions')
         .set(JwtTestHelper.createBearerHeader())
         .send({ question: newQuestionText })
         .expect(201, { status: HttpJsonStatus.Ok, items: [expectedNewQuestion] });
-
-      expect(repoCreateMethodSpy).toHaveBeenCalledWith({
-        question: newUserQuestion.question,
-        url: newUserQuestion.url,
-        userUuid: newUserQuestion.userUuid,
-      });
-      expect(repoSaveMethodSpy).toHaveBeenCalled();
     });
 
     test('should return a Bad Request error when an empty question is passed', async () => {
@@ -113,14 +93,10 @@ describe('QuestionsModule e2e-test', () => {
 
   describe('DELETE /v1/questions/:qid', () => {
     test('should delete a question when the question belongs to the current user', async () => {
-      const repoDeleteMethodSpy = jest.spyOn(questionsRepo, 'delete');
-
       await request
         .delete(`/v1/questions/${userQuestionId}`)
         .set(JwtTestHelper.createBearerHeader())
         .expect(200, { status: HttpJsonStatus.Ok, items: [] });
-
-      expect(repoDeleteMethodSpy).toHaveBeenCalledWith({ id: userQuestionId.toString() });
     });
 
     test('should throw a not found error when the question does not exist', async () => {

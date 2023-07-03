@@ -20,7 +20,7 @@ describe('Тестирование конспектов', () => {
 
     // Клик по кнопке создания конспекта
     cy.get('#plus-control-btn').click();
-    cy.get('input[placeholder="Тема"]').should('exist');
+    cy.get('input[placeholder="Тема"]').type(title);
 
     cy.get('button[ng-reflect-title="Сохранить"]').click();
 
@@ -33,7 +33,7 @@ describe('Тестирование конспектов', () => {
     cy.visit('/#!/pages/workbook/conspects/create/new');
 
     cy.get('input[placeholder="Тема"]').type(title);
-    cy.get('textarea').type(body);
+    cy.get('textarea').first().type(body);
 
     cy.get('button[ng-reflect-title="Сохранить"]').click();
 

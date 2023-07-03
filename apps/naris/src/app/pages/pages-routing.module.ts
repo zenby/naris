@@ -138,14 +138,25 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
 
-    SrDTOModule.forChild<WorkbookKey>({
-      namespace: 'workbook',
-      schema: { url: 'v2/json/workbook/:wid' },
-      keys: {
-        workbook: { wid: '?' },
-        workbooks: { wid: 'personal' },
-      },
-    }),
+    SrDTOModule.forChild<WorkbookKey>(
+      environment.features[featuresEnum.api_v2]
+        ? {
+            namespace: 'workbook',
+            schema: { url: '%%narisApiUrl%%v3/json/workbook/:wid' },
+            keys: {
+              workbook: { wid: '?' },
+              workbooks: { wid: 'private' },
+            },
+          }
+        : {
+            namespace: 'workbook',
+            schema: { url: 'v2/json/workbook/:wid' },
+            keys: {
+              workbook: { wid: '?' },
+              workbooks: { wid: 'personal' },
+            },
+          }
+    ),
 
     SrDTOModule.forChild<WorkbookKey>({
       namespace: 'quiz',
@@ -163,7 +174,7 @@ const routes: Routes = [
             schema: { url: '%%narisApiUrl%%v3/json/article/:wid' },
             keys: {
               article: { wid: '?' },
-              articles: { wid: '' },
+              articles: { wid: 'private' },
             },
           }
         : {

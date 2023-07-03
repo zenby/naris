@@ -14,6 +14,7 @@ export const dev: DynamicConfig = {
   ...prod,
   [featuresEnum.personal_activity_journal]: true,
   [featuresEnum.subscription]: true,
+  [featuresEnum.api_v2]: true,
 };
 
 export const dev_ab: DynamicConfig = {

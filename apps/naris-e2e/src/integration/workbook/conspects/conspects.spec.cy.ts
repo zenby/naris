@@ -19,7 +19,7 @@ describe('Тестирование конспектов', () => {
     );
 
     // Клик по кнопке создания конспекта
-    cy.get('#plus-control-btn').click();
+    cy.get('[data-cy="create-item"]').click();
     cy.get('input[placeholder="Тема"]').type(title);
 
     cy.get('button[ng-reflect-title="Сохранить"]').click();

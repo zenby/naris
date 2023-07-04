@@ -6,7 +6,8 @@ export const setFilenameHelper = (
   file: Express.Multer.File,
   callback: (error: Error | null, filename: string) => void
 ) => {
-  const suffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+  console.log(request.body);
+  const suffix = `folder^${Date.now()}-${Math.round(Math.random() * 1e9)}`;
   const ext = extname(file.originalname);
 
   const filename = `${suffix}${ext}`;

@@ -1,16 +1,16 @@
-import { UploadController } from './upload.controller';
-import { UploadService } from './upload.service';
+import { ResourceController } from './resource.controller';
+import { ResourceService } from './resource.service';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { Readable } from 'stream';
 
-describe('UploadController', () => {
-  let uploadController: UploadController;
-  let uploadService: UploadService;
+describe('ResourceController', () => {
+  let resourceController: ResourceController;
+  let resourceService: ResourceService;
   let file: Express.Multer.File;
 
   beforeEach(() => {
-    uploadService = new UploadService();
-    uploadController = new UploadController(uploadService);
+    resourceService = new ResourceService();
+    resourceController = new ResourceController(resourceService);
     file = {
       filename: 'filename',
       originalname: 'originalname',
@@ -25,14 +25,14 @@ describe('UploadController', () => {
     };
   });
 
-  describe('UploadedFile', () => {
+  describe('ResourceedFile', () => {
     it('should return HttpJsonResult with file uri', async () => {
       const uri = '/my-super-filename.txt';
       const result: HttpJsonResult<{ uri: string }> = { status: HttpJsonStatus.Ok, items: [{ uri }] };
 
-      jest.spyOn(uploadService, 'saveFile').mockImplementation(async () => ({ uri }));
+      jest.spyOn(resourceService, 'saveFile').mockImplementation(async () => ({ uri }));
 
-      expect(await uploadController.uploadFile(file)).toStrictEqual(result);
+      expect(await resourceController.uploadFile(file, {})).toStrictEqual(result);
     });
   });
 });

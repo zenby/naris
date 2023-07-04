@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 
 @Injectable()
-export class UploadService {
+export class ResourceService {
   async saveFile(file: Express.Multer.File): Promise<{ uri: string }> {
     // await save file to DB
     return { uri: `/${file.filename}` };

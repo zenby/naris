@@ -19,6 +19,7 @@ declare global {
       login(email: string, password: string): void;
       removeAllExistingArticles(): void;
       createArticle(): void;
+      removeAllExistingConspects(): void;
     }
   }
 }
@@ -70,6 +71,21 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
     });
 });
 
+Cypress.Commands.add('removeAllExistingConspects', () => {
+  cy.get('a[title="Конспекты"]').should('have.attr', 'disabled');
+  cy.get('.ant-spin-dot').should('not.exist');
+  cy.get('.anticon-delete')
+    .should('have.length.gte', 0)
+    .then(($delBtnList) => {
+      const delBtnLen = $delBtnList.length;
+
+      for (let i = 0; i < delBtnLen; i++) {
+        cy.get('.anticon-delete').eq(0).click({ force: true });
+        cy.contains('OK').should('be.visible').click({ force: true });
+        cy.wait(['@conspectDelete', '@conspectEdit', '@personalConspects']);
+      }
+    });
+});
 Cypress.Commands.add('createArticle', () => {
   cy.visit(`/${allArticlesPath}`);
   cy.location('href').should('eq', Cypress.config().baseUrl + allArticlesPath);

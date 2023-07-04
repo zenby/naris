@@ -1,3 +1,5 @@
+import { allWorkbookConspectsPath } from '../../../support/pathConstants';
+
 const title = 'Новая тема';
 const body = 'Тело конспекта, тело конспекта, тело конспекта, тело конспекта';
 
@@ -5,13 +7,17 @@ describe('Тестирование конспектов', () => {
   beforeEach(() => {
     // Проходим авторизацию
     cy.intercept('GET', '**/*.svg').as('signIn');
+    cy.intercept('GET', '**/api/v3/json/workbook/private').as('personalConspects');
+    cy.intercept('PUT', '**/api/v2/json/workbook/**').as('conspectEdit');
+    cy.intercept('DELETE', '**/api/v2/json/workbook/**').as('conspectDelete');
     cy.login('user', 'user');
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
+    cy.visit(`/${allWorkbookConspectsPath}`);
+    cy.wait('@personalConspects');
+    // cy.removeAllExistingConspects()
   });
 
   it('Вход в конспекты, создание конспекта, и проверка его в наличии', () => {
-    cy.visit('/#!/pages/workbook/conspects');
+    cy.visit(allWorkbookConspectsPath);
 
     // Проверка, что мы зашли в конспекты
     cy.get('a.ant-btn.ant-btn-dashed.ant-btn-round.ant-btn-lg.ng-star-inserted[title="Конспекты"]').contains(

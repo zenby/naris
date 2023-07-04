@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpException,
   HttpStatus,
   Logger,
@@ -17,7 +18,7 @@ import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 
 @Controller('resource')
 export class ResourceController {
-  constructor(private readonly ResourceService: ResourceService) {}
+  constructor(private readonly resourceService: ResourceService) {}
 
   @Post()
   @UseInterceptors(
@@ -33,13 +34,22 @@ export class ResourceController {
     @Body() body: { path: string }
   ): Promise<HttpJsonResult<{ uri: string }>> {
     try {
-      console.log(file);
-      console.log(body.path);
-      const response = await this.ResourceService.saveFile(file);
+      const response = await this.resourceService.saveFile(file);
 
-      return this.ResourceService.prepareResponse(HttpJsonStatus.Ok, response);
+      return this.resourceService.prepareResponse(HttpJsonStatus.Ok, response);
     } catch (e) {
-      console.log(e);
+      Logger.error(e);
+      throw new HttpException(e.message, e?.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Get()
+  async getAllResources(): Promise<HttpJsonResult<string[]>> {
+    try {
+      const resources = await this.resourceService.getAll();
+
+      return this.resourceService.prepareResponse(HttpJsonStatus.Ok, resources);
+    } catch (e) {
       Logger.error(e);
       throw new HttpException(e.message, e?.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
     }

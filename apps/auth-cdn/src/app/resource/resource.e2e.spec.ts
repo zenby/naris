@@ -29,7 +29,6 @@ describe('JwtAccessTokenMiddleware (e2e)', () => {
   describe('GET /resources', () => {
     it('should return 200 OK with data', async () => {
       const { body } = await request(app.getHttpServer()).get('/resource').expect(200);
-      console.log(body);
 
       expect(body.items.length).toBeGreaterThan(1);
     });

@@ -1,41 +1,35 @@
-import { BadGatewayException, ForbiddenException, Injectable, Logger, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { Injectable, NestMiddleware } from '@nestjs/common';
+import { NextFunction, Request, Response } from 'express';
+import { BadGatewayException, ForbiddenException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from '../../config/config';
 
-export enum Message {
+export enum ErrorMessage {
   Forbidden = 'Access is denied',
   Gateway = 'Something went wrong, please try again later',
 }
 
 @Injectable()
-export class JwtAccessTokenMiddleware implements NestMiddleware {
+export class BasicAuthMiddleware implements NestMiddleware {
   constructor(private readonly jwtService: JwtService, private readonly configService: ConfigService) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
     if (!req?.headers?.authorization) {
-      next(new ForbiddenException(Message.Forbidden));
-      return;
+      next(new ForbiddenException(ErrorMessage.Forbidden));
     }
 
     const token = req.headers.authorization?.split(' ')?.[1];
 
     try {
-      // checking the token in the auth project
-      const isAccess = await this.isValidToken(token);
-
-      if (isAccess) {
-        next();
-        return;
-      } else {
-        next(new ForbiddenException(Message.Forbidden));
-        return;
+      const hasAccess = await this.isValidToken(token);
+      if (!hasAccess) {
+        next(new ForbiddenException(ErrorMessage.Forbidden));
       }
+
+      next();
     } catch (e) {
-      // if the error is in the verify method
-      next(new BadGatewayException(Message.Gateway));
-      return;
+      next(new BadGatewayException(ErrorMessage.Gateway));
     }
   }
 

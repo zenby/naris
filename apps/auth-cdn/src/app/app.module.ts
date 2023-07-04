@@ -1,11 +1,12 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { BasicAuthMiddleware } from './common/middlewares/auth.middleware';
 import { configurationFactory } from './config/config';
-import { JwtService } from '@nestjs/jwt';
-// import { JwtAccessTokenMiddleware } from './common/middlewares/jwt-access-token.middleware';
 import { ResourceModule } from './resource/resource.module';
+import { ServeResourcesModule } from './serve-resources.module';
 
 @Module({
   imports: [
@@ -14,13 +15,14 @@ import { ResourceModule } from './resource/resource.module';
       isGlobal: true,
       load: [configurationFactory],
     }),
+    ServeResourcesModule,
     ResourceModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtService],
 })
 export class AppModule implements NestModule {
-  configure(_consumer: MiddlewareConsumer) {
-    // consumer.apply(JwtAccessTokenMiddleware).forRoutes('/');
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(BasicAuthMiddleware).forRoutes('/');
   }
 }

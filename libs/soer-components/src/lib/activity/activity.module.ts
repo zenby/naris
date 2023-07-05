@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { ActivityCalendarComponent } from './activity-calendar/activity-calendar.component';
@@ -13,5 +13,6 @@ const ACTIVITY_COMPONENTS = [ActivityCalendarComponent, ActivityTimelineComponen
   declarations: [...ACTIVITY_COMPONENTS, ArrayFilterPipe, DayClassPipe],
   imports: [CommonModule, NzCalendarModule, NzTimelineModule],
   exports: [...ACTIVITY_COMPONENTS],
+  providers: [{ provide: LOCALE_ID, useValue: 'ru' }],
 })
 export class ActivityModule {}

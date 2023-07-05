@@ -1,5 +1,5 @@
 import { Fingerprint } from './fingerprint';
-import { createRequest } from '../tests/get-jwt.test.helper';
+import { createRequest } from '../tests/auth.test.helper';
 import { testFingerprint } from '../../user/tests/test.users';
 
 describe('Fingerprint', () => {

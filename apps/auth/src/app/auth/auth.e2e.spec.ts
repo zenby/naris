@@ -1,5 +1,4 @@
 import * as supertest from 'supertest';
-import * as superagent from 'superagent';
 import * as cookieParser from 'cookie-parser';
 import * as jwt from 'jsonwebtoken';
 import { Repository } from 'typeorm';
@@ -7,30 +6,34 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
-import { AuthTestModule, expired10MinAgo } from './tests/auth.test.module';
+import { AuthTestModule } from './tests/auth.test.module';
+import { AuthController } from './auth.controller';
+import { LocalStrategy } from '../common/strategies/local.strategy';
+import { RefreshCookieStrategy } from '../common/strategies/refreshCookie.strategy';
+import { testConfig } from './tests/auth.test.config';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import { UserEntity } from '../user/user.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { adminUser, regularUser, regularUserCredentials, testFingerprint, testUsers } from '../user/tests/test.users';
-import { ConfigService } from '@nestjs/config';
-import { Configuration } from '../config/config';
-import { createRequest, getJWTTokenForUserWithFingerprint } from './tests/get-jwt.test.helper';
+import { createRequest, getJWTTokenWithFingerprintFactory, authRequestMakerFactory } from './tests/auth.test.helper';
 import { Fingerprint } from './helpers/fingerprint';
 
 describe('Auth e2e-test', () => {
   let app: INestApplication;
   let request: ReturnType<typeof supertest>;
   let userRepo: Repository<UserEntity>;
-  let configService: ConfigService;
-  let cookieName: string;
-  let redirectUrl: string;
-  let jwtSecret: string;
 
+  const config = testConfig;
   const users = testUsers;
+  const expired10MinAgo = -10 * 60;
+  const getJWTTokenForUserWithFingerprint = getJWTTokenWithFingerprintFactory(config);
+  const makeAuthRequest = authRequestMakerFactory(config.cookieName, testFingerprint);
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AuthTestModule],
+      providers: [LocalStrategy, RefreshCookieStrategy],
+      controllers: [AuthController],
     }).compile();
 
     app = moduleRef.createNestApplication();
@@ -38,8 +41,6 @@ describe('Auth e2e-test', () => {
     await app.init();
 
     userRepo = app.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
-    configService = app.get<ConfigService>(ConfigService);
-    ({ cookieName, redirectUrl, jwtSecret } = configService.get<Configuration['jwt']>('jwt'));
     request = supertest(app.getHttpServer());
   });
 
@@ -48,9 +49,9 @@ describe('Auth e2e-test', () => {
       await request
         .post('/auth/signin')
         .send(regularUserCredentials)
-        .expect('Set-Cookie', new RegExp(`${cookieName}=.*; HttpOnly`))
+        .expect('Set-Cookie', new RegExp(`${config.cookieName}=.*; HttpOnly`))
         .expect(302)
-        .expect('Location', redirectUrl);
+        .expect('Location', config.redirectUrl);
     });
 
     it('should return error when pass invalid credentials', async () => {
@@ -120,7 +121,7 @@ describe('Auth e2e-test', () => {
     });
 
     it('should return 401 error when no pass refresh token', async () => {
-      makeAuthRequest(request.get('/auth/access_token')).expect(401);
+      await makeAuthRequest(request.get('/auth/access_token')).expect(401);
     });
 
     it('should return 401 error when fingerprint data changed', async () => {
@@ -140,7 +141,7 @@ describe('Auth e2e-test', () => {
 
       const body: HttpJsonResult<{ accessToken: string }> = response.body;
       const accessToken = body.items[0]?.accessToken;
-      const { email } = jwt.verify(accessToken, jwtSecret) as { email: string };
+      const { email } = jwt.verify(accessToken, config.jwtSecret) as { email: string };
 
       expect(body.status).toBe(HttpJsonStatus.Ok);
       expect(accessToken).toBeDefined();
@@ -189,18 +190,4 @@ describe('Auth e2e-test', () => {
       await authRequest.send({ switch_to_user_by_email: '' }).expect(404);
     });
   });
-
-  const makeAuthRequest = <TRequest extends superagent.SuperAgentRequest>(request: TRequest, jwtToken?: string) => {
-    const headers = getAuthHeaders(jwtToken);
-    return request.set(headers);
-  };
-
-  const getAuthHeaders = (jwtToken?: string) => {
-    const result: { [key: string]: string } = {
-      'x-original-forwarded-for': testFingerprint.ipAddresses.join(','),
-      'user-agent': testFingerprint.userAgent,
-    };
-
-    return jwtToken ? { ...result, Cookie: [`${cookieName}=${jwtToken}`] } : result;
-  };
 });

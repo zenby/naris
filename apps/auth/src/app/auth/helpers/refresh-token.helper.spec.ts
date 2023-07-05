@@ -3,7 +3,7 @@ import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokenHelper } from './refresh-token.helper';
 import { testConfig } from '../tests/auth.test.config';
 import { Fingerprint } from './fingerprint';
-import { createRequest } from '../tests/get-jwt.test.helper';
+import { createRequest } from '../tests/auth.test.helper';
 import { UnauthorizedException } from '@nestjs/common';
 
 describe('RefreshTokenHelper', () => {

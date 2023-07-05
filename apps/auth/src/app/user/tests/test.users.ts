@@ -5,7 +5,7 @@ import { genSaltSync, hashSync } from 'bcrypt';
 import { LoginUserDto } from '../dto/login-user.dto';
 import { Fingerprint } from '../../auth/helpers/fingerprint';
 import { Request } from 'express';
-import { createRequest } from '../../auth/tests/get-jwt.test.helper';
+import { createRequest } from '../../auth/tests/auth.test.helper';
 
 export const testRequest: Request = createRequest(['127.0.0.1', '192.168.0.1'], 'Mozilla/5.0');
 export const testFingerprint = new Fingerprint(testRequest);

@@ -5,13 +5,18 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import cookieParser = require('cookie-parser');
 import * as supertest from 'supertest';
 import { DeleteResult, Repository } from 'typeorm';
-import { JwtService } from '@nestjs/jwt';
-import { Configuration } from '../config/config';
 import { UserEntity } from './user.entity';
-import { UserModule } from './user.module';
-import { HttpJsonResult, UserRole } from '@soer/sr-common-interfaces';
+import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { faker } from '@faker-js/faker';
-import { getJWTTokenForUserWithRole } from '../auth/tests/get-jwt.test.helper';
+import { UserInfoDto } from './dto/user-info-dto';
+import { UserTestModule } from './tests/user.test.module';
+import { testUsers, adminUser, regularUser } from '../user/tests/user.test.module';
+import { AuthService } from '../auth/auth.service';
+import { RefreshCookieStrategy } from '../common/strategies/refreshCookie.strategy';
+import { UserController } from './user.controller';
+import { testConfig } from '../auth/tests/auth.test.config';
+import { getJWTConfigMock } from '../auth/tests/auth.test.module';
+import { getJWTTokenWithFingerprintFactory, authRequestMakerFactory } from '../auth/tests/auth.test.helper';
 import { testFingerprint } from './tests/test.users';
 
 describe('user controller e2e tests', () => {
@@ -19,34 +24,23 @@ describe('user controller e2e tests', () => {
   let request: ReturnType<typeof supertest>;
   let userRepo: Repository<UserEntity>;
 
-  const config: Configuration['jwt'] = {
-    cookieName: 'refreshToken',
-    expiresInAccess: 10000,
-    expiresInRefresh: 10000,
-    jwtSecret: 'secret',
-  };
+  const config = testConfig;
+  const getJWTTokenForUserWithFingerprint = getJWTTokenWithFingerprintFactory(config);
+  const makeAuthRequest = authRequestMakerFactory(config.cookieName, testFingerprint);
 
   beforeAll(async () => {
-    const configMock = {
-      get: jest.fn().mockImplementation((): Configuration['jwt'] => config),
-    };
-
-    const repositoryMock = {
-      find: jest.fn(),
-      findOne: jest.fn(),
-      delete: jest.fn(),
-      update: jest.fn(),
-    };
-
     const moduleRef = await Test.createTestingModule({
-      imports: [UserModule],
-      providers: [JwtService],
-    })
-      .overrideProvider(ConfigService)
-      .useValue(configMock)
-      .overrideProvider(getRepositoryToken(UserEntity))
-      .useValue(repositoryMock)
-      .compile();
+      imports: [UserTestModule],
+      providers: [
+        AuthService,
+        RefreshCookieStrategy,
+        {
+          provide: ConfigService,
+          useValue: getJWTConfigMock(config),
+        },
+      ],
+      controllers: [UserController],
+    }).compile();
 
     app = moduleRef.createNestApplication();
     app.use(cookieParser());
@@ -57,31 +51,17 @@ describe('user controller e2e tests', () => {
   });
 
   describe('GET /users', () => {
-    let users: UserEntity[];
-    let adminUser: UserEntity;
-
-    beforeAll(async () => {
-      adminUser = getTestUser({ role: UserRole.ADMIN });
-      users = [getTestUser(), getTestUser(), adminUser];
-    });
+    const users = testUsers;
 
     function isUserEntity(arg: object): arg is UserEntity[] {
       return arg && Array.isArray(arg) && arg[0].email && typeof arg[0].email == 'string';
     }
 
     it('should return a list of users when user is an admin', async () => {
-      const jwtToken = getJWTTokenForUserWithRole(adminUser, testFingerprint);
+      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, testFingerprint);
+      const authRequest = makeAuthRequest(request.get('/users'), jwtToken);
 
-      jest.spyOn(userRepo, 'find').mockResolvedValueOnce(users);
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
-
-      const response = await request
-        .get('/users')
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
-        .set('user-agent', testFingerprint.userAgent)
-        .send()
-        .expect(200);
+      const response = await authRequest.send().expect(200);
 
       const body: HttpJsonResult<UserEntity> = response.body;
 
@@ -90,49 +70,26 @@ describe('user controller e2e tests', () => {
     });
 
     it('should return 403 error when user not an admin', async () => {
-      const user = getTestUser();
+      const jwtToken = getJWTTokenForUserWithFingerprint(regularUser, testFingerprint);
+      const authRequest = makeAuthRequest(request.get('/users'), jwtToken);
 
-      const jwtToken = getJWTTokenForUserWithRole(adminUser, testFingerprint);
-
-      jest.spyOn(userRepo, 'find').mockResolvedValueOnce(users);
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(user);
-
-      await request
-        .get('/users')
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
-        .set('user-agent', testFingerprint.userAgent)
-        .send()
-        .expect(403);
+      await authRequest.send().expect(403);
     });
 
     it('should return 401 error when not authorized', async () => {
-      await request
-        .get('/users')
-        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
-        .set('user-agent', testFingerprint.userAgent)
-        .send()
-        .expect(401);
+      await request.get('/users').send().expect(401);
     });
   });
 
   describe('DELETE /user/id', () => {
     it('should return ok status when user deleted by an admin', async () => {
-      const adminUser = getTestUser({ role: UserRole.ADMIN });
-      const userToDelete = getTestUser();
+      const userToDelete = regularUser;
 
-      const jwtToken = getJWTTokenForUserWithRole(adminUser, testFingerprint);
+      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, testFingerprint);
+      const userRepositoryDeleteSpy = jest.spyOn(userRepo, 'delete');
 
-      const userRepositoryDeleteSpy = jest.spyOn(userRepo, 'delete').mockResolvedValueOnce({} as DeleteResult);
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
-
-      const response = await request
-        .delete(`/user/${userToDelete.id}`)
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
-        .set('user-agent', testFingerprint.userAgent)
-        .send()
-        .expect(200);
+      const authRequest = makeAuthRequest(request.delete(`/user/${userToDelete.id}`), jwtToken);
+      const response = await authRequest.send().expect(200);
 
       const body: HttpJsonResult<DeleteResult> = response.body;
 
@@ -141,24 +98,18 @@ describe('user controller e2e tests', () => {
     });
 
     it('should return 403 error when user not an admin', async () => {
-      const user = getTestUser();
-      const userToDelete = getTestUser();
+      const user = regularUser;
+      const userToDelete = testUsers[1];
 
-      const jwtToken = getJWTTokenForUserWithRole(user, testFingerprint);
+      const jwtToken = getJWTTokenForUserWithFingerprint(user, testFingerprint);
 
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(user);
+      const authRequest = makeAuthRequest(request.delete(`/user/${userToDelete.id}`), jwtToken);
 
-      await request
-        .delete(`/user/${userToDelete.id}`)
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
-        .set('user-agent', testFingerprint.userAgent)
-        .send()
-        .expect(403);
+      await authRequest.send().expect(403);
     });
 
     it('should return 401 error when not authorized', async () => {
-      const userToDelete = getTestUser();
+      const userToDelete = regularUser;
 
       await request.delete(`/user/${userToDelete.id}`).send().expect(401);
     });
@@ -166,60 +117,67 @@ describe('user controller e2e tests', () => {
 
   describe('PUT /user/id', () => {
     it('should block user when user blocked by an admin', async () => {
-      const adminUser = getTestUser({ role: UserRole.ADMIN });
       const userId = faker.random.numeric();
 
-      const jwtToken = getJWTTokenForUserWithRole(adminUser, testFingerprint);
+      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, testFingerprint);
 
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
+      const updateSpy = jest.spyOn(userRepo, 'update');
 
-      await request
-        .put(`/user/${userId}`)
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
-        .set('user-agent', testFingerprint.userAgent)
-        .send({ isBlocked: true })
-        .expect(200);
+      const authRequest = makeAuthRequest(request.put(`/user/${userId}`), jwtToken);
+      await authRequest.send({ isBlocked: true }).expect(200);
 
-      expect(userRepo.update).toHaveBeenCalledWith({ id: userId }, { isBlocked: true });
+      expect(updateSpy).toHaveBeenCalledWith({ id: userId }, { isBlocked: true });
     });
 
     it('should block user when user unblocked by an admin', async () => {
-      const adminUser = getTestUser({ role: UserRole.ADMIN });
       const userId = faker.random.numeric();
 
-      const jwtToken = getJWTTokenForUserWithRole(adminUser, testFingerprint);
+      const updateSpy = jest.spyOn(userRepo, 'update');
 
-      jest.spyOn(userRepo, 'findOne').mockResolvedValueOnce(adminUser);
+      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, testFingerprint);
+      const authRequest = makeAuthRequest(request.put(`/user/${userId}`), jwtToken);
 
-      await request
-        .put(`/user/${userId}`)
-        .set('Cookie', [`${config.cookieName}=${jwtToken}`])
-        .set('x-original-forwarded-for', testFingerprint.ipAddresses.join(','))
-        .set('user-agent', testFingerprint.userAgent)
-        .send({ isBlocked: false })
-        .expect(200);
-
-      expect(userRepo.update).toHaveBeenCalledWith({ id: userId }, { isBlocked: false });
+      await authRequest.send({ isBlocked: false }).expect(200);
+      expect(updateSpy).toHaveBeenCalledWith({ id: userId }, { isBlocked: false });
     });
   });
 
-  type UserInfo = {
-    id?: number;
-    login?: string;
-    email?: string;
-    role?: UserRole;
-  };
+  describe('PUT user/:uuid/profile', () => {
+    it('should return 401 error if not authorized', async () => {
+      const userInfo: UserInfoDto = { firstName: 'test', lastName: 'test' };
 
-  function getTestUser(userInfo: UserInfo = { id: undefined, login: undefined, email: undefined, role: undefined }) {
-    const user = new UserEntity();
-    Object.assign(user, {
-      id: userInfo.id ?? faker.random.numeric(),
-      login: userInfo.login ?? faker.internet.userName(),
-      email: userInfo.email ?? faker.internet.email(),
-      uuid: faker.datatype.uuid(),
-      role: userInfo.role ?? UserRole.USER,
+      await request.put(`/user/${faker.datatype.uuid()}/profile`).send(userInfo).expect(401);
     });
-    return user;
-  }
+
+    it('should edit the profile if the user uuid differs but the editor is an admin', async () => {
+      const wrongId = faker.datatype.uuid();
+      const userInfo: UserInfoDto = { firstName: 'test', lastName: 'test' };
+
+      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, testFingerprint);
+
+      const authRequest = makeAuthRequest(request.put(`/user/${wrongId}/profile`), jwtToken);
+      const response = await authRequest.send(userInfo);
+
+      const body = response.body;
+
+      expect(body.status).toBe(HttpJsonStatus.Ok);
+    });
+
+    it('should edit the profile if the user is an owner of the profile (matches by uuid)', async () => {
+      const userInfo: UserInfoDto = { firstName: 'firstname', lastName: 'lastname' };
+
+      const jwtToken = getJWTTokenForUserWithFingerprint(regularUser, testFingerprint);
+
+      const updateSpy = jest.spyOn(userRepo, 'update');
+
+      const authRequest = makeAuthRequest(request.put(`/user/${regularUser.uuid}/profile`), jwtToken);
+      const response = await authRequest.send(userInfo);
+
+      const body = response.body;
+
+      expect(updateSpy).toHaveBeenCalledWith({ uuid: regularUser.uuid }, userInfo);
+
+      expect(body.status).toBe(HttpJsonStatus.Ok);
+    });
+  });
 });

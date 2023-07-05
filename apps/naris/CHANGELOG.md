@@ -2,6 +2,14 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.17.0](https://gitlog.ru/Naris/soermono/compare/naris-0.16.0...naris-0.17.0) (2023-07-05)
+
+
+### Features
+
+* add confirmation message when subscribe ([9644f66](https://gitlog.ru/Naris/soermono/commit/9644f6662063af79a4306692f879776631baee4b))
+* switch conspects and articles to api_v2 flag ([61b4c74](https://gitlog.ru/Naris/soermono/commit/61b4c74cd752b44e36c87b50d9e88edf6d610d5f))
+
 ## [0.16.0](https://gitlog.ru/Naris/soermono/compare/naris-0.15.0...naris-0.16.0) (2023-07-02)
 
 

@@ -1,7 +1,5 @@
 import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
-import { Repository } from 'typeorm';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test } from '@nestjs/testing';
 import { ConfigType } from '@nestjs/config';
 
@@ -15,7 +13,6 @@ import {
   nonexistentQuestionId,
   userQuestionId,
 } from './tests/questions-test-data';
-import { QuestionEntity } from './question.entity';
 import { JwtConfig } from '../../config/jwt.config';
 import { JwtTestHelper } from '../../common/helpers/JwtTestHelper';
 import { QuestionsTestModule } from './tests/questions.test.module';
@@ -32,7 +29,6 @@ jest.mock('typeorm', () => {
 
 describe('QuestionsModule e2e-test', () => {
   let app: INestApplication;
-  let questionsRepo: Repository<QuestionEntity>;
   let request: ReturnType<typeof supertest>;
 
   beforeAll(async () => {
@@ -49,8 +45,6 @@ describe('QuestionsModule e2e-test', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-
-    questionsRepo = app.get<Repository<QuestionEntity>>(getRepositoryToken(QuestionEntity));
 
     request = supertest(app.getHttpServer());
   });

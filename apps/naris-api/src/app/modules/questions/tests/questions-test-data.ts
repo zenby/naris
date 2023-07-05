@@ -5,10 +5,8 @@ import { JwtTestHelper } from '../../../common/helpers/JwtTestHelper';
 
 export const newQuestionText = faker.lorem.text();
 export const userQuestionId = faker.datatype.number();
-export const notExistingQuestionId = faker.datatype.number();
 export const strangerQuestionId = faker.datatype.number();
 export const nonexistentQuestionId = faker.datatype.number();
-export const strangerUuid = faker.datatype.uuid();
 
 type QuestionData = {
   id?: number;
@@ -40,14 +38,14 @@ const createExpectedReply = (question: QuestionEntity | QuestionEntity[]): Quest
 
 export const userQuestion = createQuestion({ id: userQuestionId, userUuid: JwtTestHelper.defaultPayload.uuid });
 
-export const strangerQuestion = createQuestion({ id: strangerQuestionId, userUuid: strangerUuid });
+const strangerQuestion = createQuestion({ id: strangerQuestionId, userUuid: faker.datatype.uuid() });
+
+export const testQuestions: QuestionEntity[] = [userQuestion, strangerQuestion];
 
 export const newUserQuestion = createQuestion({
   question: newQuestionText,
   userUuid: JwtTestHelper.defaultPayload.uuid,
 });
-
-export const testQuestions: QuestionEntity[] = [userQuestion, strangerQuestion];
 
 export const expectedNewQuestion = createExpectedReply(newUserQuestion);
 

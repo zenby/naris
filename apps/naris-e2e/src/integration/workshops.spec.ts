@@ -32,7 +32,7 @@ describe('module workshops', () => {
     it('shows access restricted message for guest account when accessing workshop ', () => {
       cy.get('[data-cy="openFolder"]').each(($card, _, __) => {
         cy.wrap($card).click();
-        cy.get('[data-cy="openVideo"]').each(($card1, index, _) => {
+        cy.get('[data-cy="openVideo"]').each(($card1, _, __) => {
           cy.wrap($card1).click();
           cy.get('[data-cy="noContent"]')
             .should('be.visible')

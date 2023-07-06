@@ -1,8 +1,9 @@
-import * as jwt from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 import { JwtPayload } from '../types/jwt-payload.interface';
 
 export class JwtTestHelper {
   static readonly defaultSecret = 'defaultSecretForTest';
+  static readonly defaultExpiresInRefresh = 1000;
   public static readonly defaultPayload: JwtPayload = {
     id: 1,
     email: 'test@ya.ru',
@@ -16,7 +17,7 @@ export class JwtTestHelper {
   }
 
   static createJwt(payload: JwtPayload, secret = JwtTestHelper.defaultSecret) {
-    return jwt.sign(payload, secret);
+    return sign(payload, secret);
   }
 
   static createBearerHeader(payload: JwtPayload = JwtTestHelper.defaultPayload, secret = JwtTestHelper.defaultSecret) {

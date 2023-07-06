@@ -22,7 +22,7 @@ describe('modules questions', () => {
 
   it('should show error message when User trying to enter a question that is too long', () => {
     cy.visit('#!/pages/qa/my/create/new');
-    cy.get('.ant-input').type(veryLongQuestion, {
+    cy.get('[data-cy="questionInput"]').type(veryLongQuestion, {
       delay: 0,
     });
     cy.get('.ant-notification-notice').should('not.exist');
@@ -32,7 +32,7 @@ describe('modules questions', () => {
 
   it('should return to the prev page after show the error message and pushing the "back" button', () => {
     cy.visit('#!/pages/qa/my/create/new');
-    cy.get('.ant-input').type(veryLongQuestion, {
+    cy.get('[data-cy="questionInput"]').type(veryLongQuestion, {
       delay: 0,
     });
     cy.get('[id="save-control-btn"]').click();
@@ -43,11 +43,11 @@ describe('modules questions', () => {
 
   it('should save question after removing unnecessary characters', () => {
     cy.visit('#!/pages/qa/my/create/new');
-    cy.get('.ant-input').type(veryLongQuestion, {
+    cy.get('[data-cy="questionInput"]').type(veryLongQuestion, {
       delay: 0,
     });
     cy.get('[id="save-control-btn"]').click();
-    cy.get('.ant-input').clear().type(permissibleQuestion).should('have.value', permissibleQuestion);
+    cy.get('[data-cy="questionInput"]').clear().type(permissibleQuestion).should('have.value', permissibleQuestion);
     cy.get('[id="save-control-btn"]').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
     cy.get('.ant-message-notice-content').should('exist');
@@ -56,12 +56,12 @@ describe('modules questions', () => {
 
   it('should delete selected question', () => {
     cy.visit('#!/pages/qa/my/create/new'); // add 2 new questions
-    cy.get('.ant-input').type(permissibleQuestion);
+    cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
     cy.get('[id="save-control-btn"]').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     cy.get('[data-cy="addQuestionBtn"]').click();
-    cy.get('.ant-input').type(permissibleQuestion);
+    cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
     cy.get('[id="save-control-btn"]').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
@@ -87,7 +87,7 @@ describe('modules questions', () => {
 
   it('should show enother elements on "My questions" page if question list is empty', () => {
     cy.visit('#!/pages/qa/my/create/new');
-    cy.get('.ant-input').type(permissibleQuestion);
+    cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
     cy.get('[id="save-control-btn"]').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
 

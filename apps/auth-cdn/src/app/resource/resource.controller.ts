@@ -47,7 +47,7 @@ export class ResourceController {
   }
 
   @Get()
-  async getAllResources(): Promise<HttpJsonResult<string[]>> {
+  async getAllResources(): Promise<HttpJsonResult<any[]>> {
     try {
       const resources = await this.resourceService.getAll();
 

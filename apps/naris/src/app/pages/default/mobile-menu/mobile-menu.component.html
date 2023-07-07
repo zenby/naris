@@ -64,7 +64,7 @@
         nzSize="large"
         nzShape="circle"
         [id]="control.icon + '-control-btn'"
-        data-cy="addQuestionBtn"
+        attr.data-cy="{{ control.icon }}Btn"
         (click)="controlPanel(control)"
         [attr.data-cy]="control.icon"
       >

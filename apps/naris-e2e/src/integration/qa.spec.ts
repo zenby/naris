@@ -15,7 +15,7 @@ describe('modules questions', () => {
     cy.visit('/#!/pages/qa/my');
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-    cy.get('[data-cy="addQuestionBtn"]').click();
+    cy.get('[data-cy="plusBtn"]').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my/create/new');
     cy.get('h1').contains('Задайте свой вопрос');
   });
@@ -60,7 +60,7 @@ describe('modules questions', () => {
     cy.get('[id="save-control-btn"]').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
-    cy.get('[data-cy="addQuestionBtn"]').click();
+    cy.get('[data-cy="plusBtn"]').click();
     cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
     cy.get('[id="save-control-btn"]').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting

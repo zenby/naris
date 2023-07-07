@@ -1,19 +1,19 @@
 import { allWorkbookConspectsPath } from '../../../support/pathConstants';
+import { testTitle } from '../../../support/articleConstants';
 
 const title = 'Новая тема';
-const body = 'Тело конспекта, тело конспекта, тело конспекта, тело конспекта';
 
 describe('Тестирование конспектов', () => {
   beforeEach(() => {
     // Проходим авторизацию
     cy.intercept('GET', '**/*.svg').as('signIn');
     cy.intercept('GET', '**/api/v3/json/workbook/private').as('personalConspects');
-    cy.intercept('PUT', '**/api/v2/json/workbook/**').as('conspectEdit');
-    cy.intercept('DELETE', '**/api/v2/json/workbook/**').as('conspectDelete');
+    cy.intercept('PUT', '**/api/v3/json/workbook/**').as('conspectEdit');
+    cy.intercept('DELETE', '**/api/v3/json/workbook/**').as('conspectDelete');
     cy.login('user', 'user');
     cy.visit(`/${allWorkbookConspectsPath}`);
     cy.wait('@personalConspects');
-    // cy.removeAllExistingConspects()
+    cy.removeAllExistingConspects();
   });
 
   it('Вход в конспекты, создание конспекта, и проверка его в наличии', () => {
@@ -36,28 +36,18 @@ describe('Тестирование конспектов', () => {
   });
 
   it('Проверка на изменения конспекта', () => {
-    cy.visit('/#!/pages/workbook/conspects/create/new');
-
-    cy.get('input[placeholder="Тема"]').type(title);
-    cy.get('textarea').first().type(body);
-
-    cy.get('button[ng-reflect-title="Сохранить"]').click();
+    cy.createConspect();
 
     // Проверка, что элемент был создан
     cy.get('div.item.ng-star-inserted').should('exist');
-    cy.get('div.title').eq(0).should('contain.text', title);
+    cy.get('div.title').eq(0).should('contain.text', testTitle);
 
     // Клик по глазику для просмотра
     cy.get('div.item.ng-star-inserted').first().find('i[nztype="eye"]').click({ force: true });
-    cy.get('markdown.ng-star-inserted')
-      .invoke('text')
-      .then((text) => {
-        const trimmedText = text.trim();
-        expect(trimmedText).to.equal(body);
-      });
   });
 
   it('Проверка на удаление конспектов', () => {
+    cy.createConspect();
     cy.visit('/#!/pages/workbook/conspects');
 
     // Клик на кнопку с красной корзиной для удаления

@@ -1,4 +1,9 @@
-import { createNewArticlePath, allArticlesPath } from './pathConstants';
+import {
+  createNewArticlePath,
+  allArticlesPath,
+  allWorkbookConspectsPath,
+  createNewConspectPath,
+} from './pathConstants';
 import { testTitle } from '../support/articleConstants';
 // ***********************************************
 // This example commands.js shows you how to
@@ -20,6 +25,7 @@ declare global {
       removeAllExistingArticles(): void;
       createArticle(): void;
       removeAllExistingConspects(): void;
+      createConspect(): void;
     }
   }
 }
@@ -82,7 +88,7 @@ Cypress.Commands.add('removeAllExistingConspects', () => {
       for (let i = 0; i < delBtnLen; i++) {
         cy.get('.anticon-delete').eq(0).click({ force: true });
         cy.contains('OK').should('be.visible').click({ force: true });
-        cy.wait(['@conspectDelete', '@conspectEdit', '@personalConspects']);
+        cy.wait(['@conspectDelete', '@personalConspects', '@personalConspects']);
       }
     });
 });
@@ -101,6 +107,21 @@ Cypress.Commands.add('createArticle', () => {
   cy.get('a[title="Статьи"]').should('have.attr', 'disabled');
   cy.get('.ant-spin-dot').should('not.exist');
 });
+
+Cypress.Commands.add('createConspect', () => {
+  cy.visit(`/${allWorkbookConspectsPath}`);
+  cy.location('href').should('eq', Cypress.config().baseUrl + '/' + allWorkbookConspectsPath);
+
+  cy.get('[data-cy="create-item"]').should('be.visible').click();
+  cy.location('href').should('eq', Cypress.config().baseUrl + '/' + createNewConspectPath);
+
+  cy.get('input[placeholder="Тема"]').type(testTitle, { force: true });
+  cy.get('.anticon-save').click();
+  cy.wait(['@personalConspects', '@personalConspects']);
+  cy.get('a[title="Конспекты"]').should('have.attr', 'disabled');
+  cy.get('.ant-spin-dot').should('not.exist');
+});
+
 //
 // -- This is a child command --
 // Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })

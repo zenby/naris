@@ -36,7 +36,7 @@ describe('modules questions', () => {
       delay: 0,
     });
     cy.get('[data-cy="saveBtn"]').click();
-    cy.get('[id="rollback-control-btn"]').click();
+    cy.get('[data-cy="rollbackBtn"]').click();
 
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
   });

@@ -3,7 +3,7 @@ import { JwtPayload } from '../types/jwt-payload.interface';
 
 export class JwtTestHelper {
   static readonly defaultSecret = 'defaultSecretForTest';
-  static readonly defaultExpiresInRefresh = 1000;
+
   public static readonly defaultPayload: JwtPayload = {
     id: 1,
     email: 'test@ya.ru',

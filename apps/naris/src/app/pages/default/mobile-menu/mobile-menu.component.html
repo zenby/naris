@@ -31,8 +31,11 @@
           />
         </li>
       </ng-container>
+      <li *ngIf="userInfo.role !== 'GUEST'">
+        <a [routerLink]="['/', 'pages', 'pay']">Платежи</a>
+      </li>
       <li *ngIf="userInfo.role === 'GUEST'">
-        <a [routerLink]="['/', 'pages', 'pay']">Оформить подписку</a>
+        <a [routerLink]="['/', 'pages', 'pay']">Улучшить уровень</a>
       </li>
       <li><a [routerLink]="['/', 'pages', 'account']">Личный кабинет</a></li>
       <li><a [routerLink]="['/', 'pages', 'certificate']">Сертификат</a></li>

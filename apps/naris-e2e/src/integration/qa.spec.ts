@@ -17,7 +17,7 @@ describe('modules questions', () => {
     cy.wait(1000);
     cy.get('[data-cy="plusBtn"]').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my/create/new');
-    cy.get('h1').contains('Задайте свой вопрос');
+    cy.get('[data-cy="questionFormTitle"]').contains('Задайте свой вопрос');
   });
 
   it('should show error message when User trying to enter a question that is too long', () => {

@@ -26,7 +26,7 @@ describe('modules questions', () => {
       delay: 0,
     });
     cy.get('.ant-notification-notice').should('not.exist');
-    cy.get('[id="save-control-btn"]').click();
+    cy.get('[data-cy="saveBtn"]').click();
     cy.get('.ant-notification-notice').should('exist');
   });
 
@@ -35,7 +35,7 @@ describe('modules questions', () => {
     cy.get('[data-cy="questionInput"]').type(veryLongQuestion, {
       delay: 0,
     });
-    cy.get('[id="save-control-btn"]').click();
+    cy.get('[data-cy="saveBtn"]').click();
     cy.get('[id="rollback-control-btn"]').click();
 
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
@@ -46,9 +46,9 @@ describe('modules questions', () => {
     cy.get('[data-cy="questionInput"]').type(veryLongQuestion, {
       delay: 0,
     });
-    cy.get('[id="save-control-btn"]').click();
+    cy.get('[data-cy="saveBtn"]').click();
     cy.get('[data-cy="questionInput"]').clear().type(permissibleQuestion).should('have.value', permissibleQuestion);
-    cy.get('[id="save-control-btn"]').click();
+    cy.get('[data-cy="saveBtn"]').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
     cy.get('.ant-message-notice-content').should('exist');
     cy.get('.ant-list-items').last().contains(permissibleQuestion);
@@ -57,12 +57,12 @@ describe('modules questions', () => {
   it('should delete selected question', () => {
     cy.visit('#!/pages/qa/my/create/new'); // add 2 new questions
     cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
-    cy.get('[id="save-control-btn"]').click();
+    cy.get('[data-cy="saveBtn"]').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     cy.get('[data-cy="plusBtn"]').click();
     cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
-    cy.get('[id="save-control-btn"]').click();
+    cy.get('[data-cy="saveBtn"]').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
@@ -88,7 +88,7 @@ describe('modules questions', () => {
   it('should show enother elements on "My questions" page if question list is empty', () => {
     cy.visit('#!/pages/qa/my/create/new');
     cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
-    cy.get('[id="save-control-btn"]').click();
+    cy.get('[data-cy="saveBtn"]').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
 
     cy.get('[title="Удалить"]').then((delBtnList) => {

@@ -4,7 +4,7 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 import { AccessDeniedComponent } from './access-denied.component';
 
 export default {
-  title: 'AccessDeniedComponent',
+  title: 'Libs/Components/AccessDeniedComponent',
   component: AccessDeniedComponent,
   decorators: [
     moduleMetadata({

@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { moduleMetadata, Meta, StoryFn } from '@storybook/angular';
+import { moduleMetadata, Meta, StoryObj } from '@storybook/angular';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -10,8 +10,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { AccessDeniedModule } from '../access-denied/access-denied.module';
 import { RouterTestingModule } from '@angular/router/testing';
 
-export default {
-  title: 'FilesListComponent',
+const meta: Meta<FilesListComponent> = {
+  title: 'Libs/Components/FilesListComponent',
   component: FilesListComponent,
   decorators: [
     moduleMetadata({
@@ -28,10 +28,13 @@ export default {
       providers: [NzMessageService],
     }),
   ],
-} as Meta<FilesListComponent>;
+};
 
-export const Primary: StoryFn = () => ({
-  props: {
+export default meta;
+type Story = StoryObj<typeof FilesListComponent>;
+
+export const Primary: Story = {
+  args: {
     webFiles: [
       {
         title: 'xDonate',
@@ -58,5 +61,35 @@ export const Primary: StoryFn = () => ({
         icon: 'lock',
       },
     ],
-  },
-});
+  } as unknown as Partial<typeof FilesListComponent>,
+};
+
+export const WithoutLabels: Story = {
+  args: {
+    webFiles: [
+      {
+        title: 'xDonate',
+        labels: [],
+        url: 'xdonate.zip',
+        desc: 'Система донатов для персонального использования',
+        level: 'workshop',
+        icon: 'lock',
+      },
+    ],
+  } as unknown as Partial<typeof FilesListComponent>,
+};
+
+export const WithoutDescription: Story = {
+  args: {
+    webFiles: [
+      {
+        title: 'xDonate',
+        labels: ['v1.8.0', 'Backend'],
+        url: 'xdonate.zip',
+        desc: '',
+        level: 'workshop',
+        icon: 'lock',
+      },
+    ],
+  } as unknown as Partial<typeof FilesListComponent>,
+};

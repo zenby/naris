@@ -1,42 +1,35 @@
-import { JsonModule } from './json.module';
+import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
-
-import { Test } from '@nestjs/testing';
+import { JsonModule } from './json.module';
 import { HttpJsonStatus } from '@soer/sr-common-interfaces';
-import { DataSource } from 'typeorm';
-import { faker } from '@faker-js/faker';
 import { JwtConfig } from '../../config/jwt.config';
-import { ConfigType } from '@nestjs/config';
+import { ConfigModule, ConfigType } from '@nestjs/config';
 import { JwtTestHelper } from '../../common/helpers/JwtTestHelper';
-
-const jsonRepositoryMock = {
-  find: jest.fn(),
-  save: jest.fn(),
-  findOne: jest.fn(),
-  delete: jest.fn(),
-  count: jest.fn().mockReturnValueOnce(1),
-};
-
-// https://gitlog.ru/Naris/soermono/issues/164
-const dataSourceMockHack = {
-  entityMetadatas: {
-    find: jest.fn(),
-  },
-  options: {
-    type: jest.fn(),
-  },
-  getRepository: () => jsonRepositoryMock,
-};
+import { Repository } from 'typeorm';
+import { faker } from '@faker-js/faker';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { JsonEntity } from './json.entity';
 
 describe('JsonModule e2e-test', () => {
   let app: INestApplication;
-  let request: ReturnType<typeof supertest>;
+  let request: supertest.SuperTest<supertest.Test>;
+  let jsonRepositoryMock: Partial<Record<keyof Repository<JsonEntity>, jest.Mock>>;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [JsonModule],
+    jsonRepositoryMock = {
+      find: jest.fn(),
+      save: jest.fn(),
+      findOne: jest.fn(),
+      delete: jest.fn(),
+      count: jest.fn(),
+    };
+
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [JsonModule, ConfigModule.forFeature(JwtConfig)],
     })
+      .overrideProvider(getRepositoryToken(JsonEntity))
+      .useValue(jsonRepositoryMock)
       .useMocker((token) => {
         if (token == JwtConfig.KEY) {
           const jwtConfigMock: ConfigType<typeof JwtConfig> = {
@@ -44,11 +37,10 @@ describe('JsonModule e2e-test', () => {
           };
           return jwtConfigMock;
         }
-        if (token == DataSource) return dataSourceMockHack;
       })
       .compile();
 
-    app = moduleRef.createNestApplication();
+    app = moduleFixture.createNestApplication();
     await app.init();
 
     request = supertest(app.getHttpServer());
@@ -65,7 +57,6 @@ describe('JsonModule e2e-test', () => {
   describe('GET /json/:documentNamespace/', () => {
     it('should find all documents when pass without concrete document id', async () => {
       const document = createFakeDocument();
-
       jsonRepositoryMock.find.mockReturnValueOnce([document]);
 
       await request
@@ -198,6 +189,7 @@ describe('JsonModule e2e-test', () => {
 
       jsonRepositoryMock.findOne.mockReturnValueOnce(documentToUpdate);
       jsonRepositoryMock.save.mockImplementationOnce((newDocument) => Object.assign({}, newDocument));
+      jsonRepositoryMock.count.mockReturnValueOnce(1);
 
       await request
         .put(`/json/${namespace}/${id}`)
@@ -210,11 +202,12 @@ describe('JsonModule e2e-test', () => {
     });
   });
 
-  /*describe('DELETE /json/:documentNamespace/:documentId', () => {
+  describe('DELETE /json/:documentNamespace/:documentId', () => {
     it('should delete document when pass stored document id', async () => {
       const storedDocument = createFakeDocument();
 
       jsonRepositoryMock.findOne.mockReturnValueOnce(storedDocument);
+      jsonRepositoryMock.count.mockReturnValueOnce(1);
 
       await request
         .delete(`/json/${storedDocument.namespace}/${storedDocument.id}`)
@@ -226,7 +219,7 @@ describe('JsonModule e2e-test', () => {
       });
       expect(jsonRepositoryMock.delete).toHaveBeenCalledWith({ id: storedDocument.id });
     });
-  });*/
+  });
 });
 
 function createFakeDocument() {

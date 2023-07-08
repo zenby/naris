@@ -30,20 +30,16 @@ export class DocumentAuthGuard implements CanActivate {
     const documentId = request.params.documentId;
     const documentNamespace = request.params.documentNamespace;
 
-    try {
-      const { email } = verify(token, this.secret) as { email: string };
+    const { email } = verify(token, this.secret) as { email: string };
 
-      const count = await this.jsonRepository.count({
-        where: {
-          author_email: email,
-          id: documentId,
-          namespace: documentNamespace,
-        },
-      });
+    const count = await this.jsonRepository.count({
+      where: {
+        author_email: email,
+        id: documentId,
+        namespace: documentNamespace,
+      },
+    });
 
-      return count > 0;
-    } catch (e) {
-      return false;
-    }
+    return count > 0;
   }
 }

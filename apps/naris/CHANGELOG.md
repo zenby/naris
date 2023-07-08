@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.18.0](https://gitlog.ru/Naris/soermono/compare/naris-0.17.0...naris-0.18.0) (2023-07-08)
+
+
+### Features
+
+* add pay page to mobile view ([9a84023](https://gitlog.ru/Naris/soermono/commit/9a8402342f2dafa9fedfb460f11c66f87d819986))
+
 ## [0.17.0](https://gitlog.ru/Naris/soermono/compare/naris-0.16.0...naris-0.17.0) (2023-07-05)
 
 

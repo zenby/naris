@@ -1,13 +1,25 @@
 import { DynamicConfig, featuresEnum } from './environment.interface';
 
+let flags = {};
+try {
+  const flagsJSON = localStorage.getItem('featureFlags') || '{}';
+  flags = JSON.parse(flagsJSON);
+  console.log('Load flags from storage', flags);
+} catch (e) {
+  flags = {};
+  console.error(e);
+}
+
 export const prod: DynamicConfig = {
   [featuresEnum.auth_v2]: true,
   [featuresEnum.personal_activity_journal]: true,
+  ...flags,
 };
 
 export const ab: DynamicConfig = {
   ...prod,
   [featuresEnum.auth_v2]: true,
+  ...flags,
 };
 
 export const dev: DynamicConfig = {
@@ -15,10 +27,12 @@ export const dev: DynamicConfig = {
   [featuresEnum.personal_activity_journal]: true,
   [featuresEnum.subscription]: true,
   [featuresEnum.api_v2]: true,
+  ...flags,
 };
 
 export const dev_ab: DynamicConfig = {
   ...ab,
+  ...flags,
 };
 
 export const personal: DynamicConfig = {
@@ -27,4 +41,5 @@ export const personal: DynamicConfig = {
   [featuresEnum.auth_v2]: true,
   [featuresEnum.api_v1]: false,
   [featuresEnum.api_v2]: true,
+  ...flags,
 };

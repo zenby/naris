@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.22.0](https://gitlog.ru/Naris/soermono/compare/naris-0.21.0...naris-0.22.0) (2023-07-09)
+
+
+### Features
+
+* activate api_v2 to production mode ([a798499](https://gitlog.ru/Naris/soermono/commit/a7984991c51f4bc6e95a7afc782f7c7f060d34bc))
+
 ## [0.21.0](https://gitlog.ru/Naris/soermono/compare/naris-0.20.0...naris-0.21.0) (2023-07-09)
 
 

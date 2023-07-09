@@ -207,23 +207,47 @@ const routes: Routes = [
         question: { qid: '?' },
       },
     }),
-    SrDTOModule.forChild<TargetKey>({
-      namespace: 'targets',
-      schema: { url: 'v2/json/targets/:tid' },
-      keys: {
-        target: { tid: '?' },
-        targets: { tid: 'personal' },
-      },
-    }),
-    SrDTOModule.forChild<TemplateKey>({
-      namespace: 'templates',
-      schema: { url: 'v2/json/templates/:tid' },
-      keys: {
-        template: { tid: '?' },
-        templates: { tid: 'personal' },
-        publicTemplates: { tid: 'public' },
-      },
-    }),
+
+    SrDTOModule.forChild<TargetKey>(
+      environment.features[featuresEnum.api_v2]
+        ? {
+            namespace: 'targets',
+            schema: { url: '%%narisApiUrl%%v3/json/targets/:tid' },
+            keys: {
+              target: { tid: '?' },
+              targets: { tid: 'private' },
+            },
+          }
+        : {
+            namespace: 'targets',
+            schema: { url: 'v2/json/targets/:tid' },
+            keys: {
+              target: { tid: '?' },
+              targets: { tid: 'personal' },
+            },
+          }
+    ),
+    SrDTOModule.forChild<TemplateKey>(
+      environment.features[featuresEnum.api_v2]
+        ? {
+            namespace: 'templates',
+            schema: { url: '%%narisApiUrl%%v3/json/templates/:tid' },
+            keys: {
+              template: { tid: '?' },
+              templates: { tid: 'private' },
+              publicTemplates: { tid: 'public' },
+            },
+          }
+        : {
+            namespace: 'templates',
+            schema: { url: 'v2/json/templates/:tid' },
+            keys: {
+              template: { tid: '?' },
+              templates: { tid: 'personal' },
+              publicTemplates: { tid: 'public' },
+            },
+          }
+    ),
     QuestionsRoutingModule,
     TargetsRoutingModule,
     AbstracteRoutingModule,

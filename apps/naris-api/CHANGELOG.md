@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.6.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.5.0...naris-api-0.6.0) (2023-07-09)
+
+
+### Features
+
+* remove user email from json output ([d317a4f](https://gitlog.ru/Naris/soermono/commit/d317a4f1440ae8939c55bb7ef8aa9931c990e3d8))
+
 ## [0.5.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.4.0...naris-api-0.5.0) (2023-07-09)
 
 

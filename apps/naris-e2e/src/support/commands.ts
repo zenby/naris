@@ -112,7 +112,7 @@ Cypress.Commands.add('createConspect', () => {
   cy.visit(`/${allWorkbookConspectsPath}`);
   cy.location('href').should('eq', Cypress.config().baseUrl + '/' + allWorkbookConspectsPath);
 
-  cy.get('.anticon-plus').should('be.visible').click();
+  cy.get('#plus-control-btn').should('be.visible').click();
   cy.location('href').should('eq', Cypress.config().baseUrl + '/' + createNewConspectPath);
 
   cy.get('input[placeholder="Тема"]').type(testTitle, { force: true });

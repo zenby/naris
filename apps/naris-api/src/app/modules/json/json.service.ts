@@ -126,7 +126,7 @@ export class JsonService {
     return await this.jsonRepository.delete({ id: documentId });
   }
 
-  async any(documentId: number, documentNamespace: string, authorEmail: string): Promise<boolean> {
+  async isUserAuthorOfDocument(documentId: number, documentNamespace: string, authorEmail: string): Promise<boolean> {
     const count = await this.jsonRepository.count({
       where: {
         author_email: authorEmail,

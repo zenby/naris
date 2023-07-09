@@ -10,7 +10,7 @@ import { JsonResponseDto } from './dto/json-response.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { AuthUser } from '../../common/decorators';
-import { DocumentAuthGuard } from '../../common/guards/document-auth.guard';
+import { DocumentAuthorGuard } from '../../common/guards/document-author.guard';
 
 @Controller({ version: '3', path: 'json/:documentNamespace' })
 export class JsonController {
@@ -175,7 +175,7 @@ export class JsonController {
   @ApiParam({ name: 'documentNamespace' })
   @ApiParam({ name: 'documentId' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, DocumentAuthGuard)
+  @UseGuards(JwtAuthGuard, DocumentAuthorGuard)
   @Put(':documentId')
   async updateJson(
     @Param() params: JsonParams,
@@ -200,7 +200,7 @@ export class JsonController {
   @ApiParam({ name: 'documentNamespace' })
   @ApiParam({ name: 'documentId' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, DocumentAuthGuard)
+  @UseGuards(JwtAuthGuard, DocumentAuthorGuard)
   @Delete(':documentId')
   async deleteJson(@Param() params: JsonParams): Promise<HttpJsonResult<JsonEntity>> {
     try {

@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.19.0](https://gitlog.ru/Naris/soermono/compare/naris-0.18.1...naris-0.19.0) (2023-07-09)
+
+
+### Features
+
+* add feature flags from localStorage ([d128d17](https://gitlog.ru/Naris/soermono/commit/d128d1761474254b60eb952e4d3cf83596eb8a78))
+
 ## [0.18.1](https://gitlog.ru/Naris/soermono/compare/naris-0.18.0...naris-0.18.1) (2023-07-08)
 
 ## [0.18.0](https://gitlog.ru/Naris/soermono/compare/naris-0.17.0...naris-0.18.0) (2023-07-08)

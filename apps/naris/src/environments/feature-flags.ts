@@ -1,5 +1,8 @@
 import { DynamicConfig, featuresEnum } from './environment.interface';
 
+// Для кастомизации флагов в рантайме
+// в localStorge предусмотрена возможность задать любые
+// фичефлаги
 let flags = {};
 try {
   const flagsJSON = localStorage.getItem('featureFlags') || '{}';
@@ -11,6 +14,7 @@ try {
 }
 
 export const prod: DynamicConfig = {
+  [featuresEnum.api_v2]: true,
   [featuresEnum.auth_v2]: true,
   [featuresEnum.personal_activity_journal]: true,
   ...flags,

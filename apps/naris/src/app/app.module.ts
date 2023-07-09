@@ -62,14 +62,25 @@ registerLocaleData(ru);
     NzMenuModule,
     NzMessageModule,
     SrFeatureFlagsModule.forRoot<DynamicConfig>(environment.features),
-    SrDTOModule.forChild<ActivityKey>({
-      namespace: 'activity',
-      schema: { url: 'v2/json/activity/:aid' },
-      keys: {
-        activity: { aid: '?' },
-        activites: { aid: 'personal' },
-      },
-    }),
+    SrDTOModule.forChild<ActivityKey>(
+      environment.features[featuresEnum.api_v2]
+        ? {
+            namespace: 'activity',
+            schema: { url: '%%narisApiUrl%%v3/json/activity/:aid' },
+            keys: {
+              activity: { aid: '?' },
+              activites: { aid: 'private' },
+            },
+          }
+        : {
+            namespace: 'activity',
+            schema: { url: 'v2/json/activity/:aid' },
+            keys: {
+              activity: { aid: '?' },
+              activites: { aid: 'personal' },
+            },
+          }
+    ),
   ],
 
   providers: [

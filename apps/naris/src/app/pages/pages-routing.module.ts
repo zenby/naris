@@ -158,14 +158,25 @@ const routes: Routes = [
           }
     ),
 
-    SrDTOModule.forChild<WorkbookKey>({
-      namespace: 'quiz',
-      schema: { url: 'v2/json/quiz/:wid' },
-      keys: {
-        quiz: { wid: '?' },
-        quizs: { wid: 'personal' },
-      },
-    }),
+    SrDTOModule.forChild<WorkbookKey>(
+      environment.features[featuresEnum.api_v2]
+        ? {
+            namespace: 'quiz',
+            schema: { url: '%%narisApiUrl%%v3/json/quiz/:wid' },
+            keys: {
+              quiz: { wid: '?' },
+              quizs: { wid: 'private' },
+            },
+          }
+        : {
+            namespace: 'quiz',
+            schema: { url: 'v2/json/quiz/:wid' },
+            keys: {
+              quiz: { wid: '?' },
+              quizs: { wid: 'personal' },
+            },
+          }
+    ),
 
     SrDTOModule.forChild<WorkbookKey>(
       environment.features[featuresEnum.api_v2]

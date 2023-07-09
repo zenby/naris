@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NzCardModule } from 'ng-zorro-antd/card';
@@ -52,7 +52,14 @@ const NG_ZORRO_MODULES = [
     CalendarPageComponent,
   ],
   imports: [CommonModule, FormsModule, RouterModule, ...NG_ZORRO_MODULES, ...SOER_COMPONENTS_MODULES],
-  providers: [StreamService, WorkshopsService, ByRoutePathResolver, VideoService, CalendarDataService],
+  providers: [
+    StreamService,
+    WorkshopsService,
+    ByRoutePathResolver,
+    VideoService,
+    CalendarDataService,
+    { provide: LOCALE_ID, useValue: 'ru' },
+  ],
   exports: [],
 })
 export class OverviewModule {}

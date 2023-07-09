@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.20.0](https://gitlog.ru/Naris/soermono/compare/naris-0.19.0...naris-0.20.0) (2023-07-09)
+
+
+### Features
+
+* add support api_v2 to quiz ([0d0fddb](https://gitlog.ru/Naris/soermono/commit/0d0fddbc526a0992a5f7a17d1ad40be74b9937bb))
+
 ## [0.19.0](https://gitlog.ru/Naris/soermono/compare/naris-0.18.1...naris-0.19.0) (2023-07-09)
 
 

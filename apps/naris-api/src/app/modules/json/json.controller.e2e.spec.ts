@@ -5,11 +5,12 @@ import { JsonModule } from './json.module';
 import { HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { JwtConfig } from '../../config/jwt.config';
 import { ConfigModule, ConfigType } from '@nestjs/config';
-import { JwtTestHelper } from '../../common/helpers/JwtTestHelper';
+import { JwtTestHelper } from '../../common/helpers/jwt.test.helper';
 import { Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
+import { createFakeDocument } from '../../common/helpers/document.test.helper';
 
 describe('JsonModule e2e-test', () => {
   let app: INestApplication;
@@ -221,13 +222,3 @@ describe('JsonModule e2e-test', () => {
     });
   });
 });
-
-function createFakeDocument() {
-  return {
-    id: faker.datatype.number(),
-    json: faker.lorem.text(),
-    author_email: faker.internet.email(),
-    namespace: faker.lorem.word(),
-    accessTag: faker.helpers.arrayElement(['PUBLIC', 'PRIVATE']),
-  };
-}

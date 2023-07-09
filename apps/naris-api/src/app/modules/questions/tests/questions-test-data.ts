@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { QuestionEntity } from '../question.entity';
-import { JwtTestHelper } from '../../../common/helpers/JwtTestHelper';
+import { JwtTestHelper } from '../../../common/helpers/jwt.test.helper';
 
 export const newQuestionText = faker.lorem.text();
 export const userQuestionId = faker.datatype.number();

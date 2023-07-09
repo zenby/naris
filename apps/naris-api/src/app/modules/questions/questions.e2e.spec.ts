@@ -14,7 +14,7 @@ import {
   userQuestionId,
 } from './tests/questions-test-data';
 import { JwtConfig } from '../../config/jwt.config';
-import { JwtTestHelper } from '../../common/helpers/JwtTestHelper';
+import { JwtTestHelper } from '../../common/helpers/jwt.test.helper';
 import { QuestionsTestModule } from './tests/questions.test.module';
 
 jest.mock('typeorm', () => {

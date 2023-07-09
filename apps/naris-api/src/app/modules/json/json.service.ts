@@ -126,6 +126,18 @@ export class JsonService {
     return await this.jsonRepository.delete({ id: documentId });
   }
 
+  async any(documentId: number, documentNamespace: string, authorEmail: string): Promise<boolean> {
+    const count = await this.jsonRepository.count({
+      where: {
+        author_email: authorEmail,
+        id: documentId,
+        namespace: documentNamespace,
+      },
+    });
+
+    return count > 0;
+  }
+
   prepareResponse(status: HttpJsonStatus, list: JsonEntity[]): HttpJsonResult<JsonEntity> {
     return {
       status,

@@ -1,1 +1,1 @@
-export const narisVersion = '0.19.0';
+export const narisVersion = '0.20.0';

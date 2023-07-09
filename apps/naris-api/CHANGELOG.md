@@ -2,6 +2,20 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.5.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.4.0...naris-api-0.5.0) (2023-07-09)
+
+
+### Features
+
+* add endpoint for getting all the questions ([9554de3](https://gitlog.ru/Naris/soermono/commit/9554de34b2f70989c591926988708953c73c3c79))
+* add endpoint for question creation ([431fcdc](https://gitlog.ru/Naris/soermono/commit/431fcdcdc8a82091573500820c414c3dd3dd48dd))
+* add endpoint to delete a question ([7dbfa95](https://gitlog.ru/Naris/soermono/commit/7dbfa95e9d6438827133353c69dd58019064dc3a))
+* add question repo ([ca0f4c2](https://gitlog.ru/Naris/soermono/commit/ca0f4c2cb228be329c8279d3673fd9f7548aa830))
+* add questions e2e tests ([66aeac2](https://gitlog.ru/Naris/soermono/commit/66aeac2f97634cff5b81fa76c1859e05fa9ad355))
+* **naris-api:** add QA structure ([df0a216](https://gitlog.ru/Naris/soermono/commit/df0a216f9e7e1c310a766ac9884ded853b82f302))
+* set questions API version ([9dd7824](https://gitlog.ru/Naris/soermono/commit/9dd78248592d0f77df157172e0e8a1394db73703))
+* update endpoint to get questions of the current user ([33d73d5](https://gitlog.ru/Naris/soermono/commit/33d73d5c999376a9f964f4c2f724314374d9db4e))
+
 ## [0.4.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.3.1...naris-api-0.4.0) (2023-07-03)
 
 

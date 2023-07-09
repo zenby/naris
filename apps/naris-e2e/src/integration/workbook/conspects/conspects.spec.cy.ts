@@ -1,61 +1,62 @@
-import { allWorkbookConspectsPath } from '../../../support/pathConstants';
-import { testTitle } from '../../../support/articleConstants';
-
-const title = 'Новая тема';
+import { allArticlesPath, allWorkbookConspectsPath, createNewArticlePath } from '../../../support/pathConstants';
+import { testTitle } from '../../../support/conspectsConstants';
+import { modifiedConspectTitle } from '../../../support/conspectsConstants';
 
 describe('Тестирование конспектов', () => {
   beforeEach(() => {
     // Проходим авторизацию
     cy.intercept('GET', '**/*.svg').as('signIn');
     cy.intercept('GET', '**/api/v3/json/workbook/private').as('personalConspects');
-    cy.intercept('PUT', '**/api/v3/json/workbook/**').as('conspectEdit');
-    cy.intercept('DELETE', '**/api/v3/json/workbook/**').as('conspectDelete');
+    cy.intercept('GET', '**/api/v3/json/workbook/**').as('conspectEdit');
+    cy.intercept('DELETE', '/api/v3/json/workbook/**').as('conspectDelete');
     cy.login('user', 'user');
     cy.visit(`/${allWorkbookConspectsPath}`);
-    cy.wait('@personalConspects');
+    cy.wait('@personalConspects', { timeout: 10000 });
     cy.removeAllExistingConspects();
   });
 
   it('Вход в конспекты, создание конспекта, и проверка его в наличии', () => {
     cy.visit(allWorkbookConspectsPath);
-
+    cy.location('href').should('eq', Cypress.config().baseUrl + '/' + allWorkbookConspectsPath);
     // Проверка, что мы зашли в конспекты
-    cy.get('a.ant-btn.ant-btn-dashed.ant-btn-round.ant-btn-lg.ng-star-inserted[title="Конспекты"]').contains(
-      'Конспекты'
-    );
+    cy.get('a[title="Конспекты"]').contains('Конспекты');
 
     // Клик по кнопке создания конспекта
     cy.get('[data-cy="create-item"]').click();
-    cy.get('input[placeholder="Тема"]').type(title);
+    cy.get('input[placeholder="Тема"]').type(testTitle);
 
     cy.get('button[ng-reflect-title="Сохранить"]').click();
 
     // Проверка, что элемент был создан
     cy.get('div.item.ng-star-inserted').should('exist');
-    cy.get('div.title').eq(0).should('contain.text', title);
+    cy.get(`div[title="${testTitle}"]`).first().should('contain.text', testTitle);
   });
 
   it('Проверка на изменения конспекта', () => {
     cy.createConspect();
 
     // Проверка, что элемент был создан
-    cy.get('div.item.ng-star-inserted').should('exist');
-    cy.get('div.title').eq(0).should('contain.text', testTitle);
+    cy.get('.anticon-edit').should('be.visible').click({ force: true });
+    cy.wait('@conspectEdit', { timeout: 10000 });
 
-    // Клик по глазику для просмотра
-    cy.get('div.item.ng-star-inserted').first().find('i[nztype="eye"]').click({ force: true });
+    cy.get('input[placeholder="Тема"]').should('not.be.disabled');
+    cy.get('input[placeholder="Тема"]')
+      .click()
+      .clear()
+      .type(modifiedConspectTitle)
+      .should('have.value', modifiedConspectTitle);
+
+    cy.get('.anticon-save').click();
+    cy.visit(`/${allWorkbookConspectsPath}`);
+    cy.wait('@personalConspects');
+
+    cy.contains(modifiedConspectTitle).should('exist');
   });
 
   it('Проверка на удаление конспектов', () => {
     cy.createConspect();
-    cy.visit('/#!/pages/workbook/conspects');
+    cy.removeAllExistingConspects();
 
-    // Клик на кнопку с красной корзиной для удаления
-    cy.get('div.item.ng-star-inserted').first().find('i[nztype="delete"]').click({ force: true });
-
-    // Клик, чтобы подтвердить удаление
-    cy.get('.cdk-overlay-pane span.ng-star-inserted').contains('OK').click();
-
-    cy.contains('Элемент успешно удален').should('be.visible');
+    cy.contains('Начать').should('exist');
   });
 });

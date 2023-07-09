@@ -22,7 +22,7 @@ describe('Тестирование конспектов', () => {
     cy.get('a[title="Конспекты"]').contains('Конспекты');
 
     // Клик по кнопке создания конспекта
-    cy.get('[data-cy="create-item"]').click();
+    cy.get('.anticon-plus').should('be.visible').click();
     cy.get('input[placeholder="Тема"]').type(testTitle);
 
     cy.get('button[ng-reflect-title="Сохранить"]').click();

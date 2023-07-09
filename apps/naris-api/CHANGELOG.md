@@ -2,6 +2,8 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.6.1](https://gitlog.ru/Naris/soermono/compare/naris-api-0.6.0...naris-api-0.6.1) (2023-07-09)
+
 ## [0.6.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.5.0...naris-api-0.6.0) (2023-07-09)
 
 

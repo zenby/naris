@@ -81,6 +81,7 @@ describe('JsonModule e2e-test', () => {
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
       expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
         where: { namespace: document.namespace, accessTag: 'PUBLIC' },
       });
     });
@@ -96,6 +97,7 @@ describe('JsonModule e2e-test', () => {
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
       expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
         where: { namespace: document.namespace, author_email: JwtTestHelper.defaultPayload.email },
       });
     });
@@ -115,6 +117,7 @@ describe('JsonModule e2e-test', () => {
         .expect({ status: HttpJsonStatus.Ok, items: [publicDocument, privateDocument] });
 
       expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
         where: [conditionPublic, conditionPrivate],
       });
     });

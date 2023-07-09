@@ -50,7 +50,6 @@ export class JsonService {
 
   async findPrivateAndPublicDocuments(documentNamespace: string): Promise<JsonEntity[]> {
     const conditionPublic = {
-      select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
       namespace: documentNamespace,
       accessTag: 'PUBLIC',
     };
@@ -59,7 +58,10 @@ export class JsonService {
       accessTag: 'PRIVATE',
     };
 
-    return await this.jsonRepository.find({ where: [conditionPublic, conditionPrivate] });
+    return await this.jsonRepository.find({
+      select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
+      where: [conditionPublic, conditionPrivate],
+    });
   }
 
   async switchAccessTag(

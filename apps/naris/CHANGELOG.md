@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.23.0](https://gitlog.ru/Naris/soermono/compare/naris-0.22.0...naris-0.23.0) (2023-07-09)
+
+
+### Features
+
+* add support api_v2 to activity ([8a4e762](https://gitlog.ru/Naris/soermono/commit/8a4e76239cd4a056a76117a532d55e2b9127bbd9))
+
 ## [0.22.0](https://gitlog.ru/Naris/soermono/compare/naris-0.21.0...naris-0.22.0) (2023-07-09)
 
 

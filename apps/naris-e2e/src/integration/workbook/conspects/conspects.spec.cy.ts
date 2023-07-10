@@ -8,7 +8,7 @@ describe('Тестирование конспектов', () => {
     cy.intercept('GET', '**/*.svg').as('signIn');
     cy.intercept('GET', '**/api/v3/json/workbook/private').as('personalConspects');
     cy.intercept('GET', '**/api/v3/json/workbook/**').as('conspectEdit');
-    cy.intercept('DELETE', '/api/v3/json/workbook/**').as('conspectDelete');
+    cy.intercept('DELETE', '**/api/v3/json/workbook/**').as('conspectDelete');
     cy.login('user', 'user');
     cy.visit(`/${allWorkbookConspectsPath}`);
     cy.wait('@personalConspects', { timeout: 10000 });

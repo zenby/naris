@@ -1,6 +1,6 @@
-import { allArticlesPath, allWorkbookConspectsPath, createNewArticlePath } from '../../../support/pathConstants';
-import { testTitle } from '../../../support/conspectsConstants';
-import { modifiedConspectTitle } from '../../../support/conspectsConstants';
+import { allWorkbookConspectsPath } from '../../../support/pathConstants';
+import { testTitle } from '../../../support/conspectConstants';
+import { modifiedConspectTitle } from '../../../support/conspectConstants';
 
 describe('Тестирование конспектов', () => {
   beforeEach(() => {

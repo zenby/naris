@@ -36,17 +36,18 @@ describe('Тестирование конспектов', () => {
     cy.createConspect();
 
     // Проверка, что элемент был создан
-    cy.get('.anticon-edit').should('be.visible').click({ force: true });
+    cy.get('[nztype="edit"]').should('be.visible').click({ force: true });
     cy.wait('@conspectEdit', { timeout: 10000 });
 
-    cy.get('input[placeholder="Тема"]').should('not.be.disabled');
     cy.get('input[placeholder="Тема"]')
+      .should('exist')
+      .should('not.be.disabled')
       .click()
       .clear()
       .type(modifiedConspectTitle)
       .should('have.value', modifiedConspectTitle);
 
-    cy.get('.anticon-save').click();
+    cy.get('#save-control-btn').click();
     cy.visit(`/${allWorkbookConspectsPath}`);
     cy.wait('@personalConspects');
 

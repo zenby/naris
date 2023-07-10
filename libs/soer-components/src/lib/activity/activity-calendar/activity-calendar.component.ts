@@ -17,7 +17,7 @@ export class ActivityCalendarComponent implements OnInit {
     this.i18n.setLocale(ru_RU);
   }
 
-  isDatesMatch(dayEvent: ActivityEventModel, date: string): boolean {
+  public isDatesMatch(dayEvent: ActivityEventModel, date: string): boolean {
     return formatDate(dayEvent.date, 'yyyy-MM-dd', 'en') == formatDate(date, 'yyyy-MM-dd', 'en');
   }
 }

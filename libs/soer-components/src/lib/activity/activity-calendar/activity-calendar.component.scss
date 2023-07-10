@@ -1,9 +1,12 @@
 .day-wrapper {
-  margin: -4px -8px 0;
-}
+  margin-bottom: 10px;
 
-.date-header {
-  padding-right: 0.5em;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  border-radius: 24px;
+
+  text-align: center;
 }
 
 .day-with-activity {
@@ -16,11 +19,4 @@
 
 .day-in-future {
   background-color: #f5f5f5;
-}
-
-.activity-list {
-  margin: 0;
-  padding: 0;
-  font-size: 0.8em;
-  padding-left: 1.5em;
 }

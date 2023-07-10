@@ -2,6 +2,15 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.24.0](https://gitlog.ru/Naris/soermono/compare/naris-0.23.0...naris-0.24.0) (2023-07-10)
+
+
+### Features
+
+* **naris/overview:** add activities to lib component input ([75d3b12](https://gitlog.ru/Naris/soermono/commit/75d3b128d42f9145e75a8f037c3fe9fe8feef9a9))
+* **naris/overview:** add activity-timeline to activity page ([0420d80](https://gitlog.ru/Naris/soermono/commit/0420d809e5bb05bca418d7fc1d5c7c2e8f0076cb))
+* **naris/overview:** add locale provider ([db5a573](https://gitlog.ru/Naris/soermono/commit/db5a5738b815681943a1abc8e749be7b025b1415))
+
 ## [0.23.0](https://gitlog.ru/Naris/soermono/compare/naris-0.22.0...naris-0.23.0) (2023-07-09)
 
 

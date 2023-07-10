@@ -1,7 +1,10 @@
 <nz-card>
   <div class="card_progress">
     <div class="card_progress--bg" [ngStyle]="{ width: '100%' }"></div>
-    <div class="card_progress--val" [ngStyle]="{ width: target.progress + '%' }"></div>
+    <div
+      class="card_progress--val"
+      [ngStyle]="{ 'margin-left': target.progress + '%', width: 100 - target.progress + '%' }"
+    ></div>
   </div>
 
   <div class="card-header">

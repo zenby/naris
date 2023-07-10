@@ -26,11 +26,11 @@ nz-card {
     }
 
     &--val {
-      background-image: linear-gradient(to right, rgb(255, 0, 0) 0%, rgb(255, 153, 0) 30%, rgb(0, 255, 0) 70%);
+      background-color: rgb(233, 233, 233);
     }
 
     &--bg {
-      background-color: rgb(233, 233, 233);
+      background-image: linear-gradient(to right, rgb(255, 0, 0) 0%, rgb(255, 153, 0) 30%, rgb(0, 255, 0) 70%);
     }
   }
 

@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.25.0](https://gitlog.ru/Naris/soermono/compare/naris-0.24.0...naris-0.25.0) (2023-07-10)
+
+
+### Features
+
+* add cli module for browser console ([17d12cd](https://gitlog.ru/Naris/soermono/commit/17d12cd229b02e62f0c4492f0e6b247aa922a527))
+
+
+### Bug Fixes
+
+* change type for services added to naris scope ([1fdecca](https://gitlog.ru/Naris/soermono/commit/1fdecca5db00c9d65fa8b0a1d34c484cc8243ee6))
+
 ## [0.24.0](https://gitlog.ru/Naris/soermono/compare/naris-0.23.0...naris-0.24.0) (2023-07-10)
 
 

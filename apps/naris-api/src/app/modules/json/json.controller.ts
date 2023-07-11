@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UseGuards } fr
 import { JsonService } from './json.service';
 import { JsonEntity } from './json.entity';
 import { CreateJsonDto } from './dto/create-json.dto';
-import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
+import { DynamicRole, HttpJsonResult, HttpJsonStatus, ManifestNamespace, UserRole } from '@soer/sr-common-interfaces';
 import { UpdateJsonDto } from './dto/update-json.dto';
 import { JsonParams } from './types/json-params.type';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
@@ -11,6 +11,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { AuthUser } from '../../common/decorators';
 import { DocumentAuthorGuard } from '../../common/guards/document-author.guard';
+import { NamespacesForViewerRole, Roles, RolesAuthGuard, UserManifestGuard } from '@soer/sr-auth/nest';
 
 @Controller({ version: '3', path: 'json/:documentNamespace' })
 export class JsonController {
@@ -18,6 +19,13 @@ export class JsonController {
 
   private logger = new Logger(JsonController.name);
 
+  @NamespacesForViewerRole(ManifestNamespace.WORKSHOP)
+  @Roles(UserRole.ADMIN, DynamicRole.VIEWER, DynamicRole.OWNER)
+  @UseGuards(UserManifestGuard, RolesAuthGuard)
+  @Get('test')
+  async test() {
+    return 'test';
+  }
   @ApiOperation({
     summary: 'Find documents from the namespace with the "public" tag',
   })

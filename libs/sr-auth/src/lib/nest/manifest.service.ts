@@ -20,7 +20,7 @@ export class ManifestService {
     try {
       const headersRequest = {
         'Content-Type': 'application/json',
-        Authorization: `Basic ${token}`,
+        Authorization: `Bearer ${token}`,
       };
       const result = await lastValueFrom(
         this.http.get<{ status: 'ok' | 'error'; items: UserManifest[] }>(this.options.apiUrl, {
@@ -33,6 +33,7 @@ export class ManifestService {
         return item || EmptyUserManifest;
       }
     } catch (e) {
+      // console.error(e);
       // nothing to do
     }
 

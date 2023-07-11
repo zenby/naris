@@ -27,7 +27,7 @@ describe('Manifest service', () => {
       await manifestService.resolve('jwttoken');
 
       expect(getSpy).toHaveBeenCalledWith(config.apiUrl, {
-        headers: { Authorization: 'Basic jwttoken', 'Content-Type': 'application/json' },
+        headers: { Authorization: 'Bearer jwttoken', 'Content-Type': 'application/json' },
       });
     });
   });

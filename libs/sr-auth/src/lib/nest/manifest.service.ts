@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { first, lastValueFrom } from 'rxjs';
-import { UserManifest } from './manifest.interface';
+import { ManifestModuleOptions, UserManifest } from './manifest.interface';
 
 export const EmptyUserManifest: UserManifest = {
   email: '',
@@ -14,12 +14,12 @@ export const EmptyUserManifest: UserManifest = {
 
 @Injectable()
 export class ManifestService {
-  constructor(private readonly http: HttpService) {}
+  constructor(private readonly http: HttpService, private options: ManifestModuleOptions) {}
 
   private async resolveUserManifestV1(): Promise<Partial<UserManifest>> {
     try {
       const result = await lastValueFrom(
-        this.http.get<{ status: 'ok' | 'error'; items: UserManifest[] }>('https://stage.s0er.ru/api/user/manifest')
+        this.http.get<{ status: 'ok' | 'error'; items: UserManifest[] }>(this.options.apiUrl)
       );
 
       if (result.data.status.toLowerCase() === 'ok') {
@@ -33,10 +33,9 @@ export class ManifestService {
     return EmptyUserManifest;
   }
   async resolve(): Promise<UserManifest> {
-    console.log({
+    return {
       ...EmptyUserManifest,
       ...(await this.resolveUserManifestV1()),
-    });
-    return EmptyUserManifest;
+    };
   }
 }

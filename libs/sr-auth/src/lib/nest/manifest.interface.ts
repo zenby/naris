@@ -11,3 +11,7 @@ export interface UserManifest {
   expired: Date;
   namespaces: UserManifestNamespace[];
 }
+
+export interface ManifestModuleOptions {
+  apiUrl: string;
+}

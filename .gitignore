@@ -43,3 +43,6 @@ Thumbs.db
 .angular
 .env
 /images
+
+# CSS folders
+css

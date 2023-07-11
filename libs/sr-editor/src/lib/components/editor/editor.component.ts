@@ -2,15 +2,15 @@ import { Location } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlockService, WrappedBlock } from '../../services/block.service';
-import { EMPTY_WORKBOOK, WorkbookModel } from '../../interfaces/document.model';
+import { BlocksDocumentModel, EMPTY_DOCUMENT } from '../../interfaces/document.model';
 
 @Component({
   selector: 'soer-editor',
   templateUrl: './editor.component.html',
 })
 export class EditorComponent implements OnInit {
-  @Input() document: WorkbookModel = EMPTY_WORKBOOK;
-  @Output() save = new EventEmitter<WorkbookModel>();
+  @Input() document: BlocksDocumentModel = EMPTY_DOCUMENT;
+  @Output() save = new EventEmitter<BlocksDocumentModel>();
 
   public previewFlag = false;
   public activeIndex = -1;

@@ -32,18 +32,6 @@ export class EditAbstractePageComponent implements ComponentCanDeactivate {
     this.workbook$ = deSerializeJson<WorkbookModel>(
       extractDtoPackFromBus<SerializedJsonModel>(this.store$.of(this.workbookId)),
       EMPTY_WORKBOOK
-    ).pipe(
-      map<WorkbookModel[], WorkbookModel[]>((data) => {
-        //TODO: Конвертировать все Workbook в формат без text
-        // и убрать этот pipe
-        data.forEach((w) => {
-          if (!w.blocks && w.text) {
-            w.blocks = [{ text: w.text || '', type: 'markdown' }];
-            w.text = '';
-          }
-        });
-        return data;
-      })
     );
   }
 

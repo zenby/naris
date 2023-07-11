@@ -1,0 +1,10 @@
+<ng-container *ngIf="target$ | async as targets">
+  <ng-container *ngIf="targets.length > 0; else loading">
+    <soer-target-description-form
+      *ngFor="let target of targets"
+      (save)="onSave($event)"
+      [target]="target"
+    ></soer-target-description-form>
+  </ng-container>
+</ng-container>
+<ng-template #loading> Loading... </ng-template>

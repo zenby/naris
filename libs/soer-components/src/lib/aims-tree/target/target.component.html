@@ -16,7 +16,7 @@
     </div>
 
     <div class="card-header_toolbar">
-      <ng-container *ngIf="target.overview || isEdit">
+      <ng-container *ngIf="target.blocks || isEdit">
         <a (click)="showDescription()" nz-button nzType="link"><i nz-icon [nzType]="'info-circle'"></i></a>
       </ng-container>
 

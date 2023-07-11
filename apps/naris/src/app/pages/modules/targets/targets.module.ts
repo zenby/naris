@@ -37,16 +37,18 @@ import { TemplateCreateComponent } from './template-create/template-create.compo
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { TargetDescriptionComponent } from './target-description/target-description.component';
+import { TargetDescriptionFormComponent } from './target-description-form/target-description-form.component';
+import { TargetDescriptionPopupComponent } from './target-description-popup/target-description-popup.component';
 
 import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
+import { SrEditorModule } from '@soer/sr-editor';
 import { MarkdownModule } from 'ngx-markdown';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { DescriptionService } from './description.service';
 
 @NgModule({
   declarations: [
     TargetEditFormComponent,
+    TargetDescriptionPopupComponent,
     ListTemplatesPageComponent,
     ListTargetsPageComponent,
     TaskEditFormComponent,
@@ -56,7 +58,7 @@ import { DescriptionService } from './description.service';
     CountOpenTasksPipe,
     CountClosedTasksPipe,
     TemplateCreateComponent,
-    TargetDescriptionComponent,
+    TargetDescriptionFormComponent,
   ],
   imports: [
     CommonModule,
@@ -88,11 +90,12 @@ import { DescriptionService } from './description.service';
     RouterModule,
     SrDTOModule,
     InlineEditorModule,
+    SrEditorModule,
     AimsTreeModule,
     MarkdownModule.forRoot(),
     NzSpinModule,
   ],
   exports: [],
-  providers: [DescriptionService],
+  providers: [],
 })
 export class TargetsModule {}

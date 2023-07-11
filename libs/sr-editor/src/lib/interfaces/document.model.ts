@@ -5,16 +5,22 @@ export interface TextBlock {
   text: string;
 }
 
-export interface WorkbookModel {
+export interface BlocksDocumentModel {
+  blocks: TextBlock[];
+}
+export interface WorkbookModel extends BlocksDocumentModel {
   id?: number | null;
   question: string;
   text?: string;
-  blocks: TextBlock[];
 }
 
 export const EMPTY_WORKBOOK: WorkbookModel = {
   id: null,
   question: '',
+  blocks: [{ text: '', type: 'markdown' }],
+};
+
+export const EMPTY_DOCUMENT: BlocksDocumentModel = {
   blocks: [{ text: '', type: 'markdown' }],
 };
 

@@ -36,7 +36,13 @@
       <nz-list-item *ngFor="let question of questions" class="qa-list-item">
         <nz-list-item-meta [nzAvatar]="actionPlay">
           <nz-list-item-meta-description>
-            <p nz-typography nzEllipsis [nzEllipsisRows]="2" class="qa-list-item-description">
+            <p
+              data-cy="qaListItemDescription"
+              nz-typography
+              nzEllipsis
+              [nzEllipsisRows]="2"
+              class="qa-list-item-description"
+            >
               {{ question.question }}
             </p>
           </nz-list-item-meta-description>

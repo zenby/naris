@@ -67,13 +67,13 @@ describe('modules questions', () => {
     cy.wait(1000);
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
 
-    cy.get('.qa-list-item-description').then((qaList) => {
+    cy.get('[data-cy="qaListItemDescription"]').then((qaList) => {
       const listLen = Cypress.$(qaList).length - 1;
 
       cy.get('[title="Удалить"').last().click();
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(1000);
-      cy.get('.qa-list-item-description').its('length').should('equal', listLen);
+      cy.get('[data-cy="qaListItemDescription"]').its('length').should('equal', listLen);
     });
   });
 

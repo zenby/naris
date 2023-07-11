@@ -1,4 +1,4 @@
-export interface ManifestNamespace {
+export interface UserManifestNamespace {
   namespace: string;
   expired: Date;
   deadlineMs: number;
@@ -9,5 +9,5 @@ export interface UserManifest {
   lastName: string;
   role: string;
   expired: Date;
-  namespaces: ManifestNamespace[];
+  namespaces: UserManifestNamespace[];
 }

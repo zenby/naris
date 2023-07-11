@@ -16,10 +16,16 @@ export const EmptyUserManifest: UserManifest = {
 export class ManifestService {
   constructor(private readonly http: HttpService, private options: ManifestModuleOptions) {}
 
-  private async resolveUserManifestV1(): Promise<Partial<UserManifest>> {
+  private async resolveUserManifestV1(token: string): Promise<Partial<UserManifest>> {
     try {
+      const headersRequest = {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${token}`,
+      };
       const result = await lastValueFrom(
-        this.http.get<{ status: 'ok' | 'error'; items: UserManifest[] }>(this.options.apiUrl)
+        this.http.get<{ status: 'ok' | 'error'; items: UserManifest[] }>(this.options.apiUrl, {
+          headers: headersRequest,
+        })
       );
 
       if (result.data.status.toLowerCase() === 'ok') {
@@ -32,10 +38,10 @@ export class ManifestService {
 
     return EmptyUserManifest;
   }
-  async resolve(): Promise<UserManifest> {
+  async resolve(token: string): Promise<UserManifest> {
     return {
       ...EmptyUserManifest,
-      ...(await this.resolveUserManifestV1()),
+      ...(await this.resolveUserManifestV1(token)),
     };
   }
 }

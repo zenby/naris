@@ -21,19 +21,14 @@ describe('Manifest service', () => {
   });
 
   describe('Resolve manifest', () => {
-    it('should use manifest options when request', async () => {
+    it('should use manifest options with auth when request', async () => {
       const getSpy = jest.spyOn(httpService, 'get');
-      const manifest = await manifestService.resolve();
 
-      /*      mockReturnValueOnce({
-        data: {
-          status: 'ok',
-          items: [ManifestWorkshopFixture]
-        }
-      });*/
-      // expect(manifest).toEqual(ManifestWorkshopFixture);
-      expect(getSpy).toHaveBeenCalledWith(config.apiUrl);
-      expect(getSpy).toHaveBeenCalledTimes(1);
+      await manifestService.resolve('jwttoken');
+
+      expect(getSpy).toHaveBeenCalledWith(config.apiUrl, {
+        headers: { Authorization: 'Basic jwttoken', 'Content-Type': 'application/json' },
+      });
     });
   });
 });

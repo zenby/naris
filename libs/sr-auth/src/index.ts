@@ -5,4 +5,6 @@ export * from './lib/interceptors/auth-interceptor.interceptor';
 export * from './lib/interfaces/auth-options.interface';
 export * from './lib/interfaces/jwt.models';
 export * from './lib/auth.helpers';
+export * from './lib/nest/manifest.module';
+export * from './lib/nest/manifest.service';
 export const AUTH_ID = Symbol('Auth');

@@ -11,7 +11,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { AuthUser } from '../../common/decorators';
 import { DocumentAuthorGuard } from '../../common/guards/document-author.guard';
-import { NamespacesForViewerRole, Roles, RolesAuthGuard, UserManifestGuard } from '@soer/sr-auth/nest';
+import { NamespacesForViewerRole, Roles, RolesAuthGuard, UserManifestGuard } from '@soer/sr-auth-nest';
 
 @Controller({ version: '3', path: 'json/:documentNamespace' })
 export class JsonController {

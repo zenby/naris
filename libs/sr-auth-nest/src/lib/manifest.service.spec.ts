@@ -1,7 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { ManifestService } from './manifest.service';
 import { ManifestModule } from './manifest.module';
-import { ManifestWorkshopFixture } from './tests/manifest.fixtures';
 import { HttpService } from '@nestjs/axios';
 
 const config = {

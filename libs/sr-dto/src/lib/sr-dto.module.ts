@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-
 import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
 import { BusEmitter, BusKey, BusKeys, MixedBusService } from '@soer/mixed-bus';
 import { DeSerializeJsonPipe, DtoLastItemPipe } from './dto.pipes';

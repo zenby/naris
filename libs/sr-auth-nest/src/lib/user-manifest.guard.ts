@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ManifestService } from './manifest.service';
 import { Reflector } from '@nestjs/core';
-import { DynamicRole, ManifestNamespace } from '@soer/sr-common-interfaces';
+import { DynamicRole } from '@soer/sr-common-interfaces';
 
 @Injectable()
 export class UserManifestGuard implements CanActivate {

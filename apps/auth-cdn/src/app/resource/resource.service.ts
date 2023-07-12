@@ -3,14 +3,9 @@ import { readdir, stat } from 'fs/promises';
 import { resolve } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/config';
+import { Resource } from './resource.model';
 
 const delimiter = '^';
-
-type Resource = {
-  title: string;
-  // url: string;
-  children?: Resource[];
-};
 
 @Injectable()
 export class ResourceService {
@@ -82,7 +77,7 @@ export class ResourceService {
         const filepath = resolve(dir, filename);
         const fileStats = await stat(filepath);
 
-        if (fileStats.isFile()) {
+        if (fileStats.isFile() && filename !== '.gitkeep') {
           files.push(filename);
         }
       }

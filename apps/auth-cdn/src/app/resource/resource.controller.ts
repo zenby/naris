@@ -14,6 +14,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { Response } from 'express';
 import { ResourceService } from './resource.service';
+import { Resource } from './resource.model';
 
 @Controller('resource')
 export class ResourceController {
@@ -33,7 +34,7 @@ export class ResourceController {
   }
 
   @Get()
-  async getAllResources(): Promise<HttpJsonResult<any[]>> {
+  async getAllResources(): Promise<HttpJsonResult<Resource[]>> {
     try {
       const resources = await this.resourceService.getAll();
 

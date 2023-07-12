@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { readdir, stat } from 'fs/promises';
-import { join, resolve } from 'path';
-
-const dirname = join(__dirname, '/assets');
+import { resolve } from 'path';
+import { STORAGE_PATH } from './resource.controller';
 
 const delimiter = '^';
 
@@ -21,11 +19,11 @@ export class ResourceService {
   }
 
   async getAll(): Promise<Resource[]> {
-    const files = await this.getFilenames(dirname);
+    const files = await this.getFilenames(STORAGE_PATH);
     return this.cookResources(files);
   }
 
-  public cookResources(files: string[]): Resource[] {
+  cookResources(files: string[]): Resource[] {
     return this.mergeResources(files.map((file) => this.parseAssetsFilename(file)));
   }
 
@@ -86,10 +84,5 @@ export class ResourceService {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  // TODO: it is necessary to move this function into a separate module, because I create it in every task
-  prepareResponse<T>(status: HttpJsonStatus, data: T): HttpJsonResult<T> {
-    return { status, items: Array.isArray(data) ? data : [data] };
   }
 }

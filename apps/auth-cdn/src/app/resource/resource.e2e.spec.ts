@@ -36,7 +36,7 @@ describe('JwtAccessTokenMiddleware (e2e)', () => {
     });
   });
 
-  describe('GET /resource/:resourceId', () => {});
-
   describe('POST /resource/', () => {});
+
+  describe('GET /resource/:resourceId', () => {});
 });

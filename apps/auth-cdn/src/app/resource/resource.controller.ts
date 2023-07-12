@@ -19,6 +19,8 @@ import { ResourceService } from './resource.service';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { Response } from 'express';
 
+export const STORAGE_PATH = join(__dirname, '../../../', 'apps/auth-cdn/src/assets');
+
 @Controller('resource')
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
@@ -27,7 +29,7 @@ export class ResourceController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: join(__dirname, '../../../', 'apps/auth-cdn/src/assets'),
+        destination: STORAGE_PATH,
         filename: setFilenameHelper,
       }),
     })
@@ -36,10 +38,12 @@ export class ResourceController {
     @UploadedFile() file: Express.Multer.File,
     @Body() body: { path: string }
   ): Promise<HttpJsonResult<{ uri: string }>> {
+    console.log(STORAGE_PATH);
+
     try {
       const response = await this.resourceService.saveFile(file);
 
-      return this.resourceService.prepareResponse(HttpJsonStatus.Ok, response);
+      return this.prepareResponse(HttpJsonStatus.Ok, response);
     } catch (e) {
       Logger.error(e);
       throw new HttpException(e.message, e?.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
@@ -48,10 +52,11 @@ export class ResourceController {
 
   @Get()
   async getAllResources(): Promise<HttpJsonResult<any[]>> {
+    console.log(STORAGE_PATH);
     try {
       const resources = await this.resourceService.getAll();
 
-      return this.resourceService.prepareResponse(HttpJsonStatus.Ok, resources);
+      return this.prepareResponse(HttpJsonStatus.Ok, resources);
     } catch (e) {
       Logger.error(e);
       throw new HttpException(e.message, e?.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
@@ -67,5 +72,10 @@ export class ResourceController {
       Logger.error(e);
       throw new HttpException(e.message, e?.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  // TODO: it is necessary to move this function into a separate module, because I create it in every task
+  private prepareResponse<T>(status: HttpJsonStatus, data: T): HttpJsonResult<T> {
+    return { status, items: Array.isArray(data) ? data : [data] };
   }
 }

@@ -1,16 +1,27 @@
-import { extname } from 'path';
 import { Request } from 'express';
+
+const delimiter = '^';
+const nameDelimiter = '~';
+
+const FEDelimemeter = '/';
 
 export const setFilenameHelper = (
   request: Request,
   file: Express.Multer.File,
   callback: (error: Error | null, filename: string) => void
 ) => {
-  console.log(request.body);
-  const suffix = `folder^${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-  const ext = extname(file.originalname);
-
-  const filename = `${suffix}${ext}`;
+  const filename = createFilename(request.body.path, file.originalname);
 
   return callback(null, filename);
 };
+
+function createFilename(filepath: string, originalname: string): string {
+  const pathToStore = (filepath || '').replaceAll(FEDelimemeter, delimiter);
+  const [date] = new Date().toISOString().split('T');
+  const prefix = `${date}-${Math.random().toString(36).substring(2, 10)}`;
+  const filename = originalname.replaceAll(' ', '');
+
+  const newFile = `${prefix}${nameDelimiter}${filename}`;
+
+  return pathToStore ? `${pathToStore}${delimiter}${newFile}` : newFile;
+}

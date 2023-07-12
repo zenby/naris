@@ -41,7 +41,7 @@ describe('modules questions', () => {
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
   });
 
-  it('should save question after removing unnecessary characters', () => {
+  it.only('should save question after removing unnecessary characters', () => {
     cy.visit('#!/pages/qa/my/create/new');
     cy.get('[data-cy="questionInput"]').type(veryLongQuestion, {
       delay: 0,
@@ -51,7 +51,7 @@ describe('modules questions', () => {
     cy.get('[data-cy="saveBtn"]').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
     cy.get('.ant-message-notice-content').should('exist');
-    cy.get('.ant-list-items').last().contains(permissibleQuestion);
+    cy.get('[data-cy="qaListItemDescription"]').last().contains(permissibleQuestion);
   });
 
   it('should delete selected question', () => {

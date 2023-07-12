@@ -16,10 +16,9 @@ export class RolesAuthGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
 
     const { user, dynamicRoles } = req;
+    const roles = Array.isArray(user?.role) ? user.role : [user?.role];
 
-    const userRoles = !dynamicRoles
-      ? new Set<UserRole>([user?.role])
-      : new Set<UserRole>([...dynamicRoles, ...[user?.role]]);
+    const userRoles = !dynamicRoles ? new Set<UserRole>(roles) : new Set<UserRole>([...dynamicRoles, ...roles]);
 
     return matchRoles(requestedRoles, userRoles);
   }

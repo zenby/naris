@@ -1,10 +1,19 @@
 import { ExecutionContext } from '@nestjs/common';
+import { DynamicRole } from '@soer/sr-common-interfaces';
 
-export const createMockExecutionContext = (token = ''): ExecutionContext => {
+export const createMockExecutionContext = (
+  options: {
+    token?: string;
+    dynamicRoles?: DynamicRole[];
+    user?: object;
+  } = { token: '', dynamicRoles: undefined, user: undefined }
+): ExecutionContext => {
   const request = {
     headers: {
-      authorization: `Bearer ${token}`,
+      authorization: `Bearer ${options.token || ''}`,
     },
+    user: options.user,
+    dynamicRoles: options.dynamicRoles,
     req: {},
   };
 

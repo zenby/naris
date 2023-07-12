@@ -4,19 +4,21 @@ import { join } from 'path';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot(
-      (() => {
+    ServeStaticModule.forRootAsync({
+      useFactory: () => {
         // path to files within dist folder
         const rootPath = join(__dirname, 'assets');
         // path in URL
         const serveRoot = '/uploads';
 
-        return {
-          rootPath,
-          serveRoot,
-        };
-      })()
-    ),
+        return [
+          {
+            rootPath,
+            serveRoot,
+          },
+        ];
+      },
+    }),
   ],
 })
 export class ServeResourcesModule {}

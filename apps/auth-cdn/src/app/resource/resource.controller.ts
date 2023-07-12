@@ -12,12 +12,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { join } from 'path';
-import { setFilenameHelper } from './helpers/set-filename.helper';
-import { ResourceService } from './resource.service';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { Response } from 'express';
+import { join } from 'path';
+import { ResourceService } from './resource.service';
 
 export const STORAGE_PATH = join(__dirname, '../../../', 'apps/auth-cdn/src/assets');
 
@@ -26,14 +24,7 @@ export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 
   @Post()
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: STORAGE_PATH,
-        filename: setFilenameHelper,
-      }),
-    })
-  )
+  @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Body() body: { path: string }

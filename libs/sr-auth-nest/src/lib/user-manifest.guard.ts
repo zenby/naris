@@ -26,6 +26,7 @@ export class UserManifestGuard implements CanActivate {
         req.dynamicRoles = req.dynamicRoles ?? new Set<DynamicRole>([DynamicRole.VIEWER]);
       }
     }
+
     return true;
   }
 }

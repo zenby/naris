@@ -72,7 +72,13 @@
         </ng-template>
         <ng-template #actionDelete>
           <button nz-button nzType="default">
-            <i nz-icon nzType="delete" (click)="questionDelete(question)" title="Удалить"></i>
+            <i
+              data-cy="questionDeleteBtn"
+              nz-icon
+              nzType="delete"
+              (click)="questionDelete(question)"
+              title="Удалить"
+            ></i>
           </button>
         </ng-template>
       </nz-list-item>

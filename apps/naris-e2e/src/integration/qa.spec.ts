@@ -41,7 +41,7 @@ describe('modules questions', () => {
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
   });
 
-  it.only('should save question after removing unnecessary characters', () => {
+  it('should save question after removing unnecessary characters', () => {
     cy.visit('#!/pages/qa/my/create/new');
     cy.get('[data-cy="questionInput"]').type(veryLongQuestion, {
       delay: 0,
@@ -70,7 +70,7 @@ describe('modules questions', () => {
     cy.get('[data-cy="qaListItemDescription"]').then((qaList) => {
       const listLen = Cypress.$(qaList).length - 1;
 
-      cy.get('[title="Удалить"').last().click();
+      cy.get('[data-cy="questionDeleteBtn"]').last().click();
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(1000);
       cy.get('[data-cy="qaListItemDescription"]').its('length').should('equal', listLen);
@@ -91,12 +91,12 @@ describe('modules questions', () => {
     cy.get('[data-cy="saveBtn"]').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
 
-    cy.get('[title="Удалить"]').then((delBtnList) => {
+    cy.get('[data-cy="questionDeleteBtn"]').then((delBtnList) => {
       //delete all questions
       let listLen = Cypress.$(delBtnList).length;
 
       while (listLen) {
-        cy.get('[title="Удалить"]').last().click();
+        cy.get('[data-cy="questionDeleteBtn"]').last().click();
         listLen--;
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(1000);

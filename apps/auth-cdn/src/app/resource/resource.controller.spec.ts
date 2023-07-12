@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { ResourceController } from './resource.controller';
 import { ResourceService } from './resource.service';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
@@ -9,7 +10,8 @@ describe('ResourceController', () => {
   let file: Express.Multer.File;
 
   beforeEach(() => {
-    resourceService = new ResourceService();
+    const configService = new ConfigService();
+    resourceService = new ResourceService(configService);
     resourceController = new ResourceController(resourceService);
     file = {
       filename: 'filename',

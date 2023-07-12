@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+import { Configuration } from './config/config';
 
 @Module({
   imports: [
     ServeStaticModule.forRootAsync({
-      useFactory: () => {
-        // path to files within dist folder
-        const rootPath = join(__dirname, 'assets');
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        // path to files
+        const rootPath = configService.get<Configuration['fileStoragePath']>('fileStoragePath');
         // path in URL
         const serveRoot = '/uploads';
 

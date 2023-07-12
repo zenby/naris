@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { readdir, stat } from 'fs/promises';
 import { resolve } from 'path';
-import { STORAGE_PATH } from './resource.controller';
+import { ConfigService } from '@nestjs/config';
+import { Configuration } from '../config/config';
 
 const delimiter = '^';
 
@@ -13,13 +14,19 @@ type Resource = {
 
 @Injectable()
 export class ResourceService {
+  private readonly pathToAssets: string;
+
+  constructor(private readonly configService: ConfigService) {
+    this.pathToAssets = configService.get<Configuration['fileStoragePath']>('fileStoragePath');
+  }
+
   async saveFile(file: Express.Multer.File): Promise<{ uri: string }> {
     // await save file to DB
     return { uri: `/${file.filename}` };
   }
 
   async getAll(): Promise<Resource[]> {
-    const files = await this.getFilenames(STORAGE_PATH);
+    const files = await this.getFilenames(this.pathToAssets);
     return this.cookResources(files);
   }
 

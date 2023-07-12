@@ -1,10 +1,12 @@
+import { ConfigService } from '@nestjs/config';
 import { ResourceService } from './resource.service';
 
 describe('Resource service', () => {
   let resourceService: ResourceService;
 
   beforeAll(() => {
-    resourceService = new ResourceService();
+    const configService = new ConfigService();
+    resourceService = new ResourceService(configService);
   });
 
   it('cook resources', async () => {

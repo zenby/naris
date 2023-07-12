@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Get,
   HttpException,
@@ -14,10 +13,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { Response } from 'express';
-import { join } from 'path';
 import { ResourceService } from './resource.service';
-
-export const STORAGE_PATH = join(__dirname, '../../../', 'apps/auth-cdn/src/assets');
 
 @Controller('resource')
 export class ResourceController {
@@ -25,16 +21,11 @@ export class ResourceController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() body: { path: string }
-  ): Promise<HttpJsonResult<{ uri: string }>> {
-    console.log(STORAGE_PATH);
-
+  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<HttpJsonResult<{ uri: string }>> {
     try {
-      const response = await this.resourceService.saveFile(file);
+      const data = await this.resourceService.saveFile(file);
 
-      return this.prepareResponse(HttpJsonStatus.Ok, response);
+      return this.prepareResponse(HttpJsonStatus.Ok, data);
     } catch (e) {
       Logger.error(e);
       throw new HttpException(e.message, e?.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
@@ -43,7 +34,6 @@ export class ResourceController {
 
   @Get()
   async getAllResources(): Promise<HttpJsonResult<any[]>> {
-    console.log(STORAGE_PATH);
     try {
       const resources = await this.resourceService.getAll();
 

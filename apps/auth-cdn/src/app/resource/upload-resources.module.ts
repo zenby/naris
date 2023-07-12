@@ -2,17 +2,17 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { setFilenameHelper } from './resource/helpers/set-filename.helper';
+import { setFilenameHelper } from './helpers/set-filename.helper';
+import { Configuration } from '../config/config';
 
 @Module({
   imports: [
     MulterModule.registerAsync({
-      imports: [],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         return {
           storage: diskStorage({
-            destination: configService.get<string>('fileStoragePath'),
+            destination: configService.get<Configuration['fileStoragePath']>('fileStoragePath'),
             filename: setFilenameHelper,
           }),
         };

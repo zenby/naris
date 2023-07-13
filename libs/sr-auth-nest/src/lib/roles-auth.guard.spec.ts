@@ -3,7 +3,7 @@ import { DynamicRole, ManifestNamespace, UserRole } from '@soer/sr-common-interf
 import { createMockExecutionContext } from './tests/test-helpers';
 import { RolesAuthGuard } from './roles-auth.guard';
 
-describe('UserManifestGuard should check dynamic and static roles', () => {
+describe('RolesAuthGuard should check dynamic and static roles', () => {
   let rolesAuthGuard: RolesAuthGuard;
   let reflector: Reflector;
 

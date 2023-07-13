@@ -6,6 +6,7 @@ describe('modules questions', () => {
 
   beforeEach(() => {
     cy.intercept('GET', '**/*.svg').as('signIn');
+    cy.intercept('GET', 'https://stage.s0er.ru/api/questions').as('getAllQuestions');
     cy.login('user', 'user');
   });
 
@@ -46,6 +47,7 @@ describe('modules questions', () => {
     cy.get('[data-cy="questionInput"]').clear().type(permissibleQuestion).should('have.value', permissibleQuestion);
     cy.get('[data-cy="saveBtn"]').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
+    cy.wait('@getAllQuestions');
     cy.get('.ant-message-notice-content').should('exist');
     cy.get('[data-cy="qaListItemDescription"]').last().contains(permissibleQuestion);
   });
@@ -54,13 +56,11 @@ describe('modules questions', () => {
     cy.visit('#!/pages/qa/my/create/new'); // add 2 new questions
     cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
     cy.get('[data-cy="saveBtn"]').click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
+    cy.wait('@getAllQuestions');
     cy.get('[data-cy="plusBtn"]').click();
     cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
     cy.get('[data-cy="saveBtn"]').click();
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
+    cy.wait('@getAllQuestions');
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
 
     cy.get('[data-cy="qaListItemDescription"]').then((qaList) => {
@@ -85,6 +85,7 @@ describe('modules questions', () => {
     cy.visit('#!/pages/qa/my/create/new');
     cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
     cy.get('[data-cy="saveBtn"]').click();
+    cy.wait('@getAllQuestions');
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
 
     cy.get('[data-cy="questionDeleteBtn"]').then((delBtnList) => {

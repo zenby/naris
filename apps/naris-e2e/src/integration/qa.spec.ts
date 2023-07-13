@@ -7,14 +7,10 @@ describe('modules questions', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/*.svg').as('signIn');
     cy.login('user', 'user');
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
   });
 
   it('should open the new question creation form', () => {
     cy.visit('/#!/pages/qa/my');
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
     cy.get('[data-cy="plusBtn"]').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my/create/new');
     cy.get('[data-cy="questionFormTitle"]').contains('Задайте свой вопрос');

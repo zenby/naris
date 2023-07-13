@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { first, lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { ManifestModuleOptions, UserManifest } from './manifest.interface';
 
 export const EmptyUserManifest: UserManifest = {

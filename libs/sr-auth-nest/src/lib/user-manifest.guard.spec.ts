@@ -1,5 +1,5 @@
 import { UserManifestGuard } from './user-manifest.guard';
-import { EmptyUserManifest, ManifestService } from './manifest.service';
+import { EMPTY_USER_MANIFEST, ManifestService } from './manifest.service';
 import { ManifestWorkshopFixture } from './tests/manifest.fixtures';
 import { Reflector } from '@nestjs/core';
 import { HttpService } from '@nestjs/axios';
@@ -19,7 +19,7 @@ describe('UserManifestGuard', () => {
 
   it('should return false when user email is empty ', async () => {
     const context = createMockExecutionContext();
-    jest.spyOn(manifestService, 'resolve').mockResolvedValue(EmptyUserManifest);
+    jest.spyOn(manifestService, 'resolve').mockResolvedValue(EMPTY_USER_MANIFEST);
 
     const result = await userManifestGuard.canActivate(context);
 

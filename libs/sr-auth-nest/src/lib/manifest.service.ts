@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 import { ManifestModuleOptions, UserManifest } from './manifest.interface';
 
-export const EmptyUserManifest: UserManifest = {
+export const EMPTY_USER_MANIFEST: UserManifest = {
   email: '',
   firstName: '',
   lastName: '',
@@ -30,18 +30,18 @@ export class ManifestService {
 
       if (result.data.status.toLowerCase() === 'ok') {
         const [item] = result.data.items;
-        return item || EmptyUserManifest;
+        return item || EMPTY_USER_MANIFEST;
       }
     } catch (e) {
       // console.error(e);
       // nothing to do
     }
 
-    return EmptyUserManifest;
+    return EMPTY_USER_MANIFEST;
   }
   async resolve(token: string): Promise<UserManifest> {
     return {
-      ...EmptyUserManifest,
+      ...EMPTY_USER_MANIFEST,
       ...(await this.resolveUserManifestV1(token)),
     };
   }

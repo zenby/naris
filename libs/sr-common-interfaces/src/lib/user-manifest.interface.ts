@@ -1,5 +1,7 @@
+import { ManifestNamespace } from './user-role.interface';
+
 export interface UserManifestNamespace {
-  namespace: string;
+  namespace: ManifestNamespace;
   expired: Date;
   deadlineMs: number;
 }

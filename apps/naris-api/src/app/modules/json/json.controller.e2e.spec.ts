@@ -6,11 +6,12 @@ import { HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { JwtConfig } from '../../config/jwt.config';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import { JwtTestHelper } from '../../common/helpers/jwt.test.helper';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
 import { createFakeDocument } from '../../common/helpers/document.test.helper';
+import { AccessTag } from './types/json.const';
 
 describe('JsonModule e2e-test', () => {
   let app: INestApplication;
@@ -48,7 +49,7 @@ describe('JsonModule e2e-test', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   afterAll(async () => {
@@ -70,6 +71,51 @@ describe('JsonModule e2e-test', () => {
   });
 
   describe('GET /json/:documentNamespace/:accessTag', () => {
+    it('should find all documents with the STREAM tag when accessTag is passed as "STREAM"', async () => {
+      const document = { ...createFakeDocument(), accessTag: AccessTag.STREAM };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([document]);
+      await request
+        .get(`/json/${document.namespace}/stream`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
+        where: { namespace: document.namespace, accessTag: In([AccessTag.STREAM]) },
+      });
+    });
+
+    it('should find all documents with the WORKSHOP and STREAM tag when accessTag is passed as "WORKSHOP"', async () => {
+      const document = { ...createFakeDocument(), accessTag: AccessTag.WORKSHOP };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([document]);
+      await request
+        .get(`/json/${document.namespace}/workshop`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
+        where: { namespace: document.namespace, accessTag: In([AccessTag.STREAM, AccessTag.WORKSHOP]) },
+      });
+    });
+
+    it('should find all documents with the WORKSHOP, STREAM and PRO tag when accessTag is passed as "PRO"', async () => {
+      const document = { ...createFakeDocument(), accessTag: AccessTag.PRO };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([document]);
+      await request
+        .get(`/json/${document.namespace}/pro`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
+        where: { namespace: document.namespace, accessTag: In([AccessTag.STREAM, AccessTag.WORKSHOP, AccessTag.PRO]) },
+      });
+    });
+
     it('should find all documents with the public tag when accessTag is passed as "public"', async () => {
       const document = { ...createFakeDocument(), accessTag: 'PUBLIC' };
 

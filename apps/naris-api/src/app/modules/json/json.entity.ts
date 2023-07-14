@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { AccessTag } from './types/json.const';
 
 @Entity('documents')
 export class JsonEntity {
@@ -28,6 +29,6 @@ export class JsonEntity {
   author_email: string;
 
   @ApiProperty()
-  @Column({ default: 'PRIVATE' })
+  @Column({ type: 'enum', enum: AccessTag, default: AccessTag.PRIVATE })
   accessTag: string;
 }

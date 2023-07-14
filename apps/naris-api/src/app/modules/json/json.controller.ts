@@ -12,6 +12,7 @@ import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { AuthUser } from '../../common/decorators';
 import { DocumentAuthorGuard } from '../../common/guards/document-author.guard';
 import { NamespacesForViewerRole, Roles, RolesAuthGuard, UserManifestGuard } from '@soer/sr-auth-nest';
+import { AccessTag } from './types/json.const';
 
 @Controller({ version: '3', path: 'json/:documentNamespace' })
 export class JsonController {
@@ -26,6 +27,7 @@ export class JsonController {
   async test() {
     return 'test';
   }
+
   @ApiOperation({
     summary: 'Find documents from the namespace with the "public" tag',
   })
@@ -39,6 +41,71 @@ export class JsonController {
   ): Promise<HttpJsonResult<JsonEntity>> {
     try {
       const documents = await this.jsonService.findPublicDocuments(documentNamespace);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Find documents from the namespace with the "STREAM" tag',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('stream')
+  async findStreamDocuments(
+    @Param('documentNamespace') documentNamespace: string
+  ): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const documents = await this.jsonService.findDocumentsWithAccessTag(documentNamespace, [AccessTag.STREAM]);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Find documents from the namespace with the "WORKSHOP" and "STREAM" tag',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('workshop')
+  async findWorkshopDocuments(
+    @Param('documentNamespace') documentNamespace: string
+  ): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const documents = await this.jsonService.findDocumentsWithAccessTag(documentNamespace, [
+        AccessTag.STREAM,
+        AccessTag.WORKSHOP,
+      ]);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Find documents from the namespace with the "WORKSHOP", "STREAM" and PRO tag',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('pro')
+  async findProDocuments(@Param('documentNamespace') documentNamespace: string): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const documents = await this.jsonService.findDocumentsWithAccessTag(documentNamespace, [
+        AccessTag.STREAM,
+        AccessTag.WORKSHOP,
+        AccessTag.PRO,
+      ]);
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
     } catch (e) {

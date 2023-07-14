@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, In, Repository } from 'typeorm';
 import { CreateJsonDto } from './dto/create-json.dto';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { UpdateJsonDto } from './dto/update-json.dto';
+import { AccessTag } from './types/json.const';
 
 @Injectable()
 export class JsonService {
@@ -26,6 +27,16 @@ export class JsonService {
     document.author_email = author_email;
 
     return await this.jsonRepository.save(document);
+  }
+
+  async findDocumentsWithAccessTag(documentNamespace: string, tags: AccessTag[]): Promise<JsonEntity[]> {
+    return await this.jsonRepository.find({
+      select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
+      where: {
+        namespace: documentNamespace,
+        accessTag: In(tags),
+      },
+    });
   }
 
   async findPublicDocuments(documentNamespace: string): Promise<JsonEntity[]> {
@@ -93,6 +104,27 @@ export class JsonService {
         namespace: documentNamespace,
       },
     });
+  }
+
+  async updateAccessTag(
+    documentId: number,
+    documentNamespace: string,
+    accessTag: AccessTag
+  ): Promise<JsonEntity | Error> {
+    const document = await this.jsonRepository.findOne({
+      where: {
+        id: documentId,
+        namespace: documentNamespace,
+      },
+    });
+
+    if (!document) {
+      return new NotFoundException(`Document ${documentId} does not exist`);
+    }
+
+    Object.assign(document, { accessTag });
+
+    return await this.jsonRepository.save(document);
   }
 
   async update(

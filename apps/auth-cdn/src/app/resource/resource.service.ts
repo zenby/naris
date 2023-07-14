@@ -24,7 +24,7 @@ export class ResourceService {
     return this.cookResources(files);
   }
 
-  async getFilesByPattern(pattern: string): Promise<any[]> {
+  async getFilesByPattern(pattern: string): Promise<string[]> {
     const allFiles = await this.getFilenames(this.pathToAssets);
     console.log(allFiles);
 

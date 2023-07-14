@@ -6,24 +6,31 @@ import {
   HttpStatus,
   Logger,
   Param,
+  ParseFilePipe,
   Post,
   UploadedFile,
   UseInterceptors,
   UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { ResourceService } from './resource.service';
 import { Resource } from './resource.model';
-import { ResourceValidationPipe } from './resource-validation.pipe';
+import { OriginalFilenameValidator } from './validators/originalFilenameValidator';
+import { FilePathDto } from './dto/filePath.dto';
 
+@UsePipes(new ValidationPipe())
 @Controller('resource')
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<HttpJsonResult<{ uri: string }>> {
+  async uploadFile(
+    @UploadedFile(new ParseFilePipe({ validators: [new OriginalFilenameValidator({})] })) file: Express.Multer.File,
+    @Body() _body: FilePathDto
+  ): Promise<HttpJsonResult<{ uri: string }>> {
     try {
       const data = await this.resourceService.saveFile(file);
 

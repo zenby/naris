@@ -60,41 +60,49 @@ describe('Resource (e2e)', () => {
   });
 
   describe('POST /resource/', () => {
-    it('should return error if has known incorrect symbols', async () => {
-      const fileData = generateFileData({ pathFolders: [DELIMETERS.FOLDER] });
-      const { path, fileMultipartData } = fileData;
+    it('should return error if has system symbols in path', async () => {
+      const { path, fileMultipartData } = generateFileData({ pathFolders: [DELIMETERS.FOLDER + 'folder'] });
 
       const { body } = await request(app.getHttpServer())
         .post('/resource')
         .field('path', path)
         .attach('file', ...fileMultipartData)
-        .expect(422);
+        .expect(400);
 
-      expect(body.message).toBe(ERRORS.SYSTEM_SYMBOLS);
+      expect(body.message).toEqual([ERRORS.PATH_HAS_SYSTEM_SYMBOLS]);
     });
 
-    it('should return error if has unknown incorrect symbols', async () => {
-      const fileData = generateFileData({ pathFolders: ['smth smth'] });
-      const { path, fileMultipartData } = fileData;
+    it('should return error if has system symbols in original filename', async () => {
+      const { fileMultipartData } = generateFileData({ name: 'filename' + DELIMETERS.NAME });
+
+      const { body } = await request(app.getHttpServer())
+        .post('/resource')
+        .attach('file', ...fileMultipartData)
+        .expect(400);
+
+      expect(body.message).toBe(ERRORS.FILENAME_HAS_SYSTEM_SYMBOLS);
+    });
+
+    it('should return error if has invalid symbols in filename', async () => {
+      const { path, fileMultipartData } = generateFileData({ pathFolders: ['smth smth'] });
 
       const { body } = await request(app.getHttpServer())
         .post('/resource')
         .field('path', path)
         .attach('file', ...fileMultipartData)
-        .expect(422);
+        .expect(400);
 
       expect(body.message).toBe(ERRORS.SHOULD_USE_VALID_SYMBOLS);
     });
 
-    it('should return error if length is too big', async () => {
-      const fileData = generateFileData({ pathFolders: [faker.lorem.word().repeat(200)] });
-      const { path, fileMultipartData } = fileData;
+    it('should return error if filename length is too long', async () => {
+      const { path, fileMultipartData } = generateFileData({ pathFolders: [faker.lorem.word().repeat(200)] });
 
       const { body } = await request(app.getHttpServer())
         .post('/resource')
         .field('path', path)
         .attach('file', ...fileMultipartData)
-        .expect(422);
+        .expect(400);
 
       expect(body.message).toBe(ERRORS.FILENAME_IS_TOO_LONG);
     });
@@ -116,12 +124,10 @@ describe('Resource (e2e)', () => {
 
     it('should return 201 OK with uri when create file without folders', async () => {
       const fileData = generateFileData({ pathFolders: [] });
-      const { path, fileMultipartData } = fileData;
 
       const { body }: { body: HttpJsonResult<{ uri: string }> } = await request(app.getHttpServer())
         .post('/resource')
-        .field('path', path)
-        .attach('file', ...fileMultipartData)
+        .attach('file', ...fileData.fileMultipartData)
         .expect(201);
 
       const [{ uri }] = body.items;
@@ -144,11 +150,17 @@ type FileData = {
   fileMultipartData: [Buffer, Record<string, string>];
 };
 
-function generateFileData({ pathFolders }: { pathFolders?: string[] }): FileData {
+function generateFileData({
+  pathFolders,
+  name = faker.lorem.word(),
+}: {
+  pathFolders?: string[];
+  name?: string;
+}): FileData {
   const folders =
     pathFolders || Array.from({ length: faker.datatype.number({ min: 2, max: 5 }) }).map(() => faker.lorem.word());
 
-  const filename = faker.lorem.word() + '.txt';
+  const filename = name + '.txt';
 
   return {
     folders,

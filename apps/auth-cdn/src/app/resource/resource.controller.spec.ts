@@ -34,7 +34,7 @@ describe('ResourceController', () => {
 
       jest.spyOn(resourceService, 'saveFile').mockImplementation(async () => ({ uri }));
 
-      expect(await resourceController.uploadFile(file)).toStrictEqual(result);
+      expect(await resourceController.uploadFile(file, { path: 'folder1' })).toStrictEqual(result);
     });
   });
 });

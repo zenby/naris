@@ -4,8 +4,7 @@ import { resolve } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/config';
 import { Resource } from './resource.model';
-
-const delimiter = '^';
+import { DELIMETERS } from './constants';
 
 @Injectable()
 export class ResourceService {
@@ -23,6 +22,13 @@ export class ResourceService {
   async getAll(): Promise<Resource[]> {
     const files = await this.getFilenames(this.pathToAssets);
     return this.cookResources(files);
+  }
+
+  async getFilesByPattern(pattern: string): Promise<any[]> {
+    const allFiles = await this.getFilenames(this.pathToAssets);
+    console.log(allFiles);
+
+    return allFiles;
   }
 
   cookResources(files: string[]): Resource[] {
@@ -49,9 +55,9 @@ export class ResourceService {
   }
 
   private parseAssetsFilename(filename: string): Resource {
-    if (!filename.includes(delimiter)) return this.createResource(filename);
+    if (!filename.includes(DELIMETERS.FOLDER)) return this.createResource(filename);
 
-    const delimiterIndex = filename.indexOf(delimiter);
+    const delimiterIndex = filename.indexOf(DELIMETERS.FOLDER);
     const folderName = filename.substring(0, delimiterIndex);
     const childrenName = filename.substring(delimiterIndex + 1);
     const childrenResource = this.parseAssetsFilename(childrenName);
@@ -67,7 +73,7 @@ export class ResourceService {
     };
   }
 
-  private async getFilenames(dir: string) {
+  public async getFilenames(dir: string) {
     const files = [];
     try {
       const filenames = await readdir(dir);

@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpException,
@@ -6,15 +7,15 @@ import {
   Logger,
   Param,
   Post,
-  Res,
   UploadedFile,
   UseInterceptors,
+  UsePipes,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
-import { Response } from 'express';
 import { ResourceService } from './resource.service';
 import { Resource } from './resource.model';
+import { ResourceValidationPipe } from './resource-validation.pipe';
 
 @Controller('resource')
 export class ResourceController {
@@ -46,10 +47,14 @@ export class ResourceController {
   }
 
   @Get(':resourceId')
-  async getResource(@Res() res: Response, @Param() params: { resourceId: string }) {
+  async getResource(/*@Res() res: Response, */ @Param() params: { resourceId: string }) {
     try {
       console.log('get resource', params.resourceId);
-      return res.redirect(`/uploads/${params.resourceId}`);
+
+      const resources = await this.resourceService.getFilesByPattern(params.resourceId);
+
+      return this.prepareResponse(HttpJsonStatus.Ok, resources);
+      // return res.redirect(`/uploads/${params.resourceId}`);
     } catch (e) {
       Logger.error(e);
       throw new HttpException(e.message, e?.status ?? HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,27 +1,51 @@
 import { Request } from 'express';
+import { DELIMETERS, ERRORS } from '../constants';
+import { UnprocessableEntityException } from '@nestjs/common';
 
-const delimiter = '^';
-const nameDelimiter = '~';
-
-const FEDelimemeter = '/';
+const MAX_FILENAME_LENGTH = 256;
 
 export const setFilenameHelper = (
-  request: Request,
+  { body }: Request,
   file: Express.Multer.File,
   callback: (error: Error | null, filename: string) => void
 ) => {
-  const filename = createFilename(request.body.path, file.originalname);
+  console.log(body);
+  const { path } = body;
+  const { originalname } = file;
 
-  return callback(null, filename);
+  const filename = createFilename(path, originalname);
+
+  const validationResult = validateFile(path, originalname, filename);
+
+  return callback(validationResult, filename);
 };
 
+function validateFile(path: string, originalname: string, filename: string) {
+  if (filename.length > MAX_FILENAME_LENGTH) {
+    return new UnprocessableEntityException(ERRORS.FILENAME_IS_TOO_LONG);
+  }
+
+  const pathRegexp = new RegExp(`[\\${DELIMETERS.FOLDER}\\${DELIMETERS.NAME}]`);
+  const nameRegexp = new RegExp(`[\\${DELIMETERS.FOLDER}\\${DELIMETERS.NAME}\\${DELIMETERS.PATH}]`);
+
+  if (originalname.match(nameRegexp) || path.match(pathRegexp)) {
+    return new UnprocessableEntityException(ERRORS.SYSTEM_SYMBOLS);
+  }
+
+  if (filename !== encodeURIComponent(filename)) {
+    return new UnprocessableEntityException(ERRORS.SHOULD_USE_VALID_SYMBOLS);
+  }
+
+  return null;
+}
+
 function createFilename(filepath: string, originalname: string): string {
-  const pathToStore = (filepath || '').replaceAll(FEDelimemeter, delimiter);
+  const pathToStore = (filepath || '').replaceAll(DELIMETERS.PATH, DELIMETERS.FOLDER);
   const [date] = new Date().toISOString().split('T');
   const prefix = `${date}-${Math.random().toString(36).substring(2, 10)}`;
   const filename = originalname.replaceAll(' ', '');
 
-  const newFile = `${prefix}${nameDelimiter}${filename}`;
+  const newFile = `${prefix}${DELIMETERS.NAME}${filename}`;
 
-  return pathToStore ? `${pathToStore}${delimiter}${newFile}` : newFile;
+  return pathToStore ? `${pathToStore}${DELIMETERS.FOLDER}${newFile}` : newFile;
 }

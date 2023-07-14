@@ -12,11 +12,20 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
 import { createFakeDocument } from '../../common/helpers/document.test.helper';
 import { AccessTag } from './types/json.const';
+import {
+  ManifestModule,
+  ManifestProFixture,
+  ManifestService,
+  ManifestStreamFixture,
+  ManifestWorkshopFixture,
+} from '@soer/sr-auth-nest';
 
 describe('JsonModule e2e-test', () => {
   let app: INestApplication;
   let request: supertest.SuperTest<supertest.Test>;
   let jsonRepositoryMock: Partial<Record<keyof Repository<JsonEntity>, jest.Mock>>;
+  //  let manifestServiceMock: Partial<Record<keyof ManifestService, jest.Mock>>;
+  let manifestServiceMock: ManifestService;
 
   beforeAll(async () => {
     jsonRepositoryMock = {
@@ -28,8 +37,10 @@ describe('JsonModule e2e-test', () => {
     };
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [JsonModule, ConfigModule.forFeature(JwtConfig)],
+      imports: [JsonModule, ConfigModule.forFeature(JwtConfig), ManifestModule.forRoot({ apiUrl: '' })],
     })
+      .overrideProvider(getRepositoryToken(ManifestService))
+      .useValue(manifestServiceMock)
       .overrideProvider(getRepositoryToken(JsonEntity))
       .useValue(jsonRepositoryMock)
       .useMocker((token) => {
@@ -43,6 +54,8 @@ describe('JsonModule e2e-test', () => {
       .compile();
 
     app = moduleFixture.createNestApplication();
+    manifestServiceMock = moduleFixture.get<ManifestService>(ManifestService);
+
     await app.init();
 
     request = supertest(app.getHttpServer());
@@ -75,6 +88,8 @@ describe('JsonModule e2e-test', () => {
       const document = { ...createFakeDocument(), accessTag: AccessTag.STREAM };
 
       jsonRepositoryMock.find.mockReturnValueOnce([document]);
+      manifestServiceMock.resolve = jest.fn().mockReturnValue(ManifestStreamFixture);
+
       await request
         .get(`/json/${document.namespace}/stream`)
         .set(JwtTestHelper.createBearerHeader())
@@ -90,6 +105,8 @@ describe('JsonModule e2e-test', () => {
       const document = { ...createFakeDocument(), accessTag: AccessTag.WORKSHOP };
 
       jsonRepositoryMock.find.mockReturnValueOnce([document]);
+      manifestServiceMock.resolve = jest.fn().mockReturnValue(ManifestWorkshopFixture);
+
       await request
         .get(`/json/${document.namespace}/workshop`)
         .set(JwtTestHelper.createBearerHeader())
@@ -105,6 +122,8 @@ describe('JsonModule e2e-test', () => {
       const document = { ...createFakeDocument(), accessTag: AccessTag.PRO };
 
       jsonRepositoryMock.find.mockReturnValueOnce([document]);
+      manifestServiceMock.resolve = jest.fn().mockReturnValue(ManifestProFixture);
+
       await request
         .get(`/json/${document.namespace}/pro`)
         .set(JwtTestHelper.createBearerHeader())

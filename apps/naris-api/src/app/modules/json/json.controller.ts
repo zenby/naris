@@ -54,7 +54,9 @@ export class JsonController {
   })
   @ApiOkResponse({ type: JsonResponseDto })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @NamespacesForViewerRole(ManifestNamespace.STREAM)
+  @Roles(UserRole.ADMIN, DynamicRole.VIEWER, DynamicRole.OWNER)
+  @UseGuards(JwtAuthGuard, UserManifestGuard, RolesAuthGuard)
   @Get('stream')
   async findStreamDocuments(
     @Param('documentNamespace') documentNamespace: string
@@ -74,6 +76,9 @@ export class JsonController {
   })
   @ApiOkResponse({ type: JsonResponseDto })
   @ApiBearerAuth()
+  @NamespacesForViewerRole(ManifestNamespace.WORKSHOP)
+  @Roles(UserRole.ADMIN, DynamicRole.VIEWER, DynamicRole.OWNER)
+  @UseGuards(JwtAuthGuard, UserManifestGuard, RolesAuthGuard)
   @UseGuards(JwtAuthGuard)
   @Get('workshop')
   async findWorkshopDocuments(
@@ -97,7 +102,9 @@ export class JsonController {
   })
   @ApiOkResponse({ type: JsonResponseDto })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @NamespacesForViewerRole(ManifestNamespace.PRO)
+  @Roles(UserRole.ADMIN, DynamicRole.VIEWER, DynamicRole.OWNER)
+  @UseGuards(JwtAuthGuard, UserManifestGuard, RolesAuthGuard)
   @Get('pro')
   async findProDocuments(@Param('documentNamespace') documentNamespace: string): Promise<HttpJsonResult<JsonEntity>> {
     try {

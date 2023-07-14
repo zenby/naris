@@ -5,3 +5,4 @@ export * from './lib/user-manifest.guard';
 export * from './lib/namespaces.decorator';
 export * from './lib/roles.decorator';
 export * from './lib/roles-auth.guard';
+export * from './lib/tests/manifest.fixtures';

@@ -6,7 +6,7 @@ describe('modules questions', () => {
 
   beforeEach(() => {
     cy.intercept('GET', '**/*.svg').as('signIn');
-    cy.intercept('GET', 'https://stage.s0er.ru/api/questions').as('getAllQuestions');
+    cy.intercept('GET', 'https://stage.s0er.ru/api/questions').as('getUpdatedQuestions');
     cy.login('user', 'user');
   });
 
@@ -47,7 +47,7 @@ describe('modules questions', () => {
     cy.get('[data-cy="questionInput"]').clear().type(permissibleQuestion).should('have.value', permissibleQuestion);
     cy.get('[data-cy="saveBtn"]').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
-    cy.wait('@getAllQuestions');
+    cy.wait('@getUpdatedQuestions');
     cy.get('.ant-message-notice-content').should('exist');
     cy.get('[data-cy="qaListItemDescription"]').last().contains(permissibleQuestion);
   });
@@ -56,19 +56,18 @@ describe('modules questions', () => {
     cy.visit('#!/pages/qa/my/create/new'); // add 2 new questions
     cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
     cy.get('[data-cy="saveBtn"]').click();
-    cy.wait('@getAllQuestions');
+    cy.wait('@getUpdatedQuestions');
     cy.get('[data-cy="plusBtn"]').click();
     cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
     cy.get('[data-cy="saveBtn"]').click();
-    cy.wait('@getAllQuestions');
+    cy.wait('@getUpdatedQuestions');
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
 
     cy.get('[data-cy="qaListItemDescription"]').then((qaList) => {
       const listLen = Cypress.$(qaList).length - 1;
 
       cy.get('[data-cy="questionDeleteBtn"]').last().click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(1000);
+      cy.wait('@getUpdatedQuestions');
       cy.get('[data-cy="qaListItemDescription"]').its('length').should('equal', listLen);
     });
   });
@@ -85,7 +84,7 @@ describe('modules questions', () => {
     cy.visit('#!/pages/qa/my/create/new');
     cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
     cy.get('[data-cy="saveBtn"]').click();
-    cy.wait('@getAllQuestions');
+    cy.wait('@getUpdatedQuestions');
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
 
     cy.get('[data-cy="questionDeleteBtn"]').then((delBtnList) => {
@@ -94,9 +93,8 @@ describe('modules questions', () => {
 
       while (listLen) {
         cy.get('[data-cy="questionDeleteBtn"]').last().click();
+        cy.wait('@getUpdatedQuestions');
         listLen--;
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(1000);
       }
     });
     cy.get('.ant-result').contains('Задать первый вопрос');

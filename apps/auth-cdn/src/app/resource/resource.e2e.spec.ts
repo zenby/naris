@@ -59,7 +59,7 @@ describe('Resource (e2e)', () => {
     // });
   });
 
-  describe('POST /resource/', () => {
+  describe('POST /resource', () => {
     it('should return error if has system symbols in path', async () => {
       const { path, fileMultipartData } = generateFileData({ pathFolders: [DELIMETERS.FOLDER + 'folder'] });
 

@@ -45,10 +45,7 @@ export class ResourceController {
   @Get()
   async getResources(@Query() query: ResourcesQueryDto): Promise<HttpJsonResult<Resource[]>> {
     try {
-      const resources =
-        !query.filename && !query.folder
-          ? await this.resourceService.getAll()
-          : await this.resourceService.getFilteredResources(query);
+      const resources = await this.resourceService.getResources(query);
 
       return this.prepareResponse(HttpJsonStatus.Ok, resources);
     } catch (e) {

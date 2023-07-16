@@ -42,7 +42,7 @@ describe('Resource (e2e)', () => {
     jest.clearAllMocks();
   });
 
-  fdescribe('GET /resource', () => {
+  describe('GET /resource', () => {
     it('should return 200 OK with data', async () => {
       const files = ['file1', 'file2'];
 

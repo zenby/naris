@@ -10,7 +10,7 @@ import { DELIMETERS } from './constants';
 export class ResourceService {
   private readonly pathToAssets: string;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(readonly configService: ConfigService) {
     this.pathToAssets = configService.get<Configuration['fileStoragePath']>('fileStoragePath');
   }
 
@@ -19,12 +19,7 @@ export class ResourceService {
     return { uri: `/${file.filename}` };
   }
 
-  async getAll(): Promise<Resource[]> {
-    const files = await this.getFilenames(this.pathToAssets);
-    return this.cookResources(files);
-  }
-
-  async getFilteredResources(filter: ResourceFilter): Promise<Resource[]> {
+  async getResources(filter: ResourceFilter): Promise<Resource[]> {
     let files = await this.getFilenames(this.pathToAssets);
 
     if (filter.filename) {
@@ -36,6 +31,31 @@ export class ResourceService {
     }
 
     return this.cookResources(files);
+  }
+
+  async getFilenames(dir: string) {
+    const files = [];
+    try {
+      const filenames = await readdir(dir);
+
+      for (let i = 0; i < filenames.length; i++) {
+        const filename = filenames[i];
+        const filepath = resolve(dir, filename);
+        const fileStats = await stat(filepath);
+
+        if (fileStats.isFile() && filename !== '.gitkeep') {
+          files.push(filename);
+        }
+      }
+
+      return files;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  cookResources(files: string[]): Resource[] {
+    return this.mergeResources(files.map((file) => this.parseAssetsFilename(file)));
   }
 
   private filterByFilename(files: string[], search: string): string[] {
@@ -52,10 +72,6 @@ export class ResourceService {
 
       return folders.length > 0 && folders.some((folder) => folder.includes(search));
     });
-  }
-
-  cookResources(files: string[]): Resource[] {
-    return this.mergeResources(files.map((file) => this.parseAssetsFilename(file)));
   }
 
   private mergeResources(resources: Resource[]) {
@@ -111,26 +127,5 @@ export class ResourceService {
       // url: filename,
       ...(children ? { children } : {}),
     };
-  }
-
-  public async getFilenames(dir: string) {
-    const files = [];
-    try {
-      const filenames = await readdir(dir);
-
-      for (let i = 0; i < filenames.length; i++) {
-        const filename = filenames[i];
-        const filepath = resolve(dir, filename);
-        const fileStats = await stat(filepath);
-
-        if (fileStats.isFile() && filename !== '.gitkeep') {
-          files.push(filename);
-        }
-      }
-
-      return files;
-    } catch (error) {
-      console.error(error);
-    }
   }
 }

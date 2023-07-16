@@ -42,7 +42,7 @@ describe('Resource (e2e)', () => {
     jest.clearAllMocks();
   });
 
-  xdescribe('GET /resource', () => {
+  fdescribe('GET /resource', () => {
     it('should return 200 OK with data', async () => {
       const files = ['file1', 'file2'];
 
@@ -53,10 +53,66 @@ describe('Resource (e2e)', () => {
       expect(body.items).toMatchObject(files.map((f) => ({ title: f })));
     });
 
+    it('should return 200 OK with data filtered by filename', async () => {
+      const files = [
+        'barak3!barak2!2023-07-14-6d2oboet~barak1.jpg',
+        'barak3!barak1!2023-07-14-7d2oboet~barak2.jpg', //
+        'barak3!2023-07-14-8d2oboet~barak1.jpg',
+        'barak2!2023-07-14-9d2oboet~barak2.jpg', //
+        'barak1!2023-07-14-1d2oboet~barak3.jpg',
+        '2023-07-14-2d2oboet~barak1.jpg',
+        '2023-07-14-3d2oboet~barak2.jpg', //
+      ];
+
+      jest.spyOn(resourceService, 'getFilenames').mockResolvedValue(files);
+
+      const { body } = await request(app.getHttpServer()).get('/resource?filename=barak2').expect(200);
+
+      console.log(body.items);
+
+      expect(body.items).toEqual([
+        {
+          title: 'barak3',
+          children: [{ title: 'barak1', children: [{ title: '2023-07-14-7d2oboet~barak2.jpg' }] }],
+        },
+        { title: 'barak2', children: [{ title: '2023-07-14-9d2oboet~barak2.jpg' }] },
+        { title: '2023-07-14-3d2oboet~barak2.jpg' },
+      ]);
+    });
+
+    it('should return 200 OK with data filtered by folder', async () => {
+      const files = [
+        'barak3!barak2!2023-07-14-6d2oboet~barak1.jpg', //
+        'barak3!barak1!2023-07-14-7d2oboet~barak2.jpg',
+        'barak3!2023-07-14-8d2oboet~barak1.jpg',
+        'barak2!2023-07-14-9d2oboet~barak2.jpg', //
+        'barak1!2023-07-14-1d2oboet~barak3.jpg',
+        '2023-07-14-2d2oboet~barak1.jpg',
+        '2023-07-14-3d2oboet~barak2.jpg',
+      ];
+
+      jest.spyOn(resourceService, 'getFilenames').mockResolvedValue(files);
+
+      const { body } = await request(app.getHttpServer()).get('/resource?folder=barak2').expect(200);
+
+      expect(body.items).toEqual([
+        {
+          title: 'barak3',
+          children: [{ title: 'barak2', children: [{ title: '2023-07-14-6d2oboet~barak1.jpg' }] }],
+        },
+        { title: 'barak2', children: [{ title: '2023-07-14-9d2oboet~barak2.jpg' }] },
+      ]);
+    });
+
     // it('should return 200 OK with data', async () => {
     //   const data = controller.getAllResources();
     //   expect(data).toBe(5);
     // });
+
+    it.todo('should return 200 when search by folder name');
+    it.todo('should return 200 when search by file name');
+    it.todo('should return 200 when search by date');
+    it.todo('should return 200 when search with * values');
   });
 
   describe('POST /resource', () => {
@@ -134,12 +190,6 @@ describe('Resource (e2e)', () => {
 
       expectUriMatchFile(uri, fileData);
     });
-  });
-
-  describe('GET /resource/:resourceId', () => {
-    it.todo('should return 200 when search by folder name');
-    it.todo('should return 200 when search by file name');
-    it.todo('should return 200 when search with * values');
   });
 });
 

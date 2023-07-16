@@ -5,9 +5,9 @@ import {
   HttpException,
   HttpStatus,
   Logger,
-  Param,
   ParseFilePipe,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
   UsePipes,
@@ -17,8 +17,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { ResourceService } from './resource.service';
 import { Resource } from './resource.model';
-import { OriginalFilenameValidator } from './validators/originalFilenameValidator';
-import { FilePathDto } from './dto/filePath.dto';
+import { OriginalFilenameValidator } from './validators/original-filename-validator';
+import { FilePathDto } from './dto/file-path.dto';
+import { ResourcesQueryDto } from './dto/resources-query.dto';
 
 @UsePipes(new ValidationPipe())
 @Controller('resource')
@@ -42,26 +43,14 @@ export class ResourceController {
   }
 
   @Get()
-  async getAllResources(): Promise<HttpJsonResult<Resource[]>> {
+  async getResources(@Query() query: ResourcesQueryDto): Promise<HttpJsonResult<Resource[]>> {
     try {
-      const resources = await this.resourceService.getAll();
+      const resources =
+        !query.filename && !query.folder
+          ? await this.resourceService.getAll()
+          : await this.resourceService.getFilteredResources(query);
 
       return this.prepareResponse(HttpJsonStatus.Ok, resources);
-    } catch (e) {
-      Logger.error(e);
-      throw new HttpException(e.message, e?.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  @Get(':resourceId')
-  async getResource(/*@Res() res: Response, */ @Param() params: { resourceId: string }) {
-    try {
-      console.log('get resource', params.resourceId);
-
-      const resources = await this.resourceService.getFilesByPattern(params.resourceId);
-
-      return this.prepareResponse(HttpJsonStatus.Ok, resources);
-      // return res.redirect(`/uploads/${params.resourceId}`);
     } catch (e) {
       Logger.error(e);
       throw new HttpException(e.message, e?.status ?? HttpStatus.INTERNAL_SERVER_ERROR);

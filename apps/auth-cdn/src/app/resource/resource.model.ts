@@ -3,3 +3,8 @@ export type Resource = {
   // url: string;
   children?: Resource[];
 };
+
+export type ResourceFilter = {
+  folder: string;
+  filename: string;
+};

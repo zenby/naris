@@ -3,7 +3,7 @@ import { readdir, stat } from 'fs/promises';
 import { resolve } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from '../config/config';
-import { Resource } from './resource.model';
+import { Resource, ResourceFilter } from './resource.model';
 import { DELIMETERS } from './constants';
 
 @Injectable()
@@ -24,11 +24,34 @@ export class ResourceService {
     return this.cookResources(files);
   }
 
-  async getFilesByPattern(pattern: string): Promise<string[]> {
-    const allFiles = await this.getFilenames(this.pathToAssets);
-    console.log(allFiles);
+  async getFilteredResources(filter: ResourceFilter): Promise<Resource[]> {
+    let files = await this.getFilenames(this.pathToAssets);
 
-    return allFiles;
+    if (filter.filename) {
+      files = this.filterByFilename(files, filter.filename);
+    }
+
+    if (filter.folder) {
+      files = this.filterByFolder(files, filter.folder);
+    }
+
+    return this.cookResources(files);
+  }
+
+  private filterByFilename(files: string[], search: string): string[] {
+    return files.filter((f) => {
+      const originalname = this.getOriginalFilename(f);
+
+      return originalname.includes(search);
+    });
+  }
+
+  private filterByFolder(files: string[], search: string): string[] {
+    return files.filter((f) => {
+      const folders = this.getAllFoldersFromFilename(f);
+
+      return folders.length > 0 && folders.some((folder) => folder.includes(search));
+    });
   }
 
   cookResources(files: string[]): Resource[] {
@@ -58,11 +81,28 @@ export class ResourceService {
     if (!filename.includes(DELIMETERS.FOLDER)) return this.createResource(filename);
 
     const delimiterIndex = filename.indexOf(DELIMETERS.FOLDER);
-    const folderName = filename.substring(0, delimiterIndex);
+    const folderName = this.getFolderName(filename);
     const childrenName = filename.substring(delimiterIndex + 1);
     const childrenResource = this.parseAssetsFilename(childrenName);
 
     return this.createResource(folderName, [childrenResource]);
+  }
+
+  private getFolderName(filename: string): string {
+    const delimiterIndex = filename.indexOf(DELIMETERS.FOLDER);
+    return filename.substring(0, delimiterIndex);
+  }
+
+  private getAllFoldersFromFilename(filename: string): string[] {
+    const folders = filename.split(DELIMETERS.FOLDER);
+    folders.pop();
+
+    return folders;
+  }
+
+  private getOriginalFilename(filename: string): string {
+    const delimiterIndex = filename.indexOf(DELIMETERS.NAME);
+    return filename.substring(delimiterIndex + 1);
   }
 
   private createResource(filename: string, children?: Resource[]): Resource {

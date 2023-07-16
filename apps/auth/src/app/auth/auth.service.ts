@@ -41,7 +41,7 @@ export class AuthService {
   }
 
   async getVerifiedUserByRefreshToken(refreshToken: string, fingerprint: Fingerprint): Promise<UserEntity | Error> {
-    const verifiedToken = await this.refreshTokenHelper.verify(refreshToken, fingerprint);
+    const verifiedToken = this.refreshTokenHelper.verify(refreshToken, fingerprint);
 
     if (verifiedToken instanceof TokenExpiredError) {
       return verifiedToken;

@@ -98,6 +98,6 @@ describe('modules questions', () => {
       }
     });
     cy.get('.ant-result').contains('Задать первый вопрос');
-    cy.get('[id="first-ask-btn"]').should('exist');
+    cy.get('[data-cy="firstAskBtn"]').should('exist');
   });
 });

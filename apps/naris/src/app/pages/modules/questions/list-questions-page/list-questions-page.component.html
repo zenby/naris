@@ -99,7 +99,9 @@
   <nz-result nzStatus="info" nzTitle="Задать первый вопрос">
     <div nz-result-extra>
       <p class="info">Здесь можно задать свой вопрос и получить ответ в аудиоформе</p>
-      <button nz-button nzType="primary" (click)="createQuestion()" id="first-ask-btn">Задать</button>
+      <button data-cy="firstAskBtn" nz-button nzType="primary" (click)="createQuestion()" id="first-ask-btn">
+        Задать
+      </button>
     </div>
   </nz-result>
 </ng-template>

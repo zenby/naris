@@ -74,9 +74,9 @@ describe('modules questions', () => {
 
   it('should switch between "my questions" and "all questions" page', () => {
     cy.visit('/#!/pages/qa/my');
-    cy.get('[id="all-questions-tab"]').contains('Все вопросы').click();
+    cy.get('[data-cy="allQuestionsTab"]').contains('Все вопросы').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/all');
-    cy.get('[id="my-questions-tab"]').contains('Мои вопросы').click();
+    cy.get('[data-cy="myQuestionsTab"]').contains('Мои вопросы').click();
     cy.url().should('equal', Cypress.config().baseUrl + '#!/pages/qa/my');
   });
 

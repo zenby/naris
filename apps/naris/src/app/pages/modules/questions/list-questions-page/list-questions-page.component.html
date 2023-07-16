@@ -1,6 +1,8 @@
 <nz-tabset nzLinkRouter [nzAnimated]="false" [nzLinkExact]="false">
   <nz-tab>
-    <a *nzTabLink nz-tab-link [routerLink]="['/', 'pages', 'qa', 'my']" id="my-questions-tab">Мои вопросы</a>
+    <a data-cy="myQuestionsTab" *nzTabLink nz-tab-link [routerLink]="['/', 'pages', 'qa', 'my']" id="my-questions-tab"
+      >Мои вопросы</a
+    >
     <ng-container *ngIf="question$ | async as questions">
       <ng-container
         *ngTemplateOutlet="
@@ -12,7 +14,14 @@
   </nz-tab>
 
   <nz-tab>
-    <a *nzTabLink nz-tab-link [routerLink]="['/', 'pages', 'qa', 'all']" id="all-questions-tab">Все вопросы</a>
+    <a
+      data-cy="allQuestionsTab"
+      *nzTabLink
+      nz-tab-link
+      [routerLink]="['/', 'pages', 'qa', 'all']"
+      id="all-questions-tab"
+      >Все вопросы</a
+    >
     <ng-container *ngIf="question$ | async | onlyWithAnaswer as questions">
       <ng-container
         *ngTemplateOutlet="

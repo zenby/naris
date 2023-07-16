@@ -12,6 +12,25 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 * переписал код, оставил только Fingerprint ([091d4ff](https://gitlog.ru/Naris/soermono/commit/091d4ff1987e02e370b069ce88a8bfe537a009df))
 * удалил хелпер FingerprintHelper ([9a1e656](https://gitlog.ru/Naris/soermono/commit/9a1e65672cfd11d74d6751b640b5701f65210ae7))
 * add user profile editing support ([621f5e3](https://gitlog.ru/Naris/soermono/commit/621f5e3537103b55fbd2c4f5f5474739d8b79b6b))
+* remove openid-auth-service ([723a702](https://gitlog.ru/Naris/soermono/commit/723a702bf7441b96d2aeab657a90b19c2eb426bb))
+
+
+### Bug Fixes
+
+* брал async + await при вызове getRefreshToken и getAccessToken, там где это больше не надо ([0ac2fb3](https://gitlog.ru/Naris/soermono/commit/0ac2fb3c135cc65e9b1d46841f49e2ce86b5cd21))
+* восстановил удаленные тесты для RefreshTokenHelper ([865ce98](https://gitlog.ru/Naris/soermono/commit/865ce982d08846d6dae6bba5434b108f1473fe3f))
+* add cors policy only in dev mode ([c9ce8b0](https://gitlog.ru/Naris/soermono/commit/c9ce8b050fb76672ecb8156e7107d5105f338951))
+
+## [0.5.0](https://gitlog.ru/Naris/soermono/compare/auth-0.4.0...auth-0.5.0) (2023-07-16)
+
+
+### Features
+
+* вынес валидацию Fingerprint в хелпер и добавил приведение к MD5 для Fingerprint ([ce5c097](https://gitlog.ru/Naris/soermono/commit/ce5c097c4b398299dac7906bdaf99bc2c43df2a2))
+* добавлена функциональность "цифрового отпечатка" в AuthService ([56326b5](https://gitlog.ru/Naris/soermono/commit/56326b541ceb37b845d1bb218e831edc229df920))
+* переписал код, оставил только Fingerprint ([091d4ff](https://gitlog.ru/Naris/soermono/commit/091d4ff1987e02e370b069ce88a8bfe537a009df))
+* удалил хелпер FingerprintHelper ([9a1e656](https://gitlog.ru/Naris/soermono/commit/9a1e65672cfd11d74d6751b640b5701f65210ae7))
+* add user profile editing support ([621f5e3](https://gitlog.ru/Naris/soermono/commit/621f5e3537103b55fbd2c4f5f5474739d8b79b6b))
 * remove openid-auth-service ([ec9bb3c](https://gitlog.ru/Naris/soermono/commit/ec9bb3cf2eef3897714bc0285c016acb04ef3cc5))
 
 

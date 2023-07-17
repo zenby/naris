@@ -92,7 +92,7 @@ export class ResourceService {
     const childrenName = filename.substring(delimiterIndex + 1);
     const childrenResource = this.parseAssetsFilename(childrenName, newPrefix);
 
-    return this.createFolderResource({ folderName, children: [childrenResource], prefix: newPrefix });
+    return this.createFolderResource({ folderName, children: [childrenResource] });
   }
 
   private getFolderName(filename: string): string {
@@ -112,22 +112,14 @@ export class ResourceService {
     return filename.substring(delimiterIndex + 1);
   }
 
-  private createFileResource({ filename, prefix = '' }: { filename: string; prefix: string }): FileResource {
+  private createFileResource({ filename, prefix }: { filename: string; prefix: string }): FileResource {
     return {
       title: filename.split(DELIMETERS.NAME)[1],
       url: `${this.getFileUrlPrefix()}/${prefix}${filename}`,
     };
   }
 
-  private createFolderResource({
-    folderName,
-    children,
-  }: {
-    filename?: string;
-    folderName?: string;
-    children?: Resource[];
-    prefix?: string;
-  }): FolderResource {
+  private createFolderResource({ folderName, children }: { folderName: string; children: Resource[] }): FolderResource {
     return {
       title: folderName,
       children,

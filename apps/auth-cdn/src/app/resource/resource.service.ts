@@ -1,18 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { readdir, stat } from 'fs/promises';
-import { resolve } from 'path';
-import { ConfigService } from '@nestjs/config';
-import { Configuration } from '../config/config';
 import { Resource, ResourceFilter } from './resource.model';
 import { DELIMETERS } from './constants';
+import { ResourceRepository } from './resource.repository';
 
 @Injectable()
 export class ResourceService {
-  private readonly pathToAssets: string;
-
-  constructor(readonly configService: ConfigService) {
-    this.pathToAssets = configService.get<Configuration['fileStoragePath']>('fileStoragePath');
-  }
+  constructor(private readonly resourceRepository: ResourceRepository) {}
 
   async saveFile(file: Express.Multer.File): Promise<{ uri: string }> {
     // await save file to DB
@@ -20,7 +13,7 @@ export class ResourceService {
   }
 
   async getResources(filter: ResourceFilter): Promise<Resource[]> {
-    let files = await this.getFilenames(this.pathToAssets);
+    let files = await this.resourceRepository.getFilenames();
 
     if (filter.filename) {
       files = this.filterByFilename(files, filter.filename);
@@ -31,27 +24,6 @@ export class ResourceService {
     }
 
     return this.cookResources(files);
-  }
-
-  async getFilenames(dir: string) {
-    const files = [];
-    try {
-      const filenames = await readdir(dir);
-
-      for (let i = 0; i < filenames.length; i++) {
-        const filename = filenames[i];
-        const filepath = resolve(dir, filename);
-        const fileStats = await stat(filepath);
-
-        if (fileStats.isFile() && filename !== '.gitkeep') {
-          files.push(filename);
-        }
-      }
-
-      return files;
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   cookResources(files: string[]): Resource[] {

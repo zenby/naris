@@ -4,17 +4,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { Configuration, configurationFactory } from '../config/config';
 import { ResourceModule } from './resource.module';
-import { ResourceService } from './resource.service';
 import { HttpJsonResult } from '@soer/sr-common-interfaces';
 import { faker } from '@faker-js/faker';
 import { DELIMETERS, ERRORS } from './constants';
 import { rmSync } from 'fs';
 import { generateTestFileData } from './helpers/generate-filedata.helper';
 import { FileData } from './resource.model';
+import { ResourceRepository } from './resource.repository';
 
 describe('Resource (e2e)', () => {
   let app: INestApplication;
-  let resourceService: ResourceService;
+  let resourceRepository: ResourceRepository;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,7 +29,7 @@ describe('Resource (e2e)', () => {
     }).compile();
 
     app = module.createNestApplication();
-    resourceService = app.get(ResourceService);
+    resourceRepository = app.get(ResourceRepository);
     await app.init();
   });
 
@@ -52,7 +52,7 @@ describe('Resource (e2e)', () => {
         '2023-07-14-2d2oboet~barak1.jpg',
       ];
 
-      jest.spyOn(resourceService, 'getFilenames').mockResolvedValue(files);
+      jest.spyOn(resourceRepository, 'getFilenames').mockResolvedValue(files);
 
       const { body } = await request(app.getHttpServer()).get('/resource').expect(200);
 
@@ -83,7 +83,7 @@ describe('Resource (e2e)', () => {
       ];
 
       beforeAll(() => {
-        jest.spyOn(resourceService, 'getFilenames').mockResolvedValue(files);
+        jest.spyOn(resourceRepository, 'getFilenames').mockResolvedValue(files);
       });
 
       it('by full folder name', async () => {

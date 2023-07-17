@@ -9,6 +9,8 @@ import { HttpJsonResult } from '@soer/sr-common-interfaces';
 import { faker } from '@faker-js/faker';
 import { DELIMETERS, ERRORS } from './constants';
 import { rmSync } from 'fs';
+import { generateTestFileData } from './helpers/generate-filedata.helper';
+import { FileData } from './resource.model';
 
 describe('Resource (e2e)', () => {
   let app: INestApplication;
@@ -166,7 +168,7 @@ describe('Resource (e2e)', () => {
 
   describe('POST /resource', () => {
     it('should return error if has system symbols in path', async () => {
-      const { path, fileMultipartData } = generateFileData({
+      const { path, fileMultipartData } = generateTestFileData({
         pathFolders: ['smth' + DELIMETERS.FOLDER + DELIMETERS.SEARCH_ANY_CHAR + 'folder'],
       });
 
@@ -181,7 +183,7 @@ describe('Resource (e2e)', () => {
 
     it('should return error if has system symbols in original filename', async () => {
       const filename = 'smth' + DELIMETERS.NAME + DELIMETERS.SEARCH_ANY_CHAR + 'smth';
-      const { fileMultipartData } = generateFileData({ name: filename });
+      const { fileMultipartData } = generateTestFileData({ name: filename });
 
       const { body } = await request(app.getHttpServer())
         .post('/resource')
@@ -192,7 +194,7 @@ describe('Resource (e2e)', () => {
     });
 
     it('should return error if has invalid symbols in filename', async () => {
-      const { path, fileMultipartData } = generateFileData({ pathFolders: ['smth smth'] });
+      const { path, fileMultipartData } = generateTestFileData({ pathFolders: ['smth smth'] });
 
       const { body } = await request(app.getHttpServer())
         .post('/resource')
@@ -204,7 +206,7 @@ describe('Resource (e2e)', () => {
     });
 
     it('should return error if filename length is too long', async () => {
-      const { path, fileMultipartData } = generateFileData({ pathFolders: [faker.lorem.word().repeat(200)] });
+      const { path, fileMultipartData } = generateTestFileData({ pathFolders: [faker.lorem.word().repeat(200)] });
 
       const { body } = await request(app.getHttpServer())
         .post('/resource')
@@ -216,7 +218,7 @@ describe('Resource (e2e)', () => {
     });
 
     it('should return 201 OK with uri when create file within folders', async () => {
-      const fileData = generateFileData({});
+      const fileData = generateTestFileData({});
       const { path, fileMultipartData } = fileData;
 
       const { body }: { body: HttpJsonResult<{ uri: string }> } = await request(app.getHttpServer())
@@ -231,7 +233,7 @@ describe('Resource (e2e)', () => {
     });
 
     it('should return 201 OK with uri when create file without folders', async () => {
-      const fileData = generateFileData({ pathFolders: [] });
+      const fileData = generateTestFileData({ pathFolders: [] });
 
       const { body }: { body: HttpJsonResult<{ uri: string }> } = await request(app.getHttpServer())
         .post('/resource')
@@ -245,42 +247,7 @@ describe('Resource (e2e)', () => {
   });
 });
 
-type FileData = {
-  filename: string;
-  folders: string[];
-  path: string;
-  fileMultipartData: [Buffer, Record<string, string>];
-};
-
-function generateFileData({
-  pathFolders,
-  name = faker.lorem.word(),
-}: {
-  pathFolders?: string[];
-  name?: string;
-}): FileData {
-  const folders =
-    pathFolders || Array.from({ length: faker.datatype.number({ min: 2, max: 5 }) }).map(() => faker.lorem.word());
-
-  const filename = name + '.txt';
-
-  return {
-    folders,
-    path: folders.join(DELIMETERS.PATH),
-    filename,
-    fileMultipartData: [
-      Buffer.from(filename),
-      {
-        filename,
-        contentType: 'text/plain',
-      },
-    ],
-  };
-}
-
-function expectUriMatchFile(uri: string, file: FileData) {
-  const { folders, filename } = file;
-
+function expectUriMatchFile(uri: string, { folders, filename }: FileData) {
   // check folder in filename
   const foldersPart = folders.map((f) => f + `\\${DELIMETERS.FOLDER}`).join('');
   expect(uri).toStrictEqual(expect.stringMatching(new RegExp(`^/${foldersPart}`)));

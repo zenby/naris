@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { ResourceService } from './resource.service';
+import { Resource } from './resource.model';
 
 describe('Resource service', () => {
   let resourceService: ResourceService;
@@ -11,81 +12,31 @@ describe('Resource service', () => {
 
   it('cook resources', async () => {
     const files: string[] = [
-      '1688027155114-789027491.jpg',
-      '1688027732208-157020387.jpg',
-      'folder2^folder3^1688463096638-890161750.jpg',
-      'folder^1688028439426-483750222.jpg',
-      'folder^1688463096638-890161750.jpg',
-      'folder^1688464190366-643835433.jpg',
-      'folder^folder2^1688463096638-890161750.jpg',
-      'folder^folder2^dd1688463096638-890161750.jpg',
-      'folder^folder2^folder3^dd1688463096638-890161750.jpg',
-      'folder^folder3^1688463096638-890161750.jpg',
+      'folder1!folder2!2023-07-14-6d2oboet~file1.jpg',
+      'folder1!folder2!2023-07-14-9d2otoet~file1.jpg',
+      'folder1!folder3!2023-07-14-8d2odoet~file1.jpg',
+      'folder3!folder2!2023-07-14-7d2oboet~file2.jpg',
+      'folder1!2023-07-14-1d2oboet~file3.jpg',
+      '2023-07-14-2d2oboet~file4.jpg',
     ];
 
-    const expectedResources = [
+    const expectedResources: Resource[] = [
       {
-        title: '1688027155114-789027491.jpg',
-      },
-      {
-        title: '1688027732208-157020387.jpg',
-      },
-      {
-        title: 'folder2',
+        title: 'folder1',
         children: [
-          {
-            title: 'folder3',
-            children: [
-              {
-                title: '1688463096638-890161750.jpg',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        title: 'folder',
-        children: [
-          {
-            title: '1688028439426-483750222.jpg',
-          },
-          {
-            title: '1688463096638-890161750.jpg',
-          },
-          {
-            title: '1688464190366-643835433.jpg',
-          },
           {
             title: 'folder2',
-            children: [
-              {
-                title: '1688463096638-890161750.jpg',
-              },
-              {
-                title: 'dd1688463096638-890161750.jpg',
-              },
-              {
-                title: 'folder3',
-                children: [
-                  {
-                    title: 'dd1688463096638-890161750.jpg',
-                  },
-                ],
-              },
-            ],
+            children: [{ title: '2023-07-14-6d2oboet~file1.jpg' }, { title: '2023-07-14-9d2otoet~file1.jpg' }],
           },
-          {
-            title: 'folder3',
-            children: [
-              {
-                title: '1688463096638-890161750.jpg',
-              },
-            ],
-          },
+          { title: 'folder3', children: [{ title: '2023-07-14-8d2odoet~file1.jpg' }] },
+          { title: '2023-07-14-1d2oboet~file3.jpg' },
         ],
       },
+      { title: 'folder3', children: [{ title: 'folder2', children: [{ title: '2023-07-14-7d2oboet~file2.jpg' }] }] },
+      { title: '2023-07-14-2d2oboet~file4.jpg' },
     ];
     const resources = resourceService.cookResources(files);
-    expect(resources).toMatchObject(expectedResources);
+
+    expect(resources).toStrictEqual(expectedResources);
   });
 });

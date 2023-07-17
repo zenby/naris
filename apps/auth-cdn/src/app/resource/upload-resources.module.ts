@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { setFilenameHelper } from './helpers/set-filename.helper';
 import { Configuration } from '../config/config';
+import { uploadHandler } from './helpers/upload-handler';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { Configuration } from '../config/config';
         return {
           storage: diskStorage({
             destination: configService.get<Configuration['fileStoragePath']>('fileStoragePath'),
-            filename: setFilenameHelper,
+            filename: uploadHandler,
           }),
         };
       },

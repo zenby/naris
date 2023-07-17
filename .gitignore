@@ -44,7 +44,6 @@ Thumbs.db
 .env
 /images
 
-apps/auth-cdn/src/assets/**
-
 # CSS folders
 css
+apps/auth-cdn/src/assets/**

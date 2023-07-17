@@ -4,13 +4,7 @@ import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { faker } from '@faker-js/faker';
-
-class FakeUserRepository extends Repository<UserEntity> {
-  async save<TEntity extends UserEntity>(entity: TEntity): Promise<TEntity> {
-    await entity.hashPassword();
-    return entity;
-  }
-}
+import { UserTestModule } from './tests/user.test.module';
 
 describe('User service', () => {
   let userService: UserService;
@@ -19,13 +13,7 @@ describe('User service', () => {
 
   beforeAll(async () => {
     testModule = await Test.createTestingModule({
-      providers: [
-        UserService,
-        {
-          provide: getRepositoryToken(UserEntity),
-          useClass: FakeUserRepository,
-        },
-      ],
+      imports: [UserTestModule],
     }).compile();
 
     userService = testModule.get<UserService>(UserService);
@@ -66,11 +54,8 @@ describe('User service', () => {
       const newUser = await userService.createUser(dto);
 
       expect(newUser).toBeInstanceOf(UserEntity);
-      expect(newUser).not.toEqual(
-        expect.objectContaining({
-          password: dto.password,
-        })
-      );
+      expect(newUser).not.toEqual(expect.objectContaining({ password: dto.password }));
+      expect(newUser).not.toEqual(expect.objectContaining({ password: '' }));
       expect(saveSpy).toHaveBeenCalledWith(expect.any(UserEntity));
       expect(saveSpy).toHaveBeenCalledWith(
         expect.objectContaining({

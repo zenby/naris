@@ -32,6 +32,7 @@ export class UserTestRepository {
     if (this.users.includes(entity)) {
       return null;
     }
+    await entity.hashPassword();
     return entity;
   }
 

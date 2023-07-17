@@ -1,4 +1,9 @@
-import { createNewArticlePath, allArticlesPath } from './pathConstants';
+import {
+  createNewArticlePath,
+  allArticlesPath,
+  allWorkbookConspectsPath,
+  createNewConspectPath,
+} from './pathConstants';
 import { testTitle } from '../support/articleConstants';
 // ***********************************************
 // This example commands.js shows you how to
@@ -19,6 +24,8 @@ declare global {
       login(email: string, password: string): void;
       removeAllExistingArticles(): void;
       createArticle(): void;
+      removeAllExistingConspects(): void;
+      createConspect(): void;
     }
   }
 }
@@ -26,37 +33,31 @@ declare global {
 // -- This is a parent command --
 Cypress.Commands.add('login', (login, password) => {
   cy.session([login, password], () => {
-    cy
-      .request({
-        method: 'POST',
-        url: `${Cypress.env('host')}/v2/auth/signin`,
+    cy.request({
+      method: 'POST',
+      url: `${Cypress.env('host')}/v2/auth/signin`,
+      form: true,
+      followRedirect: false,
+      body: {
+        login,
+        password,
+      },
+    }).then((response) => {
+      const [cookieStr] = response['headers']['set-cookie'];
+      console.log(cookieStr);
+      cy.request({
+        method: 'GET',
+        url: `${Cypress.env('host')}/v2/auth/access_token`,
         form: true,
         followRedirect: false,
-        body: {
-          login,
-          password,
+        headers: {
+          Cookie: cookieStr,
         },
-      })
-      .then((response) => {
-        const [cookieStr] = response['headers']['set-cookie'];
-        console.log(cookieStr);
-        cy.request({
-          method: 'GET',
-          url: `${Cypress.env('host')}/v2/auth/access_token`,
-          form: true,
-          followRedirect: false,
-          headers: {
-            Cookie: cookieStr,
-          },
-        }).then((response2) => {
-          const [result] = response2.body.items;
-          localStorage.setItem('tokenV2', result.accessToken);
-          cy.visit('#!/login/auth?accesstoken=' + result.accessToken);
-        });
-      }),
-      {
-        cacheAcrossSpecs: true,
-      };
+      }).then((response2) => {
+        const [result] = response2.body.items;
+        localStorage.setItem('tokenV2', result.accessToken);
+      });
+    });
   });
 });
 
@@ -76,6 +77,21 @@ Cypress.Commands.add('removeAllExistingArticles', () => {
     });
 });
 
+Cypress.Commands.add('removeAllExistingConspects', () => {
+  cy.get('a[title="Конспекты"]').should('have.attr', 'disabled');
+  cy.get('.ant-spin-dot').should('not.exist');
+  cy.get('.anticon-delete')
+    .should('have.length.gte', 0)
+    .then(($delBtnList) => {
+      const delBtnLen = $delBtnList.length;
+
+      for (let i = 0; i < delBtnLen; i++) {
+        cy.get('.anticon-delete').eq(0).click({ force: true });
+        cy.contains('OK').should('be.visible').click({ force: true });
+        cy.wait(['@conspectDelete', '@personalConspects', '@personalConspects']);
+      }
+    });
+});
 Cypress.Commands.add('createArticle', () => {
   cy.visit(`/${allArticlesPath}`);
   cy.location('href').should('eq', Cypress.config().baseUrl + allArticlesPath);
@@ -91,6 +107,21 @@ Cypress.Commands.add('createArticle', () => {
   cy.get('a[title="Статьи"]').should('have.attr', 'disabled');
   cy.get('.ant-spin-dot').should('not.exist');
 });
+
+Cypress.Commands.add('createConspect', () => {
+  cy.visit(`/${allWorkbookConspectsPath}`);
+  cy.location('href').should('eq', Cypress.config().baseUrl + '/' + allWorkbookConspectsPath);
+
+  cy.get('#plus-control-btn').should('be.visible').click();
+  cy.location('href').should('eq', Cypress.config().baseUrl + '/' + createNewConspectPath);
+
+  cy.get('input[placeholder="Тема"]').type(testTitle, { force: true });
+  cy.get('.anticon-save').click();
+  cy.wait(['@personalConspects', '@personalConspects']);
+  cy.get('a[title="Конспекты"]').should('have.attr', 'disabled');
+  cy.get('.ant-spin-dot').should('not.exist');
+});
+
 //
 // -- This is a child command --
 // Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })

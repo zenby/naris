@@ -1,0 +1,29 @@
+<div style="padding: 1.5em">
+  <div class="controls">
+    <button *ngIf="previewFlag; else viewButton" nz-button (click)="previewFlag = false">
+      <i nz-icon nzType="edit"></i>
+    </button>
+    <button nz-button (click)="onSave()">
+      <i nz-icon nzType="save"></i>
+    </button>
+  </div>
+  <nz-form-item>
+    <nz-form-control>
+      <div *ngIf="previewFlag; else blocks" class="target-description-view" style="margin-top: 1.5em">
+        <ng-container *ngFor="let block of activeTarget.blocks">
+          <soer-preview-block [block]="block"></soer-preview-block>
+        </ng-container>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+</div>
+
+<ng-template #blocks>
+  <soer-editor [document]="activeTarget"></soer-editor>
+</ng-template>
+<ng-template #viewButton>
+  <button nz-button (click)="previewFlag = true">
+    <i nz-icon nzType="eye"></i>
+  </button>
+</ng-template>
+<ng-template #loading><nz-spin></nz-spin></ng-template>

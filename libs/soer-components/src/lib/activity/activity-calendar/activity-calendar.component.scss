@@ -1,0 +1,22 @@
+.day-wrapper {
+  margin-bottom: 10px;
+
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  border-radius: 24px;
+
+  text-align: center;
+}
+
+.day-with-activity {
+  background-color: #76c04d6e;
+}
+
+.day-without-activity {
+  background-color: #c04d4d6e;
+}
+
+.day-in-future {
+  background-color: #f5f5f5;
+}

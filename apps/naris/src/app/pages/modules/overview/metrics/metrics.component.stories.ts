@@ -91,7 +91,7 @@ const activatedRouteMock = {
 };
 
 export default {
-  title: 'MetricsComponent',
+  title: 'Naris/Pages/MetricsComponent',
   component: MetricsComponent,
   decorators: [
     moduleMetadata({

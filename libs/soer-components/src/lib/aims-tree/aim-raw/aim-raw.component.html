@@ -10,7 +10,7 @@
               <i nz-icon [nzType]="isExpand ? 'down' : 'right'"></i>
               <span>{{ aim.title }}</span>
             </a>
-            <ng-container *ngIf="aim.overview || isEdit">
+            <ng-container *ngIf="aim.blocks || isEdit">
               <i
                 (click)="showDescription()"
                 class="description-icon"
@@ -31,7 +31,7 @@
         <nz-col nzFlex="1">
           <soer-todo
             [label]="aim.title"
-            [showOverviewIcon]="!!aim.overview || isEdit"
+            [showOverviewIcon]="!!aim.blocks || isEdit"
             [checked]="aim.progress === doneProgress"
             [disabled]="isEdit"
             (update)="update.emit(aim)"

@@ -1,0 +1,29 @@
+{
+  "name": "sr-auth-nest",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/sr-auth-nest/src",
+  "prefix": "soer",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/libs/sr-auth-nest"
+      ],
+      "options": {
+        "jestConfig": "libs/sr-auth-nest/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/sr-auth-nest/src/**/*.ts",
+          "libs/sr-auth-nest/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

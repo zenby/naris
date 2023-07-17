@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Inject,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { TextBlock } from '../../interfaces/document.model';
 import { EditorBlocksRegistry, EDITOR_BLOCKS_REGISTRY_TOKEN } from '../../editor-blocks-config';
 import { ControlBtn } from '../block-editor-controls/block-editor-controls.component';
@@ -18,12 +9,14 @@ import { BlockService } from '../../services/block.service';
   templateUrl: './block-editor.component.html',
   styleUrls: ['./block-editor.component.scss'],
 })
-export class BlockEditorComponent implements OnInit, AfterViewInit {
+export class BlockEditorComponent implements OnInit {
   @Input() id = '';
   @Input() textBlock: TextBlock = { type: 'markdown', text: '' };
   @Input() blocksLength = 0;
 
+  @ViewChild('shadowEdit') shadowEdit!: ElementRef;
   @ViewChild('edit') edit!: ElementRef;
+  @ViewChild('editView') editView!: ElementRef;
 
   isEdit = false;
   isFocused = false;
@@ -80,94 +73,113 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.resizeEdit();
-  }
-
   startEdit(): void {
     this.isEdit = true;
     this.isFocused = true;
     this.blockService.saveFocused(this.id);
+
+    const curretnHeight = this.editView.nativeElement.scrollHeight;
+    const heightText = this.editView.nativeElement.children[2].scrollHeight;
+    if (curretnHeight < heightText) {
+      this.editView.nativeElement.style.height = heightText + 2 + 'px';
+    }
   }
 
   handleTextChange(): void {
     this.blockService.setBlockText(this.id, this.textBlock.text);
-    this.resizeEdit();
-  }
-
-  resizeEdit(): void {
-    this.edit.nativeElement.style.height = 'auto';
-    this.edit.nativeElement.style.height = this.edit.nativeElement.scrollHeight + 'px';
   }
 
   command(event: KeyboardEvent): void {
+    if (event.code === 'Home') {
+      this.setCaretToPos(0);
+      event.preventDefault();
+    }
+    if (event.code === 'End') {
+      event.preventDefault();
+    }
+
     if (event.altKey && event.code === 'Enter') {
       this.addBlockDown();
+      event.preventDefault();
     }
 
     if (event.altKey && event.code === 'KeyC') {
       this.formatBlock();
+      event.preventDefault();
     }
 
     if (event.altKey && event.code === 'Backspace') {
       this.removeCurrentBlock();
+      event.preventDefault();
     }
 
     if (event.altKey && event.code === 'ArrowUp') {
       this.moveUpBlock();
+      event.preventDefault();
 
       return;
     }
 
     if (event.ctrlKey && event.code === 'ArrowUp') {
       this.setFocusOnPrevious();
+      event.preventDefault();
 
       return;
     }
 
     if (event.code === 'ArrowUp' && this.getIsFirstLine(event)) {
       this.setFocusOnPrevious();
+      event.preventDefault();
     }
 
     if (event.altKey && event.code === 'ArrowDown') {
       this.moveDownBlock();
+      event.preventDefault();
 
       return;
     }
 
     if ((event.ctrlKey && event.code === 'ArrowDown') || event.code === 'Tab') {
       this.setFocusOnNext();
+      event.preventDefault();
 
       return;
     }
 
     if (event.code === 'ArrowDown' && this.getIsLastLine(event)) {
       this.setFocusOnNext();
+      event.preventDefault();
     }
 
     if (event.altKey && event.code === 'Digit1') {
       this.textBlock.type = 'markdown';
+      event.preventDefault();
     }
 
     if (event.altKey && event.code === 'Digit2') {
       this.textBlock.type = 'test';
+      event.preventDefault();
     }
 
     if (event.altKey && event.code === 'Digit3') {
       this.textBlock.type = 'code';
+      event.preventDefault();
     }
 
     if (event.altKey && event.code === 'Digit4') {
       this.textBlock.type = 'diagram';
+      event.preventDefault();
     }
 
     if (event.code === 'Escape') {
       this.stopEdit();
+      event.preventDefault();
     }
   }
 
   stopEdit() {
     this.blockService.stopEdit(this.id);
+    this.editView.nativeElement.style.height = 'auto';
   }
 
   private formatBlock() {
@@ -214,8 +226,28 @@ export class BlockEditorComponent implements OnInit, AfterViewInit {
   }
 
   private getCountOfLines(text: string) {
-    const lineBreakRegExp = new RegExp(/\r\n|\r|\n/gm);
+    //   const lineBreakRegExp = new RegExp(/\r\n|\r|\n/gm);
 
-    return text.split(lineBreakRegExp).length;
+    this.shadowEdit.nativeElement.value = text;
+    return Math.round((this.shadowEdit.nativeElement.scrollHeight - 17) / 21);
+
+    //    return text.split(lineBreakRegExp).length;
+  }
+
+  private setSelectionRange(input: ElementRef, selectionStart: number, selectionEnd: number): void {
+    if (input.nativeElement.setSelectionRange) {
+      input.nativeElement.focus();
+      input.nativeElement.setSelectionRange(selectionStart, selectionEnd);
+    } else if (input.nativeElement.createTextRange) {
+      const range = input.nativeElement.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', selectionEnd);
+      range.moveStart('character', selectionStart);
+      range.select();
+    }
+  }
+
+  setCaretToPos(pos: number): void {
+    this.setSelectionRange(this.edit, pos, pos);
   }
 }

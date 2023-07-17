@@ -4,7 +4,7 @@
     {{ isEdit | booleanToString: ' [*]':' [ ]' }}
   </div>
   <div class="block-wrapper">
-    <div class="edit" soerAutoresize>
+    <div class="edit" [ngClass]="{ editOn: isEdit }" soerAutoresize #editView>
       <ng-container>
         <textarea
           [ngStyle]="{ opacity: isEdit ? '100%' : '0%' }"
@@ -21,6 +21,10 @@
       <div class="block-editor" [ngStyle]="{ visibility: !isEdit ? 'visible' : 'hidden' }">
         <soer-preview-block [type]="textBlock.type" [text]="textBlock.text"></soer-preview-block>
       </div>
+
+      <!-- нужна чтобы вычислять размер блока строго под текст -->
+      <textarea style="height: 0" [ngStyle]="{ opacity: '0%' }" class="block-editor block-editor__input" #shadowEdit>
+      </textarea>
     </div>
     <div class="block-controls" *ngIf="isFocused">
       <soer-block-editor-controls [controls]="controls"></soer-block-editor-controls>

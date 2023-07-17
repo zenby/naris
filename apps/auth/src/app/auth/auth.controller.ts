@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import {
   Body,
   Controller,
@@ -8,6 +8,7 @@ import {
   InternalServerErrorException,
   Logger,
   Post,
+  Req,
   Res,
   UnauthorizedException,
   UseGuards,
@@ -41,6 +42,7 @@ import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 import { RolesGuard } from '../common/guards/roles-guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { UserService } from '../user/user.service';
+import { Fingerprint } from './helpers/fingerprint';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -125,10 +127,12 @@ export class AuthController {
   @ApiUnauthorizedResponse({ schema: responseErrorSchema('Invalid password') })
   async signIn(
     @User() user: UserEntity | Error,
-    @Res({ passthrough: true }) response: Response
+    @Res({ passthrough: true }) response: Response,
+    @Req() request: Request
   ): Promise<HttpJsonResult<string>> {
     try {
-      const refreshToken = this.authService.getRefreshToken(user);
+      const requestFingerprint = new Fingerprint(request);
+      const refreshToken = this.authService.getRefreshToken(user, requestFingerprint);
 
       if (refreshToken instanceof Error) {
         return { status: HttpJsonStatus.Error, items: [refreshToken.message] };

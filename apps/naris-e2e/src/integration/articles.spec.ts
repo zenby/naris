@@ -1,11 +1,5 @@
 import { articleTitle, articleTextWithMd, modifiedArticleTitle, testTitle } from '../support/articleConstants';
-import {
-  createNewArticlePath,
-  editArticlePath,
-  allArticlesPath,
-  viewArticlePath,
-  infoPath,
-} from '../support/pathConstants';
+import { createNewArticlePath, editArticlePath, allArticlesPath, viewArticlePath } from '../support/pathConstants';
 
 describe('naris articles', () => {
   beforeEach(() => {
@@ -15,7 +9,6 @@ describe('naris articles', () => {
     cy.intercept('DELETE', '/api/v2/json/article/**').as('deleteRequest');
 
     cy.login('user', 'user');
-    cy.location('href').should('eq', Cypress.config().baseUrl + infoPath);
     cy.visit(`/${allArticlesPath}`);
     cy.wait('@personalArticles');
     cy.get('a[title="Статьи"]').should('be.visible');

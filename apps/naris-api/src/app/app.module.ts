@@ -8,6 +8,7 @@ import { JsonModule } from './modules/json/json.module';
 import { ImagesModule } from './modules/images/images.module';
 import { JwtConfig } from './config/jwt.config';
 import { PassportModule } from '@nestjs/passport';
+import { QuestionsModule } from './modules/questions/questions.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PassportModule } from '@nestjs/passport';
     }),
     JsonModule,
     ImagesModule,
+    QuestionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

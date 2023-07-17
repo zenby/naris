@@ -4,7 +4,7 @@
       <input nz-input [value]="template.title" placeholder="Именование цели" #titleElem />
     </div>
     <div class="form-item">
-      <textarea nz-input rows="8" placeholder="Общее описание цели" [value]="template.overview" #overview></textarea>
+      <textarea nz-input rows="8" placeholder="Общее описание цели" [value]="template.blocks[0].text" #block></textarea>
     </div>
     <div class="form-item">
       <nz-switch [(ngModel)]="isPublic"></nz-switch> Публичный шаблон (будет виден другим пользователям)
@@ -14,7 +14,7 @@
         nz-button
         class="login-form-button login-form-margin"
         [nzType]="'primary'"
-        (click)="createTemplate(titleElem, overview, template)"
+        (click)="createTemplate(titleElem, block, template)"
       >
         Создать шаблон
       </button>

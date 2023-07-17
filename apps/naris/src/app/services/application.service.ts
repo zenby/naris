@@ -8,6 +8,7 @@ import { UserModel } from './application.models';
 import { MAIN_MENU } from './menu/menu.const';
 import { IMenuControl } from './menu/menu.interfaces';
 import { MenuControl } from './menu/MenuControl.class';
+import { narisVersion } from '../../environments/version';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ import { MenuControl } from './menu/MenuControl.class';
 export class ApplicationService {
   public control$ = new BehaviorSubject<IMenuControl[]>([]);
   public mainMenu = MAIN_MENU;
+  public narisVersion = narisVersion;
 
   public user: UserModel = { id: -1, role: 'guest', email: '' };
   public user$: Observable<DtoPack<JWTModel>>;

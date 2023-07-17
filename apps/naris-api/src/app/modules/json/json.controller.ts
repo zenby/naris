@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UseGuards } fr
 import { JsonService } from './json.service';
 import { JsonEntity } from './json.entity';
 import { CreateJsonDto } from './dto/create-json.dto';
-import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
+import { DynamicRole, HttpJsonResult, HttpJsonStatus, ManifestNamespace, UserRole } from '@soer/sr-common-interfaces';
 import { UpdateJsonDto } from './dto/update-json.dto';
 import { JsonParams } from './types/json-params.type';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
@@ -10,12 +10,180 @@ import { JsonResponseDto } from './dto/json-response.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { JwtPayload } from '../../common/types/jwt-payload.interface';
 import { AuthUser } from '../../common/decorators';
+import { DocumentAuthorGuard } from '../../common/guards/document-author.guard';
+import { NamespacesForViewerRole, Roles, RolesAuthGuard, UserManifestGuard } from '@soer/sr-auth-nest';
+import { AccessTag } from './types/json.const';
 
 @Controller({ version: '3', path: 'json/:documentNamespace' })
 export class JsonController {
   constructor(private readonly jsonService: JsonService) {}
 
   private logger = new Logger(JsonController.name);
+
+  @NamespacesForViewerRole(ManifestNamespace.WORKSHOP)
+  @Roles(UserRole.ADMIN, DynamicRole.VIEWER, DynamicRole.OWNER)
+  @UseGuards(UserManifestGuard, RolesAuthGuard)
+  @Get('test')
+  async test() {
+    return 'test';
+  }
+
+  @ApiOperation({
+    summary: 'Find documents from the namespace with the "public" tag',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('public')
+  async findPublicDocuments(
+    @AuthUser() user: JwtPayload,
+    @Param('documentNamespace') documentNamespace: string
+  ): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const documents = await this.jsonService.findPublicDocuments(documentNamespace);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Find documents from the namespace with the "STREAM" tag',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @NamespacesForViewerRole(ManifestNamespace.STREAM)
+  @Roles(UserRole.ADMIN, DynamicRole.VIEWER, DynamicRole.OWNER)
+  @UseGuards(JwtAuthGuard, UserManifestGuard, RolesAuthGuard)
+  @Get('stream')
+  async findStreamDocuments(
+    @Param('documentNamespace') documentNamespace: string
+  ): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const documents = await this.jsonService.findDocumentsWithAccessTag(documentNamespace, [AccessTag.STREAM]);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Find documents from the namespace with the "WORKSHOP" and "STREAM" tag',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @NamespacesForViewerRole(ManifestNamespace.WORKSHOP)
+  @Roles(UserRole.ADMIN, DynamicRole.VIEWER, DynamicRole.OWNER)
+  @UseGuards(JwtAuthGuard, UserManifestGuard, RolesAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @Get('workshop')
+  async findWorkshopDocuments(
+    @Param('documentNamespace') documentNamespace: string
+  ): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const documents = await this.jsonService.findDocumentsWithAccessTag(documentNamespace, [
+        AccessTag.STREAM,
+        AccessTag.WORKSHOP,
+      ]);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Find documents from the namespace with the "WORKSHOP", "STREAM" and PRO tag',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @NamespacesForViewerRole(ManifestNamespace.PRO)
+  @Roles(UserRole.ADMIN, DynamicRole.VIEWER, DynamicRole.OWNER)
+  @UseGuards(JwtAuthGuard, UserManifestGuard, RolesAuthGuard)
+  @Get('pro')
+  async findProDocuments(@Param('documentNamespace') documentNamespace: string): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const documents = await this.jsonService.findDocumentsWithAccessTag(documentNamespace, [
+        AccessTag.STREAM,
+        AccessTag.WORKSHOP,
+        AccessTag.PRO,
+      ]);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Find documents authored by the current user',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('private')
+  async findCurrentUserDocuments(
+    @AuthUser() user: JwtPayload,
+    @Param('documentNamespace') documentNamespace: string
+  ): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const documents = await this.jsonService.findCurrentUserDocuments(documentNamespace, user.email);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Find documents from the namespace with both private and public access',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('all')
+  async findPrivateAndPublicDocuments(
+    @AuthUser() user: JwtPayload,
+    @Param('documentNamespace') documentNamespace: string
+  ): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const documents = await this.jsonService.findPrivateAndPublicDocuments(documentNamespace);
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, documents);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Updates the value of accessTag to private/public',
+  })
+  @ApiOkResponse({ type: JsonResponseDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Put(':documentId/accessTag')
+  async switchAccessTag(
+    @AuthUser() user: JwtPayload,
+    @Param() params: JsonParams
+  ): Promise<HttpJsonResult<JsonEntity>> {
+    try {
+      const document = await this.jsonService.switchAccessTag(+params.documentId, params.documentNamespace, user.email);
+      if (document instanceof Error) throw document;
+
+      return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
+    } catch (e) {
+      this.logger.error(e);
+      return this.jsonService.prepareResponse(HttpJsonStatus.Error, []);
+    }
+  }
 
   @ApiOperation({ summary: 'Get all', description: 'Get a list of documents of a specific group' })
   @ApiOkResponse({ type: JsonResponseDto })
@@ -89,7 +257,7 @@ export class JsonController {
   @ApiParam({ name: 'documentNamespace' })
   @ApiParam({ name: 'documentId' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, DocumentAuthorGuard)
   @Put(':documentId')
   async updateJson(
     @Param() params: JsonParams,
@@ -97,6 +265,7 @@ export class JsonController {
   ): Promise<HttpJsonResult<JsonEntity>> {
     try {
       const document = await this.jsonService.update(+params.documentId, params.documentNamespace, updateJsonDto);
+      if (document instanceof Error) throw document;
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);
     } catch (e) {
@@ -113,11 +282,12 @@ export class JsonController {
   @ApiParam({ name: 'documentNamespace' })
   @ApiParam({ name: 'documentId' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, DocumentAuthorGuard)
   @Delete(':documentId')
   async deleteJson(@Param() params: JsonParams): Promise<HttpJsonResult<JsonEntity>> {
     try {
-      await this.jsonService.delete(+params.documentId, params.documentNamespace);
+      const result = await this.jsonService.delete(+params.documentId, params.documentNamespace);
+      if (result instanceof Error) throw result;
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, []);
     } catch (e) {

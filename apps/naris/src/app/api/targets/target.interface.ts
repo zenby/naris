@@ -1,3 +1,5 @@
+import { BlocksDocumentModel } from '@soer/sr-editor';
+
 export interface PersonalTarget {
   id?: number;
   title: string;
@@ -6,7 +8,7 @@ export interface PersonalTarget {
   tasks: RoadmapTask[];
 }
 
-export interface TargetModel {
+export interface TargetModel extends BlocksDocumentModel {
   id?: number;
   title: string;
   overview: string;
@@ -14,7 +16,7 @@ export interface TargetModel {
   tasks: TargetModel[];
 }
 
-export interface TemplateModel {
+export interface TemplateModel extends BlocksDocumentModel {
   id?: number;
   title: string;
   overview: string;
@@ -28,12 +30,13 @@ export interface RoadmapTask {
   children: RoadmapTask[];
 }
 
-export const EmptyTarget: TargetModel = {
+export const EMPTY_TARGET: TargetModel = {
   id: -1,
   title: '',
   overview: '',
   progress: 0,
   tasks: [],
+  blocks: [{ text: '', type: 'markdown' }],
 };
 
 export interface Visibility {

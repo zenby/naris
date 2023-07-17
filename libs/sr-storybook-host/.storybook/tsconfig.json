@@ -10,7 +10,10 @@
     "*.js",
     // list of all stories
     "../../../libs/**/*.stories.ts",
+    "../../../libs/**/*.component.ts",
     "../../../apps/naris/**/*.stories.ts",
+    "../../../apps/naris/**/*.component.ts",
     "../../../apps/naris/.storybook/__mocks__/*.ts"
+
   ]
 }

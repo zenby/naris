@@ -4,7 +4,7 @@
       <div *ngFor="let field of item.fields | keyvalue">
         {{ field.value }}
       </div>
-      <ul nz-list-item-actions>
+      <ul nz-list-item-actions *ngIf="item.actions.length">
         <nz-list-item-action *ngFor="let action of item.actions">
           <a (click)="action.handler(item.id)">{{ action.title }}</a>
         </nz-list-item-action>

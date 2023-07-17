@@ -36,6 +36,7 @@ export class PayFormComponent {
   public pendingOrders: PendingOrder[] = [];
   public periodicOrders: PeriodicOrder[] = [];
   public goods: Good[] = [];
+  public disabledOrder: boolean[] = [];
   public remoteState: {
     status: string;
     messages: string[];
@@ -47,6 +48,7 @@ export class PayFormComponent {
   };
   public user: Observable<DtoPack<JWTModel>>;
 
+  log = console.log;
   constructor(
     @Inject('manifest') private manifestId: BusEmitter,
     private authService: AuthService,
@@ -121,7 +123,7 @@ export class PayFormComponent {
                 messages = ['У вас есть незавершенные платежи'];
                 actions.push({
                   continue: { payment: { amount: item.amount || 0, id: item.id } }
-                });               
+                });
               }
               actions.push({
                 delete: { payment: { amount: item.amount || 0, id: item.id } }

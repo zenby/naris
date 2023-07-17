@@ -8,7 +8,7 @@ import { ListTemplatesPageComponent } from './list-templates-page/list-templates
 import { TargetEditFormComponent } from './target-edit-form/target-edit-form.component';
 import { TaskEditFormComponent } from './task-edit-form/task-edit-form.component';
 import { TemplateCreateComponent } from './template-create/template-create.component';
-import { TargetDescriptionComponent } from './target-description/target-description.component';
+import { TargetDescriptionPopupComponent } from './target-description-popup/target-description-popup.component';
 
 const routes: Routes = [
   {
@@ -85,7 +85,7 @@ const routes: Routes = [
       },
       {
         path: 'target/:tid/description/:path',
-        component: TargetDescriptionComponent,
+        component: TargetDescriptionPopupComponent,
         resolve: {
           target: 'targetEmitter',
         },

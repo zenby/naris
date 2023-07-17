@@ -31,6 +31,9 @@
           />
         </li>
       </ng-container>
+      <li *ngIf="userInfo.role !== 'GUEST'">
+        <a [routerLink]="['/', 'pages', 'pay']">Платежи</a>
+      </li>
       <li *ngIf="userInfo.role === 'GUEST'">
         <a [routerLink]="['/', 'pages', 'pay']">Улучшить уровень</a>
       </li>

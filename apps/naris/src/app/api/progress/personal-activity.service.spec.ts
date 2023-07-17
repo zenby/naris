@@ -25,6 +25,7 @@ describe('PersonalActivityService', () => {
         { provide: MixedBusService, useValue: bus$ },
         { provide: DataStoreService, useValue: store$ },
         PersonalActivityService,
+        { provide: 'activites', useValue: ANY_SERVICE },
         { provide: 'activity', useValue: ANY_SERVICE },
       ],
     });

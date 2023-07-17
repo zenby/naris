@@ -104,7 +104,7 @@
         <nz-alert *ngIf="remoteState.status === 'ok'" nzType="warning" [nzMessage]="warning"></nz-alert>
       </div>
       <div class="gird-layout pricing-blocks">
-        <div *ngFor="let good of goods" class="proposal">
+        <div *ngFor="let good of goods; index as i" class="proposal">
           <h1
             class="price-label"
             [ngClass]="{
@@ -122,11 +122,24 @@
           <ul class="features-list">
             <li *ngFor="let option of good.options"><i nz-icon nzType="check-circle"></i> {{ option }}</li>
           </ul>
+          <div style="display: flex; justify-content: space-around">
+            <div style="padding: 8px">
+              <input type="checkbox" [(ngModel)]="disabledOrder[i]" #check checked />
+            </div>
+            <div style="padding: 8px">
+              <p style="font-size: 10px; text-align: justify">
+                я принимаю условия <a href="https://soer.pro/offer" target="_blank">Публичной оферты</a> и даю согласие
+                на обработку моих персональных данных в соответствии с
+                <a href="https://soer.pro/offer/confidential.html">Политикой конфиденциальности</a>
+              </p>
+            </div>
+          </div>
           <nz-divider></nz-divider>
           <a
             *ngIf="good.role !== 'PRO'"
             (click)="order(userManifest.email, good.role)"
             nzSize="large"
+            [disabled]="!check.checked"
             nz-button
             nzType="primary"
             >Оформить подписку</a
@@ -140,6 +153,7 @@
             nzPopconfirmPlacement="bottom"
             nz-popconfirm
             nzSize="large"
+            [disabled]="!check.checked"
             nz-button
             nzType="primary"
             >Оформить подписку</a

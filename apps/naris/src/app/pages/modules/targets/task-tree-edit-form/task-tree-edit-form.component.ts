@@ -14,6 +14,7 @@ export class TaskTreeEditFormComponent implements OnChanges {
     overview: '',
     progress: 0,
     tasks: [],
+    blocks: [{ text: '', type: 'markdown' }],
   };
 
   @Input() history: { ind: number; title: string }[] = [];
@@ -52,7 +53,7 @@ export class TaskTreeEditFormComponent implements OnChanges {
 
   createTask(target: TargetModel): void {
     target.tasks = target.tasks || [];
-    target.tasks.push({ title: '', overview: '', progress: 0, tasks: [] });
+    target.tasks.push({ title: '', overview: '', progress: 0, tasks: [], blocks: [{ text: '', type: 'markdown' }] });
     updateProgress(this.target);
     this.save.next(this.target);
   }

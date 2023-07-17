@@ -7,7 +7,7 @@ import { PercentStatusStrategyPipe } from '../metrics-list/strategies/percent-st
 import { TargetsListComponent } from './targets-list.component';
 
 export default {
-  title: 'TargetsListComponent',
+  title: 'Naris/Pages/TargetsList',
   component: TargetsListComponent,
   decorators: [
     moduleMetadata({

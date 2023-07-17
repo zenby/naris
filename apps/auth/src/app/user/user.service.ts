@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { validate } from 'class-validator';
 import { ValidationErrorHelper } from '../common/helpers/validation-error.helper';
+import { UserInfoDto } from './dto/user-info-dto';
 
 @Injectable()
 export class UserService {
@@ -60,5 +61,9 @@ export class UserService {
 
   async changeBlockStatus(id: number, isBlocked: boolean): Promise<void | Error> {
     await this.userRepository.update({ id }, { isBlocked });
+  }
+
+  async updateUserInfo(uuid: string, userInfoDto: UserInfoDto): Promise<UpdateResult | Error> {
+    return await this.userRepository.update({ uuid }, userInfoDto);
   }
 }

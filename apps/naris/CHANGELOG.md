@@ -2,6 +2,115 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.25.0](https://gitlog.ru/Naris/soermono/compare/naris-0.24.0...naris-0.25.0) (2023-07-10)
+
+
+### Features
+
+* add cli module for browser console ([17d12cd](https://gitlog.ru/Naris/soermono/commit/17d12cd229b02e62f0c4492f0e6b247aa922a527))
+
+
+### Bug Fixes
+
+* change type for services added to naris scope ([1fdecca](https://gitlog.ru/Naris/soermono/commit/1fdecca5db00c9d65fa8b0a1d34c484cc8243ee6))
+
+## [0.24.0](https://gitlog.ru/Naris/soermono/compare/naris-0.23.0...naris-0.24.0) (2023-07-10)
+
+
+### Features
+
+* **naris/overview:** add activities to lib component input ([75d3b12](https://gitlog.ru/Naris/soermono/commit/75d3b128d42f9145e75a8f037c3fe9fe8feef9a9))
+* **naris/overview:** add activity-timeline to activity page ([0420d80](https://gitlog.ru/Naris/soermono/commit/0420d809e5bb05bca418d7fc1d5c7c2e8f0076cb))
+* **naris/overview:** add locale provider ([db5a573](https://gitlog.ru/Naris/soermono/commit/db5a5738b815681943a1abc8e749be7b025b1415))
+
+## [0.23.0](https://gitlog.ru/Naris/soermono/compare/naris-0.22.0...naris-0.23.0) (2023-07-09)
+
+
+### Features
+
+* add support api_v2 to activity ([8a4e762](https://gitlog.ru/Naris/soermono/commit/8a4e76239cd4a056a76117a532d55e2b9127bbd9))
+
+## [0.22.0](https://gitlog.ru/Naris/soermono/compare/naris-0.21.0...naris-0.22.0) (2023-07-09)
+
+
+### Features
+
+* activate api_v2 to production mode ([a798499](https://gitlog.ru/Naris/soermono/commit/a7984991c51f4bc6e95a7afc782f7c7f060d34bc))
+
+## [0.21.0](https://gitlog.ru/Naris/soermono/compare/naris-0.20.0...naris-0.21.0) (2023-07-09)
+
+
+### Features
+
+* add support api_v2 to targets and templates ([d0e645f](https://gitlog.ru/Naris/soermono/commit/d0e645fd8b5dd6486543640f9a33cf26f065afe5))
+
+## [0.20.0](https://gitlog.ru/Naris/soermono/compare/naris-0.19.0...naris-0.20.0) (2023-07-09)
+
+
+### Features
+
+* add support api_v2 to quiz ([0d0fddb](https://gitlog.ru/Naris/soermono/commit/0d0fddbc526a0992a5f7a17d1ad40be74b9937bb))
+
+## [0.19.0](https://gitlog.ru/Naris/soermono/compare/naris-0.18.1...naris-0.19.0) (2023-07-09)
+
+
+### Features
+
+* add feature flags from localStorage ([d128d17](https://gitlog.ru/Naris/soermono/commit/d128d1761474254b60eb952e4d3cf83596eb8a78))
+
+## [0.18.1](https://gitlog.ru/Naris/soermono/compare/naris-0.18.0...naris-0.18.1) (2023-07-08)
+
+## [0.18.0](https://gitlog.ru/Naris/soermono/compare/naris-0.17.0...naris-0.18.0) (2023-07-08)
+
+
+### Features
+
+* add pay page to mobile view ([9a84023](https://gitlog.ru/Naris/soermono/commit/9a8402342f2dafa9fedfb460f11c66f87d819986))
+
+## [0.17.0](https://gitlog.ru/Naris/soermono/compare/naris-0.16.0...naris-0.17.0) (2023-07-05)
+
+
+### Features
+
+* add confirmation message when subscribe ([9644f66](https://gitlog.ru/Naris/soermono/commit/9644f6662063af79a4306692f879776631baee4b))
+* switch conspects and articles to api_v2 flag ([61b4c74](https://gitlog.ru/Naris/soermono/commit/61b4c74cd752b44e36c87b50d9e88edf6d610d5f))
+
+## [0.16.0](https://gitlog.ru/Naris/soermono/compare/naris-0.15.0...naris-0.16.0) (2023-07-02)
+
+
+### Features
+
+* activate personal activity journal ([3ec8abf](https://gitlog.ru/Naris/soermono/commit/3ec8abf9271bdf054b38b66260d1b87e926f5e00))
+
+## [0.15.0](https://gitlog.ru/Naris/soermono/compare/naris-0.14.0...naris-0.15.0) (2023-07-02)
+
+
+### Features
+
+* вынес валидацию Fingerprint в хелпер и добавил приведение к MD5 для Fingerprint ([ce5c097](https://gitlog.ru/Naris/soermono/commit/ce5c097c4b398299dac7906bdaf99bc2c43df2a2))
+
+
+### Bug Fixes
+
+* activity journal page update ([fa71855](https://gitlog.ru/Naris/soermono/commit/fa718559b65ffae7d4590238710084fd1594cd15))
+
+## [0.14.0](https://gitlog.ru/Naris/soermono/compare/naris-0.13.1...naris-0.14.0) (2023-06-30)
+
+
+### Features
+
+* add new executable script in apps/naris and add script in package.json ([61bd807](https://gitlog.ru/Naris/soermono/commit/61bd807d9ab2ed2c3f911ea8a565bb1bbf8251c2))
+* **apps/naris:** create script for creating version.ts file ([08e338c](https://gitlog.ru/Naris/soermono/commit/08e338cb04646e514e93dc87405b8595ca792846))
+* **apps/naris:** use naris version and add it to login component ([fac44a3](https://gitlog.ru/Naris/soermono/commit/fac44a3fa0165ba1be222ecdfcdd9fac9be92a33))
+* **naris/login:** add version view in login page ([d9516e3](https://gitlog.ru/Naris/soermono/commit/d9516e3c3fa6e6c3a3a0596fb527bfad87c6a4f3))
+
+## [0.13.1](https://gitlog.ru/Naris/soermono/compare/naris-0.13.0...naris-0.13.1) (2023-06-27)
+
+
+### Bug Fixes
+
+* add styles to prevent input height change on save ([4f9ac72](https://gitlog.ru/Naris/soermono/commit/4f9ac72e7d19f5fb449a4357fa9a03aaf1f7c6b9))
+
 ## [0.13.0](https://gitlog.ru/Naris/soermono/compare/naris-0.12.1...naris-0.13.0) (2023-06-26)
 
 

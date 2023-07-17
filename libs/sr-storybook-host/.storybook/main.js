@@ -17,6 +17,10 @@ module.exports = {
     '../../../libs/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: ['@storybook/addon-essentials', ...rootMain.addons],
+  docs: {
+    autodocs: true,
+    defaultName: 'Docs',
+  },
   webpackFinal: async (config, { configType }) => {
     if (narisMain.webpackFinal) {
       config = await narisMain.webpackFinal(config, { configType });

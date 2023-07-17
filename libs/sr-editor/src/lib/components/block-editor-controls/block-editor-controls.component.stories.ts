@@ -1,12 +1,12 @@
-import { moduleMetadata, Meta, StoryFn } from '@storybook/angular';
+import { moduleMetadata, Meta, StoryObj } from '@storybook/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { BlockEditorControlsComponent } from './block-editor-controls.component';
 
-export default {
-  title: 'BlockEditorControlsComponent',
+const meta: Meta<typeof BlockEditorControlsComponent> = {
+  title: 'Libs/Editor/BlockEditorControlsComponent',
   component: BlockEditorControlsComponent,
   parameters: {
     layout: 'centered',
@@ -16,10 +16,14 @@ export default {
       imports: [NzIconModule, NzButtonModule, NzToolTipModule, BrowserAnimationsModule],
     }),
   ],
-} as Meta<BlockEditorControlsComponent>;
+};
 
-export const Primary: StoryFn = () => ({
-  props: {
+export default meta;
+
+type Story = StoryObj<typeof BlockEditorControlsComponent>;
+
+export const Primary: Story = {
+  args: {
     controls: [
       {
         title: 'Переместить вверх',
@@ -37,5 +41,5 @@ export const Primary: StoryFn = () => ({
         handler: () => alert('delete click'),
       },
     ],
-  },
-});
+  } as unknown as Partial<typeof BlockEditorControlsComponent>,
+};

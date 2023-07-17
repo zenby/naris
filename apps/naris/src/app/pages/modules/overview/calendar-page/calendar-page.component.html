@@ -1,3 +1,4 @@
 <ng-container *ngIf="activities$ | async as activities">
-  <soer-activity-calendar [dayEvents]="activities"></soer-activity-calendar>
+  <soer-activity-timeline [activitiesEvents]="activities" class="activity-item"></soer-activity-timeline>
+  <soer-activity-calendar [dayEvents]="activities" class="activity-item"></soer-activity-calendar>
 </ng-container>

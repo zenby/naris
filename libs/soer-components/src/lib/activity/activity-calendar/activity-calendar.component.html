@@ -1,0 +1,7 @@
+<nz-calendar>
+  <ng-container *nzDateFullCell="let date">
+    <div class="day-wrapper" [ngClass]="dayEvents | arrayFilter: date:isDatesMatch | dayClass: date">
+      <span class="date-header">{{ date | date: 'd' }}</span>
+    </div>
+  </ng-container>
+</nz-calendar>

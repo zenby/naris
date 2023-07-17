@@ -33,6 +33,7 @@ export class TargetMiddleware {
         progress: 0,
         overview: '',
         tasks: [],
+        blocks: [{ text: '', type: 'markdown' }],
       },
     ];
     this.updateProgress();

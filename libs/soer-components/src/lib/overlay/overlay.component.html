@@ -1,4 +1,11 @@
 <div *ngIf="activate" class="overlay" id="overlay" (click)="clickOnOverlay($event)">
-  <i (click)="close.emit()" class="overlay-close-icon" nz-icon nzType="close-circle" nzTheme="outline"></i>
+  <i
+    data-cy="closeBtn"
+    (click)="close.emit()"
+    class="overlay-close-icon"
+    nz-icon
+    nzType="close-circle"
+    nzTheme="outline"
+  ></i>
   <ng-content></ng-content>
 </div>

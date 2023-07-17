@@ -10,6 +10,7 @@ import { TokenExpiredError } from 'jsonwebtoken';
 
 import { AccessTokenHelper } from './helpers/access-token.helper';
 import { RefreshTokenHelper } from './helpers/refresh-token.helper';
+import { Fingerprint } from './helpers/fingerprint';
 
 @Injectable()
 export class AuthService {
@@ -31,23 +32,26 @@ export class AuthService {
     return this.accessTokenHelper.generate(user);
   }
 
-  getRefreshToken(user: UserEntity | Error): string | Error {
+  getRefreshToken(user: UserEntity | Error, fingerprint: Fingerprint): string | Error {
     if (user instanceof Error) {
       return user;
     }
 
-    return this.refreshTokenHelper.generate(user);
+    return this.refreshTokenHelper.generate(user, fingerprint);
   }
 
-  async getVerifiedUserByRefreshToken(refreshToken: string): Promise<UserEntity | Error> {
-    const verifiedToken = await this.refreshTokenHelper.verify(refreshToken);
+  async getVerifiedUserByRefreshToken(refreshToken: string, fingerprint: Fingerprint): Promise<UserEntity | Error> {
+    const verifiedToken = this.refreshTokenHelper.verify(refreshToken, fingerprint);
 
     if (verifiedToken instanceof TokenExpiredError) {
       return verifiedToken;
     }
 
-    const { userId, userEmail } = verifiedToken;
+    if (verifiedToken instanceof UnauthorizedException) {
+      return verifiedToken;
+    }
 
+    const { userId, userEmail } = verifiedToken;
     const userOrError = await this.userService.findByIdAndEmail({
       id: userId,
       email: userEmail,

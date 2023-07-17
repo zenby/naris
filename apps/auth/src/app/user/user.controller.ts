@@ -27,8 +27,11 @@ import { BackendValidationPipe } from '../common/pipes/backend-validation.pipe';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 import { BlockUserOptions } from './dto/block-user-options';
+import { User } from '../common/decorators/user.decorator';
+import { UserInfoDto } from './dto/user-info-dto';
+import { UserOwnerGuard } from '../common/guards/user-owner.guard';
 
-@UseGuards(RefreshCookieGuard, RolesGuard)
+@UseGuards(RefreshCookieGuard, UserOwnerGuard, RolesGuard)
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -100,6 +103,33 @@ export class UserController {
     try {
       const result = await this.userService.changeBlockStatus(id, options.isBlocked);
 
+      if (result instanceof Error) {
+        return { status: HttpJsonStatus.Error, items: [result.message] };
+      }
+
+      return { status: HttpJsonStatus.Ok, items: [] };
+    } catch (e) {
+      this.logger.error(e);
+
+      throw new InternalServerErrorException(this.internalErrorMessage);
+    }
+  }
+
+  @Roles(UserRole.ADMIN, UserRole.OWNER)
+  @UsePipes(BackendValidationPipe)
+  @ApiOperation({
+    summary: 'updates user profile info',
+    description: "Requires the user's id and userInfoDto. Returns status of the operation",
+  })
+  @ApiOkResponse({ schema: responseSchema })
+  @Put('user/:uuid/profile')
+  async updateUserProfile(
+    @Param('uuid') uuid: string,
+    @User() user: UserEntity,
+    @Body() userInfoDto: UserInfoDto
+  ): Promise<HttpJsonResult<string>> {
+    try {
+      const result = await this.userService.updateUserInfo(uuid, userInfoDto);
       if (result instanceof Error) {
         return { status: HttpJsonStatus.Error, items: [result.message] };
       }

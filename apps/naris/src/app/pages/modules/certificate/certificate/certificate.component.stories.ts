@@ -33,7 +33,7 @@ const mockDataStoreService = {
 };
 
 export default {
-  title: 'CertificateComponent',
+  title: 'Naris/Pages/Certificate',
   component: CertificateComponent,
   decorators: [
     moduleMetadata({

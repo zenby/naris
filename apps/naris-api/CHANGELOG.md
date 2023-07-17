@@ -2,6 +2,43 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.6.1](https://gitlog.ru/Naris/soermono/compare/naris-api-0.6.0...naris-api-0.6.1) (2023-07-09)
+
+## [0.6.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.5.0...naris-api-0.6.0) (2023-07-09)
+
+
+### Features
+
+* remove user email from json output ([d317a4f](https://gitlog.ru/Naris/soermono/commit/d317a4f1440ae8939c55bb7ef8aa9931c990e3d8))
+
+## [0.5.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.4.0...naris-api-0.5.0) (2023-07-09)
+
+
+### Features
+
+* add endpoint for getting all the questions ([9554de3](https://gitlog.ru/Naris/soermono/commit/9554de34b2f70989c591926988708953c73c3c79))
+* add endpoint for question creation ([431fcdc](https://gitlog.ru/Naris/soermono/commit/431fcdcdc8a82091573500820c414c3dd3dd48dd))
+* add endpoint to delete a question ([7dbfa95](https://gitlog.ru/Naris/soermono/commit/7dbfa95e9d6438827133353c69dd58019064dc3a))
+* add question repo ([ca0f4c2](https://gitlog.ru/Naris/soermono/commit/ca0f4c2cb228be329c8279d3673fd9f7548aa830))
+* add questions e2e tests ([66aeac2](https://gitlog.ru/Naris/soermono/commit/66aeac2f97634cff5b81fa76c1859e05fa9ad355))
+* **naris-api:** add QA structure ([df0a216](https://gitlog.ru/Naris/soermono/commit/df0a216f9e7e1c310a766ac9884ded853b82f302))
+* set questions API version ([9dd7824](https://gitlog.ru/Naris/soermono/commit/9dd78248592d0f77df157172e0e8a1394db73703))
+* update endpoint to get questions of the current user ([33d73d5](https://gitlog.ru/Naris/soermono/commit/33d73d5c999376a9f964f4c2f724314374d9db4e))
+
+## [0.4.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.3.1...naris-api-0.4.0) (2023-07-03)
+
+
+### Features
+
+* **naris-api-json:** add getNew method and authro_emaul support ([630c3d8](https://gitlog.ru/Naris/soermono/commit/630c3d82cfa90008faa12551188c8322b68dff48))
+* support access tag for json documents ([0cd3f19](https://gitlog.ru/Naris/soermono/commit/0cd3f1920d880c0deba5a59b7d0b91efe5259023))
+* support accessTag for json service and json repository ([05ed2d3](https://gitlog.ru/Naris/soermono/commit/05ed2d35fe63931566397b6e5d74b1ad8bfc78bf))
+
+
+### Bug Fixes
+
+* switch access_tag logic ([492aa64](https://gitlog.ru/Naris/soermono/commit/492aa6497a0a05dcdfeedefde969f33bb381ff06))
+
 ### [0.3.1](https://gitlog.ru:2222/Naris/soermono/compare/naris-api-0.3.0...naris-api-0.3.1) (2023-05-23)
 
 

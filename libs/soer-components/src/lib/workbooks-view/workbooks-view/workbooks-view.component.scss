@@ -81,16 +81,17 @@ $hover-color: #1890ff;
   text-align: center;
 }
 
-div[title]:hover:after {
-  content: attr(title);
+div[data-title]:hover:after {
+  content: attr(data-title);
   position: absolute;
   left: 40px;
-  top: 80%;
+  top: -20%;
   right: 10px;
   overflow-wrap: break-word;
   white-space: normal;
   max-width: max-content;
-  background: rgb(241, 245, 247);
-  border: 1px dashed $hover-color;
+  background: black;
+  color: white;
   z-index: 1;
+  padding: 0 12px;
 }

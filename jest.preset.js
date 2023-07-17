@@ -5,6 +5,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     '@soer/soer-components': '<rootDir>/../../libs/soer-components/src/index.ts',
+    '@soer/sr-auth-nest': '<rootDir>/../../libs/sr-auth-nest/src/index.ts',
     '@soer/sr-auth': '<rootDir>/../../libs/sr-auth/src/index.ts',
     '@soer/mixed-bus': '<rootDir>/../../libs/mixed-bus/src/index.ts',
     '@soer/sr-dto': '<rootDir>/../../libs/sr-dto/src/index.ts',

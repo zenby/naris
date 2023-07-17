@@ -50,8 +50,9 @@ const applicationServiceMock = {
 };
 
 export default {
-  title: 'DefaultComponent',
+  title: 'Naris/Layouts/DefaultLayout',
   component: DefaultComponent,
+  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [

@@ -3,7 +3,7 @@
     <div class="wrapper">
       <nz-result nzStatus="warning" [nzTitle]="message">
         <div nz-result-extra>
-          <a [routerLink]="['/', 'pages', 'pay']" nz-button nzType="primary">Улучшить уровень</a>
+          <a [routerLink]="['/', 'pages', 'pay']" nz-button nzType="primary">Оформить подписку</a>
           <button nz-button nzType="primary" (click)="onClose()">Закрыть</button>
         </div>
       </nz-result>
@@ -11,7 +11,7 @@
   </div>
 </soer-overlay>
 <ng-template #message>
-  <div class="message">
+  <div data-cy="noContent" class="message">
     <p>Данный контент доступен только на платных подписках.</p>
     <p>Если вы уверены, что доступ должен быть предоставлен напишите письмо на soersoft@gmail.com.</p>
   </div>

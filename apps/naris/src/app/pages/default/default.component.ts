@@ -28,6 +28,13 @@ type RoutingDataControl = {
   action?: string;
 };
 
+/**
+ * Базовый компонент включающий:
+ * - отображение компонент из роутинга (router-layout)
+ * - отображение попап окна с оверлеем
+ * - отображение меню
+ * - отоюражение мобильного меню
+ * */
 @Component({
   selector: 'soer-default',
   templateUrl: './default.component.html',

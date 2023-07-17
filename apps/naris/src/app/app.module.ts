@@ -22,6 +22,8 @@ import { AppComponent } from './app.component';
 import { ApplicationService } from './services/application.service';
 import { SrFeatureFlagsModule } from '@soer/sr-feature-flags';
 import { DynamicConfig, featuresEnum } from '../environments/environment.interface';
+import { CliModule } from './cli/cli.module';
+import { NarisCliService } from './cli/naris-cli.service';
 
 registerLocaleData(ru);
 
@@ -62,13 +64,26 @@ registerLocaleData(ru);
     NzMenuModule,
     NzMessageModule,
     SrFeatureFlagsModule.forRoot<DynamicConfig>(environment.features),
-    SrDTOModule.forChild<ActivityKey>({
-      namespace: 'activity',
-      schema: { url: 'v2/json/activity/:aid' },
-      keys: {
-        activity: { aid: '?' },
-      },
-    }),
+    SrDTOModule.forChild<ActivityKey>(
+      environment.features[featuresEnum.api_v2]
+        ? {
+            namespace: 'activity',
+            schema: { url: '%%narisApiUrl%%v3/json/activity/:aid' },
+            keys: {
+              activity: { aid: '?' },
+              activites: { aid: 'private' },
+            },
+          }
+        : {
+            namespace: 'activity',
+            schema: { url: 'v2/json/activity/:aid' },
+            keys: {
+              activity: { aid: '?' },
+              activites: { aid: 'personal' },
+            },
+          }
+    ),
+    CliModule,
   ],
 
   providers: [
@@ -76,17 +91,30 @@ registerLocaleData(ru);
     {
       provide: APP_INITIALIZER,
       multi: true,
-      deps: [UrlBuilderService, MixedBusService, DataStoreService, StoreCrudService, PdfConverterService],
+      deps: [
+        UrlBuilderService,
+        MixedBusService,
+        DataStoreService,
+        StoreCrudService,
+        PdfConverterService,
+        NarisCliService,
+      ],
       useFactory:
         (
           _UrlBuilderService: UrlBuilderService,
           _MixedBusService: MixedBusService,
           _DataStoreService: DataStoreService,
           _StoreCrudService: StoreCrudService,
-          _PdfConverterService: PdfConverterService
+          _PdfConverterService: PdfConverterService,
+          _NarisCliService: NarisCliService
         ) =>
-        () =>
-          null,
+        () => {
+          _NarisCliService.add({
+            bulder: _UrlBuilderService,
+            store: _StoreCrudService,
+          });
+          return null;
+        },
     },
     { provide: NZ_I18N, useValue: ru_RU },
     ApplicationService,

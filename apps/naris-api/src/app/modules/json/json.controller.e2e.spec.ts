@@ -1,58 +1,68 @@
-import { JsonModule } from './json.module';
+import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
-
-import { Test } from '@nestjs/testing';
+import { JsonModule } from './json.module';
 import { HttpJsonStatus } from '@soer/sr-common-interfaces';
-import { DataSource } from 'typeorm';
-import { faker } from '@faker-js/faker';
 import { JwtConfig } from '../../config/jwt.config';
-import { ConfigType } from '@nestjs/config';
-import { JwtTestHelper } from '../../common/helpers/JwtTestHelper';
-
-const jsonRepositoryMock = {
-  find: jest.fn(),
-  save: jest.fn(),
-  findOne: jest.fn(),
-  delete: jest.fn(),
-};
-
-// https://gitlog.ru/Naris/soermono/issues/164
-const dataSourceMockHack = {
-  entityMetadatas: {
-    find: jest.fn(),
-  },
-  options: {
-    type: jest.fn(),
-  },
-  getRepository: () => jsonRepositoryMock,
-};
+import { ConfigModule, ConfigType } from '@nestjs/config';
+import { JwtTestHelper } from '../../common/helpers/jwt.test.helper';
+import { In, Repository } from 'typeorm';
+import { faker } from '@faker-js/faker';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { JsonEntity } from './json.entity';
+import { createFakeDocument } from '../../common/helpers/document.test.helper';
+import { AccessTag } from './types/json.const';
+import {
+  ManifestModule,
+  ManifestProFixture,
+  ManifestService,
+  ManifestStreamFixture,
+  ManifestWorkshopFixture,
+} from '@soer/sr-auth-nest';
 
 describe('JsonModule e2e-test', () => {
   let app: INestApplication;
-  let request: ReturnType<typeof supertest>;
+  let request: supertest.SuperTest<supertest.Test>;
+  let jsonRepositoryMock: Partial<Record<keyof Repository<JsonEntity>, jest.Mock>>;
+  //  let manifestServiceMock: Partial<Record<keyof ManifestService, jest.Mock>>;
+  let manifestServiceMock: ManifestService;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [JsonModule],
+    jsonRepositoryMock = {
+      find: jest.fn(),
+      save: jest.fn(),
+      findOne: jest.fn(),
+      delete: jest.fn(),
+      count: jest.fn(),
+    };
+
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [JsonModule, ConfigModule.forFeature(JwtConfig), ManifestModule.forRoot({ apiUrl: '' })],
     })
+      .overrideProvider(getRepositoryToken(ManifestService))
+      .useValue(manifestServiceMock)
+      .overrideProvider(getRepositoryToken(JsonEntity))
+      .useValue(jsonRepositoryMock)
       .useMocker((token) => {
         if (token == JwtConfig.KEY) {
-          const jwtConfigMock: ConfigType<typeof JwtConfig> = { jwtSecret: JwtTestHelper.defaultSecret };
+          const jwtConfigMock: ConfigType<typeof JwtConfig> = {
+            jwtSecret: JwtTestHelper.defaultSecret,
+          };
           return jwtConfigMock;
         }
-        if (token == DataSource) return dataSourceMockHack;
       })
       .compile();
 
-    app = moduleRef.createNestApplication();
+    app = moduleFixture.createNestApplication();
+    manifestServiceMock = moduleFixture.get<ManifestService>(ManifestService);
+
     await app.init();
 
     request = supertest(app.getHttpServer());
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   afterAll(async () => {
@@ -62,7 +72,6 @@ describe('JsonModule e2e-test', () => {
   describe('GET /json/:documentNamespace/', () => {
     it('should find all documents when pass without concrete document id', async () => {
       const document = createFakeDocument();
-
       jsonRepositoryMock.find.mockReturnValueOnce([document]);
 
       await request
@@ -71,6 +80,134 @@ describe('JsonModule e2e-test', () => {
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
       expect(jsonRepositoryMock.find).toHaveBeenCalledWith({ where: { namespace: document.namespace } });
+    });
+  });
+
+  describe('GET /json/:documentNamespace/:accessTag', () => {
+    it('should find all documents with the STREAM tag when accessTag is passed as "STREAM"', async () => {
+      const document = { ...createFakeDocument(), accessTag: AccessTag.STREAM };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([document]);
+      manifestServiceMock.resolve = jest.fn().mockReturnValue(ManifestStreamFixture);
+
+      await request
+        .get(`/json/${document.namespace}/stream`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
+        where: { namespace: document.namespace, accessTag: In([AccessTag.STREAM]) },
+      });
+    });
+
+    it('should find all documents with the WORKSHOP and STREAM tag when accessTag is passed as "WORKSHOP"', async () => {
+      const document = { ...createFakeDocument(), accessTag: AccessTag.WORKSHOP };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([document]);
+      manifestServiceMock.resolve = jest.fn().mockReturnValue(ManifestWorkshopFixture);
+
+      await request
+        .get(`/json/${document.namespace}/workshop`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
+        where: { namespace: document.namespace, accessTag: In([AccessTag.STREAM, AccessTag.WORKSHOP]) },
+      });
+    });
+
+    it('should find all documents with the WORKSHOP, STREAM and PRO tag when accessTag is passed as "PRO"', async () => {
+      const document = { ...createFakeDocument(), accessTag: AccessTag.PRO };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([document]);
+      manifestServiceMock.resolve = jest.fn().mockReturnValue(ManifestProFixture);
+
+      await request
+        .get(`/json/${document.namespace}/pro`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
+        where: { namespace: document.namespace, accessTag: In([AccessTag.STREAM, AccessTag.WORKSHOP, AccessTag.PRO]) },
+      });
+    });
+
+    it('should find all documents with the public tag when accessTag is passed as "public"', async () => {
+      const document = { ...createFakeDocument(), accessTag: 'PUBLIC' };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([document]);
+
+      await request
+        .get(`/json/${document.namespace}/public`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
+        where: { namespace: document.namespace, accessTag: 'PUBLIC' },
+      });
+    });
+
+    it('should find all documents of the current user when accessTag is passed as "private', async () => {
+      const document = { ...createFakeDocument(), author_email: JwtTestHelper.defaultPayload.email };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([document]);
+
+      await request
+        .get(`/json/${document.namespace}/private`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [document] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
+        where: { namespace: document.namespace, author_email: JwtTestHelper.defaultPayload.email },
+      });
+    });
+
+    it('should find all documents from the namespace with both private and public access when accessTag is passed as "all"', async () => {
+      const namespace = faker.lorem.word();
+      const publicDocument = { ...createFakeDocument(), namespace: namespace, accessTag: 'PUBLIC' };
+      const privateDocument = { ...createFakeDocument(), namespace: namespace, accessTag: 'PRIVATE' };
+      const conditionPublic = { namespace: namespace, accessTag: 'PUBLIC' };
+      const conditionPrivate = { namespace: namespace, accessTag: 'PRIVATE' };
+
+      jsonRepositoryMock.find.mockReturnValueOnce([publicDocument, privateDocument]);
+
+      await request
+        .get(`/json/${namespace}/all`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({ status: HttpJsonStatus.Ok, items: [publicDocument, privateDocument] });
+
+      expect(jsonRepositoryMock.find).toHaveBeenCalledWith({
+        select: ['accessTag', 'createdAt', 'id', 'json', 'namespace'],
+        where: [conditionPublic, conditionPrivate],
+      });
+    });
+  });
+
+  describe('PUT /json/:documentNamespace/:documentId/:accessTag', () => {
+    it('should change the value of accessTag to public for private document', async () => {
+      const document = { ...createFakeDocument(), author_email: JwtTestHelper.defaultPayload.email };
+      const { id, namespace } = document;
+
+      jsonRepositoryMock.findOne.mockReturnValueOnce({ ...document, accessTag: 'PRIVATE' });
+      jsonRepositoryMock.save.mockImplementationOnce((newDocument) => Object.assign({}, newDocument));
+
+      await request
+        .put(`/json/${namespace}/${id}/accessTag`)
+        .set(JwtTestHelper.createBearerHeader())
+        .expect({
+          status: HttpJsonStatus.Ok,
+          items: [{ ...document, accessTag: 'PUBLIC' }],
+        });
+
+      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
+        where: { id, namespace, author_email: JwtTestHelper.defaultPayload.email },
+      });
+      expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ ...document, accessTag: 'PUBLIC' });
     });
   });
 
@@ -121,6 +258,7 @@ describe('JsonModule e2e-test', () => {
 
       jsonRepositoryMock.findOne.mockReturnValueOnce(documentToUpdate);
       jsonRepositoryMock.save.mockImplementationOnce((newDocument) => Object.assign({}, newDocument));
+      jsonRepositoryMock.count.mockReturnValueOnce(1);
 
       await request
         .put(`/json/${namespace}/${id}`)
@@ -138,6 +276,7 @@ describe('JsonModule e2e-test', () => {
       const storedDocument = createFakeDocument();
 
       jsonRepositoryMock.findOne.mockReturnValueOnce(storedDocument);
+      jsonRepositoryMock.count.mockReturnValueOnce(1);
 
       await request
         .delete(`/json/${storedDocument.namespace}/${storedDocument.id}`)
@@ -151,12 +290,3 @@ describe('JsonModule e2e-test', () => {
     });
   });
 });
-
-function createFakeDocument() {
-  return {
-    id: faker.datatype.number(),
-    json: faker.lorem.text(),
-    author_email: faker.internet.email(),
-    namespace: faker.lorem.word(),
-  };
-}

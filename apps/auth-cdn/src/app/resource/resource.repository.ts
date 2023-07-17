@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { readdir, stat } from 'fs/promises';
 import { resolve } from 'path';
 import { ConfigService } from '@nestjs/config';
@@ -29,7 +29,7 @@ export class ResourceRepository {
 
       return files;
     } catch (error) {
-      console.error(error);
+      Logger.error(error);
     }
   }
 }

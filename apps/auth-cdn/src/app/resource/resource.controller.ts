@@ -1,11 +1,9 @@
 import {
-  Body,
   Controller,
   Get,
   HttpException,
   HttpStatus,
   Logger,
-  ParseFilePipe,
   Post,
   Query,
   UploadedFile,
@@ -17,8 +15,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { ResourceService } from './resource.service';
 import { Resource } from './resource.model';
-import { OriginalFilenameValidator } from './validators/original-filename-validator';
-import { FilePathDto } from './dto/file-path.dto';
 import { ResourcesQueryDto } from './dto/resources-query.dto';
 
 @UsePipes(new ValidationPipe())
@@ -28,10 +24,7 @@ export class ResourceController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(
-    @UploadedFile(new ParseFilePipe({ validators: [new OriginalFilenameValidator({})] })) file: Express.Multer.File,
-    @Body() _body: FilePathDto
-  ): Promise<HttpJsonResult<{ uri: string }>> {
+  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<HttpJsonResult<{ uri: string }>> {
     try {
       const data = await this.resourceService.saveFile(file);
 
@@ -54,7 +47,6 @@ export class ResourceController {
     }
   }
 
-  // TODO: it is necessary to move this function into a separate module, because I create it in every task
   private prepareResponse<T>(status: HttpJsonStatus, data: T): HttpJsonResult<T> {
     return { status, items: Array.isArray(data) ? data : [data] };
   }

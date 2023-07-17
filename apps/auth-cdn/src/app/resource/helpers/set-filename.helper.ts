@@ -1,8 +1,12 @@
 import { Request } from 'express';
-import { DELIMETERS, ERRORS } from '../constants';
+import {
+  DELIMETERS,
+  ERRORS,
+  FILENAME_WITHOUT_SYSTEM_SYMBOLS_REGEXP,
+  MAX_FILENAME_LENGTH,
+  PATH_WITHOUT_SYSTEM_SYMBOLS_REGEXP,
+} from '../constants';
 import { BadRequestException } from '@nestjs/common';
-
-const MAX_FILENAME_LENGTH = 256;
 
 export const setFilenameHelper = (
   { body }: Request,
@@ -14,12 +18,20 @@ export const setFilenameHelper = (
 
   const filename = createFilename(path, originalname);
 
-  const validationResult = validateFile(filename);
+  const validationResult = validateFile(path, originalname, filename);
 
   return callback(validationResult, filename);
 };
 
-function validateFile(filename: string) {
+function validateFile(path = '', originalname: string, filename: string) {
+  if (path.match(PATH_WITHOUT_SYSTEM_SYMBOLS_REGEXP)) {
+    return new BadRequestException(ERRORS.PATH_HAS_SYSTEM_SYMBOLS);
+  }
+
+  if (originalname.match(FILENAME_WITHOUT_SYSTEM_SYMBOLS_REGEXP)) {
+    return new BadRequestException(ERRORS.FILENAME_HAS_SYSTEM_SYMBOLS);
+  }
+
   if (filename.length > MAX_FILENAME_LENGTH) {
     return new BadRequestException(ERRORS.FILENAME_IS_TOO_LONG);
   }

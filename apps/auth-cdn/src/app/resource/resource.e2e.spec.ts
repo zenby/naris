@@ -44,80 +44,131 @@ describe('Resource (e2e)', () => {
 
   describe('GET /resource', () => {
     it('should return 200 OK with data', async () => {
-      const files = ['file1', 'file2'];
+      const files = [
+        'barak3!barak2!2023-07-14-6d2oboet~barak1.jpg',
+        'barak3!2023-07-14-8d2oboet~barak1.jpg',
+        '2023-07-14-2d2oboet~barak1.jpg',
+      ];
 
       jest.spyOn(resourceService, 'getFilenames').mockResolvedValue(files);
 
       const { body } = await request(app.getHttpServer()).get('/resource').expect(200);
 
-      expect(body.items).toMatchObject(files.map((f) => ({ title: f })));
-    });
-
-    it('should return 200 OK with data filtered by filename', async () => {
-      const files = [
-        'barak3!barak2!2023-07-14-6d2oboet~barak1.jpg',
-        'barak3!barak1!2023-07-14-7d2oboet~barak2.jpg', //
-        'barak3!2023-07-14-8d2oboet~barak1.jpg',
-        'barak2!2023-07-14-9d2oboet~barak2.jpg', //
-        'barak1!2023-07-14-1d2oboet~barak3.jpg',
-        '2023-07-14-2d2oboet~barak1.jpg',
-        '2023-07-14-3d2oboet~barak2.jpg', //
-      ];
-
-      jest.spyOn(resourceService, 'getFilenames').mockResolvedValue(files);
-
-      const { body } = await request(app.getHttpServer()).get('/resource?filename=barak2').expect(200);
-
-      console.log(body.items);
-
       expect(body.items).toEqual([
         {
           title: 'barak3',
-          children: [{ title: 'barak1', children: [{ title: '2023-07-14-7d2oboet~barak2.jpg' }] }],
+          children: [
+            { title: 'barak2', children: [{ title: '2023-07-14-6d2oboet~barak1.jpg' }] },
+            { title: '2023-07-14-8d2oboet~barak1.jpg' },
+          ],
         },
-        { title: 'barak2', children: [{ title: '2023-07-14-9d2oboet~barak2.jpg' }] },
-        { title: '2023-07-14-3d2oboet~barak2.jpg' },
+        { title: '2023-07-14-2d2oboet~barak1.jpg' },
       ]);
     });
 
-    it('should return 200 OK with data filtered by folder', async () => {
+    describe('should return results when filter', () => {
       const files = [
-        'barak3!barak2!2023-07-14-6d2oboet~barak1.jpg', //
-        'barak3!barak1!2023-07-14-7d2oboet~barak2.jpg',
-        'barak3!2023-07-14-8d2oboet~barak1.jpg',
-        'barak2!2023-07-14-9d2oboet~barak2.jpg', //
-        'barak1!2023-07-14-1d2oboet~barak3.jpg',
-        '2023-07-14-2d2oboet~barak1.jpg',
-        '2023-07-14-3d2oboet~barak2.jpg',
+        'phantom3!fantom2!2023-07-14-6d2oboet~fantom1.jpg',
+        'fantom3!pantom1!2023-07-14-7d2oboet~fantom2.jpg',
+        'phantom3!2023-07-14-8d2oboet~fantom1.jpg',
+        'fantom2!2023-07-14-9d2oboet~fantom2.jpg',
+        'dantom1!2023-07-14-1d2oboet~fantom3.jpg',
+        '2023-07-14-2d2oboet~fantom1.jpg',
+        '2023-07-14-3d2oboet~fantom2.jpg',
+        '2023-07-14-1d2oboet~mumbarak.jpg',
+        '2023-07-14-2d2oboet~barak.jpg',
+        '2023-07-14-3d2oboet~baragur.jpg',
       ];
 
-      jest.spyOn(resourceService, 'getFilenames').mockResolvedValue(files);
+      beforeAll(() => {
+        jest.spyOn(resourceService, 'getFilenames').mockResolvedValue(files);
+      });
 
-      const { body } = await request(app.getHttpServer()).get('/resource?folder=barak2').expect(200);
+      it('by full folder name', async () => {
+        const { body } = await request(app.getHttpServer()).get('/resource?folder=fantom2').expect(200);
 
-      expect(body.items).toEqual([
-        {
-          title: 'barak3',
-          children: [{ title: 'barak2', children: [{ title: '2023-07-14-6d2oboet~barak1.jpg' }] }],
-        },
-        { title: 'barak2', children: [{ title: '2023-07-14-9d2oboet~barak2.jpg' }] },
-      ]);
+        expect(body.items).toEqual([
+          {
+            title: 'phantom3',
+            children: [{ title: 'fantom2', children: [{ title: '2023-07-14-6d2oboet~fantom1.jpg' }] }],
+          },
+          { title: 'fantom2', children: [{ title: '2023-07-14-9d2oboet~fantom2.jpg' }] },
+        ]);
+      });
+
+      it('by folder name with pattern fantom*', async () => {
+        const { body } = await request(app.getHttpServer()).get('/resource?folder=dantom*').expect(200);
+
+        expect(body.items).toEqual([{ title: 'dantom1', children: [{ title: '2023-07-14-1d2oboet~fantom3.jpg' }] }]);
+      });
+
+      it('by folder name with pattern *antom2', async () => {
+        const { body } = await request(app.getHttpServer()).get('/resource?folder=*antom2').expect(200);
+
+        expect(body.items).toEqual([
+          {
+            title: 'phantom3',
+            children: [{ title: 'fantom2', children: [{ title: '2023-07-14-6d2oboet~fantom1.jpg' }] }],
+          },
+          { title: 'fantom2', children: [{ title: '2023-07-14-9d2oboet~fantom2.jpg' }] },
+        ]);
+      });
+
+      it('by folder name with pattern *hantom*', async () => {
+        const { body } = await request(app.getHttpServer()).get('/resource?folder=*hantom*').expect(200);
+
+        expect(body.items).toEqual([
+          {
+            title: 'phantom3',
+            children: [
+              { title: 'fantom2', children: [{ title: '2023-07-14-6d2oboet~fantom1.jpg' }] },
+              { title: '2023-07-14-8d2oboet~fantom1.jpg' },
+            ],
+          },
+        ]);
+      });
+
+      it('by full filename', async () => {
+        const { body } = await request(app.getHttpServer()).get('/resource?filename=fantom2').expect(200);
+
+        expect(body.items).toEqual([
+          {
+            title: 'fantom3',
+            children: [{ title: 'pantom1', children: [{ title: '2023-07-14-7d2oboet~fantom2.jpg' }] }],
+          },
+          { title: 'fantom2', children: [{ title: '2023-07-14-9d2oboet~fantom2.jpg' }] },
+          { title: '2023-07-14-3d2oboet~fantom2.jpg' },
+        ]);
+      });
+
+      it('by filename with pattern bar*', async () => {
+        const { body } = await request(app.getHttpServer()).get('/resource?filename=bar*').expect(200);
+
+        expect(body.items).toEqual([
+          { title: '2023-07-14-2d2oboet~barak.jpg' },
+          { title: '2023-07-14-3d2oboet~baragur.jpg' },
+        ]);
+      });
+
+      it('by filename with pattern *bar*', async () => {
+        const { body } = await request(app.getHttpServer()).get('/resource?filename=*bar*').expect(200);
+
+        expect(body.items).toEqual([{ title: '2023-07-14-1d2oboet~mumbarak.jpg' }]);
+      });
+
+      it('by filename with pattern *bar', async () => {
+        const { body } = await request(app.getHttpServer()).get('/resource?filename=*bar').expect(200);
+
+        expect(body.items).toEqual([{ title: '2023-07-14-1d2oboet~mumbarak.jpg' }]);
+      });
     });
-
-    // it('should return 200 OK with data', async () => {
-    //   const data = controller.getAllResources();
-    //   expect(data).toBe(5);
-    // });
-
-    it.todo('should return 200 when search by folder name');
-    it.todo('should return 200 when search by file name');
-    it.todo('should return 200 when search by date');
-    it.todo('should return 200 when search with * values');
   });
 
   describe('POST /resource', () => {
     it('should return error if has system symbols in path', async () => {
-      const { path, fileMultipartData } = generateFileData({ pathFolders: [DELIMETERS.FOLDER + 'folder'] });
+      const { path, fileMultipartData } = generateFileData({
+        pathFolders: ['smth' + DELIMETERS.FOLDER + DELIMETERS.SEARCH_ANY_CHAR + 'folder'],
+      });
 
       const { body } = await request(app.getHttpServer())
         .post('/resource')
@@ -125,11 +176,12 @@ describe('Resource (e2e)', () => {
         .attach('file', ...fileMultipartData)
         .expect(400);
 
-      expect(body.message).toEqual([ERRORS.PATH_HAS_SYSTEM_SYMBOLS]);
+      expect(body.message).toEqual(ERRORS.PATH_HAS_SYSTEM_SYMBOLS);
     });
 
     it('should return error if has system symbols in original filename', async () => {
-      const { fileMultipartData } = generateFileData({ name: 'filename' + DELIMETERS.NAME });
+      const filename = 'smth' + DELIMETERS.NAME + DELIMETERS.SEARCH_ANY_CHAR + 'smth';
+      const { fileMultipartData } = generateFileData({ name: filename });
 
       const { body } = await request(app.getHttpServer())
         .post('/resource')

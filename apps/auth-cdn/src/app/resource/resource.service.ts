@@ -62,6 +62,11 @@ export class ResourceService {
     return files.filter((f) => {
       const originalname = this.getOriginalFilename(f);
 
+      if (search.includes(DELIMETERS.SEARCH_ANY_CHAR)) {
+        const regexp = this.getMatchByAnySymbolRegex(search);
+        return originalname.match(regexp);
+      }
+
       return originalname.includes(search);
     });
   }
@@ -70,7 +75,14 @@ export class ResourceService {
     return files.filter((f) => {
       const folders = this.getAllFoldersFromFilename(f);
 
-      return folders.length > 0 && folders.some((folder) => folder.includes(search));
+      if (folders.length === 0) return false;
+
+      if (search.includes(DELIMETERS.SEARCH_ANY_CHAR)) {
+        const regexp = this.getMatchByAnySymbolRegex(search);
+        return folders.some((folder) => folder.match(regexp));
+      }
+
+      return folders.some((folder) => folder.includes(search));
     });
   }
 
@@ -91,6 +103,10 @@ export class ResourceService {
     }
 
     return mergedResults;
+  }
+
+  private getMatchByAnySymbolRegex(search: string) {
+    return new RegExp(`^${search.replaceAll(DELIMETERS.SEARCH_ANY_CHAR, '.+')}`);
   }
 
   private parseAssetsFilename(filename: string): Resource {

@@ -13,6 +13,7 @@ import { AuthUser } from '../../common/decorators';
 import { DocumentAuthorGuard } from '../../common/guards/document-author.guard';
 import { NamespacesForViewerRole, Roles, RolesAuthGuard, UserManifestGuard } from '@soer/sr-auth-nest';
 import { AccessTag } from './types/json.const';
+import { UpdateAccessTagJsonDto } from './dto/update-accestag-json.dto';
 
 @Controller({ version: '3', path: 'json/:documentNamespace' })
 export class JsonController {
@@ -164,18 +165,22 @@ export class JsonController {
   }
 
   @ApiOperation({
-    summary: 'Updates the value of accessTag to private/public',
+    summary: 'Updates the value of accessTag to one of ManifestNamespace, public or private',
   })
   @ApiOkResponse({ type: JsonResponseDto })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, DocumentAuthorGuard)
   @Put(':documentId/accessTag')
   async switchAccessTag(
-    @AuthUser() user: JwtPayload,
-    @Param() params: JsonParams
+    @Param() params: JsonParams,
+    @Body() data: UpdateAccessTagJsonDto
   ): Promise<HttpJsonResult<JsonEntity>> {
     try {
-      const document = await this.jsonService.switchAccessTag(+params.documentId, params.documentNamespace, user.email);
+      const document = await this.jsonService.updateAccessTag(
+        +params.documentId,
+        params.documentNamespace,
+        data.accessTag
+      );
       if (document instanceof Error) throw document;
 
       return this.jsonService.prepareResponse(HttpJsonStatus.Ok, [document]);

@@ -20,7 +20,7 @@ describe('Resource (e2e)', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          envFilePath: '../../.env',
+          envFilePath: '../../../.env',
           isGlobal: true,
           load: [configurationFactory],
         }),
@@ -35,6 +35,7 @@ describe('Resource (e2e)', () => {
 
   afterAll(async () => {
     await app.close();
+
     const rootPath = app.get(ConfigService).get<Configuration['fileStoragePath']>('fileStoragePath');
 
     rmSync(rootPath, { recursive: true, force: true });
@@ -60,11 +61,14 @@ describe('Resource (e2e)', () => {
         {
           title: 'barak3',
           children: [
-            { title: 'barak2', children: [{ title: '2023-07-14-6d2oboet~barak1.jpg' }] },
-            { title: '2023-07-14-8d2oboet~barak1.jpg' },
+            {
+              title: 'barak2',
+              children: [{ title: 'barak1.jpg', url: buildURL(files[0]) }],
+            },
+            { title: 'barak1.jpg', url: buildURL(files[1]) },
           ],
         },
-        { title: '2023-07-14-2d2oboet~barak1.jpg' },
+        { title: 'barak1.jpg', url: buildURL(files[2]) },
       ]);
     });
 
@@ -92,16 +96,26 @@ describe('Resource (e2e)', () => {
         expect(body.items).toEqual([
           {
             title: 'phantom3',
-            children: [{ title: 'fantom2', children: [{ title: '2023-07-14-6d2oboet~fantom1.jpg' }] }],
+            children: [
+              {
+                title: 'fantom2',
+                children: [{ title: 'fantom1.jpg', url: buildURL(files[0]) }],
+              },
+            ],
           },
-          { title: 'fantom2', children: [{ title: '2023-07-14-9d2oboet~fantom2.jpg' }] },
+          {
+            title: 'fantom2',
+            children: [{ title: 'fantom2.jpg', url: buildURL(files[3]) }],
+          },
         ]);
       });
 
       it('by folder name with pattern fantom*', async () => {
         const { body } = await request(app.getHttpServer()).get('/resource?folder=dantom*').expect(200);
 
-        expect(body.items).toEqual([{ title: 'dantom1', children: [{ title: '2023-07-14-1d2oboet~fantom3.jpg' }] }]);
+        expect(body.items).toEqual([
+          { title: 'dantom1', children: [{ title: 'fantom3.jpg', url: buildURL(files[4]) }] },
+        ]);
       });
 
       it('by folder name with pattern *antom2', async () => {
@@ -110,9 +124,9 @@ describe('Resource (e2e)', () => {
         expect(body.items).toEqual([
           {
             title: 'phantom3',
-            children: [{ title: 'fantom2', children: [{ title: '2023-07-14-6d2oboet~fantom1.jpg' }] }],
+            children: [{ title: 'fantom2', children: [{ title: 'fantom1.jpg', url: buildURL(files[0]) }] }],
           },
-          { title: 'fantom2', children: [{ title: '2023-07-14-9d2oboet~fantom2.jpg' }] },
+          { title: 'fantom2', children: [{ title: 'fantom2.jpg', url: buildURL(files[3]) }] },
         ]);
       });
 
@@ -123,8 +137,8 @@ describe('Resource (e2e)', () => {
           {
             title: 'phantom3',
             children: [
-              { title: 'fantom2', children: [{ title: '2023-07-14-6d2oboet~fantom1.jpg' }] },
-              { title: '2023-07-14-8d2oboet~fantom1.jpg' },
+              { title: 'fantom2', children: [{ title: 'fantom1.jpg', url: buildURL(files[0]) }] },
+              { title: 'fantom1.jpg', url: buildURL(files[2]) },
             ],
           },
         ]);
@@ -136,10 +150,10 @@ describe('Resource (e2e)', () => {
         expect(body.items).toEqual([
           {
             title: 'fantom3',
-            children: [{ title: 'pantom1', children: [{ title: '2023-07-14-7d2oboet~fantom2.jpg' }] }],
+            children: [{ title: 'pantom1', children: [{ title: 'fantom2.jpg', url: buildURL(files[1]) }] }],
           },
-          { title: 'fantom2', children: [{ title: '2023-07-14-9d2oboet~fantom2.jpg' }] },
-          { title: '2023-07-14-3d2oboet~fantom2.jpg' },
+          { title: 'fantom2', children: [{ title: 'fantom2.jpg', url: buildURL(files[3]) }] },
+          { title: 'fantom2.jpg', url: buildURL(files[6]) },
         ]);
       });
 
@@ -147,21 +161,21 @@ describe('Resource (e2e)', () => {
         const { body } = await request(app.getHttpServer()).get('/resource?filename=bar*').expect(200);
 
         expect(body.items).toEqual([
-          { title: '2023-07-14-2d2oboet~barak.jpg' },
-          { title: '2023-07-14-3d2oboet~baragur.jpg' },
+          { title: 'barak.jpg', url: buildURL(files[8]) },
+          { title: 'baragur.jpg', url: buildURL(files[9]) },
         ]);
       });
 
       it('by filename with pattern *bar*', async () => {
         const { body } = await request(app.getHttpServer()).get('/resource?filename=*bar*').expect(200);
 
-        expect(body.items).toEqual([{ title: '2023-07-14-1d2oboet~mumbarak.jpg' }]);
+        expect(body.items).toEqual([{ title: 'mumbarak.jpg', url: buildURL(files[7]) }]);
       });
 
-      it('by filename with pattern *bar', async () => {
-        const { body } = await request(app.getHttpServer()).get('/resource?filename=*bar').expect(200);
+      it('by filename with pattern *barak', async () => {
+        const { body } = await request(app.getHttpServer()).get('/resource?filename=*barak').expect(200);
 
-        expect(body.items).toEqual([{ title: '2023-07-14-1d2oboet~mumbarak.jpg' }]);
+        expect(body.items).toEqual([{ title: 'mumbarak.jpg', url: buildURL(files[7]) }]);
       });
     });
   });
@@ -245,17 +259,30 @@ describe('Resource (e2e)', () => {
       expectUriMatchFile(uri, fileData);
     });
   });
+
+  function getFileUrlPrefix() {
+    const host = app.get(ConfigService).get<Configuration['host']>('host');
+    const route = app.get(ConfigService).get<Configuration['serveUploadsRoute']>('serveUploadsRoute');
+    return `${host}/${route}`;
+  }
+
+  function buildURL(filename: string) {
+    return `${getFileUrlPrefix()}/${filename}`;
+  }
+
+  function expectUriMatchFile(uri: string, { folders, filename }: FileData) {
+    // starts with host and uploads route
+    expect(uri).toStrictEqual(expect.stringMatching(new RegExp(`^${getFileUrlPrefix()}`)));
+
+    // check folder in filename
+    const foldersPart = folders.map((f) => f + `\\${DELIMETERS.FOLDER}`).join('');
+    expect(uri).toStrictEqual(expect.stringMatching(new RegExp(`/${foldersPart}`)));
+
+    // check date in filename
+    const [date] = new Date().toISOString().split('T');
+    expect(uri.includes(date)).toBeTruthy();
+
+    // check original filename
+    expect(uri).toStrictEqual(expect.stringMatching(new RegExp(`(${DELIMETERS.NAME}${filename})$`)));
+  }
 });
-
-function expectUriMatchFile(uri: string, { folders, filename }: FileData) {
-  // check folder in filename
-  const foldersPart = folders.map((f) => f + `\\${DELIMETERS.FOLDER}`).join('');
-  expect(uri).toStrictEqual(expect.stringMatching(new RegExp(`^/${foldersPart}`)));
-
-  // check date in filename
-  const [date] = new Date().toISOString().split('T');
-  expect(uri.includes(date)).toBeTruthy();
-
-  // check original filename
-  expect(uri).toStrictEqual(expect.stringMatching(new RegExp(`(${DELIMETERS.NAME}${filename})$`)));
-}

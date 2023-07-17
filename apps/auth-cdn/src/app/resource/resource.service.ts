@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { Resource, ResourceFilter } from './resource.model';
+import { FileResource, FolderResource, Resource, ResourceFilter, isFolderResource } from './resource.model';
 import { DELIMETERS } from './constants';
 import { ResourceRepository } from './resource.repository';
+import { ConfigService } from '@nestjs/config';
+import { Configuration } from '../config/config';
 
 @Injectable()
 export class ResourceService {
-  constructor(private readonly resourceRepository: ResourceRepository) {}
+  constructor(private readonly resourceRepository: ResourceRepository, private readonly configService: ConfigService) {}
 
   async saveFile(file: Express.Multer.File): Promise<{ uri: string }> {
     // await save file to DB
-    return { uri: `/${file.filename}` };
+    return { uri: `${this.getFileUrlPrefix()}/${file.filename}` };
   }
 
   async getResources(filter: ResourceFilter): Promise<Resource[]> {
@@ -62,9 +64,9 @@ export class ResourceService {
     const mergedResults: Resource[] = [];
 
     for (const resource of resources) {
-      if (resource.children) {
+      if (isFolderResource(resource)) {
         const existingFolder = mergedResults.find((r) => r.title === resource.title);
-        if (existingFolder) {
+        if (isFolderResource(existingFolder)) {
           existingFolder.children = this.mergeResources([...existingFolder.children, ...resource.children]);
         } else {
           mergedResults.push(resource);
@@ -81,15 +83,16 @@ export class ResourceService {
     return new RegExp(`^${search.replaceAll(DELIMETERS.SEARCH_ANY_CHAR, '.+')}`);
   }
 
-  private parseAssetsFilename(filename: string): Resource {
-    if (!filename.includes(DELIMETERS.FOLDER)) return this.createResource(filename);
+  private parseAssetsFilename(filename: string, prefix = ''): Resource {
+    if (!filename.includes(DELIMETERS.FOLDER)) return this.createFileResource({ filename, prefix });
 
     const delimiterIndex = filename.indexOf(DELIMETERS.FOLDER);
+    const newPrefix = prefix + filename.substring(0, delimiterIndex + 1);
     const folderName = this.getFolderName(filename);
     const childrenName = filename.substring(delimiterIndex + 1);
-    const childrenResource = this.parseAssetsFilename(childrenName);
+    const childrenResource = this.parseAssetsFilename(childrenName, newPrefix);
 
-    return this.createResource(folderName, [childrenResource]);
+    return this.createFolderResource({ folderName, children: [childrenResource], prefix: newPrefix });
   }
 
   private getFolderName(filename: string): string {
@@ -109,11 +112,31 @@ export class ResourceService {
     return filename.substring(delimiterIndex + 1);
   }
 
-  private createResource(filename: string, children?: Resource[]): Resource {
+  private createFileResource({ filename, prefix = '' }: { filename: string; prefix: string }): FileResource {
     return {
-      title: filename,
-      // url: filename,
-      ...(children ? { children } : {}),
+      title: filename.split(DELIMETERS.NAME)[1],
+      url: `${this.getFileUrlPrefix()}/${prefix}${filename}`,
     };
+  }
+
+  private createFolderResource({
+    folderName,
+    children,
+  }: {
+    filename?: string;
+    folderName?: string;
+    children?: Resource[];
+    prefix?: string;
+  }): FolderResource {
+    return {
+      title: folderName,
+      children,
+    };
+  }
+
+  private getFileUrlPrefix() {
+    const host = this.configService.get<Configuration['host']>('host');
+    const route = this.configService.get<Configuration['serveUploadsRoute']>('serveUploadsRoute');
+    return `${host}/${route}`;
   }
 }

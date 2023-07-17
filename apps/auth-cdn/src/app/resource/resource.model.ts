@@ -1,8 +1,14 @@
-export type Resource = {
+export type FolderResource = {
   title: string;
-  // url: string;
-  children?: Resource[];
+  children: Resource[];
 };
+
+export type FileResource = {
+  title: string;
+  url: string;
+};
+
+export type Resource = FolderResource | FileResource;
 
 export type ResourceFilter = {
   folder: string;
@@ -15,3 +21,7 @@ export type FileData = {
   path: string;
   fileMultipartData: [Buffer, Record<string, string>];
 };
+
+export function isFolderResource(resource: Resource): resource is FolderResource {
+  return resource && 'children' in resource;
+}

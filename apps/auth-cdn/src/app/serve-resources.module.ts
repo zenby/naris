@@ -11,7 +11,7 @@ import { Configuration } from './config/config';
         // path to files
         const rootPath = configService.get<Configuration['fileStoragePath']>('fileStoragePath');
         // path in URL
-        const serveRoot = '/uploads';
+        const serveRoot = `/${configService.get<Configuration['serveUploadsRoute']>('serveUploadsRoute')}`;
 
         return [
           {

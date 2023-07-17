@@ -41,10 +41,6 @@ describe('Resource (e2e)', () => {
     rmSync(rootPath, { recursive: true, force: true });
   });
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   describe('GET /resource', () => {
     it('should return 200 OK with data', async () => {
       const files = [

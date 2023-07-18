@@ -10,6 +10,7 @@ import { ComposeIcontabsPageComponent } from './compose-icontabs-page/compose-ic
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { OverlayModule } from '@soer/soer-components';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 @NgModule({
   declarations: [ComposeOnePageComponent, ComposeTabPageComponent, ComposeIcontabsPageComponent],
@@ -21,6 +22,7 @@ import { OverlayModule } from '@soer/soer-components';
     RouterModule,
     NzIconModule,
     NzButtonModule,
+    NzDrawerModule,
     OverlayModule,
   ],
   exports: [[ComposeOnePageComponent, ComposeTabPageComponent, ComposeIcontabsPageComponent]],

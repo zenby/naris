@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ConfirmPageLeaveGuard } from '../../../guards/confirm-page-leave.guard';
 import { ComposeIcontabsPageComponent } from '../../router-compose/compose-icontabs-page/compose-icontabs-page.component';
+import { DocumentSettingsComponent } from '../json-settings/document-settings/document-settings.component';
 import { WORKBOOK_TAG } from './abstracte.const';
 import { EditAbstractePageComponent } from './edit-abstracte-page/edit-abstracte-page.component';
 import { ListAbstractePageComponent } from './list-abstracte-page/list-abstracte-page.component';
@@ -17,6 +18,13 @@ const routes: Routes = [
         redirectTo: 'conspects',
         pathMatch: 'full',
       },
+      {
+        path: 'settings',
+        component: DocumentSettingsComponent,
+        data: { header: { title: '' } },
+        outlet: 'drawer',
+      },
+
       {
         path: 'conspects',
         data: {
@@ -276,6 +284,13 @@ const routes: Routes = [
                   action: 'save',
                   icon: 'save',
                 },
+
+                {
+                  title: 'Параметры',
+                  path: ['../../../', { outlets: { drawer: 'settings' } }],
+                  icon: 'setting',
+                },
+
                 { title: 'Назад', path: ['../..'], icon: 'rollback' },
               ],
             },

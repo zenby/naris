@@ -182,10 +182,11 @@ const routes: Routes = [
       environment.features[featuresEnum.api_v2]
         ? {
             namespace: 'articles',
-            schema: { url: '%%narisApiUrl%%v3/json/article/:wid' },
+            schema: { url: '%%narisApiUrl%%v3/json/article/:wid/:attr' },
             keys: {
               article: { wid: '?' },
               articles: { wid: 'private' },
+              articleAccessTag: { wid: '?', attr: 'accessTag' },
             },
           }
         : {

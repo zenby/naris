@@ -25,6 +25,7 @@ import { ListAbstractePageComponent } from './list-abstracte-page/list-abstracte
 import { ViewAbstractePageComponent } from './view-abstracte-page/view-abstracte-page.component';
 import { WorkbooksViewModule } from '@soer/soer-components';
 import { ConfirmPageLeaveGuard } from '../../../guards/confirm-page-leave.guard';
+import { JsonSettingsModule } from '../json-settings/json-settings.module';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { ConfirmPageLeaveGuard } from '../../../guards/confirm-page-leave.guard'
     SrEditorModule,
     SrDiagramBlockModule,
     WorkbooksViewModule,
+    JsonSettingsModule,
   ],
 })
 export class AbstracteModule {}

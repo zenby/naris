@@ -16,3 +16,14 @@
   </div>
 </ng-container>
 <router-outlet (activate)="activateTab()"></router-outlet>
+<nz-drawer
+  [nzClosable]="true"
+  [nzVisible]="isShowDrawer"
+  nzPlacement="right"
+  nzTitle="Document settings"
+  (nzOnClose)="closeDrawer()"
+>
+  <ng-container *nzDrawerContent>
+    <router-outlet name="drawer"></router-outlet>
+  </ng-container>
+</nz-drawer>

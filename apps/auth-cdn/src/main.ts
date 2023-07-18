@@ -5,7 +5,6 @@ import helmet from 'helmet';
 
 import { AppModule } from './app/app.module';
 import { setupSwagger } from './swagger';
-import * as express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,10 +12,6 @@ async function bootstrap() {
 
   // ATTENTION! This call must come before all app.use(...)
   app.use(helmet());
-
-  const staticRoot = configService.get<string>('fileStoragePath');
-
-  app.use('/assets', express.static(staticRoot));
 
   const port = configService.get('port');
 

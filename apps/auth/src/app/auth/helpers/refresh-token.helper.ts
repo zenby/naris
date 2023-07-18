@@ -3,7 +3,9 @@ import { RefreshTokenPayload } from '../types/refresh-token-payload.interface';
 import { UserEntity } from '../../user/user.entity';
 import { sign, TokenExpiredError, verify } from 'jsonwebtoken';
 import { Fingerprint } from './fingerprint';
-import { UnauthorizedException } from '@nestjs/common';
+import { Logger, UnauthorizedException } from '@nestjs/common';
+
+const logger = new Logger('Fingerprint');
 
 export class RefreshTokenHelper {
   private readonly expiresIn: string | number | undefined;
@@ -28,6 +30,7 @@ export class RefreshTokenHelper {
       const isValidFingerprint = result.fingerprint === requestFingerprint.toString();
 
       if (!isValidFingerprint) {
+        logger.error('Invalid fingerprint' + JSON.stringify(result));
         return new UnauthorizedException('Invalid fingerprint');
       }
 

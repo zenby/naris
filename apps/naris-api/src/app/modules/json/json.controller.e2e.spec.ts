@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
 import { JsonModule } from './json.module';
-import { HttpJsonStatus } from '@soer/sr-common-interfaces';
+import { HttpJsonStatus, ManifestNamespace } from '@soer/sr-common-interfaces';
 import { JwtConfig } from '../../config/jwt.config';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import { JwtTestHelper } from '../../common/helpers/jwt.test.helper';
@@ -19,6 +19,7 @@ import {
   ManifestStreamFixture,
   ManifestWorkshopFixture,
 } from '@soer/sr-auth-nest';
+import exp = require('constants');
 
 describe('JsonModule e2e-test', () => {
   let app: INestApplication;
@@ -189,25 +190,29 @@ describe('JsonModule e2e-test', () => {
   });
 
   describe('PUT /json/:documentNamespace/:documentId/:accessTag', () => {
-    it('should change the value of accessTag to public for private document', async () => {
+    it('should change the accessTag of owned document ', async () => {
+      const newAccessTag = AccessTag.STREAM;
+
       const document = { ...createFakeDocument(), author_email: JwtTestHelper.defaultPayload.email };
       const { id, namespace } = document;
 
       jsonRepositoryMock.findOne.mockReturnValueOnce({ ...document, accessTag: 'PRIVATE' });
       jsonRepositoryMock.save.mockImplementationOnce((newDocument) => Object.assign({}, newDocument));
+      jsonRepositoryMock.count.mockReturnValueOnce(1);
 
       await request
         .put(`/json/${namespace}/${id}/accessTag`)
         .set(JwtTestHelper.createBearerHeader())
+        .send({ accessTag: newAccessTag })
         .expect({
           status: HttpJsonStatus.Ok,
-          items: [{ ...document, accessTag: 'PUBLIC' }],
+          items: [{ ...document, accessTag: newAccessTag }],
         });
 
       expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
-        where: { id, namespace, author_email: JwtTestHelper.defaultPayload.email },
+        where: { id, namespace },
       });
-      expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ ...document, accessTag: 'PUBLIC' });
+      expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ ...document, accessTag: newAccessTag });
     });
   });
 

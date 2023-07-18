@@ -46,3 +46,4 @@ Thumbs.db
 
 # CSS folders
 css
+apps/auth-cdn/src/assets/**

@@ -12,10 +12,11 @@ export * from './test.users';
   providers: [
     UserService,
     UserTestRepository,
-    { provide: getRepositoryToken(UserEntity), useClass: UserTestRepository },
+    {
+      provide: getRepositoryToken(UserEntity),
+      useClass: UserTestRepository,
+    },
   ],
   exports: [UserTestRepository, UserService],
 })
-export class UserTestModule {
-  constructor(private readonly userrepo: UserTestRepository) {}
-}
+export class UserTestModule {}

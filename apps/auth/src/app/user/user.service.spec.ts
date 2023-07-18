@@ -1,77 +1,69 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
-import { UserModule } from './user.module';
-import { CreateUserDto } from './dto/create-user.dto';
-import { Configuration } from '../config/config';
-import { ConfigService } from '@nestjs/config';
+import { Repository } from 'typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { faker } from '@faker-js/faker';
+import { UserTestModule } from './tests/user.test.module';
 
 describe('User service', () => {
   let userService: UserService;
-
-  const userRepositoryMock = {
-    find: jest.fn(),
-    findOne: jest.fn(),
-    save: jest.fn(),
-    delete: jest.fn(),
-  };
-
-  const config: Configuration['jwt'] = {
-    cookieName: 'refreshToken',
-    expiresInAccess: 10000,
-    expiresInRefresh: 10000,
-    jwtSecret: 'secret',
-  };
+  let testModule: TestingModule;
+  let userRepository: Repository<UserEntity>;
 
   beforeAll(async () => {
-    const configMock = {
-      get: jest.fn().mockImplementation((): Configuration['jwt'] => config),
-    };
+    testModule = await Test.createTestingModule({
+      imports: [UserTestModule],
+    }).compile();
 
-    const moduleRef = await Test.createTestingModule({
-      imports: [UserModule],
-    })
-      .overrideProvider(ConfigService)
-      .useValue(configMock)
-      .overrideProvider(getRepositoryToken(UserEntity))
-      .useValue(userRepositoryMock)
-      .compile();
-
-    userService = moduleRef.get<UserService>(UserService);
+    userService = testModule.get<UserService>(UserService);
+    userRepository = testModule.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
   });
 
-  describe('create user tests', () => {
+  afterAll(async () => {
+    await testModule.close();
+  });
+
+  describe('createUser method', () => {
     it('should create user with empty password', async () => {
-      const returnUser = {
-        id: 1,
-        email: 'email@email.com',
-        login: 'login',
-        password: '',
-        uuid: 'testuuid',
-      };
-      const existUser = new UserEntity();
-      Object.assign(existUser, returnUser);
-      const createUserDto: CreateUserDto = { login: 'login', email: 'email@email.com', password: '' };
-      jest.spyOn(userRepositoryMock, 'save').mockResolvedValueOnce(existUser);
+      const dto = { password: '', email: faker.internet.email(), login: faker.internet.userName() };
+      const saveSpy = jest.spyOn(userRepository, 'save');
 
-      const resultUser = await userService.createUser(createUserDto);
+      const newUser = await userService.createUser(dto);
 
-      expect(resultUser instanceof UserEntity).toBeTruthy();
-      expect((resultUser as UserEntity).password).toEqual('');
+      expect(newUser).toBeInstanceOf(UserEntity);
+      expect(newUser).toEqual(
+        expect.objectContaining({
+          password: '',
+        })
+      );
+      expect(saveSpy).toHaveBeenCalledWith(expect.any(UserEntity));
+      expect(saveSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          password: '',
+          email: dto.email,
+          login: dto.login,
+        })
+      );
     });
 
-    it('should create user with hashed password if its not empty', async () => {
-      const existUser = new UserEntity();
-      const createUserDto: CreateUserDto = { login: 'login', email: 'email@email.com', password: '123' };
-      Object.assign(existUser, createUserDto);
-      await existUser.hashPassword();
-      jest.spyOn(userRepositoryMock, 'save').mockResolvedValueOnce(existUser);
+    it("should create user with hashed password if it's not empty", async () => {
+      const dto = { password: 'password123', email: faker.internet.email(), login: faker.internet.userName() };
+      const saveSpy = jest.spyOn(userRepository, 'save');
 
-      const resultUser = await userService.createUser(createUserDto);
+      const newUser = await userService.createUser(dto);
 
-      expect(resultUser instanceof UserEntity).toBeTruthy();
-      expect((resultUser as UserEntity).password === '').toBeFalsy();
+      expect(newUser).toBeInstanceOf(UserEntity);
+      expect(newUser).not.toEqual(expect.objectContaining({ password: dto.password }));
+      expect(newUser).not.toEqual(expect.objectContaining({ password: '' }));
+      expect(saveSpy).toHaveBeenCalledWith(expect.any(UserEntity));
+      expect(saveSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          password: expect.any(String),
+          email: dto.email,
+          login: dto.login,
+        })
+      );
     });
   });
 });

@@ -6,16 +6,12 @@
   "targets": {
     "build": {
       "executor": "@nrwl/webpack:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/auth-cdn",
         "main": "apps/auth-cdn/src/main.ts",
         "tsConfig": "apps/auth-cdn/tsconfig.app.json",
-        "assets": [
-          "apps/auth-cdn/src/assets"
-        ],
+        "assets": ["apps/auth-cdn/src/assets"],
         "target": "node",
         "compiler": "tsc"
       },
@@ -41,23 +37,22 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/auth-cdn/**/*.ts"
-        ]
+        "lintFilePatterns": ["apps/auth-cdn/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/apps/auth-cdn"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/apps/auth-cdn"],
       "options": {
         "jestConfig": "apps/auth-cdn/jest.config.ts",
         "passWithNoTests": true
+      },
+      "configurations": {
+        "watch": {
+          "watchAll": true
+        }
       }
     },
     "version": {

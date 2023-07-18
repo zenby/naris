@@ -2,6 +2,31 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.5.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.4.0...naris-api-0.5.0) (2023-07-17)
+
+
+### Features
+
+* инициализация DocumentAuthGuard ([e2e547a](https://gitlog.ru/Naris/soermono/commit/e2e547aa406a1806933d73b06dd5d41c1d1b6ae4))
+* реализация DocumentAuthGuard ([f931da9](https://gitlog.ru/Naris/soermono/commit/f931da939341295d2ad3b48cb55be02aa6f3dacb))
+* add endpoint for getting all the questions ([9554de3](https://gitlog.ru/Naris/soermono/commit/9554de34b2f70989c591926988708953c73c3c79))
+* add endpoint for question creation ([431fcdc](https://gitlog.ru/Naris/soermono/commit/431fcdcdc8a82091573500820c414c3dd3dd48dd))
+* add endpoint to delete a question ([7dbfa95](https://gitlog.ru/Naris/soermono/commit/7dbfa95e9d6438827133353c69dd58019064dc3a))
+* add interfaces to common lib ([d771183](https://gitlog.ru/Naris/soermono/commit/d771183fd5be99c81413269faf6426a3367f0ed8))
+* add method for change accessTag ([8d3e806](https://gitlog.ru/Naris/soermono/commit/8d3e8069f09c58eaa0e5aaede20be8b6b7dc50f3))
+* add methods for pro, workshop and stream documents ([7516306](https://gitlog.ru/Naris/soermono/commit/7516306227e5837a7030bf3cbb7f3eb322697a62))
+* add question repo ([ca0f4c2](https://gitlog.ru/Naris/soermono/commit/ca0f4c2cb228be329c8279d3673fd9f7548aa830))
+* add questions e2e tests ([66aeac2](https://gitlog.ru/Naris/soermono/commit/66aeac2f97634cff5b81fa76c1859e05fa9ad355))
+* **naris-api:** add QA structure ([df0a216](https://gitlog.ru/Naris/soermono/commit/df0a216f9e7e1c310a766ac9884ded853b82f302))
+* remove user email from json output ([2883e87](https://gitlog.ru/Naris/soermono/commit/2883e87c69a0a85179ec0a0186e42926927c090e))
+* set questions API version ([9dd7824](https://gitlog.ru/Naris/soermono/commit/9dd78248592d0f77df157172e0e8a1394db73703))
+* update endpoint to get questions of the current user ([33d73d5](https://gitlog.ru/Naris/soermono/commit/33d73d5c999376a9f964f4c2f724314374d9db4e))
+
+
+### Bug Fixes
+
+* поправил падающие тесты JsonModule e2e-test ([df94be2](https://gitlog.ru/Naris/soermono/commit/df94be2e3fdceb3d0eb4eb16d181b008be2a46fd))
+
 ## [0.6.1](https://gitlog.ru/Naris/soermono/compare/naris-api-0.6.0...naris-api-0.6.1) (2023-07-09)
 
 ## [0.6.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.5.0...naris-api-0.6.0) (2023-07-09)

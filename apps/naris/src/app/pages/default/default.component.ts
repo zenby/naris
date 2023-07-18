@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { BusError, MixedBusService } from '@soer/mixed-bus';
 import { NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
 import { NzSiderComponent } from 'ng-zorro-antd/layout';
@@ -136,8 +136,22 @@ export class DefaultComponent implements OnInit, OnDestroy {
                 return;
               }
             }
+            const extract = (snapshot: ActivatedRouteSnapshot, p = {}): { [key: string]: string | number } => {
+              if (snapshot.children) {
+                snapshot.children.forEach((element) => {
+                  p = extract(element, p);
+                });
+              }
+              return { ...p, ...snapshot.params };
+            };
+            let pathStr = JSON.stringify(ctrl.path);
+            const paramsFromRoute = extract(this.route.snapshot);
 
-            this.router.navigate(ctrl.path, { relativeTo: child, queryParams });
+            Object.keys(paramsFromRoute).forEach((key) => {
+              pathStr = pathStr.replace(`:${key}`, paramsFromRoute[key] + '');
+            });
+
+            this.router.navigate(JSON.parse(pathStr), { relativeTo: child, queryParams });
           })
       );
       this.controls$.next(controlsMenu);

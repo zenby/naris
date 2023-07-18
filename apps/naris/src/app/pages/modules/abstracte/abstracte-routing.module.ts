@@ -19,7 +19,7 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'settings',
+        path: 'settings/:wid',
         component: DocumentSettingsComponent,
         data: { header: { title: '' } },
         outlet: 'drawer',
@@ -287,7 +287,7 @@ const routes: Routes = [
 
                 {
                   title: 'Параметры',
-                  path: ['../../../', { outlets: { drawer: 'settings' } }],
+                  path: ['../../../', { outlets: { drawer: 'settings/:wid' } }],
                   icon: 'setting',
                 },
 

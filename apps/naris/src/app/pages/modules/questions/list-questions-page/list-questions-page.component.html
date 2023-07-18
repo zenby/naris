@@ -96,7 +96,7 @@
 </ng-template>
 
 <ng-template #emptylist>
-  <nz-result nzStatus="info" nzTitle="Задать первый вопрос">
+  <nz-result data-cy="firstAskProposal" nzStatus="info" nzTitle="Задать первый вопрос">
     <div nz-result-extra>
       <p class="info">Здесь можно задать свой вопрос и получить ответ в аудиоформе</p>
       <button data-cy="firstAskBtn" nz-button nzType="primary" (click)="createQuestion()" id="first-ask-btn">

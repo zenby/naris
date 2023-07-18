@@ -97,7 +97,7 @@ describe('modules questions', () => {
         listLen--;
       }
     });
-    cy.get('.ant-result').contains('Задать первый вопрос');
+    cy.get('[data-cy="firstAskProposal"]').contains('Задать первый вопрос');
     cy.get('[data-cy="firstAskBtn"]').should('exist');
   });
 });

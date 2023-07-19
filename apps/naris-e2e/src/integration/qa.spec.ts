@@ -37,7 +37,7 @@ describe('modules questions', () => {
   });
 
   it('should delete selected question, then all questions and then show proposal to ask first question', () => {
-    cy.visit('#!/pages/qa/my/create/new'); // add 2 new questions
+    cy.visit('#!/pages/qa/my/create/new'); // add 2 new questions.
     cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
     cy.get('[data-cy="saveBtn"]').click();
     cy.wait('@getUpdatedQuestions');

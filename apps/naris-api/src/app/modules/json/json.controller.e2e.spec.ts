@@ -240,6 +240,7 @@ describe('JsonModule e2e-test', () => {
       const document = createFakeDocument();
 
       jsonRepositoryMock.findOne.mockReturnValueOnce(document);
+      jsonRepositoryMock.count.mockReturnValueOnce(1);
 
       await request
         .get(`/json/${document.namespace}/${document.id}`)

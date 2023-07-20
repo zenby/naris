@@ -7,6 +7,8 @@ import { Response } from 'express';
 import { AuthService } from '../auth/auth.service';
 import { HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { createRequest } from '../auth/tests/auth.test.helper';
+import { testConfig } from '../auth/tests/auth.test.config';
+import { getJWTConfigMock } from '../auth/tests/auth.test.module';
 
 const fingerprint = {
   ipAddresses: ['10.10.0.1'],
@@ -19,6 +21,7 @@ describe('AuthOpenIdController', () => {
   let controller: AuthOpenIdController;
   let authService: AuthService;
   const internalErrorMessage = 'Something went wrong. Try it later';
+  const config = testConfig;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,12 +35,7 @@ describe('AuthOpenIdController', () => {
         },
         {
           provide: ConfigService,
-          useValue: {
-            get: jest.fn(() => ({
-              cookieName: 'fake-cookie-name',
-              redirectUrl: '/fake-redirect-url',
-            })),
-          },
+          useValue: getJWTConfigMock(config),
         },
       ],
     }).compile();
@@ -67,12 +65,12 @@ describe('AuthOpenIdController', () => {
       await controller.googleLoginCallback(user, request, response);
 
       expect(authService.getRefreshToken).toHaveBeenCalledWith(user, fingerprint);
-      expect(response.cookie).toHaveBeenCalledWith('fake-cookie-name', 'fake-refresh-token', {
+      expect(response.cookie).toHaveBeenCalledWith(config.cookieName, 'fake-refresh-token', {
         httpOnly: true,
         sameSite: 'none',
         secure: true,
       });
-      expect(response.redirect).toHaveBeenCalledWith('/fake-redirect-url');
+      expect(response.redirect).toHaveBeenCalledWith(config.redirectUrl);
     });
 
     it('should throw InternalServerErrorException on error when invalid callback', async () => {
@@ -107,12 +105,12 @@ describe('AuthOpenIdController', () => {
       await controller.yandexCallback(user, request, response);
 
       expect(authService.getRefreshToken).toHaveBeenCalledWith(user, fingerprint);
-      expect(response.cookie).toHaveBeenCalledWith('fake-cookie-name', 'fake-refresh-token', {
+      expect(response.cookie).toHaveBeenCalledWith(config.cookieName, 'fake-refresh-token', {
         httpOnly: true,
         sameSite: 'none',
         secure: true,
       });
-      expect(response.redirect).toHaveBeenCalledWith('/fake-redirect-url');
+      expect(response.redirect).toHaveBeenCalledWith(config.redirectUrl);
     });
 
     it('should throw InternalServerErrorException on error when invalid callback', async () => {

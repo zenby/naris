@@ -34,11 +34,12 @@ export const authRequestMakerFactory = (jwtCookieName: string, fingerprint: Fing
 
 export const getJWTTokenWithFingerprintFactory = (config: Configuration['jwt']) => {
   return (user: UserEntity, requestFingerprint: Fingerprint, expiredInSec?: number) => {
-    const { jwtSecret: secret } = config;
+    const { jwtSecret: secret, expiresInRefresh } = config;
     const iat = Math.floor(Date.now() / 1000) + expiredInSec;
     return jwt.sign(
-      { userId: user.id, userEmail: user.email, fingerprint: requestFingerprint.toString(), iat },
-      secret
+      { userId: user.id, userEmail: user.email, userRole: user.role, fingerprint: requestFingerprint.toString(), iat },
+      secret,
+      { expiresIn: expiresInRefresh }
     );
   };
 };

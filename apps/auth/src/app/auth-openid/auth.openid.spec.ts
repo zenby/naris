@@ -21,6 +21,7 @@ const request = {
 describe('AuthOpenIdController', () => {
   let controller: AuthOpenIdController;
   let authService: AuthService;
+  const internalErrorMessage = 'Something went wrong. Try it later';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -85,7 +86,7 @@ describe('AuthOpenIdController', () => {
       });
 
       await expect(controller.googleLoginCallback(user, request, {} as unknown as Response)).rejects.toThrowError(
-        'Something went wrong. Try it later'
+        internalErrorMessage
       );
     });
   });
@@ -125,7 +126,7 @@ describe('AuthOpenIdController', () => {
       });
 
       await expect(controller.yandexCallback(user, request, {} as unknown as Response)).rejects.toThrowError(
-        'Something went wrong. Try it later'
+        internalErrorMessage
       );
     });
   });

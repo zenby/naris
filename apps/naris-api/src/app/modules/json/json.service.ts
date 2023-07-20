@@ -6,6 +6,7 @@ import { CreateJsonDto } from './dto/create-json.dto';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { UpdateJsonDto } from './dto/update-json.dto';
 import { AccessTag } from './types/json.const';
+import { PatchDocumentPropertiesDto } from './dto/patch-document-properties.dto';
 
 @Injectable()
 export class JsonService {
@@ -97,6 +98,14 @@ export class JsonService {
     return await this.jsonRepository.save(document);
   }
 
+  async findDocumentById(documentId: number): Promise<JsonEntity> {
+    return await this.jsonRepository.findOne({
+      where: {
+        id: documentId,
+      },
+    });
+  }
+
   async findOne(documentNamespace: string, documentId: number): Promise<JsonEntity> {
     return await this.jsonRepository.findOne({
       where: {
@@ -104,6 +113,18 @@ export class JsonService {
         namespace: documentNamespace,
       },
     });
+  }
+
+  async patchDocument(documentId: number, newProperties: PatchDocumentPropertiesDto): Promise<JsonEntity | Error> {
+    const document = await this.findDocumentById(documentId);
+
+    if (!document) {
+      return new NotFoundException(`Document ${documentId} does not exist`);
+    }
+
+    Object.assign(document, newProperties);
+
+    return await this.jsonRepository.save(document);
   }
 
   async updateAccessTag(
@@ -163,12 +184,11 @@ export class JsonService {
     return await this.jsonRepository.delete({ id: documentId });
   }
 
-  async isUserAuthorOfDocument(documentId: number, documentNamespace: string, authorEmail: string): Promise<boolean> {
+  async isUserAuthorOfDocument(documentId: number, authorEmail: string): Promise<boolean> {
     const count = await this.jsonRepository.count({
       where: {
         author_email: authorEmail,
         id: documentId,
-        namespace: documentNamespace,
       },
     });
 

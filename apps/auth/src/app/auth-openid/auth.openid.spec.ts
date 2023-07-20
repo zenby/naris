@@ -3,21 +3,17 @@ import { AuthOpenIdController } from './auth.openid.controller';
 import { ConfigService } from '@nestjs/config';
 import { UserEntity } from '../user/user.entity';
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { AuthService } from '../auth/auth.service';
 import { HttpJsonStatus } from '@soer/sr-common-interfaces';
+import { createRequest } from '../auth/tests/auth.test.helper';
 
 const fingerprint = {
   ipAddresses: ['10.10.0.1'],
   userAgent: 'test',
 };
 
-const request = {
-  headers: {
-    'x-original-forwarded-for': fingerprint.ipAddresses,
-    'user-agent': fingerprint.userAgent,
-  },
-} as unknown as Request;
+const request = createRequest(fingerprint.ipAddresses, fingerprint.userAgent);
 
 describe('AuthOpenIdController', () => {
   let controller: AuthOpenIdController;

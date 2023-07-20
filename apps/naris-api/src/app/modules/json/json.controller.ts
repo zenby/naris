@@ -21,14 +21,6 @@ export class JsonController {
 
   private logger = new Logger(JsonController.name);
 
-  @NamespacesForViewerRole(ManifestNamespace.WORKSHOP)
-  @Roles(UserRole.ADMIN, DynamicRole.VIEWER, DynamicRole.OWNER)
-  @UseGuards(UserManifestGuard, RolesAuthGuard)
-  @Get('test')
-  async test() {
-    return 'test';
-  }
-
   @ApiOperation({
     summary: 'Find documents from the namespace with the "public" tag',
   })

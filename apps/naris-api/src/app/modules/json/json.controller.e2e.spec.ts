@@ -19,7 +19,6 @@ import {
   ManifestStreamFixture,
   ManifestWorkshopFixture,
 } from '@soer/sr-auth-nest';
-import exp = require('constants');
 
 describe('JsonModule e2e-test', () => {
   let app: INestApplication;

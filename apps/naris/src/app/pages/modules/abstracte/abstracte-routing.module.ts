@@ -19,12 +19,12 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'settings/:wid',
+        path: 'settings/:did',
         component: DocumentSettingsComponent,
         data: { header: { title: '' } },
         outlet: 'drawer',
         resolve: {
-          jsonDocumentSettings: 'articleAccessTagEmitter',
+          jsonDocument: 'jsonDocumentEmitter',
         },
       },
 

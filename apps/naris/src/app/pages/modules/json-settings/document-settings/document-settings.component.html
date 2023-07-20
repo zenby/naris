@@ -1,3 +1,11 @@
-<a href="javascropt:void(0)" (click)="accessTag('PRIVATE')">Private</a>
-<a href="javascropt:void(0)" (click)="accessTag('PUBLIC')">Public</a>
-<a href="javascropt:void(0)" (click)="accessTag('STREAM')">Stream</a>
+<ng-container *ngIf="documents$ | async as dto">
+  <ng-container *ngFor="let document of dto.items">
+    <span>Текущий уровень доступа: {{ document.accessTag }}</span>
+    <div>
+      <span>Изменить на:</span>
+      <a href="javascript:void(0)" (click)="accessTag('PRIVATE')">Private</a>
+      | <a href="javascript:void(0)" (click)="accessTag('PUBLIC')">Public</a> |
+      <a href="javascript:void(0)" (click)="accessTag('STREAM')">Stream</a>
+    </div>
+  </ng-container>
+</ng-container>

@@ -24,6 +24,7 @@ import { ComposeTabPageComponent } from './router-compose/compose-tab-page/compo
 import { environment } from '../../environments/environment';
 import { featuresEnum } from '../../environments/environment.interface';
 import { ActivityJournalPageComponent } from './modules/account-page/activity-journal-page/activity-journal-page.component';
+import { JsonDocumentKey } from './modules/json-settings/document.const';
 
 const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'prefix' },
@@ -157,6 +158,14 @@ const routes: Routes = [
             },
           }
     ),
+
+    SrDTOModule.forChild<JsonDocumentKey>({
+      namespace: 'document',
+      schema: { url: '%%narisApiUrl%%v1/document/:did' },
+      keys: {
+        jsonDocument: { did: '?' },
+      },
+    }),
 
     SrDTOModule.forChild<WorkbookKey>(
       environment.features[featuresEnum.api_v2]

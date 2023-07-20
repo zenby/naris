@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
-import { CommandUpdate } from '@soer/sr-dto';
+import { CommandPatch, DataStoreService, DtoPack, extractDtoPackFromBus, SerializedJsonModel } from '@soer/sr-dto';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'soer-document-settings',
@@ -10,12 +11,14 @@ import { CommandUpdate } from '@soer/sr-dto';
 })
 export class DocumentSettingsComponent {
   documentId: BusEmitter;
-  constructor(private bus$: MixedBusService, private route: ActivatedRoute) {
-    this.documentId = this.route.snapshot.data['jsonDocumentSettings'];
-    console.log(this.documentId);
+  documents$: Observable<DtoPack>;
+
+  constructor(private bus$: MixedBusService, private store$: DataStoreService, private route: ActivatedRoute) {
+    this.documentId = this.route.snapshot.data['jsonDocument'];
+    this.documents$ = extractDtoPackFromBus<SerializedJsonModel>(this.store$.of(this.documentId));
   }
 
   accessTag(tag: string): void {
-    this.bus$.publish(new CommandUpdate(this.documentId, { accessTag: tag }));
+    this.bus$.publish(new CommandPatch(this.documentId, { accessTag: tag }));
   }
 }

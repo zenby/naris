@@ -14,8 +14,7 @@ export class DocumentAuthorGuard implements CanActivate {
     }
 
     const documentId = request.params.documentId;
-    const documentNamespace = request.params.documentNamespace;
 
-    return await this.jsonService.isUserAuthorOfDocument(documentId, documentNamespace, user.email);
+    return await this.jsonService.isUserAuthorOfDocument(documentId, user.email);
   }
 }

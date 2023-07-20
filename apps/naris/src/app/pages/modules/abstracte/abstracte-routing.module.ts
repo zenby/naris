@@ -93,6 +93,12 @@ const routes: Routes = [
                   action: 'save',
                   icon: 'save',
                 },
+                {
+                  title: 'Параметры',
+                  path: ['../../../', { outlets: { drawer: 'settings/:wid' } }],
+                  icon: 'setting',
+                },
+
                 { title: 'Назад', path: ['../..'], icon: 'rollback' },
               ],
             },
@@ -190,6 +196,12 @@ const routes: Routes = [
                   action: 'save',
                   icon: 'save',
                 },
+                {
+                  title: 'Параметры',
+                  path: ['../../../', { outlets: { drawer: 'settings/:wid' } }],
+                  icon: 'setting',
+                },
+
                 { title: 'Назад', path: ['../..'], icon: 'rollback' },
               ],
             },

@@ -97,6 +97,7 @@ const routes: Routes = [
                   title: 'Параметры',
                   path: ['../../../', { outlets: { drawer: 'settings/:wid' } }],
                   icon: 'setting',
+                  featureFlag: 'document_properties',
                 },
 
                 { title: 'Назад', path: ['../..'], icon: 'rollback' },
@@ -200,6 +201,7 @@ const routes: Routes = [
                   title: 'Параметры',
                   path: ['../../../', { outlets: { drawer: 'settings/:wid' } }],
                   icon: 'setting',
+                  featureFlag: 'document_properties',
                 },
 
                 { title: 'Назад', path: ['../..'], icon: 'rollback' },
@@ -304,6 +306,7 @@ const routes: Routes = [
                   title: 'Параметры',
                   path: ['../../../', { outlets: { drawer: 'settings/:wid' } }],
                   icon: 'setting',
+                  featureFlag: 'document_properties',
                 },
 
                 { title: 'Назад', path: ['../..'], icon: 'rollback' },

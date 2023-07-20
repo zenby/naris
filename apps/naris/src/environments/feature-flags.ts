@@ -31,6 +31,7 @@ export const dev: DynamicConfig = {
   [featuresEnum.personal_activity_journal]: true,
   [featuresEnum.subscription]: true,
   [featuresEnum.api_v2]: true,
+  [featuresEnum.document_properties]: true,
   ...flags,
 };
 

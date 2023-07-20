@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { BusError, MixedBusService } from '@soer/mixed-bus';
+import { FeatureFlagService } from '@soer/sr-feature-flags';
 import { NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
 import { NzSiderComponent } from 'ng-zorro-antd/layout';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -26,6 +27,7 @@ type RoutingDataControl = {
   path: string[];
   toggle?: string;
   action?: string;
+  featureFlag?: string;
 };
 
 /**
@@ -64,7 +66,8 @@ export class DefaultComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private bus$: MixedBusService,
     private message: NzMessageService,
-    private breakpointService: NzBreakpointService
+    private breakpointService: NzBreakpointService,
+    private readonly featureFlagService: FeatureFlagService
   ) {}
 
   ngOnInit(): void {
@@ -118,42 +121,46 @@ export class DefaultComponent implements OnInit, OnDestroy {
         return ctrl.icon;
       };
 
-      const controlsMenu = controls.map(
-        (ctrl) =>
-          new MenuControl(ctrl['title'], renderIcon(ctrl), () => {
-            const queryParams = { ...child.snapshot.queryParams };
-            if (ctrl['action']) {
-              queryParams['action'] = ctrl['action'];
-              queryParams['startAt'] = Date.now();
-            } else {
-              delete queryParams['action'];
-              delete queryParams['startAt'];
-            }
-            if (ctrl.toggle) {
-              queryParams[ctrl.toggle] = !(child.snapshot.queryParams[ctrl.toggle] === 'true') ? 'true' : undefined;
-              if (child.snapshot.queryParams[ctrl.toggle] === 'true') {
-                this.router.navigate(['.'], { relativeTo: child, queryParams });
-                return;
+      const controlsMenu = controls
+        .filter(
+          (ctrl) => ctrl.featureFlag === undefined || this.featureFlagService.isFeatureFlagEnabled(ctrl.featureFlag)
+        )
+        .map(
+          (ctrl) =>
+            new MenuControl(ctrl['title'], renderIcon(ctrl), () => {
+              const queryParams = { ...child.snapshot.queryParams };
+              if (ctrl['action']) {
+                queryParams['action'] = ctrl['action'];
+                queryParams['startAt'] = Date.now();
+              } else {
+                delete queryParams['action'];
+                delete queryParams['startAt'];
               }
-            }
-            const extract = (snapshot: ActivatedRouteSnapshot, p = {}): { [key: string]: string | number } => {
-              if (snapshot.children) {
-                snapshot.children.forEach((element) => {
-                  p = extract(element, p);
-                });
+              if (ctrl.toggle) {
+                queryParams[ctrl.toggle] = !(child.snapshot.queryParams[ctrl.toggle] === 'true') ? 'true' : undefined;
+                if (child.snapshot.queryParams[ctrl.toggle] === 'true') {
+                  this.router.navigate(['.'], { relativeTo: child, queryParams });
+                  return;
+                }
               }
-              return { ...p, ...snapshot.params };
-            };
-            let pathStr = JSON.stringify(ctrl.path);
-            const paramsFromRoute = extract(this.route.snapshot);
+              const extract = (snapshot: ActivatedRouteSnapshot, p = {}): { [key: string]: string | number } => {
+                if (snapshot.children) {
+                  snapshot.children.forEach((element) => {
+                    p = extract(element, p);
+                  });
+                }
+                return { ...p, ...snapshot.params };
+              };
+              let pathStr = JSON.stringify(ctrl.path);
+              const paramsFromRoute = extract(this.route.snapshot);
 
-            Object.keys(paramsFromRoute).forEach((key) => {
-              pathStr = pathStr.replace(`:${key}`, paramsFromRoute[key] + '');
-            });
+              Object.keys(paramsFromRoute).forEach((key) => {
+                pathStr = pathStr.replace(`:${key}`, paramsFromRoute[key] + '');
+              });
 
-            this.router.navigate(JSON.parse(pathStr), { relativeTo: child, queryParams });
-          })
-      );
+              this.router.navigate(JSON.parse(pathStr), { relativeTo: child, queryParams });
+            })
+        );
       this.controls$.next(controlsMenu);
     } else {
       this.controls$.next([]);

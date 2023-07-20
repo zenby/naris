@@ -233,7 +233,7 @@ export class JsonController {
   @ApiParam({ name: 'documentNamespace' })
   @ApiParam({ name: 'documentId' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, DocumentAuthorGuard)
   @Get(':documentId')
   async findOne(@Param() params: JsonParams): Promise<HttpJsonResult<JsonEntity>> {
     try {

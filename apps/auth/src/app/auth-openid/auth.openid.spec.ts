@@ -1,43 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthOpenIdController } from './auth.openid.controller';
-import { ConfigService } from '@nestjs/config';
 import { UserEntity } from '../user/user.entity';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from '../auth/auth.service';
 import { HttpJsonStatus } from '@soer/sr-common-interfaces';
-import { createRequest } from '../auth/tests/auth.test.helper';
+import { getJWTTokenWithFingerprintFactory } from '../auth/tests/auth.test.helper';
 import { testConfig } from '../auth/tests/auth.test.config';
-import { getJWTConfigMock } from '../auth/tests/auth.test.module';
-
-const fingerprint = {
-  ipAddresses: ['10.10.0.1'],
-  userAgent: 'test',
-};
-
-const request = createRequest(fingerprint.ipAddresses, fingerprint.userAgent);
+import { AuthTestModule } from '../auth/tests/auth.test.module';
+import { regularUser, testRequest, testFingerprint } from '../user/tests/test.users';
 
 describe('AuthOpenIdController', () => {
   let controller: AuthOpenIdController;
   let authService: AuthService;
   const internalErrorMessage = 'Something went wrong. Try it later';
   const config = testConfig;
+  const request = testRequest;
+  const getJWTTokenForUserWithFingerprint = getJWTTokenWithFingerprintFactory(config);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [AuthTestModule],
       controllers: [AuthOpenIdController],
-      providers: [
-        {
-          provide: AuthService,
-          useValue: {
-            getRefreshToken: jest.fn(() => 'fake-refresh-token'),
-          },
-        },
-        {
-          provide: ConfigService,
-          useValue: getJWTConfigMock(config),
-        },
-      ],
     }).compile();
 
     controller = module.get<AuthOpenIdController>(AuthOpenIdController);
@@ -60,12 +44,13 @@ describe('AuthOpenIdController', () => {
         redirect: jest.fn(),
       } as unknown as Response;
 
-      const user = {} as UserEntity;
+      const jwtToken = getJWTTokenForUserWithFingerprint(regularUser, testFingerprint);
+      const refreshSpy = jest.spyOn(authService, 'getRefreshToken');
 
-      await controller.googleLoginCallback(user, request, response);
+      await controller.googleLoginCallback(regularUser, request, response);
 
-      expect(authService.getRefreshToken).toHaveBeenCalledWith(user, fingerprint);
-      expect(response.cookie).toHaveBeenCalledWith(config.cookieName, 'fake-refresh-token', {
+      expect(refreshSpy).toHaveBeenCalledWith(regularUser, testFingerprint);
+      expect(response.cookie).toHaveBeenCalledWith(config.cookieName, jwtToken, {
         httpOnly: true,
         sameSite: 'none',
         secure: true,
@@ -97,15 +82,17 @@ describe('AuthOpenIdController', () => {
     });
 
     it('should call authService.getRefreshToken, set cookie when callback then redirect', async () => {
-      const user = {} as UserEntity;
       const response = {
         cookie: jest.fn(),
         redirect: jest.fn(),
       } as unknown as Response;
-      await controller.yandexCallback(user, request, response);
+      const jwtToken = getJWTTokenForUserWithFingerprint(regularUser, testFingerprint);
+      const refreshSpy = jest.spyOn(authService, 'getRefreshToken');
 
-      expect(authService.getRefreshToken).toHaveBeenCalledWith(user, fingerprint);
-      expect(response.cookie).toHaveBeenCalledWith(config.cookieName, 'fake-refresh-token', {
+      await controller.yandexCallback(regularUser, request, response);
+
+      expect(refreshSpy).toHaveBeenCalledWith(regularUser, testFingerprint);
+      expect(response.cookie).toHaveBeenCalledWith(config.cookieName, jwtToken, {
         httpOnly: true,
         sameSite: 'none',
         secure: true,

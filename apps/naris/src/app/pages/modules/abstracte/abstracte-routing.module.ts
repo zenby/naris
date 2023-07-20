@@ -23,6 +23,9 @@ const routes: Routes = [
         component: DocumentSettingsComponent,
         data: { header: { title: '' } },
         outlet: 'drawer',
+        resolve: {
+          jsonDocumentSettings: 'articleAccessTagEmitter',
+        },
       },
 
       {

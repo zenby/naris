@@ -5,6 +5,7 @@ import { UserEntity } from '../user/user.entity';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { AuthService } from '../auth/auth.service';
+import { HttpJsonStatus } from '@soer/sr-common-interfaces';
 
 const fingerprint = {
   ipAddresses: ['10.10.0.1'],
@@ -54,7 +55,7 @@ describe('AuthOpenIdController', () => {
       const result = await controller.googleLogin();
 
       expect(result).toEqual({
-        status: 'ok',
+        status: HttpJsonStatus.Ok,
         items: [],
       });
     });
@@ -96,7 +97,7 @@ describe('AuthOpenIdController', () => {
       const result = await controller.yandexLogin();
 
       expect(result).toEqual({
-        status: 'ok',
+        status: HttpJsonStatus.Ok,
         items: [],
       });
     });

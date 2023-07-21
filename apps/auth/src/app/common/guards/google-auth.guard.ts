@@ -2,7 +2,7 @@ import { ExecutionContext, ForbiddenException, Injectable, Logger } from '@nestj
 import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 
-const logger = new Logger('Fingerprint');
+const logger = new Logger('Google oauth');
 
 @Injectable()
 export class GoogleAuthGuard extends AuthGuard('google') {

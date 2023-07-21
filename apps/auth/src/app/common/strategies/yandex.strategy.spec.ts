@@ -1,20 +1,20 @@
 import { AuthService } from '../../auth/auth.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { GoogleStrategy } from './google.strategy';
+import { YandexStrategy } from './yandex.strategy';
 import { UserService } from '../../user/user.service';
 import { Profile } from 'passport';
 import { ConfigService } from '@nestjs/config';
 import { UserTestModule } from '../../user/tests/user.test.module';
 
-describe('GoogleStrategy', () => {
-  let strategy: GoogleStrategy;
+describe('YandexStrategy', () => {
+  let strategy: YandexStrategy;
   let userService: UserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [UserTestModule],
       providers: [
-        GoogleStrategy,
+        YandexStrategy,
         {
           provide: ConfigService,
           useValue: {
@@ -30,7 +30,7 @@ describe('GoogleStrategy', () => {
       ],
     }).compile();
 
-    strategy = module.get<GoogleStrategy>(GoogleStrategy);
+    strategy = module.get<YandexStrategy>(YandexStrategy);
     userService = module.get<UserService>(UserService);
   });
 

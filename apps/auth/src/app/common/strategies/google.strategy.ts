@@ -1,10 +1,12 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
 import { config } from 'dotenv';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { UserEntity } from '../../user/user.entity';
 import { Profile } from 'passport';
 import { UserService } from '../../user/user.service';
+
+const logger = new Logger('Google ouath strategy');
 
 config();
 
@@ -26,6 +28,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     const user = await this.userService.findByEmail(email);
 
     if (user instanceof Error) {
+      logger.error(user);
+      logger.error(profile);
       throw new HttpException('Authentithication error', HttpStatus.UNAUTHORIZED);
     }
 

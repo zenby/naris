@@ -1,9 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-yandex';
-import { AuthService } from '../../auth/auth.service';
 import { UserEntity } from '../../user/user.entity';
 import { UserService } from '../../user/user.service';
+
+const logger = new Logger('Yandex oauth');
 
 @Injectable()
 export class YandexStrategy extends PassportStrategy(Strategy, 'yandex') {
@@ -19,6 +20,8 @@ export class YandexStrategy extends PassportStrategy(Strategy, 'yandex') {
     const email = profile['emails'][0].value;
     const user = await this.userService.findByEmail(email);
     if (user instanceof Error) {
+      logger.error(user);
+      logger.error(profile);
       throw new HttpException('Authentithication error', HttpStatus.UNAUTHORIZED);
     }
     return user;

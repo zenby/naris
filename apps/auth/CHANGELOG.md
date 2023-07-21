@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.7.0](https://gitlog.ru/Naris/soermono/compare/auth-0.6.0...auth-0.7.0) (2023-07-21)
+
+
+### Features
+
+* **auth:** add logger to create user ([ac95124](https://gitlog.ru/Naris/soermono/commit/ac9512454d6175c300c3da3084946aeffe162986))
+
 ## [0.5.0](https://gitlog.ru/Naris/soermono/compare/auth-0.4.0...auth-0.5.0) (2023-07-21)
 
 

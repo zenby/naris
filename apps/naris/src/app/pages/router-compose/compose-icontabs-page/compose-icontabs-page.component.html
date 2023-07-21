@@ -9,6 +9,7 @@
       [title]="tab.title"
       [disabled]="isTabDisabled(active, tab)"
       [nzType]="isTabDisabled(active, tab) ? 'dashed' : 'primary'"
+      [attr.data-cy]="tab.title"
     >
       <i *ngIf="tab.icon" nz-icon [nzType]="tab.icon || 'empty'" nzTheme="outline"></i>
       <span *ngIf="tab.iconText">{{ tab.iconText }}</span>

@@ -65,6 +65,7 @@
         nzShape="circle"
         [id]="control.icon + '-control-btn'"
         (click)="controlPanel(control)"
+        [attr.data-cy]="control.icon"
       >
         <i nz-icon [nzType]="control.icon" nzTheme="outline"></i>
       </button>

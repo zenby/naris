@@ -4,7 +4,7 @@
     {{ isEdit | booleanToString: ' [*]':' [ ]' }}
   </div>
   <div class="block-wrapper">
-    <div class="edit" [ngClass]="{ editOn: isEdit }" soerAutoresize #editView>
+    <div class="edit" [ngClass]="{ editOn: isEdit }" data-cy="edit-block" soerAutoresize #editView>
       <ng-container>
         <textarea
           [ngStyle]="{ opacity: isEdit ? '100%' : '0%' }"
@@ -14,6 +14,7 @@
           (keydown)="command($event)"
           (ngModelChange)="handleTextChange()"
           #edit
+          data-cy="block-editor"
         >
         </textarea>
       </ng-container>
@@ -26,7 +27,7 @@
       <textarea style="height: 0" [ngStyle]="{ opacity: '0%' }" class="block-editor block-editor__input" #shadowEdit>
       </textarea>
     </div>
-    <div class="block-controls" *ngIf="isFocused">
+    <div class="block-controls" *ngIf="isFocused" data-cy="block-editor-controls">
       <soer-block-editor-controls [controls]="controls"></soer-block-editor-controls>
     </div>
   </div>

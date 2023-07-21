@@ -9,7 +9,7 @@
       nzType="text"
       (click)="control?.handler()"
     >
-      <i nz-icon [nzType]="control.icon" nzTheme="outline"></i>
+      <i nz-icon [nzType]="control.icon" [attr.data-cy]="control.icon" nzTheme="outline"></i>
     </button>
   </div>
 </div>

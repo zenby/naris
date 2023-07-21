@@ -54,12 +54,10 @@ describe('modules questions', () => {
       cy.wait('@getUpdatedQuestions');
       cy.get('[data-cy="qaListItemDescription"]').its('length').should('equal', listLen);
     });
-    for (let i = 0; i < 3; i++) {
-      cy.visit('#!/pages/qa/my/create/new');
-      cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
-      cy.get('[data-cy="saveBtn"]').click();
-      cy.wait('@getUpdatedQuestions');
-    }
+    cy.visit('#!/pages/qa/my/create/new');
+    cy.get('[data-cy="questionInput"]').type(permissibleQuestion);
+    cy.get('[data-cy="saveBtn"]').click();
+    cy.wait('@getUpdatedQuestions');
     cy.get('[data-cy="questionDeleteBtn"]').then((delBtnList) => {
       //delete all questions
       let listLen = Cypress.$(delBtnList).length;

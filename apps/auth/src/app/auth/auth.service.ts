@@ -23,6 +23,8 @@ export class AuthService {
 
     this.accessTokenHelper = new AccessTokenHelper(jwtConfig);
     this.refreshTokenHelper = new RefreshTokenHelper(jwtConfig);
+
+    this.logger.log('Start service');
   }
 
   async signUp(createUserDto: CreateUserDto) {

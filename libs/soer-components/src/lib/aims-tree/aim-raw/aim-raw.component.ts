@@ -26,6 +26,7 @@ export class AimRawComponent implements OnChanges {
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() add: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
+  @Output() taskClose: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() expand: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
   doneProgress = 100;

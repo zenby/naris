@@ -61,6 +61,10 @@ export class ListAimsPageComponent implements OnInit {
     this.bus$.publish(new CommandDelete(tmpTargetId, {}, { tid: target.id }));
   }
 
+  onTaskClose(target: AimModel): void {
+    console.log({ target });
+  }
+
   createTasksVisibility(): void {
     this.targets$
       .pipe(

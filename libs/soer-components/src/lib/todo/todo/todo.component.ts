@@ -14,6 +14,7 @@ export class TodoComponent {
 
   public isUndo = false;
   @Output() update: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() taskClose: EventEmitter<null> = new EventEmitter<null>();
   @Output() description: EventEmitter<null> = new EventEmitter<null>();
 
   constructor(private cdp: ChangeDetectorRef) {}
@@ -24,6 +25,7 @@ export class TodoComponent {
 
     setTimeout(() => {
       this.isUndo = false;
+      this.taskClose.emit(null);
       this.cdp.detectChanges();
     }, 5000);
 

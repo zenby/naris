@@ -36,6 +36,7 @@
             [disabled]="isEdit"
             (update)="update.emit(aim)"
             (description)="showDescription()"
+            (taskClose)="taskClose.emit(aim)"
           ></soer-todo>
         </nz-col>
         <nz-col *ngIf="isEdit" nzFlex="none">

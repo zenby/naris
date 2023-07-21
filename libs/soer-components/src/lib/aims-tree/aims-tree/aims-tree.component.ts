@@ -15,6 +15,7 @@ export class AimsTreeComponent {
   @Output() add: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
+  @Output() taskClose: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
 
   doneProgress = 100;

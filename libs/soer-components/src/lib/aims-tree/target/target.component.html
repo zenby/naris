@@ -48,6 +48,7 @@
       (delete)="onDelete($event)"
       (add)="onAddTo($event)"
       (description)="onDescription($event)"
+      (taskClose)="taskClose.emit($event)"
     ></soer-aims-tree>
 
     <div class="card_edit-toolbar">

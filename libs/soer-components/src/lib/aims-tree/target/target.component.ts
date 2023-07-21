@@ -15,6 +15,7 @@ export class TargetComponent {
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() edit: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
+  @Output() taskClose: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
 
   constructor(private targetService: TargetService) {}

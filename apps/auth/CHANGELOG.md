@@ -2,6 +2,30 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.5.0](https://gitlog.ru/Naris/soermono/compare/auth-0.4.0...auth-0.5.0) (2023-07-21)
+
+
+### Features
+
+* вынес валидацию Fingerprint в хелпер и добавил приведение к MD5 для Fingerprint ([ce5c097](https://gitlog.ru/Naris/soermono/commit/ce5c097c4b398299dac7906bdaf99bc2c43df2a2))
+* добавлена функциональность "цифрового отпечатка" в AuthService ([56326b5](https://gitlog.ru/Naris/soermono/commit/56326b541ceb37b845d1bb218e831edc229df920))
+* переписал код, оставил только Fingerprint ([091d4ff](https://gitlog.ru/Naris/soermono/commit/091d4ff1987e02e370b069ce88a8bfe537a009df))
+* удалил хелпер FingerprintHelper ([9a1e656](https://gitlog.ru/Naris/soermono/commit/9a1e65672cfd11d74d6751b640b5701f65210ae7))
+* add auth or create method ([579d280](https://gitlog.ru/Naris/soermono/commit/579d280cfea9d7f7cbfc22577a4ffdd315dcccbe))
+* add logger to google auth token ([69ed7a7](https://gitlog.ru/Naris/soermono/commit/69ed7a724c3699d9ae60c320aa3eac0e1525431a))
+* add ouath logging ([cb1cbe1](https://gitlog.ru/Naris/soermono/commit/cb1cbe1bddbd21ebfc1f3e1816389e37ca446270))
+* add user profile editing support ([621f5e3](https://gitlog.ru/Naris/soermono/commit/621f5e3537103b55fbd2c4f5f5474739d8b79b6b))
+* add yandex auth or create user strategy ([d403dbc](https://gitlog.ru/Naris/soermono/commit/d403dbcddb8d96acd42698e6758619985069ac2b))
+* add yandex oauth logger error ([1a72b79](https://gitlog.ru/Naris/soermono/commit/1a72b7959e793f35e24e46d877bff2d1311962d6))
+* remove openid-auth-service ([723a702](https://gitlog.ru/Naris/soermono/commit/723a702bf7441b96d2aeab657a90b19c2eb426bb))
+
+
+### Bug Fixes
+
+* брал async + await при вызове getRefreshToken и getAccessToken, там где это больше не надо ([0ac2fb3](https://gitlog.ru/Naris/soermono/commit/0ac2fb3c135cc65e9b1d46841f49e2ce86b5cd21))
+* восстановил удаленные тесты для RefreshTokenHelper ([865ce98](https://gitlog.ru/Naris/soermono/commit/865ce982d08846d6dae6bba5434b108f1473fe3f))
+* add cors policy only in dev mode ([c9ce8b0](https://gitlog.ru/Naris/soermono/commit/c9ce8b050fb76672ecb8156e7107d5105f338951))
+
 ## [0.5.0](https://gitlog.ru/Naris/soermono/compare/auth-0.4.0...auth-0.5.0) (2023-07-16)
 
 

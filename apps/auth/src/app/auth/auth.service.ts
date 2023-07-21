@@ -74,6 +74,21 @@ export class AuthService {
     return this.isPasswordMatch(password, user) ? user : new UnauthorizedException('Invalid password');
   }
 
+  async authOrCreateUserByEmail(email: string): Promise<UserEntity | Error> {
+    const user = await this.userService.findByEmail(email);
+
+    if (user instanceof Error) {
+      const newUser = await this.userService.createUser({
+        login: email,
+        email,
+        password: '',
+      });
+      return newUser;
+    }
+
+    return user;
+  }
+
   private isPasswordMatch(password: string, userFromDb: UserEntity): boolean {
     return compareSync(password, userFromDb.password);
   }

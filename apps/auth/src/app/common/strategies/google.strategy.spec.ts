@@ -4,12 +4,10 @@ import { GoogleStrategy } from './google.strategy';
 import { UserService } from '../../user/user.service';
 import { Profile } from 'passport';
 import { ConfigService } from '@nestjs/config';
-import { max } from 'class-validator';
 import { UserTestModule } from '../../user/tests/user.test.module';
 
 describe('RefreshCookieStrategy', () => {
   let strategy: GoogleStrategy;
-  let authService: AuthService;
   let userService: UserService;
 
   beforeEach(async () => {
@@ -33,7 +31,6 @@ describe('RefreshCookieStrategy', () => {
     }).compile();
 
     strategy = module.get<GoogleStrategy>(GoogleStrategy);
-    authService = module.get<AuthService>(AuthService);
     userService = module.get<UserService>(UserService);
   });
 

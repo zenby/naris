@@ -1,5 +1,5 @@
 import { compareSync } from 'bcrypt';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { Configuration } from '../config/config';
 import { ConfigService } from '@nestjs/config';
 
@@ -16,6 +16,7 @@ import { Fingerprint } from './helpers/fingerprint';
 export class AuthService {
   private readonly accessTokenHelper: AccessTokenHelper;
   private readonly refreshTokenHelper: RefreshTokenHelper;
+  logger = new Logger(AuthService.name);
 
   constructor(private readonly configService: ConfigService, private readonly userService: UserService) {
     const jwtConfig = configService.get<Configuration['jwt']>('jwt');
@@ -78,6 +79,7 @@ export class AuthService {
     const user = await this.userService.findByEmail(email);
 
     if (user instanceof Error) {
+      this.logger.error(user);
       const newUser = await this.userService.createUser({
         login: email,
         email,

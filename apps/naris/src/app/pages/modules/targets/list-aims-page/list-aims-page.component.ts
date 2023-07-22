@@ -9,6 +9,7 @@ import { convertToJsonDTO, parseJsonDTOPack } from '../../../../api/json.dto.hel
 import { TargetModel, Visibility } from '../../../../api/targets/target.interface';
 import { DONE_PROGRESS, TargetKey, UNDONE_PROGRESS } from '../targets.const';
 import { TaskClosedEvent } from '../events/task-closed.event';
+import { TargetAchievedEvent } from '../events/target-achieved.event';
 
 @Component({
   selector: 'soer-list-aims-page',
@@ -64,6 +65,9 @@ export class ListAimsPageComponent implements OnInit {
 
   onTaskClose(target: AimModel, task: AimModel): void {
     this.bus$.publish(new TaskClosedEvent(ANY_SERVICE, task as TargetModel));
+    if (target.progress === 100) {
+      this.bus$.publish(new TargetAchievedEvent(ANY_SERVICE, target as TargetModel));
+    }
   }
 
   createTasksVisibility(): void {

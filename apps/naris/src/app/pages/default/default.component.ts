@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { BusError, MixedBusService } from '@soer/mixed-bus';
-import { FeatureFlagService } from '@soer/sr-feature-flags';
+import { FeatureFlag, FeatureFlagService } from '@soer/sr-feature-flags';
 import { NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
 import { NzSiderComponent } from 'ng-zorro-antd/layout';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -27,7 +27,7 @@ type RoutingDataControl = {
   path: string[];
   toggle?: string;
   action?: string;
-  featureFlag?: string;
+  featureFlag?: FeatureFlag;
 };
 
 /**

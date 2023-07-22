@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
+import { ANY_SERVICE, BusEmitter, MixedBusService } from '@soer/mixed-bus';
 import { AimModel } from '@soer/soer-components';
 import { CommandDelete, CommandUpdate, DataStoreService, DtoPack, OK } from '@soer/sr-dto';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -8,6 +8,7 @@ import { filter, first, Observable } from 'rxjs';
 import { convertToJsonDTO, parseJsonDTOPack } from '../../../../api/json.dto.helpers';
 import { TargetModel, Visibility } from '../../../../api/targets/target.interface';
 import { DONE_PROGRESS, TargetKey, UNDONE_PROGRESS } from '../targets.const';
+import { TaskClosedEvent } from '../events/task-closed.event';
 
 @Component({
   selector: 'soer-list-aims-page',
@@ -61,8 +62,8 @@ export class ListAimsPageComponent implements OnInit {
     this.bus$.publish(new CommandDelete(tmpTargetId, {}, { tid: target.id }));
   }
 
-  onTaskClose(target: AimModel): void {
-    console.log({ target });
+  onTaskClose(target: AimModel, task: AimModel): void {
+    this.bus$.publish(new TaskClosedEvent(ANY_SERVICE, task as TargetModel));
   }
 
   createTasksVisibility(): void {

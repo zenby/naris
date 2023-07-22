@@ -25,7 +25,9 @@ export class TodoComponent {
 
     setTimeout(() => {
       this.isUndo = false;
-      this.taskClose.emit(null);
+      if (this.checked) {
+        this.taskClose.emit(null);
+      }
       this.cdp.detectChanges();
     }, 5000);
 

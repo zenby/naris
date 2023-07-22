@@ -20,8 +20,7 @@ import { ActivityKey } from './api/progress/progress.const';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApplicationService } from './services/application.service';
-import { SrFeatureFlagsModule } from '@soer/sr-feature-flags';
-import { DynamicConfig, featuresEnum } from '../environments/environment.interface';
+import { FeatureFlagService, FeatureFlag, SrFeatureFlagsModule, Features } from '@soer/sr-feature-flags';
 import { CliModule } from './cli/cli.module';
 import { NarisCliService } from './cli/naris-cli.service';
 
@@ -34,7 +33,7 @@ registerLocaleData(ru);
     MixedBusModule,
     SrAuthModule.forRoot(
       ((options) => {
-        if (options.features[featuresEnum.auth_v2]) {
+        if (options.features[FeatureFlag.auth_v2]) {
           return {
             sid: AUTH_ID,
             schema: {
@@ -63,9 +62,9 @@ registerLocaleData(ru);
     NzLayoutModule,
     NzMenuModule,
     NzMessageModule,
-    SrFeatureFlagsModule.forRoot<DynamicConfig>(environment.features),
+    SrFeatureFlagsModule.forRoot<Features>(environment.features),
     SrDTOModule.forChild<ActivityKey>(
-      environment.features[featuresEnum.api_v2]
+      environment.features[FeatureFlag.api_v2]
         ? {
             namespace: 'activity',
             schema: { url: '%%narisApiUrl%%v3/json/activity/:aid' },
@@ -98,6 +97,7 @@ registerLocaleData(ru);
         StoreCrudService,
         PdfConverterService,
         NarisCliService,
+        FeatureFlagService,
       ],
       useFactory:
         (
@@ -106,12 +106,15 @@ registerLocaleData(ru);
           _DataStoreService: DataStoreService,
           _StoreCrudService: StoreCrudService,
           _PdfConverterService: PdfConverterService,
-          _NarisCliService: NarisCliService
+          _NarisCliService: NarisCliService,
+          _FeatureFlagService: FeatureFlagService
         ) =>
         () => {
           _NarisCliService.add({
-            bulder: _UrlBuilderService,
+            builder: _UrlBuilderService,
             store: _StoreCrudService,
+            featureFlag: _FeatureFlagService.featureFlags,
+            features: () => _FeatureFlagService.getAllFeatures(),
           });
           return null;
         },

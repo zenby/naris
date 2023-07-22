@@ -3,13 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 import { EnvironmentInterface } from './environment.interface';
-import { dev } from './feature-flags';
+import { devFeatures } from './features';
 import { getDevHostVariables } from './getHostVariables';
 
 export const environment: EnvironmentInterface = {
   ...getDevHostVariables(),
   production: false,
-  features: dev,
+  features: devFeatures,
 };
 
 /*

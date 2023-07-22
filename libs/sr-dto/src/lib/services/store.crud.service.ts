@@ -25,16 +25,9 @@ import { DtoPack, ERROR, INIT, OK } from '../interfaces/dto.pack.interface';
 import { CRUDBusEmitter } from '../sr-dto.module';
 import { Params } from '@angular/router';
 
-type StoreCrudPatchedWindow = Window & { naris?: { store$?: StoreCrudService } };
-
 @Injectable({ providedIn: 'root' })
 export class StoreCrudService implements CRUD {
   constructor(private http: HttpClient, private bus$: MixedBusService, private urlBuilder: UrlBuilderService) {
-    const wnd = window as StoreCrudPatchedWindow;
-
-    wnd.naris = wnd.naris || {};
-    wnd.naris.store$ = this;
-
     bus$.of(CommandNew).subscribe(this.createNew.bind(this));
     bus$.of(CommandRead).subscribe(this.read.bind(this));
     bus$.of(CommandCreate).subscribe(this.create.bind(this));

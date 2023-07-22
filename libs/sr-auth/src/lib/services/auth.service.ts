@@ -6,7 +6,7 @@ import { LocalStorageService } from '@soer/sr-local-storage';
 import { BehaviorSubject, firstValueFrom, Observable, tap } from 'rxjs';
 import { AuthEmitter } from '../interfaces/auth-options.interface';
 import { EmptyJWTModel, JWTModel } from '../interfaces/jwt.models';
-import { FeatureFlagService } from '@soer/sr-feature-flags';
+import { FeatureFlagService, FeatureFlag } from '@soer/sr-feature-flags';
 
 const TOKEN_KEY = 'tokenV2';
 
@@ -77,7 +77,7 @@ export class AuthService {
 
   checkCookieAuth() {
     if (this.token && this.options.schema.cookieApi) {
-      if (this.featureFlags.isFeatureFlagEnabled('auth_v2')) {
+      if (this.featureFlags.isFeatureFlagEnabled(FeatureFlag.auth_v2)) {
         console.error('Auth V2 does not support cookie renew method, remove it when auth_v1 will completle removed.');
         return;
       }
@@ -148,7 +148,7 @@ export class AuthService {
   }
 
   async processAuth(): Promise<{ accessToken: string } | null> {
-    if (this.featureFlags.isFeatureFlagEnabled('auth_v2')) {
+    if (this.featureFlags.isFeatureFlagEnabled(FeatureFlag.api_v2)) {
       return this.processAuthV2();
     }
     return null;

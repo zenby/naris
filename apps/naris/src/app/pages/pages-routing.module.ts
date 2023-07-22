@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Route, RouterModule, Routes } from '@angular/router';
 import { SrDTOModule } from '@soer/sr-dto';
 import { NoContentComponent } from '@soer/soer-components';
+import { FeatureFlag } from '@soer/sr-feature-flags';
+
 import { ByRoutePathResolver } from '../api/by-route-path.resolver';
 import { StreamService } from '../api/streams/stream.service';
 import { WorkshopsService } from '../api/workshops/workshops.service';
@@ -22,7 +24,6 @@ import { TargetsRoutingModule } from './modules/targets/targets-routing.module';
 import { TargetKey, TemplateKey } from './modules/targets/targets.const';
 import { ComposeTabPageComponent } from './router-compose/compose-tab-page/compose-tab-page.component';
 import { environment } from '../../environments/environment';
-import { featuresEnum } from '../../environments/environment.interface';
 import { ActivityJournalPageComponent } from './modules/account-page/activity-journal-page/activity-journal-page.component';
 import { JsonDocumentKey } from './modules/json-settings/document.const';
 
@@ -107,7 +108,7 @@ const routes: Routes = [
         },
       ];
 
-      if (environment.features[featuresEnum.personal_activity_journal]) {
+      if (environment.features[FeatureFlag.personal_activity_journal]) {
         routes.push({
           path: 'activity-journal',
           data: {
@@ -120,7 +121,7 @@ const routes: Routes = [
         });
       }
 
-      if (environment.features[featuresEnum.subscription]) {
+      if (environment.features[FeatureFlag.subscription]) {
         routes.push({
           path: 'subscription',
           data: {
@@ -140,7 +141,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
 
     SrDTOModule.forChild<WorkbookKey>(
-      environment.features[featuresEnum.api_v2]
+      environment.features[FeatureFlag.api_v2]
         ? {
             namespace: 'workbook',
             schema: { url: '%%narisApiUrl%%v3/json/workbook/:wid' },
@@ -168,7 +169,7 @@ const routes: Routes = [
     }),
 
     SrDTOModule.forChild<WorkbookKey>(
-      environment.features[featuresEnum.api_v2]
+      environment.features[FeatureFlag.api_v2]
         ? {
             namespace: 'quiz',
             schema: { url: '%%narisApiUrl%%v3/json/quiz/:wid' },
@@ -188,7 +189,7 @@ const routes: Routes = [
     ),
 
     SrDTOModule.forChild<WorkbookKey>(
-      environment.features[featuresEnum.api_v2]
+      environment.features[FeatureFlag.api_v2]
         ? {
             namespace: 'articles',
             schema: { url: '%%narisApiUrl%%v3/json/article/:wid' },
@@ -218,7 +219,7 @@ const routes: Routes = [
     }),
 
     SrDTOModule.forChild<TargetKey>(
-      environment.features[featuresEnum.api_v2]
+      environment.features[FeatureFlag.api_v2]
         ? {
             namespace: 'targets',
             schema: { url: '%%narisApiUrl%%v3/json/targets/:tid' },
@@ -237,7 +238,7 @@ const routes: Routes = [
           }
     ),
     SrDTOModule.forChild<TemplateKey>(
-      environment.features[featuresEnum.api_v2]
+      environment.features[FeatureFlag.api_v2]
         ? {
             namespace: 'templates',
             schema: { url: '%%narisApiUrl%%v3/json/templates/:tid' },

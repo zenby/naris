@@ -1,9 +1,9 @@
 import { EnvironmentInterface } from './environment.interface';
-import { ab } from './feature-flags';
+import { abFeatures } from './features';
 import { getProdHostVariables } from './getHostVariables';
 
 export const environment: EnvironmentInterface = {
   ...getProdHostVariables(),
   production: true,
-  features: ab,
+  features: abFeatures,
 };

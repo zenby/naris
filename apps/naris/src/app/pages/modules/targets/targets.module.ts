@@ -39,6 +39,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { TargetDescriptionFormComponent } from './target-description-form/target-description-form.component';
 import { TargetDescriptionPopupComponent } from './target-description-popup/target-description-popup.component';
+import { TargetAchievedSubscriber } from '../../../api/progress/subscribers/target-achieved.subscriber';
 
 import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
 import { SrEditorModule } from '@soer/sr-editor';
@@ -98,4 +99,6 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
   exports: [],
   providers: [],
 })
-export class TargetsModule {}
+export class TargetsModule {
+  constructor(private targetAchievedSubscriber: TargetAchievedSubscriber) {}
+}

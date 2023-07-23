@@ -1,11 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
-import { CommandCreate, CommandRead, DataStoreService, DtoPack } from '@soer/sr-dto';
-import { Observable, of } from 'rxjs';
-import { convertToJsonDTO, parseJsonDTOPack } from '../json.dto.helpers';
+import { CommandCreate, DataStoreService } from '@soer/sr-dto';
+import { convertToJsonDTO } from '../json.dto.helpers';
 import { v4 as uuidv4 } from 'uuid';
-import { environment } from '../../../../src/environments/environment';
-import { FeatureFlag } from '@soer/sr-feature-flags';
 
 export enum ActivityType {
   TARGET = 'TARGET',
@@ -32,7 +29,7 @@ export interface PersonalActivity extends PersonalActivityEventPayload {
   providedIn: 'root',
 })
 export class PersonalActivityService {
-  public activities$: Observable<DtoPack<PersonalActivity[]>>;
+  // public activities$: Observable<DtoPack<PersonalActivity[]>>;
 
   constructor(
     public store$: DataStoreService,
@@ -40,12 +37,12 @@ export class PersonalActivityService {
     @Inject('activityV2') private activityId: BusEmitter,
     @Inject('activitesV2') private activitesId: BusEmitter
   ) {
-    if (environment.features[FeatureFlag.personal_activity_v2]) {
-      this.activities$ = parseJsonDTOPack<PersonalActivity[]>(this.store$.of(this.activityId), 'activitesV2');
-      bus$.publish(new CommandRead(activitesId));
-    } else {
-      this.activities$ = of({} as DtoPack<PersonalActivity[]>);
-    }
+    // if (environment.features[FeatureFlag.personal_activity_v2]) {
+    //   this.activities$ = parseJsonDTOPack<PersonalActivity[]>(this.store$.of(this.activityId), 'activitesV2');
+    //   bus$.publish(new CommandRead(activitesId));
+    // } else {
+    //   this.activities$ = of({} as DtoPack<PersonalActivity[]>);
+    // }
   }
 
   public storeActivity(activityEventPayload: PersonalActivityEventPayload) {

@@ -4,14 +4,14 @@ import { TargetAchievedEvent } from '../../../pages/modules/targets/events/targe
 import { ActivityType, PersonalActivityEventPayload, PersonalActivityService } from '../personal-activityV2.service';
 import { TargetModel } from '../../targets/target.interface';
 import { environment } from '../../../../../src/environments/environment';
-import { featuresEnum } from '../../../../../src/environments/environment.interface';
+import { FeatureFlag } from '@soer/sr-feature-flags';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TargetAchievedSubscriber {
   constructor(private bus$: MixedBusService, private activityService: PersonalActivityService) {
-    if (environment.features[featuresEnum.personal_activity_v2]) {
+    if (environment.features[FeatureFlag.personal_activity_v2]) {
       bus$.of(TargetAchievedEvent).subscribe((event) => {
         if (isBusMessage(event)) {
           this.activityService.storeActivity(this.generateActivityItem(event.payload));

@@ -2,6 +2,27 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.25.0](https://gitlog.ru/Naris/soermono/compare/naris-0.24.0...naris-0.25.0) (2023-07-23)
+
+
+### Features
+
+* add bearer settings ([3560394](https://gitlog.ru/Naris/soermono/commit/35603949bd32c12d12b980a1a350130b9df70699))
+* add blocks editor to targets ([6d795d6](https://gitlog.ru/Naris/soermono/commit/6d795d605a8cdd8c22652f02d4b6b4a018bab849))
+* add cli module for browser console ([17d12cd](https://gitlog.ru/Naris/soermono/commit/17d12cd229b02e62f0c4492f0e6b247aa922a527))
+* add drawer to tabPage ([7d5843a](https://gitlog.ru/Naris/soermono/commit/7d5843a3d7f59148b3168e9da064b9f66e5ae445))
+* add feature flag to show properties ([0ded60e](https://gitlog.ru/Naris/soermono/commit/0ded60efc986359665ef6db5cd8c5dc79339d8f4))
+* add featureFlag service to naris cli ([12caf9b](https://gitlog.ru/Naris/soermono/commit/12caf9bde31eee9ae12680dc3c7aa039bf33176a))
+* add properties to workbooks, tests, articles ([50fbc29](https://gitlog.ru/Naris/soermono/commit/50fbc29a8cd29e219b50a81a93744f587b0c2541))
+* add resolve for controls urls ([227e0eb](https://gitlog.ru/Naris/soermono/commit/227e0eb447a207326398c39b040b5a2515d508c7))
+* load and show accessTag of document ([cba5e33](https://gitlog.ru/Naris/soermono/commit/cba5e33530a2766ee1ba826e93b110f60973e3e3))
+
+
+### Bug Fixes
+
+* change fatureFlga type in contols ([a26eb6b](https://gitlog.ru/Naris/soermono/commit/a26eb6b73daef5a059684fa3408bd29d9fca8bc8))
+* change type for services added to naris scope ([c35de43](https://gitlog.ru/Naris/soermono/commit/c35de43a4aae264061edde87c73a5e69f5d76f81))
+
 ## [0.25.0](https://gitlog.ru/Naris/soermono/compare/naris-0.24.0...naris-0.25.0) (2023-07-10)
 
 

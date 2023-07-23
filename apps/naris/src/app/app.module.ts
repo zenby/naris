@@ -16,7 +16,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { environment } from '../environments/environment';
 import { IconsProviderModule } from '../icons-provider.module';
-import { ActivityKey } from './api/progress/progress.const';
+import { ActivityKey, ActivityV2Key } from './api/progress/progress.const';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApplicationService } from './services/application.service';
@@ -26,64 +26,68 @@ import { NarisCliService } from './cli/naris-cli.service';
 
 registerLocaleData(ru);
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    MixedBusModule,
-    SrAuthModule.forRoot(
-      ((options) => {
-        if (options.features[FeatureFlag.auth_v2]) {
-          return {
-            sid: AUTH_ID,
-            schema: {
-              cookieApi: `${options.urlV2}auth/cookie`,
-              renewApi: `${options.urlV2}auth/access_token`,
-              authApi: `${options.urlV2}auth/login/`,
-            },
-          };
-        }
+const imports = [
+  BrowserModule,
+  MixedBusModule,
+  SrAuthModule.forRoot(
+    ((options) => {
+      if (options.features[FeatureFlag.auth_v2]) {
         return {
           sid: AUTH_ID,
           schema: {
-            cookieApi: `${environment.apiUrl}auth/cookie`,
-            renewApi: `${environment.apiUrl}auth/renew`,
-            authApi: `${environment.apiUrl}auth/renew`,
+            cookieApi: `${options.urlV2}auth/cookie`,
+            renewApi: `${options.urlV2}auth/access_token`,
+            authApi: `${options.urlV2}auth/login/`,
           },
         };
-      })(environment)
-    ),
-    SrUrlBuilderModule.forRoot({ apiRoot: environment.apiUrl, narisApiUrl: environment.narisApiUrl }),
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    IconsProviderModule,
-    NzLayoutModule,
-    NzMenuModule,
-    NzMessageModule,
-    SrFeatureFlagsModule.forRoot<Features>(environment.features),
-    SrDTOModule.forChild<ActivityKey>(
-      environment.features[FeatureFlag.api_v2]
-        ? {
-            namespace: 'activity',
-            schema: { url: '%%narisApiUrl%%v3/json/activity/:aid' },
-            keys: {
-              activity: { aid: '?' },
-              activites: { aid: 'private' },
-            },
-          }
-        : {
-            namespace: 'activity',
-            schema: { url: 'v2/json/activity/:aid' },
-            keys: {
-              activity: { aid: '?' },
-              activites: { aid: 'personal' },
-            },
-          }
-    ),
-    CliModule,
-  ],
+      }
+      return {
+        sid: AUTH_ID,
+        schema: {
+          cookieApi: `${environment.apiUrl}auth/cookie`,
+          renewApi: `${environment.apiUrl}auth/renew`,
+          authApi: `${environment.apiUrl}auth/renew`,
+        },
+      };
+    })(environment)
+  ),
+  SrUrlBuilderModule.forRoot({ apiRoot: environment.apiUrl, narisApiUrl: environment.narisApiUrl }),
+  HttpClientModule,
+  FormsModule,
+  BrowserAnimationsModule,
+  AppRoutingModule,
+  IconsProviderModule,
+  NzLayoutModule,
+  NzMenuModule,
+  NzMessageModule,
+  SrFeatureFlagsModule.forRoot<Features>(environment.features),
+  SrDTOModule.forChild<ActivityKey>({
+    namespace: 'activity',
+    schema: { url: 'v2/json/activity/:aid' },
+    keys: {
+      activity: { aid: '?' },
+      activites: { aid: 'personal' },
+    },
+  }),
+  CliModule,
+];
+
+if (environment.features[FeatureFlag.personal_activity_v2]) {
+  imports.push(
+    SrDTOModule.forChild<ActivityV2Key>({
+      namespace: 'activityV2',
+      schema: { url: '%%narisApiUrl%%v3/json/activityv2/:aid' },
+      keys: {
+        activityV2: { aid: '?' },
+        activitesV2: { aid: 'personal' },
+      },
+    })
+  );
+}
+
+@NgModule({
+  declarations: [AppComponent],
+  imports,
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

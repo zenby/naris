@@ -45,6 +45,7 @@ import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
 import { SrEditorModule } from '@soer/sr-editor';
 import { MarkdownModule } from 'ngx-markdown';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { TaskClosedSubscriber } from '../../../api/progress/subscribers/task-closed.subscriber';
 
 @NgModule({
   declarations: [
@@ -100,5 +101,8 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
   providers: [],
 })
 export class TargetsModule {
-  constructor(private targetAchievedSubscriber: TargetAchievedSubscriber) {}
+  constructor(
+    private targetAchievedSubscriber: TargetAchievedSubscriber,
+    private taskClosedSubscriber: TaskClosedSubscriber
+  ) {}
 }

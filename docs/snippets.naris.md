@@ -22,3 +22,15 @@ naris.scripts.onChangeDataForEach('templates', runner)
 log = d => console.log(d) // просмотр
 log = d => patch(d.id) // установить всем документам новый accessTag, см. snippet patch
 ```
+
+## Примеры
+
+```typescript
+namespace = 'templates' 
+run = () => {} 
+guard = () => true
+runner = (d) => guard(d) ? run(d) : ''
+naris.scripts.onChangeDataForEach('templates', runner)
+
+namespace = 'targets'; guard = d => d.id === 7002; run = d => console.log('Ok', d.id);
+```

@@ -6,7 +6,6 @@ export enum FeatureFlag {
   document_properties = 'document_properties',
   personal_activity_journal = 'personal_activity_journal',
   subscription = 'subscription',
-  personal_activity_v2 = 'personal_activity_v2'
 }
 
 export type Features = Record<FeatureFlag, boolean>;

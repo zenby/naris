@@ -20,7 +20,6 @@ export const prodFeatures: Features = {
   [FeatureFlag.document_properties]: false,
   [FeatureFlag.personal_activity_journal]: true,
   [FeatureFlag.subscription]: false,
-  [FeatureFlag.personal_activity_v2]: false,
   ...flags,
 };
 
@@ -36,7 +35,6 @@ export const devFeatures: Features = {
   [FeatureFlag.document_properties]: true,
   [FeatureFlag.personal_activity_journal]: true,
   [FeatureFlag.subscription]: true,
-  [FeatureFlag.personal_activity_v2]: true,
   ...flags,
 };
 

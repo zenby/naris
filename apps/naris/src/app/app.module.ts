@@ -6,9 +6,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import ru from '@angular/common/locales/ru';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MixedBusModule, MixedBusService } from '@soer/mixed-bus';
+import { isBusMessage, MixedBusModule, MixedBusService } from '@soer/mixed-bus';
 import { AuthInterceptor, AUTH_ID, SrAuthModule } from '@soer/sr-auth';
-import { DataStoreService, SrDTOModule, StoreCrudService, PdfConverterService } from '@soer/sr-dto';
+import { DataStoreService, SrDTOModule, StoreCrudService, PdfConverterService, ChangeDataEvent } from '@soer/sr-dto';
 import { SrUrlBuilderModule, UrlBuilderService } from '@soer/sr-url-builder';
 import { NZ_I18N, ru_RU } from 'ng-zorro-antd/i18n';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -69,21 +69,16 @@ const imports = [
       activites: { aid: 'personal' },
     },
   }),
+  SrDTOModule.forChild<ActivityV2Key>({
+    namespace: 'activityV2',
+    schema: { url: '%%narisApiUrl%%v3/json/activityv2/:aid' },
+    keys: {
+      activityV2: { aid: '?' },
+      activitesV2: { aid: 'personal' },
+    },
+  }),
   CliModule,
 ];
-
-if (environment.features[FeatureFlag.personal_activity_v2]) {
-  imports.push(
-    SrDTOModule.forChild<ActivityV2Key>({
-      namespace: 'activityV2',
-      schema: { url: '%%narisApiUrl%%v3/json/activityv2/:aid' },
-      keys: {
-        activityV2: { aid: '?' },
-        activitesV2: { aid: 'personal' },
-      },
-    })
-  );
-}
 
 @NgModule({
   declarations: [AppComponent],
@@ -120,6 +115,14 @@ if (environment.features[FeatureFlag.personal_activity_v2]) {
             store: _StoreCrudService,
             featureFlag: _FeatureFlagService.featureFlags,
             features: () => _FeatureFlagService.getAllFeatures(),
+            scripts: {
+              onChangeDataForEach: (namespace: string, cb: () => void) =>
+                _MixedBusService.of(ChangeDataEvent).subscribe((data) => {
+                  if (isBusMessage(data)) {
+                    data.owner.sid.toString() === `Symbol(${namespace})` ? data.payload.items.forEach(cb) : '';
+                  }
+                }),
+            },
           });
           return null;
         },

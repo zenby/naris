@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { BusEmitter } from '@soer/mixed-bus';
+import { CommandPatch } from '@soer/sr-dto';
 
 type NarisCliServices = { [key: string]: unknown } & { help?: () => void };
 
@@ -11,6 +13,7 @@ export class NarisCliService {
   constructor() {
     this.add({
       help: this.help,
+      commands: this.commands,
     });
   }
 
@@ -26,5 +29,11 @@ export class NarisCliService {
         featureName: true
       }));
     `);
+  }
+
+  commands(): object {
+    return {
+      patch: (ownerId: BusEmitter, options: object): object => new CommandPatch(ownerId, options),
+    };
   }
 }

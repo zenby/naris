@@ -116,6 +116,7 @@ if (environment.features[FeatureFlag.personal_activity_v2]) {
         () => {
           _NarisCliService.add({
             builder: _UrlBuilderService,
+            bus$: _MixedBusService,
             store: _StoreCrudService,
             featureFlag: _FeatureFlagService.featureFlags,
             features: () => _FeatureFlagService.getAllFeatures(),

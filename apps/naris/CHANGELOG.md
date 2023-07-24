@@ -2,6 +2,25 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.27.0](https://gitlog.ru/Naris/soermono/compare/naris-0.26.0...naris-0.27.0) (2023-07-24)
+
+
+### Features
+
+* add cli commands ([cf16409](https://gitlog.ru/Naris/soermono/commit/cf16409efa4544fff4ece9e838ef4fb6302e0089))
+* add personal activity v2 for app features ([cf9b12d](https://gitlog.ru/Naris/soermono/commit/cf9b12d7a110576e3dd6469713e71ac8d82d8f59))
+* add service personal activity v2 ([f4d59d8](https://gitlog.ru/Naris/soermono/commit/f4d59d80e57e01377a6c38e1555468001c38d98d))
+* add subscriber for store target achieved activity ([724639a](https://gitlog.ru/Naris/soermono/commit/724639a0d861f416f19492b09a7d7c5d91a4b58f))
+* add subscriber for store task closed activity ([ff5824a](https://gitlog.ru/Naris/soermono/commit/ff5824a3b83d51de5468d636006962ca8c7505a9))
+* **target:** add achieved target event ([a8796b4](https://gitlog.ru/Naris/soermono/commit/a8796b4a0db23c2c2e0a0fa4c47f02b029732bf3))
+* **target:** add closed task event ([b421699](https://gitlog.ru/Naris/soermono/commit/b421699d03f6f77faa91daae5d7fad50463d55f1))
+* **targets:** add task close event ([83e124b](https://gitlog.ru/Naris/soermono/commit/83e124b2e55a5af76519c51348b1d32f59dcfd77))
+
+
+### Bug Fixes
+
+* fix feature flag import for acrivity subscribers ([b20576d](https://gitlog.ru/Naris/soermono/commit/b20576dff32f5707bc1704e292e513281083bc6a))
+
 ## [0.25.0](https://gitlog.ru/Naris/soermono/compare/naris-0.24.0...naris-0.25.0) (2023-07-23)
 
 

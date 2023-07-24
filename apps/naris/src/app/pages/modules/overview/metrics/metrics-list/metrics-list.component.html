@@ -1,7 +1,7 @@
 <div nz-row [nzGutter]="[24, 24]" class="metrics">
   <ng-container *ngFor="let metric of metrics">
     <nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="6">
-      <a [href]="metric['url']">
+      <a [attr.data-cy]="metric['title']" [href]="metric['url']">
         <soer-tile
           [tile]="{
             title: metric['title'],

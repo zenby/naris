@@ -8,6 +8,14 @@
     }
 ```
 
+## Создание линка
+
+```
+createLink = (lid, data) => {
+        naris.bus$.publish(naris.commands().create({...naris.emitters.link, ...{key: {lid}}}, {json: JSON.stringify(data)}));
+    }
+```
+
 ## Просмотр всех изменений в namespace
 
 ```typescript

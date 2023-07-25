@@ -46,6 +46,7 @@ import { SrEditorModule } from '@soer/sr-editor';
 import { MarkdownModule } from 'ngx-markdown';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { TaskClosedSubscriber } from '../../../api/progress/subscribers/task-closed.subscriber';
+import { LinksModule } from '../links/links.module';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { TaskClosedSubscriber } from '../../../api/progress/subscribers/task-clo
     AimsTreeModule,
     MarkdownModule.forRoot(),
     NzSpinModule,
+    LinksModule,
   ],
   exports: [],
   providers: [],

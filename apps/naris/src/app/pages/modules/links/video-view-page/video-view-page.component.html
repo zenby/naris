@@ -1,0 +1,9 @@
+<ng-container *ngIf="links$ | async as links">
+  <div *ngFor="let link of links">
+    <soer-video-player
+      *ngIf="link.type === 'video' && link.key"
+      [videoSource]="link.player"
+      [videoId]="link.key"
+    ></soer-video-player>
+  </div>
+</ng-container>

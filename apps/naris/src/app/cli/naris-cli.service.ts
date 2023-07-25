@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BusEmitter } from '@soer/mixed-bus';
-import { CommandPatch } from '@soer/sr-dto';
+import { CommandCreate, CommandPatch } from '@soer/sr-dto';
 
 type NarisCliServices = { [key: string]: unknown } & { help?: () => void };
 
@@ -33,6 +33,7 @@ export class NarisCliService {
 
   commands(): object {
     return {
+      create: (ownerId: BusEmitter, options: object): object => new CommandCreate(ownerId, options),
       patch: (ownerId: BusEmitter, options: object): object => new CommandPatch(ownerId, options),
     };
   }

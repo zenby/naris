@@ -26,6 +26,7 @@ import { ComposeTabPageComponent } from './router-compose/compose-tab-page/compo
 import { environment } from '../../environments/environment';
 import { ActivityJournalPageComponent } from './modules/account-page/activity-journal-page/activity-journal-page.component';
 import { JsonDocumentKey } from './modules/json-settings/document.const';
+import { LinkKey } from './modules/links/links.const';
 
 const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'prefix' },
@@ -165,6 +166,13 @@ const routes: Routes = [
       schema: { url: '%%narisApiUrl%%v1/document/:did' },
       keys: {
         jsonDocument: { did: '?' },
+      },
+    }),
+    SrDTOModule.forChild<LinkKey>({
+      namespace: 'link',
+      schema: { url: '%%narisApiUrl%%v3/json/link/:lid' },
+      keys: {
+        link: { lid: '?' },
       },
     }),
 

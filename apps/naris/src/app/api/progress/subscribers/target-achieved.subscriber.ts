@@ -3,21 +3,17 @@ import { MixedBusService, isBusMessage } from '@soer/mixed-bus';
 import { TargetAchievedEvent } from '../../../pages/modules/targets/events/target-achieved.event';
 import { ActivityType, PersonalActivityEventPayload, PersonalActivityService } from '../personal-activityV2.service';
 import { TargetModel } from '../../targets/target.interface';
-import { environment } from '../../../../../src/environments/environment';
-import { FeatureFlag } from '@soer/sr-feature-flags';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TargetAchievedSubscriber {
   constructor(private bus$: MixedBusService, private activityService: PersonalActivityService) {
-    if (environment.features[FeatureFlag.personal_activity_v2]) {
-      bus$.of(TargetAchievedEvent).subscribe((event) => {
-        if (isBusMessage(event)) {
-          this.activityService.storeActivity(this.generateActivityItem(event.payload));
-        }
-      });
-    }
+    bus$.of(TargetAchievedEvent).subscribe((event) => {
+      if (isBusMessage(event)) {
+        this.activityService.storeActivity(this.generateActivityItem(event.payload));
+      }
+    });
   }
 
   private generateActivityItem(target: TargetModel): PersonalActivityEventPayload {

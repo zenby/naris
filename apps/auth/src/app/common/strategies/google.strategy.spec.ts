@@ -22,6 +22,13 @@ describe('GoogleStrategy', () => {
               if (key === 'jwt') {
                 return { cookieName: 'test_cookie' };
               }
+              if (key === 'googleClient') {
+                return {
+                  clientID: 'id',
+                  clientSecret: 'secret',
+                  callbackURL: 'callbackURL',
+                };
+              }
               return undefined;
             }),
           },

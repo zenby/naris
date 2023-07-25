@@ -22,6 +22,13 @@ describe('YandexStrategy', () => {
               if (key === 'jwt') {
                 return { cookieName: 'test_cookie' };
               }
+              if (key === 'yandexClient') {
+                return {
+                  clientID: 'id',
+                  clientSecret: 'secret',
+                  callbackURL: 'callbackURL',
+                };
+              }
               return undefined;
             }),
           },

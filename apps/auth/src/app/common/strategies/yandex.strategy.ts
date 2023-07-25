@@ -1,19 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-yandex';
 import { AuthService } from '../../auth/auth.service';
+import { Configuration } from '../../config/config';
 import { UserEntity } from '../../user/user.entity';
-import { UserService } from '../../user/user.service';
 
 const logger = new Logger('Yandex oauth');
 
 @Injectable()
 export class YandexStrategy extends PassportStrategy(Strategy, 'yandex') {
-  constructor(private readonly authService: AuthService) {
+  constructor(private readonly authService: AuthService, configService: ConfigService) {
     super({
-      clientID: process.env.YANDEX_CLIENT_ID,
-      clientSecret: process.env.YANDEX_CLIENT_SECRET,
-      callbackURL: process.env.YANDEX_CLIENT_CALLBACK,
+      clientID: configService.get<Configuration['yandexClient']>('yandexClient').clientID,
+      clientSecret: configService.get<Configuration['yandexClient']>('yandexClient').clientSecret,
+      callbackURL: configService.get<Configuration['yandexClient']>('yandexClient').callbackURL,
     });
   }
 

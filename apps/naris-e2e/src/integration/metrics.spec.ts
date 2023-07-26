@@ -30,13 +30,13 @@ describe('naris metrics', () => {
     it('should display tiles', () => {
       cy.visit('/#!/pages/overview/metrics');
 
-      cy.get('[data-cy="Цели"]').contains('Цели');
-      cy.get('[data-cy="Конспекты"]').contains('Конспекты');
-      cy.get('[data-cy="Вопросы"]').contains('Вопросы');
-      cy.get('[data-cy="Стримы"]').contains('Стримы');
-      cy.get('[data-cy="Воркшопы"]').contains('Воркшопы');
-      cy.get('[data-cy="Книга"]').contains('Книга');
-      cy.get('[data-cy="Исходники"]').contains('Исходники');
+      cy.get('[data-cy="targets/list"]').contains('Цели');
+      cy.get('[data-cy="workbook"]').contains('Конспекты');
+      cy.get('[data-cy="qa"]').contains('Вопросы');
+      cy.get('[data-cy="streams"]').contains('Стримы');
+      cy.get('[data-cy="workshops"]').contains('Воркшопы');
+      cy.get('[data-cy="book"]').contains('Книга');
+      cy.get('[data-cy="sources"]').contains('Исходники');
     });
   });
 });

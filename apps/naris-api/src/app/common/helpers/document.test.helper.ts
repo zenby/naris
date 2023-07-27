@@ -9,7 +9,7 @@ export const createFakeDocument = (): JsonEntity => {
     json: faker.lorem.text(),
     author_email: faker.internet.email(),
     namespace: faker.lorem.word(),
-    accessTag: faker.helpers.arrayElement(['PUBLIC', 'PRIVATE']),
+    accessTag: faker.helpers.arrayElement(['PUBLIC', 'PRIVATE', 'STREAM', 'WORKSHOP', 'PRO']),
   } as JsonEntity;
 };
 

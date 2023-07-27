@@ -195,6 +195,14 @@ export class JsonService {
     return count > 0;
   }
 
+  accessTagGuard(userAccessTag: AccessTag, documentAccessTag: AccessTag): boolean {
+    const levels = [AccessTag.PUBLIC, AccessTag.STREAM, AccessTag.WORKSHOP, AccessTag.PRO, AccessTag.PRIVATE];
+
+    const userLevel = levels.indexOf(userAccessTag);
+    const docLevel = levels.indexOf(documentAccessTag);
+
+    return docLevel !== -1 && docLevel <= userLevel;
+  }
   prepareResponse(status: HttpJsonStatus, list: JsonEntity[]): HttpJsonResult<JsonEntity> {
     return {
       status,

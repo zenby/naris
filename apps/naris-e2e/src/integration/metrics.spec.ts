@@ -10,9 +10,9 @@ describe('naris metrics', () => {
     cy.visit('/#!/pages/overview/info');
 
     // Tab button
-    cy.get('a[href="#!/pages/overview/metrics"').should('not.have.attr', 'disabled');
-    cy.get('a[href="#!/pages/overview/metrics"').click();
-    cy.get('a[href="#!/pages/overview/metrics"').should('have.attr', 'disabled');
+    cy.get('[data-cy="Метрики"]').should('not.have.attr', 'disabled');
+    cy.get('[data-cy="Метрики"]').click();
+    cy.get('[data-cy="Метрики"]').should('have.attr', 'disabled');
 
     cy.location().should((location) => expect(location.href).to.include('/pages/overview/metrics'));
   });

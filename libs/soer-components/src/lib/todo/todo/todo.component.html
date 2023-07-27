@@ -24,4 +24,7 @@
       nzTheme="outline"
     ></i>
   </ng-container>
+  <ng-container *ngIf="showVideoIcon">
+    <i (click)="video.emit(null)" class="todo_video-icon" nz-icon nzType="youtube" nzTheme="outline"></i>
+  </ng-container>
 </div>

@@ -17,8 +17,13 @@ export class AimsTreeComponent {
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() taskClose: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
+  @Output() video: EventEmitter<number[]> = new EventEmitter<number[]>();
 
   doneProgress = 100;
+
+  onVideo($event: number[]) {
+    this.video.emit($event);
+  }
 
   onDescription($event: number[]) {
     this.description.emit($event);

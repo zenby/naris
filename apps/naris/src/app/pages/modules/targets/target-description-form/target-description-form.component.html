@@ -19,6 +19,8 @@
 </div>
 
 <ng-template #blocks>
+  <span>ID ссылки на видео:</span
+  ><input [ngModel]="activeTarget.linkVideoId" (ngModelChange)="updateLinkVideo($event)" />
   <soer-editor [document]="activeTarget"></soer-editor>
 </ng-template>
 <ng-template #viewButton>

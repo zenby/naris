@@ -101,4 +101,10 @@ export class ListAimsPageComponent implements OnInit {
     const outlets = { popup: ['target', String(id), 'description', path] };
     this.router.navigate(['/pages/targets', { outlets }]);
   }
+
+  onVideo(videoLinkIds: number[]) {
+    const [id] = videoLinkIds;
+    const outlets = { popup: ['link', String(id), 'video'] };
+    this.router.navigate(['/pages/targets', { outlets }]);
+  }
 }

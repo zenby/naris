@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 export class TodoComponent {
   @Input() label = '';
   @Input() showOverviewIcon = false;
+  @Input() showVideoIcon = false;
   @Input() checked = false;
   @Input() disabled = false;
 
@@ -16,6 +17,7 @@ export class TodoComponent {
   @Output() update: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() taskClose: EventEmitter<null> = new EventEmitter<null>();
   @Output() description: EventEmitter<null> = new EventEmitter<null>();
+  @Output() video: EventEmitter<null> = new EventEmitter<null>();
 
   constructor(private cdp: ChangeDetectorRef) {}
 

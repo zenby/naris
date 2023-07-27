@@ -29,6 +29,8 @@ export class AimRawComponent implements OnChanges {
   @Output() taskClose: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() expand: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
+  @Output() video: EventEmitter<number[]> = new EventEmitter<number[]>();
+
   doneProgress = 100;
   actions = ['plus', 'edit', 'delete'];
   inlineEditorActions = ['save', 'cancel'];
@@ -45,6 +47,12 @@ export class AimRawComponent implements OnChanges {
 
   showDescription() {
     this.description.emit([this.aimIndex]);
+  }
+
+  showVideo() {
+    if (this.aim.linkVideoId) {
+      this.video.emit([this.aim.linkVideoId]);
+    }
   }
 
   onDescription($event: number[], index: number) {

@@ -19,6 +19,9 @@
       <ng-container *ngIf="target.blocks || isEdit">
         <a (click)="showDescription()" nz-button nzType="link"><i nz-icon [nzType]="'info-circle'"></i></a>
       </ng-container>
+      <ng-container *ngIf="target.linkVideoId || isEdit">
+        <a (click)="showVideo()" nz-button nzType="link"><i nz-icon [nzType]="'youtube'"></i></a>
+      </ng-container>
 
       <ng-content select="[toolbar]"></ng-content>
       <!--<a nz-button nzType="link" (click)="hideCompleted = !hideCompleted"><i nz-icon [nzType]="hideCompleted ? 'eye' : 'eye-invisible'"></i></a>-->
@@ -48,6 +51,7 @@
       (delete)="onDelete($event)"
       (add)="onAddTo($event)"
       (description)="onDescription($event)"
+      (video)="onVideo($event)"
       (taskClose)="taskClose.emit($event)"
     ></soer-aims-tree>
 

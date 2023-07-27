@@ -19,6 +19,9 @@
                 nzTheme="outline"
               ></i>
             </ng-container>
+            <ng-container *ngIf="aim.linkVideoId || isEdit">
+              <a (click)="showVideo()" nz-button nzType="link"><i nz-icon [nzType]="'youtube'"></i></a>
+            </ng-container>
           </div>
         </nz-col>
         <nz-col *ngIf="isEdit" nzFlex="none">
@@ -32,10 +35,12 @@
           <soer-todo
             [label]="aim.title"
             [showOverviewIcon]="!!aim.blocks || isEdit"
+            [showVideoIcon]="!!aim.linkVideoId"
             [checked]="aim.progress === doneProgress"
             [disabled]="isEdit"
             (update)="update.emit(aim)"
             (description)="showDescription()"
+            (video)="showVideo()"
             (taskClose)="taskClose.emit(aim)"
           ></soer-todo>
         </nz-col>

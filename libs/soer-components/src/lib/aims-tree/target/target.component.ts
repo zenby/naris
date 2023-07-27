@@ -17,6 +17,7 @@ export class TargetComponent {
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() taskClose: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
+  @Output() video: EventEmitter<number[]> = new EventEmitter<number[]>();
 
   constructor(private targetService: TargetService) {}
 
@@ -44,10 +45,19 @@ export class TargetComponent {
   showDescription() {
     this.description.emit([-1]);
   }
+  showVideo() {
+    if (this.target.linkVideoId) {
+      this.video.emit([this.target.linkVideoId]);
+    }
+  }
 
   onDescription(descriptionPath: number[]) {
     const rootIndex = 0;
     this.description.emit([rootIndex, ...descriptionPath]);
+  }
+
+  onVideo($event: number[]) {
+    this.video.emit($event);
   }
 
   onAction(action: string): void {

@@ -11,11 +11,11 @@ export class UserManifestGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
     const token = req.headers['authorization'].split(' ').pop();
     const manifest = await this.manifest.resolve(token);
-
     if (!manifest.email) {
       return false;
     }
 
+    req.manifest = manifest;
     if (manifest.namespaces.length > 0) {
       const requestedNamespaces = this.reflector.getAllAndOverride<string[]>('namespaces', [
         context.getHandler(),

@@ -1,5 +1,5 @@
 import { compareSync } from 'bcrypt';
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { Configuration } from '../config/config';
 import { ConfigService } from '@nestjs/config';
 

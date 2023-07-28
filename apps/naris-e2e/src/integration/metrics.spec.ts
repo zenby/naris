@@ -17,26 +17,22 @@ describe('naris metrics', () => {
     cy.location().should((location) => expect(location.href).to.include('/pages/overview/metrics'));
   });
 
-  describe('Achievements section', () => {
-    it('should display achievement tile and navigetes to General templates by clicking on it', () => {
-      cy.visit('/#!/pages/overview/metrics');
+  it('should display achievement tile and navigetes to General templates by clicking on it', () => {
+    cy.visit('/#!/pages/overview/metrics');
 
-      cy.get('a[href="#!/pages/targets/templates/public"').click();
-      cy.location().should((location) => expect(location.href).to.include('/pages/targets/templates/public'));
-    });
+    cy.get('a[href="#!/pages/targets/templates/public"').click();
+    cy.location().should((location) => expect(location.href).to.include('/pages/targets/templates/public'));
   });
 
-  describe('Metrics section', () => {
-    it('should display tiles', () => {
-      cy.visit('/#!/pages/overview/metrics');
+  it('should display tiles', () => {
+    cy.visit('/#!/pages/overview/metrics');
 
-      cy.get('[data-cy="targets/list"]').contains('Цели');
-      cy.get('[data-cy="workbook"]').contains('Конспекты');
-      cy.get('[data-cy="qa"]').contains('Вопросы');
-      cy.get('[data-cy="streams"]').contains('Стримы');
-      cy.get('[data-cy="workshops"]').contains('Воркшопы');
-      cy.get('[data-cy="book"]').contains('Книга');
-      cy.get('[data-cy="sources"]').contains('Исходники');
-    });
+    cy.get('[data-cy="targets/list"]').contains('Цели');
+    cy.get('[data-cy="workbook"]').contains('Конспекты');
+    cy.get('[data-cy="qa"]').contains('Вопросы');
+    cy.get('[data-cy="streams"]').contains('Стримы');
+    cy.get('[data-cy="workshops"]').contains('Воркшопы');
+    cy.get('[data-cy="book"]').contains('Книга');
+    cy.get('[data-cy="sources"]').contains('Исходники');
   });
 });

@@ -27,8 +27,13 @@ export class AuthService {
     this.logger.log('Start service');
   }
 
-  async signUp(createUserDto: CreateUserDto) {
-    return await this.userService.createUser(createUserDto);
+  async signUp(createUserDto: CreateUserDto): Promise<UserEntity | Error> {
+    const existentUser = await this.userService.findByEmail(createUserDto.email);
+    if (existentUser instanceof NotFoundException) {
+      return await this.userService.createUser(createUserDto);
+    }
+
+    return new BadRequestException(`User with email ${createUserDto.email} already exists`);
   }
 
   getAccessToken(user: UserEntity): string {

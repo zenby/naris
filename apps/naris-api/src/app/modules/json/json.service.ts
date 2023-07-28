@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
-import { DeleteResult, In, Repository } from 'typeorm';
+import { DeleteResult, FindOptionsSelect, In, Repository } from 'typeorm';
 import { CreateJsonDto } from './dto/create-json.dto';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { UpdateJsonDto } from './dto/update-json.dto';
@@ -10,10 +10,19 @@ import { PatchDocumentPropertiesDto } from './dto/patch-document-properties.dto'
 
 @Injectable()
 export class JsonService {
+  private allowedFields: (keyof JsonEntity)[];
+
   constructor(
     @InjectRepository(JsonEntity)
     private readonly jsonRepository: Repository<JsonEntity>
-  ) {}
+  ) {
+    this.allowedFields = ['id'];
+    if (jsonRepository.metadata) {
+      this.allowedFields = Object.keys(jsonRepository.metadata.propertiesMap).filter(
+        (key) => !['author_email'].includes(key)
+      ) as (keyof JsonEntity)[];
+    }
+  }
 
   async getAll(documentNamespace: string): Promise<JsonEntity[]> {
     return this.jsonRepository.find({ where: { namespace: documentNamespace } });
@@ -100,6 +109,7 @@ export class JsonService {
 
   async findDocumentById(documentId: number): Promise<JsonEntity> {
     return await this.jsonRepository.findOne({
+      select: this.allowedFields,
       where: {
         id: documentId,
       },
@@ -123,7 +133,6 @@ export class JsonService {
     }
 
     Object.assign(document, newProperties);
-
     return await this.jsonRepository.save(document);
   }
 

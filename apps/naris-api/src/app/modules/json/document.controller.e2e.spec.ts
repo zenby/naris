@@ -9,7 +9,7 @@ import { JwtTestHelper } from '../../common/helpers/jwt.test.helper';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
-import { createFakeDocument } from '../../common/helpers/document.test.helper';
+import { createFakeDocument, jsonEntityMetadataPropertiesMap } from '../../common/helpers/document.test.helper';
 import { AccessTag } from './types/json.const';
 import {
   ManifestGuestFixture,
@@ -26,26 +26,23 @@ import { faker } from '@faker-js/faker';
 describe('JsonModule e2e-test', () => {
   let app: INestApplication;
   let request: supertest.SuperTest<supertest.Test>;
-  let jsonRepositoryMock: Partial<Record<keyof Repository<JsonEntity>, jest.Mock>>;
+  let jsonRepositoryMock: Repository<JsonEntity>;
   let manifestServiceMock: ManifestService;
   let jsonService: JsonService;
 
   beforeAll(async () => {
-    jsonRepositoryMock = {
-      find: jest.fn(),
-      save: jest.fn(),
-      findOne: jest.fn(),
-      delete: jest.fn(),
-      count: jest.fn(),
-    };
-
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [JsonModule, ConfigModule.forFeature(JwtConfig), ManifestModule.forRoot({ apiUrl: '' })],
     })
+      .overrideProvider(getRepositoryToken(JsonEntity))
+      .useValue({
+        save: jest.fn(),
+        findOne: jest.fn(),
+        count: jest.fn(),
+        metadata: jsonEntityMetadataPropertiesMap,
+      })
       .overrideProvider(getRepositoryToken(ManifestService))
       .useValue(manifestServiceMock)
-      .overrideProvider(getRepositoryToken(JsonEntity))
-      .useValue(jsonRepositoryMock)
       .useMocker((token) => {
         if (token == JwtConfig.KEY) {
           const jwtConfigMock: ConfigType<typeof JwtConfig> = {
@@ -59,6 +56,7 @@ describe('JsonModule e2e-test', () => {
     app = moduleFixture.createNestApplication();
     manifestServiceMock = moduleFixture.get<ManifestService>(ManifestService);
     jsonService = moduleFixture.get<JsonService>(JsonService);
+    jsonRepositoryMock = moduleFixture.get<Repository<JsonEntity>>(getRepositoryToken(JsonEntity));
     await app.init();
 
     request = supertest(app.getHttpServer());
@@ -76,10 +74,11 @@ describe('JsonModule e2e-test', () => {
     it('should return document (for owner)', async () => {
       const document = createFakeDocument();
       const isAuthor = jest.spyOn(jsonService, 'isUserAuthorOfDocument');
+      const findOne = jest.spyOn(jsonRepositoryMock, 'findOne');
 
       jest.spyOn(manifestServiceMock, 'resolve').mockReturnValueOnce(Promise.resolve(ManifestGuestFixture));
       isAuthor.mockReturnValueOnce(Promise.resolve(true));
-      jsonRepositoryMock.findOne.mockReturnValueOnce(document);
+      findOne.mockReturnValueOnce(Promise.resolve(document));
 
       await request
         .get(`/document/${document.id}`)
@@ -87,7 +86,8 @@ describe('JsonModule e2e-test', () => {
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
       expect(isAuthor).toHaveBeenCalledWith(document.id, JwtTestHelper.defaultPayload.email);
-      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
+      expect(findOne).toHaveBeenCalledWith({
+        select: Object.keys(document).filter((key) => key !== 'author_email'),
         where: {
           id: document.id,
         },
@@ -97,6 +97,7 @@ describe('JsonModule e2e-test', () => {
     it('should return error for private document for regular users (not owner, any role)', async () => {
       const document = { ...createFakeDocument(), accessTag: 'PRIVATE' };
       const isAuthor = jest.spyOn(jsonService, 'isUserAuthorOfDocument');
+      const findOne = jest.spyOn(jsonRepositoryMock, 'findOne');
 
       jest
         .spyOn(manifestServiceMock, 'resolve')
@@ -112,14 +113,15 @@ describe('JsonModule e2e-test', () => {
           )
         );
       isAuthor.mockReturnValueOnce(Promise.resolve(false));
-      jsonRepositoryMock.findOne.mockReturnValueOnce(document);
+      findOne.mockReturnValueOnce(Promise.resolve(document));
 
       await request
         .get(`/document/${document.id}`)
         .set(JwtTestHelper.createBearerHeader())
         .expect({ status: HttpJsonStatus.Error, items: ['Необходим доступ не ниже PRIVATE'] });
 
-      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
+      expect(findOne).toHaveBeenCalledWith({
+        select: Object.keys(document).filter((key) => key !== 'author_email'),
         where: {
           id: document.id,
         },
@@ -129,6 +131,7 @@ describe('JsonModule e2e-test', () => {
     it('should return public document for regular users (not owner)', async () => {
       const document = { ...createFakeDocument(), accessTag: 'PUBLIC' };
       const isAuthor = jest.spyOn(jsonService, 'isUserAuthorOfDocument');
+      const findOne = jest.spyOn(jsonRepositoryMock, 'findOne');
 
       jest
         .spyOn(manifestServiceMock, 'resolve')
@@ -144,14 +147,15 @@ describe('JsonModule e2e-test', () => {
           )
         );
       isAuthor.mockReturnValueOnce(Promise.resolve(false));
-      jsonRepositoryMock.findOne.mockReturnValueOnce(document);
+      findOne.mockReturnValueOnce(Promise.resolve(document));
 
       await request
         .get(`/document/${document.id}`)
         .set(JwtTestHelper.createBearerHeader())
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
-      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
+      expect(findOne).toHaveBeenCalledWith({
+        select: Object.keys(document).filter((key) => key !== 'author_email'),
         where: {
           id: document.id,
         },
@@ -168,19 +172,21 @@ describe('JsonModule e2e-test', () => {
 
       const document = { ...createFakeDocument(), accessTag };
       const isAuthor = jest.spyOn(jsonService, 'isUserAuthorOfDocument');
+      const findOne = jest.spyOn(jsonRepositoryMock, 'findOne');
 
       jest
         .spyOn(manifestServiceMock, 'resolve')
         .mockReturnValueOnce(Promise.resolve(faker.helpers.arrayElement(validRolesVariants[accessTag] || [])));
       isAuthor.mockReturnValueOnce(Promise.resolve(false));
-      jsonRepositoryMock.findOne.mockReturnValueOnce(document);
+      findOne.mockReturnValueOnce(Promise.resolve(document));
 
       await request
         .get(`/document/${document.id}`)
         .set(JwtTestHelper.createBearerHeader())
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
-      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
+      expect(findOne).toHaveBeenCalledWith({
+        select: Object.keys(document).filter((key) => key !== 'author_email'),
         where: {
           id: document.id,
         },
@@ -197,19 +203,21 @@ describe('JsonModule e2e-test', () => {
 
       const document = { ...createFakeDocument(), accessTag };
       const isAuthor = jest.spyOn(jsonService, 'isUserAuthorOfDocument');
+      const findOne = jest.spyOn(jsonRepositoryMock, 'findOne');
 
       jest
         .spyOn(manifestServiceMock, 'resolve')
         .mockReturnValueOnce(Promise.resolve(faker.helpers.arrayElement(validRolesVariants[accessTag] || [])));
       isAuthor.mockReturnValueOnce(Promise.resolve(false));
-      jsonRepositoryMock.findOne.mockReturnValueOnce(document);
+      findOne.mockReturnValueOnce(Promise.resolve(document));
 
       await request
         .get(`/document/${document.id}`)
         .set(JwtTestHelper.createBearerHeader())
         .expect({ status: HttpJsonStatus.Error, items: ['Необходим доступ не ниже ' + accessTag] });
 
-      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
+      expect(findOne).toHaveBeenCalledWith({
+        select: Object.keys(document).filter((key) => key !== 'author_email'),
         where: {
           id: document.id,
         },
@@ -219,6 +227,7 @@ describe('JsonModule e2e-test', () => {
     it('should return public document for regular users (any role)', async () => {
       const document = { ...createFakeDocument(), accessTag: 'PUBLIC' };
       const isAuthor = jest.spyOn(jsonService, 'isUserAuthorOfDocument');
+      const findOne = jest.spyOn(jsonRepositoryMock, 'findOne');
 
       jest
         .spyOn(manifestServiceMock, 'resolve')
@@ -233,14 +242,15 @@ describe('JsonModule e2e-test', () => {
           )
         );
       isAuthor.mockReturnValueOnce(Promise.resolve(false));
-      jsonRepositoryMock.findOne.mockReturnValueOnce(document);
+      findOne.mockReturnValueOnce(Promise.resolve(document));
 
       await request
         .get(`/document/${document.id}`)
         .set(JwtTestHelper.createBearerHeader())
         .expect({ status: HttpJsonStatus.Ok, items: [document] });
 
-      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
+      expect(findOne).toHaveBeenCalledWith({
+        select: Object.keys(document).filter((key) => key !== 'author_email'),
         where: {
           id: document.id,
         },
@@ -256,10 +266,13 @@ describe('JsonModule e2e-test', () => {
         accessTag: 'PRIVATE',
       };
       const { id } = document;
+      const findOne = jest.spyOn(jsonRepositoryMock, 'findOne');
+      const save = jest.spyOn(jsonRepositoryMock, 'save');
+      const count = jest.spyOn(jsonRepositoryMock, 'count');
 
-      jsonRepositoryMock.findOne.mockReturnValueOnce(document);
-      jsonRepositoryMock.save.mockImplementationOnce((newDocument) => Object.assign({}, newDocument));
-      jsonRepositoryMock.count.mockReturnValueOnce(1);
+      findOne.mockReturnValueOnce(Promise.resolve(document));
+      save.mockImplementationOnce((newDocument) => Promise.resolve(newDocument as JsonEntity));
+      count.mockReturnValueOnce(Promise.resolve(1));
 
       await request
         .patch(`/document/${id}`)
@@ -270,10 +283,11 @@ describe('JsonModule e2e-test', () => {
           items: [{ ...document, accessTag: newAccessTag }],
         });
 
-      expect(jsonRepositoryMock.findOne).toHaveBeenCalledWith({
+      expect(findOne).toHaveBeenCalledWith({
+        select: Object.keys(document).filter((key) => key !== 'author_email'),
         where: { id },
       });
-      expect(jsonRepositoryMock.save).toHaveBeenCalledWith({ ...document, accessTag: newAccessTag });
+      expect(save).toHaveBeenCalledWith({ ...document, accessTag: newAccessTag });
     });
   });
 });

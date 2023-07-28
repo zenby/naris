@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -175,6 +176,11 @@ export class AuthController {
   async signUp(@Body() createUserDto: CreateUserDto): Promise<HttpJsonResult<string>> {
     try {
       const user = await this.authService.signUp(createUserDto);
+
+      if (user instanceof BadRequestException) {
+        this.logger.error(user);
+        return { status: HttpJsonStatus.Error, items: ["Can't create a user"] };
+      }
 
       if (user instanceof Error) {
         if (user.message.includes(';')) {

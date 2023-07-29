@@ -18,7 +18,7 @@
     </ng-container>
     <ng-template #createFromTemplate>
       <nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="8" nzXl="6">
-        <a [routerLink]="['/', 'pages', 'targets', 'templates', 'public']">
+        <a data-cy="emptyTarget" [routerLink]="['/', 'pages', 'targets', 'templates', 'public']">
           <soer-tile
             [tile]="{
               title: 'У вас не создано ни одной цели. Нажмите здесь, чтобы создать из готовых шаблонов.',

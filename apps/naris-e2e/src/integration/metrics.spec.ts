@@ -18,7 +18,7 @@ describe('naris metrics', () => {
   it('should display achievement tile and navigetes to General templates by clicking on it', () => {
     cy.visit('/#!/pages/overview/metrics');
 
-    cy.get('a[href="#!/pages/targets/templates/public"').click();
+    cy.get('[data-cy="emptyTarget"]').click();
     cy.location().should((location) => expect(location.href).to.include('/pages/targets/templates/public'));
   });
 

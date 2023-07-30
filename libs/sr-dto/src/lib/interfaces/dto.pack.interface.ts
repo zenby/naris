@@ -19,7 +19,11 @@ export interface DtoPackWithErrors {
   items: DtoErrorMessage[];
 }
 
-export type DtoPackWithStatus<T> = DtoPackWithResult<T> | DtoPackWithErrors;
+export interface DtoPackWait<T> {
+  status: typeof LOADING | typeof UPDATE | typeof INIT;
+  items: T[];
+}
+export type DtoPackWithStatus<T> = DtoPackWithResult<T> | DtoPackWithErrors | DtoPackWait<T>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface DtoPack<T = any> {

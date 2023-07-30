@@ -9,7 +9,6 @@
     </div>
   </ng-container>
   <ng-container *ngIf="data.status === 'error'">
-    <h2>Вы не можете получить информацию из-за следующей ошибки:</h2>
-    {{ data.items | json }}
+    <soer-access-denied [errors]="data.items"></soer-access-denied>
   </ng-container>
 </ng-container>

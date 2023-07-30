@@ -6,18 +6,14 @@
   >
     <div nz-result-content>
       <div class="desc">
-        <p nz-paragraph>
-          <i nz-icon nzType="check-circle"></i>
-          Для доступа к архитектурным стримам - <strong>"Stream"</strong>
-        </p>
-        <p nz-paragraph>
-          <i nz-icon nzType="check-circle"></i>
-          Для доступа к архитектурным стримам и мастерклассам - <strong>"Workshop"</strong>
-        </p>
-        <p nz-paragraph>
-          <i nz-icon nzType="check-circle"></i>
-          Для доступа ко всем материалам и исходным кодам проектов - <strong>"PRO"</strong>
-        </p>
+        <ng-container *ngIf="errors && errors.length > 0; else subinfo">
+          <ng-container *ngFor="let message of errors">
+            <p nz-paragraph>
+              <i nz-icon nzType="check-circle"></i>
+              {{ message }}
+            </p>
+          </ng-container>
+        </ng-container>
       </div>
     </div>
     <div nz-result-extra>
@@ -25,3 +21,18 @@
     </div>
   </nz-result>
 </div>
+
+<ng-template #subinfo>
+  <p nz-paragraph>
+    <i nz-icon nzType="check-circle"></i>
+    Для доступа к архитектурным стримам - <strong>"Stream"</strong>
+  </p>
+  <p nz-paragraph>
+    <i nz-icon nzType="check-circle"></i>
+    Для доступа к архитектурным стримам и мастерклассам - <strong>"Workshop"</strong>
+  </p>
+  <p nz-paragraph>
+    <i nz-icon nzType="check-circle"></i>
+    Для доступа ко всем материалам и исходным кодам проектов - <strong>"PRO"</strong>
+  </p>
+</ng-template>

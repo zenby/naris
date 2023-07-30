@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MixedBusService } from '@soer/mixed-bus';
+import { ActivatedRoute } from '@angular/router';
 import { VideoSource } from '@soer/soer-components';
-import { DataStoreService, deSerializeJson, extractDtoPackFromBus, SerializedJsonModel } from '@soer/sr-dto';
-import { Observable } from 'rxjs';
+import { DataStoreService, deSerializeJson, extractDtoPackStatusFromBus, OK, SerializedJsonModel } from '@soer/sr-dto';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 
 interface VideoLink {
   type: string;
@@ -17,16 +16,35 @@ interface VideoLink {
   styleUrls: ['./video-view-page.component.scss'],
 })
 export class VideoViewPageComponent {
+  //  links$: Observable<VideoLink[]>;
   links$: Observable<VideoLink[]>;
-
+  errors$ = new BehaviorSubject<string[]>([]);
+  status$: Observable<string[]>;
   private linkId;
-  constructor(
-    private bus$: MixedBusService,
-    private store$: DataStoreService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private store$: DataStoreService, private route: ActivatedRoute) {
+    const dto$ = new BehaviorSubject<SerializedJsonModel[]>([]);
+
     this.linkId = this.route.snapshot.data['link'];
-    this.links$ = deSerializeJson<VideoLink>(extractDtoPackFromBus<SerializedJsonModel>(this.store$.of(this.linkId)));
+    this.status$ = extractDtoPackStatusFromBus<SerializedJsonModel>(this.store$.of(this.linkId), dto$, this.errors$);
+    this.links$ = deSerializeJson<VideoLink>(dto$.pipe(map((items) => ({ status: OK, items }))));
+    /*    this.links$ = deSerializeJson<VideoLink>(
+      extractDtoPackFromBus<SerializedJsonModel>(
+        this.store$.of(this.linkId).pipe(tap(
+          data => { 
+            this.status$.next(data.payload.status);
+            switch(data.payload.status) {
+              case ERROR: 
+                this.errors$.next(data.payload.items);
+              break;
+              case INIT:
+                this.errors$.next(['INIT']);
+              break;
+              default:
+                  this.errors$.next([]);
+            }
+         }
+        ))
+      )
+    );*/
   }
 }

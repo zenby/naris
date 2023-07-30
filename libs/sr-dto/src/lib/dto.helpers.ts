@@ -1,6 +1,7 @@
+import { error } from '@ant-design/icons-angular';
 import { BusEmitter, BusMessage } from '@soer/mixed-bus';
-import { map, Observable } from 'rxjs';
-import { DtoPack, OK } from './interfaces/dto.pack.interface';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { DtoPack, ERROR, INIT, OK } from './interfaces/dto.pack.interface';
 import { SerializedJsonModel } from './interfaces/serialize-json.model';
 import { CRUDBusEmitter } from './sr-dto.module';
 
@@ -18,6 +19,28 @@ export function extractDtoPackFromBus<T>(messages$: Observable<BusMessage>): Obs
         data?.payload.items.forEach((item: T) => result.push(item));
       }
       return { status: data?.payload?.status ?? OK, items: result };
+    })
+  );
+}
+
+export function extractDtoPackStatusFromBus<T>(
+  messages$: Observable<BusMessage>,
+  dtoData: BehaviorSubject<T[]>,
+  dtoErrors: BehaviorSubject<string[]>
+): Observable<string[]> {
+  return messages$.pipe(
+    map<BusMessage, string[]>((data) => {
+      const result: T[] = [];
+      const errors: string[] = [];
+      if (data?.payload?.status === OK) {
+        data?.payload.items.forEach((item: T) => result.push(item));
+      }
+      if (data?.payload?.status === ERROR) {
+        data?.payload.items.forEach((error: string) => errors.push(error));
+      }
+      dtoErrors.next(errors);
+      dtoData.next(result);
+      return [data?.payload?.status ?? INIT];
     })
   );
 }

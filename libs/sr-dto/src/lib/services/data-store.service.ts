@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { BusError, BusMessage, BusEmitter, MixedBusService } from '@soer/mixed-bus';
 import { BehaviorSubject } from 'rxjs';
-import { ChangeDataEvent } from '../bus-messages/bus.messages';
+import { ChangeDataEvent, ErrorDataEvent } from '../bus-messages/bus.messages';
 import { INIT } from '@soer/sr-dto';
 
 @Injectable({
@@ -12,6 +12,7 @@ export class DataStoreService {
   private dataTree$ = new Map();
   constructor(private bus$: MixedBusService) {
     this.bus$.of(ChangeDataEvent).subscribe(this.dataEmission.bind(this));
+    this.bus$.of(ErrorDataEvent).subscribe(this.dataEmission.bind(this));
   }
 
   of(owner: BusEmitter): BehaviorSubject<BusMessage> {
@@ -34,7 +35,7 @@ export class DataStoreService {
   }
 
   dataEmission(data: BusMessage | BusError): void {
-    if (data instanceof ChangeDataEvent) {
+    if (data instanceof ChangeDataEvent || data instanceof ErrorDataEvent) {
       this.of(data.owner).next(data);
     }
   }

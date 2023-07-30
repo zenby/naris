@@ -1,23 +1,15 @@
-<ng-container *ngIf="status$ | async as status">
-  <ng-container [ngSwitch]="status[0]">
-    <ng-container *ngSwitchCase="'ok'">
-      <ng-container *ngIf="links$ | async as links">
-        <div *ngFor="let link of links">
-          <soer-video-player
-            *ngIf="link.type === 'video' && link.key"
-            [videoSource]="link.player"
-            [videoId]="link.key"
-          ></soer-video-player>
-        </div>
-      </ng-container>
-    </ng-container>
-    <ng-container *ngSwitchCase="'error'">
-      <h2>Вы не можете получить информацию из-за следующей ошибки:</h2>
-      {{ errors$ | async | json }}
-    </ng-container>
-
-    <ng-container *ngSwitchDefault>
-      <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
-    </ng-container>
+<ng-container *ngIf="data$ | async as data">
+  <ng-container *ngIf="data.status === 'ok'">
+    <div *ngFor="let link of data.items">
+      <soer-video-player
+        *ngIf="link.type === 'video' && link.key"
+        [videoSource]="link.player"
+        [videoId]="link.key"
+      ></soer-video-player>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="data.status === 'error'">
+    <h2>Вы не можете получить информацию из-за следующей ошибки:</h2>
+    {{ data.items | json }}
   </ng-container>
 </ng-container>

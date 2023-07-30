@@ -1,7 +1,18 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VideoSource } from '@soer/soer-components';
-import { DataStoreService, deSerializeJson, extractDtoPackStatusFromBus, OK, SerializedJsonModel } from '@soer/sr-dto';
+import {
+  DataStoreService,
+  deSerializeDtoPackWihJson,
+  deSerializeJson,
+  DtoPack,
+  DtoPackWithStatus,
+  extractDtoPackFromBus,
+  extractDtoPackFromBusWithErrors,
+  extractDtoPackStatusFromBus,
+  OK,
+  SerializedJsonModel,
+} from '@soer/sr-dto';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 
 interface VideoLink {
@@ -17,16 +28,13 @@ interface VideoLink {
 })
 export class VideoViewPageComponent {
   //  links$: Observable<VideoLink[]>;
-  links$: Observable<VideoLink[]>;
-  errors$ = new BehaviorSubject<string[]>([]);
-  status$: Observable<string[]>;
+  data$: Observable<DtoPackWithStatus<VideoLink>>;
   private linkId;
   constructor(private store$: DataStoreService, private route: ActivatedRoute) {
-    const dto$ = new BehaviorSubject<SerializedJsonModel[]>([]);
-
     this.linkId = this.route.snapshot.data['link'];
-    this.status$ = extractDtoPackStatusFromBus<SerializedJsonModel>(this.store$.of(this.linkId), dto$, this.errors$);
-    this.links$ = deSerializeJson<VideoLink>(dto$.pipe(map((items) => ({ status: OK, items }))));
+    this.data$ = deSerializeDtoPackWihJson<VideoLink>(
+      extractDtoPackFromBusWithErrors<SerializedJsonModel>(this.store$.of(this.linkId))
+    );
     /*    this.links$ = deSerializeJson<VideoLink>(
       extractDtoPackFromBus<SerializedJsonModel>(
         this.store$.of(this.linkId).pipe(tap(

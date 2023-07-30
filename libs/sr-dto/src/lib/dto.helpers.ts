@@ -37,28 +37,6 @@ export function extractDtoPackFromBusWithErrors<T>(
   );
 }
 
-export function extractDtoPackStatusFromBus<T>(
-  messages$: Observable<BusMessage>,
-  dtoData: BehaviorSubject<T[]>,
-  dtoErrors: BehaviorSubject<string[]>
-): Observable<string[]> {
-  return messages$.pipe(
-    map<BusMessage, string[]>((data) => {
-      const result: T[] = [];
-      const errors: string[] = [];
-      if (data?.payload?.status === OK) {
-        data?.payload.items.forEach((item: T) => result.push(item));
-      }
-      if (data?.payload?.status === ERROR) {
-        data?.payload.items.forEach((error: string) => errors.push(error));
-      }
-      dtoErrors.next(errors);
-      dtoData.next(result);
-      return [data?.payload?.status ?? INIT];
-    })
-  );
-}
-
 export function deSerializeDtoPackWihJson<T>(
   pack: Observable<DtoPackWithStatus<SerializedJsonModel>>,
   empty?: T

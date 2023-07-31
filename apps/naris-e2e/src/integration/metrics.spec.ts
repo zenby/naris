@@ -4,7 +4,7 @@ describe('naris metrics', () => {
     cy.login('user', 'user');
   });
 
-  it('should successfully navigate to metrics page', () => {
+  it('should successfully navigate to metrics page and click on every metric tile', () => {
     cy.visit('/#!/pages/overview/info');
 
     // Tab button
@@ -13,18 +13,6 @@ describe('naris metrics', () => {
     cy.get('[data-cy="Метрики"]').should('have.attr', 'disabled');
 
     cy.location().should((location) => expect(location.href).to.include('/pages/overview/metrics'));
-  });
-
-  it('should display achievement tile and navigetes to General templates by clicking on it', () => {
-    cy.visit('/#!/pages/overview/metrics');
-
-    cy.get('[data-cy="emptyTarget"]').click();
-    cy.location().should((location) => expect(location.href).to.include('/pages/targets/templates/public'));
-  });
-
-  it('should display tiles', () => {
-    cy.visit('/#!/pages/overview/metrics');
-
     cy.get('[data-cy="targets/list"]').contains('Цели');
     cy.get('[data-cy="workbook"]').contains('Конспекты');
     cy.get('[data-cy="qa"]').contains('Вопросы');
@@ -32,5 +20,12 @@ describe('naris metrics', () => {
     cy.get('[data-cy="workshops"]').contains('Воркшопы');
     cy.get('[data-cy="book"]').contains('Книга');
     cy.get('[data-cy="sources"]').contains('Исходники');
+  });
+
+  it('should display achievement tile and navigetes to General templates by clicking on it', () => {
+    cy.visit('/#!/pages/overview/metrics');
+
+    cy.get('[data-cy="emptyTarget"]').click();
+    cy.location().should((location) => expect(location.href).to.include('/pages/targets/templates/public'));
   });
 });

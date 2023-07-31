@@ -6,7 +6,7 @@ export interface TextBlock {
 }
 
 export interface BlocksDocumentModel {
-  blocks: TextBlock[];
+  blocks?: TextBlock[];
 }
 export interface WorkbookModel extends BlocksDocumentModel {
   id?: number | null;

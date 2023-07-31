@@ -34,8 +34,8 @@
         <nz-col nzFlex="1">
           <soer-todo
             [label]="aim.title"
-            [showOverviewIcon]="!!aim.blocks || isEdit"
-            [showVideoIcon]="!!aim.linkVideoId"
+            [showOverviewIcon]="!!aim.blocks && !isEdit"
+            [showVideoIcon]="!!aim.linkVideoId && !isEdit"
             [checked]="aim.progress === doneProgress"
             [disabled]="isEdit"
             (update)="update.emit(aim)"
@@ -48,6 +48,34 @@
           <soer-toolbar [actions]="actions" (action)="toolbarAction($event, aim)"></soer-toolbar>
         </nz-col>
       </nz-row>
+      <div class="tags-list">
+        <!-- Edit info -->
+        <nz-tag *ngIf="!aim.blocks && isEdit" class="editable-tag" (click)="showDescription()"
+          ><span nz-icon nzType="plus"></span
+        ></nz-tag>
+        <nz-tag
+          *ngIf="aim.blocks && isEdit"
+          nzMode="closeable"
+          (nzOnClose)="(aim.blocks = undefined) || $event.stopPropagation()"
+          (click)="showDescription()"
+        >
+          <span nz-icon nzType="info-circle"></span> {{ aim.blocks?.length }}
+        </nz-tag>
+
+        <!-- Video link -->
+        <nz-tag *ngIf="!aim.linkVideoId && isEdit" class="editable-tag" nzNoAnimation (click)="showVideo()">
+          <span nz-icon nzType="plus"></span>
+          Видео
+        </nz-tag>
+        <nz-tag
+          *ngIf="aim.linkVideoId && isEdit"
+          nzMode="closeable"
+          (nzOnClose)="video.emit({ isEdit: true, linkVideoId: -1, aim: aim })"
+        >
+          <span nz-icon nzType="youtube"></span>
+          id: {{ aim.linkVideoId }}
+        </nz-tag>
+      </div>
 
       <nz-row *ngIf="isTitleEdit">
         <nz-col nzFlex="1">
@@ -69,6 +97,7 @@
       (description)="onDescription($event, aimIndex)"
       (delete)="toolbarAction('delete', $event)"
       (add)="toolbarAction('plus', $event)"
+      (video)="video.emit($event)"
     ></soer-aims-tree>
   </div>
 </div>

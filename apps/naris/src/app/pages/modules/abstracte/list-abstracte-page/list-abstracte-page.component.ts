@@ -126,7 +126,7 @@ export class ListAbstractePageComponent implements OnInit {
       workbookHtml = this.markdownService.parse(`<markdown>${workbook.text}</markdown>`);
     }
 
-    if (workbook.blocks.length > 0) {
+    if (workbook.blocks && workbook.blocks.length > 0) {
       workbook.blocks.forEach(
         (block) => (workbookHtml += this.markdownService.parse(`<markdown>${block.text}</markdown>`))
       );

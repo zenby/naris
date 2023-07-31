@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ANY_SERVICE, BusEmitter, MixedBusService } from '@soer/mixed-bus';
-import { AimModel } from '@soer/soer-components';
+import { AimModel, AimVideoAction } from '@soer/soer-components';
 import { CommandDelete, CommandUpdate, DataStoreService, DtoPack, OK } from '@soer/sr-dto';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { filter, first, Observable } from 'rxjs';
@@ -102,9 +102,25 @@ export class ListAimsPageComponent implements OnInit {
     this.router.navigate(['/pages/targets', { outlets }]);
   }
 
-  onVideo(videoLinkIds: number[]) {
-    const [id] = videoLinkIds;
-    const outlets = { popup: ['link', String(id), 'video'] };
-    this.router.navigate(['/pages/targets', { outlets }]);
+  onVideo(videoLinkAction: AimVideoAction) {
+    if (videoLinkAction.isEdit) {
+      const newId =
+        videoLinkAction.linkVideoId === -1
+          ? 0
+          : prompt('Укажите номер ссылки', (videoLinkAction.linkVideoId || 0).toString());
+      if (newId) {
+        videoLinkAction.aim.linkVideoId = +newId;
+      } else {
+        videoLinkAction.aim.linkVideoId = undefined;
+      }
+      return;
+    }
+    const id = videoLinkAction.linkVideoId;
+    if (id) {
+      const outlets = { popup: ['link', String(id), 'video'] };
+      this.router.navigate(['/pages/targets', { outlets }]);
+      return;
+    }
+    console.error('Невозможно обработать действие ', videoLinkAction);
   }
 }

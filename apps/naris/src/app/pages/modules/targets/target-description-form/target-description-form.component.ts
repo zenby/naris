@@ -46,15 +46,11 @@ export class TargetDescriptionFormComponent implements AfterViewInit {
     return this.prevTarget != JSON.stringify(this.activeTarget);
   }
 
-  updateLinkVideo(value: string): void {
-    this.activeTarget.linkVideoId = parseInt(value, 10);
-  }
   onCancel() {
     this.prevTarget = JSON.stringify(this.activeTarget);
   }
 
   onSave() {
-    console.log(this.activeTarget);
     this.save.emit(this.target);
     this.previewFlag = true;
   }

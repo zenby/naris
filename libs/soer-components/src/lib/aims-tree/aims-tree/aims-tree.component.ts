@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { AimModel } from '../interfaces/aim.model';
+import { AimModel, AimVideoAction } from '../interfaces/aim.model';
 
 @Component({
   selector: 'soer-aims-tree',
@@ -17,11 +17,11 @@ export class AimsTreeComponent {
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() taskClose: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
-  @Output() video: EventEmitter<number[]> = new EventEmitter<number[]>();
+  @Output() video: EventEmitter<AimVideoAction> = new EventEmitter<AimVideoAction>();
 
   doneProgress = 100;
 
-  onVideo($event: number[]) {
+  onVideo($event: AimVideoAction) {
     this.video.emit($event);
   }
 

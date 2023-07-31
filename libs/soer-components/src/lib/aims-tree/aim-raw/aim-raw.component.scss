@@ -97,6 +97,10 @@ nz-card {
       cursor: pointer;
     }
   }
+
+  .tags-list {
+    padding: 5px;
+  }
 }
 
 .done.invisible {
@@ -105,4 +109,10 @@ nz-card {
 
 .task .aim_done-icon {
   margin: 0 0.5rem 0 0.8rem;
+}
+
+.editable-tag {
+  background: rgb(255, 255, 255);
+  border-style: dashed;
+  cursor: pointer;
 }

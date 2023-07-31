@@ -59,7 +59,7 @@
           (nzOnClose)="(aim.blocks = undefined) || $event.stopPropagation()"
           (click)="showDescription()"
         >
-          <span nz-icon nzType="info-circle"></span> {{ aim.blocks?.length }}
+          <span nz-icon nzType="info-circle"></span> {{ (aim.blocks || []).length }}
         </nz-tag>
 
         <!-- Video link -->

@@ -4,7 +4,13 @@
       <input nz-input [value]="template.title" placeholder="Именование цели" #titleElem />
     </div>
     <div class="form-item">
-      <textarea nz-input rows="8" placeholder="Общее описание цели" [value]="template.blocks[0].text" #block></textarea>
+      <textarea
+        nz-input
+        rows="8"
+        placeholder="Общее описание цели"
+        [value]="template.blocks ? template.blocks[0].text : ''"
+        #block
+      ></textarea>
     </div>
     <div class="form-item">
       <nz-switch [(ngModel)]="isPublic"></nz-switch> Публичный шаблон (будет виден другим пользователям)

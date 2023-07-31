@@ -1,7 +1,7 @@
 import { error } from '@ant-design/icons-angular';
 import { BusEmitter, BusMessage } from '@soer/mixed-bus';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { DtoPack, DtoPackWithStatus, ERROR, INIT, OK } from './interfaces/dto.pack.interface';
+import { DtoPack, DtoPackWithStatus, ERROR, INIT, LOADING, OK } from './interfaces/dto.pack.interface';
 import { DtoErrorMessage, SerializedJsonModel } from './interfaces/serialize-json.model';
 import { CRUDBusEmitter } from './sr-dto.module';
 
@@ -59,7 +59,7 @@ export function deSerializeDtoPackWihJson<T>(
       if (data?.status === ERROR) {
         return { status: data.status, items: [...data.items] };
       }
-      return { status: ERROR, items: [] };
+      return { status: LOADING, items: [] };
     })
   );
 }

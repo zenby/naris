@@ -11,7 +11,14 @@ import { RefreshCookieStrategy } from '../common/strategies/refreshCookie.strate
 import { testConfig } from './tests/auth.test.config';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { adminUser, regularUser, regularUserCredentials, testFingerprint, testUsers } from '../user/tests/test.users';
+import {
+  adminUser,
+  regularUser,
+  regularUserCredentials,
+  testFingerprint,
+  testUsers,
+  changedTestFingerprint,
+} from '../user/tests/test.users';
 import { createRequest, getJWTTokenWithFingerprintFactory, authRequestMakerFactory } from './tests/auth.test.helper';
 import { Fingerprint } from './helpers/fingerprint';
 
@@ -127,8 +134,8 @@ describe('Auth e2e-test', () => {
       await makeAuthRequest(request.get('/auth/access_token')).expect(401);
     });
 
-    it('should return 401 error when fingerprint data changed', async () => {
-      const jwtToken = getJWTTokenForUserWithFingerprint(users[0], testFingerprint, expired10MinAgo);
+    it('should return 401 error when fingerprint data is changed', async () => {
+      const jwtToken = getJWTTokenForUserWithFingerprint(users[0], changedTestFingerprint);
       const authRequest = makeAuthRequest(request.get('/auth/access_token'), jwtToken);
 
       await authRequest.expect(401);

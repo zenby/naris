@@ -9,6 +9,7 @@ import { createRequest } from '../../auth/tests/auth.test.helper';
 
 export const testRequest: Request = createRequest(['127.0.0.1', '192.168.0.1'], 'Mozilla/5.0');
 export const testFingerprint = new Fingerprint(testRequest);
+export const changedTestFingerprint = new Fingerprint(createRequest(['0.0.0.0', '192.168.0.1'], 'Mozilla/5.0'));
 
 export const regularUserCredentials: LoginUserDto = {
   login: 'regularUser',

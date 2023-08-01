@@ -90,6 +90,18 @@ describe('Auth e2e-test', () => {
     });
   });
 
+  describe('GET /auth/signout', () => {
+    it('should sign out of an account when a client requests it', async () => {
+      const response = await request
+        .get('/auth/signout')
+        .expect(200)
+        .expect('Set-Cookie', new RegExp(`${config.cookieName}=;`));
+      const body: HttpJsonResult<string> = response.body;
+
+      expect(body.status).toBe(HttpJsonStatus.Ok);
+    });
+  });
+
   describe('GET /auth/access_token', () => {
     it('should generate access token when pass valid refresh token', async () => {
       const jwtToken = getJWTTokenForUserWithFingerprint(users[0], testFingerprint);

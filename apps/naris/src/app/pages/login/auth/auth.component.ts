@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@soer/sr-auth';
-import { FeatureFlagService } from '@soer/sr-feature-flags';
-import { featuresEnum } from '../../../../environments/environment.interface';
+import { FeatureFlagService, FeatureFlag } from '@soer/sr-feature-flags';
 
 @Component({
   selector: 'soer-auth',
@@ -27,7 +26,7 @@ export class AuthComponent implements OnInit {
       return;
     }
 
-    if (this.featureFlags.isFeatureFlagEnabled(featuresEnum.auth_v2)) {
+    if (this.featureFlags.isFeatureFlagEnabled(FeatureFlag.auth_v2)) {
       this.authService.token = null;
       this.authService.processAuth().then(() => {
         this.redirect();

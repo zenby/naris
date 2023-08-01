@@ -1,9 +1,9 @@
-<h1>Задайте свой вопрос</h1>
+<h1 data-cy="questionFormTitle">Задайте свой вопрос</h1>
 <form nz-form [formGroup]="form" (ngSubmit)="onSubmit()" nzLayout="vertical">
   <nz-form-item>
     <nz-form-control>
       <nz-textarea-count [nzMaxCharacterCount]="questionMaxLength">
-        <textarea rows="8" formControlName="question" nz-input></textarea>
+        <textarea data-cy="questionInput" rows="8" formControlName="question" nz-input></textarea>
       </nz-textarea-count>
     </nz-form-control>
   </nz-form-item>

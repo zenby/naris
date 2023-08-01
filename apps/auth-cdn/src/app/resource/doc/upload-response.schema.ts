@@ -1,6 +1,3 @@
-/**
- * This schema describes the format of the POST /upload response аor Swagger.
- */
 export const uploadResponseSchema = {
   type: 'object',
   properties: {
@@ -11,8 +8,13 @@ export const uploadResponseSchema = {
     items: {
       type: 'array',
       items: {
-        type: 'string',
-        example: '/1670443088998-795980499.png',
+        type: 'object',
+        properties: {
+          uri: {
+            type: 'string',
+            example: 'host.ru/serveUploadsRoute/folder1!folder2!2023-07-14-6d2oboet~file1.jpg',
+          },
+        },
       },
     },
   },

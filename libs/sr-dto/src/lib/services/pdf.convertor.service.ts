@@ -39,7 +39,7 @@ export class PdfConverterService {
     });
   }
   private getStringMd(data: WorkbookModel): string {
-    return data.blocks.reduce((acc, block) => {
+    return (data.blocks || []).reduce((acc, block) => {
       return acc + '  \n' + block.text;
     }, '');
   }

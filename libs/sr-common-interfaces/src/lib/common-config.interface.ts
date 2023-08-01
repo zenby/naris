@@ -9,3 +9,9 @@ export interface Jwt {
   cookieName?: string;
   redirectUrl?: string;
 }
+
+export interface OAuthClientConfig {
+  clientID: string;
+  clientSecret: string;
+  callbackURL: string;
+}

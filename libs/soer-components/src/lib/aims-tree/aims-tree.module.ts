@@ -15,6 +15,7 @@ import { AimRawComponent } from './aim-raw/aim-raw.component';
 import { AimsTreeComponent } from './aims-tree/aims-tree.component';
 import { TargetService } from './target.service';
 import { TargetComponent } from './target/target.component';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @NgModule({
   declarations: [AimsTreeComponent, AimRawComponent, TargetComponent],
@@ -31,6 +32,7 @@ import { TargetComponent } from './target/target.component';
     NzGridModule,
     NzTypographyModule,
     NzPopconfirmModule,
+    NzTagModule,
     InlineEditorModule,
   ],
   providers: [TargetService],

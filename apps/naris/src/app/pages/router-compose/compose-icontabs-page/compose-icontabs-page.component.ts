@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MixedBusService } from '@soer/mixed-bus';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { BehaviorSubject } from 'rxjs';
@@ -15,6 +15,7 @@ import { IconTab } from './compose-icontabs-page.model';
 export class ComposeIcontabsPageComponent extends ComposePage implements OnInit, OnDestroy {
   public active$: BehaviorSubject<IconTab | null> = new BehaviorSubject<IconTab | null>(null);
   public tabs: IconTab[] = [];
+  public isShowDrawer = false;
   constructor(
     bus$: MixedBusService,
     router: Router,
@@ -28,6 +29,18 @@ export class ComposeIcontabsPageComponent extends ComposePage implements OnInit,
 
   ngOnInit(): void {
     this.composeInit();
+    this.subscriptions.push(
+      this.router.events.subscribe((data) => {
+        if (data instanceof NavigationEnd) {
+          if (data.urlAfterRedirects.indexOf('drawer:') !== -1) {
+            this.isShowDrawer = true;
+          } else {
+            this.isShowDrawer = false;
+          }
+          this.cdp.markForCheck();
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -56,6 +69,10 @@ export class ComposeIcontabsPageComponent extends ComposePage implements OnInit,
         this.tabs.push(tab);
       }
     });
+  }
+
+  closeDrawer() {
+    this.router.navigate(['.', { outlets: { drawer: null } }], { relativeTo: this.route });
   }
 
   activateTab(): void {

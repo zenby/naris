@@ -9,6 +9,8 @@
             (update)="onUpdate($event)"
             (edit)="onEdit($event)"
             (description)="onDescription($event, target.id)"
+            (video)="onVideo($event)"
+            (taskClose)="onTaskClose(target, $event)"
           >
             <ng-container toolbar>
               <a nz-button nzType="link" *ngIf="!isSingleMode" [routerLink]="['filter', target.id]"

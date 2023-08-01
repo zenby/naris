@@ -1,17 +1,4 @@
-export enum featuresEnum {
-  auth_v1 = 'auth_v1',
-  auth_v2 = 'auth_v2',
-  api_v1 = 'api_v1',
-  api_v2 = 'api_v2',
-  personal_activity_journal = 'personal_activity_journal',
-  subscription = 'subscription',
-}
-
-export type DynamicConfig = {
-  [key in featuresEnum]?: boolean;
-};
-
-export type DynamicConfigKeys = keyof DynamicConfig;
+import { Features } from '@soer/sr-feature-flags';
 
 export interface HostVariables {
   host: string;
@@ -28,5 +15,5 @@ export interface HostVariables {
 
 export interface EnvironmentInterface extends HostVariables {
   production: boolean;
-  features: DynamicConfig;
+  features: Features;
 }

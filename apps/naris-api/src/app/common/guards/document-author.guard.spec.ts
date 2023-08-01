@@ -35,11 +35,7 @@ describe('DocumentAuthorGuard', () => {
     const result = await documentAuthGuard.canActivate(context);
 
     expect(result).toBe(expectedResult);
-    expect(jsonService.isUserAuthorOfDocument).toHaveBeenCalledWith(
-      document.id,
-      document.namespace,
-      testJwtPayload.email
-    );
+    expect(jsonService.isUserAuthorOfDocument).toHaveBeenCalledWith(document.id, testJwtPayload.email);
   });
 
   it('should return false if user is not authenticated', async () => {
@@ -72,10 +68,6 @@ describe('DocumentAuthorGuard', () => {
     const result = await documentAuthGuard.canActivate(context);
 
     expect(result).toBe(expectedResult);
-    expect(jsonService.isUserAuthorOfDocument).toHaveBeenCalledWith(
-      document.id,
-      document.namespace,
-      testJwtPayload.email
-    );
+    expect(jsonService.isUserAuthorOfDocument).toHaveBeenCalledWith(document.id, testJwtPayload.email);
   });
 });

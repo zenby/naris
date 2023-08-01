@@ -1,0 +1,14 @@
+<ng-container *ngIf="data$ | async as data">
+  <ng-container *ngIf="data.status === 'ok'">
+    <div *ngFor="let link of data.items">
+      <soer-video-player
+        *ngIf="link.type === 'video' && link.key"
+        [videoSource]="link.player"
+        [videoId]="link.key"
+      ></soer-video-player>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="data.status === 'error'">
+    <soer-access-denied [errors]="data.items"></soer-access-denied>
+  </ng-container>
+</ng-container>

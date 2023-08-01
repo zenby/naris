@@ -3,6 +3,7 @@ import {
   allArticlesPath,
   allWorkbookConspectsPath,
   createNewConspectPath,
+  workbookPath,
 } from './pathConstants';
 import { testTitle } from '../support/articleConstants';
 // ***********************************************
@@ -62,33 +63,22 @@ Cypress.Commands.add('login', (login, password) => {
 });
 
 Cypress.Commands.add('removeAllExistingArticles', () => {
-  cy.get('a[title="Статьи"]').should('have.attr', 'disabled');
+  cy.get('[data-cy="Статьи"]').should('have.attr', 'disabled');
   cy.get('.ant-spin-dot').should('not.exist');
-  cy.get('.anticon-delete')
+  cy.get('[data-cy="delete-article"]')
     .should('have.length.gte', 0)
     .then(($delBtnList) => {
       const delBtnLen = $delBtnList.length;
 
       for (let i = 0; i < delBtnLen; i++) {
-        cy.get('.anticon-delete').eq(0).click({ force: true });
-        cy.contains('OK').should('be.visible').click({ force: true });
-        cy.wait(['@deleteRequest', '@personalArticles', '@personalArticles']);
-      }
-    });
-});
-
-Cypress.Commands.add('removeAllExistingConspects', () => {
-  cy.get('a[title="Конспекты"]').should('have.attr', 'disabled');
-  cy.get('.ant-spin-dot').should('not.exist');
-  cy.get('.anticon-delete')
-    .should('have.length.gte', 0)
-    .then(($delBtnList) => {
-      const delBtnLen = $delBtnList.length;
-
-      for (let i = 0; i < delBtnLen; i++) {
-        cy.get('.anticon-delete').eq(0).click({ force: true });
-        cy.contains('OK').should('be.visible').click({ force: true });
-        cy.wait(['@conspectDelete', '@personalConspects', '@personalConspects']);
+        cy.get('[data-cy="delete-article"]').then((delBtns) => {
+          const delBtnLen = delBtns.length;
+          cy.get('[data-cy="delete-article"]').eq(0).click({ force: true });
+          cy.contains('OK').should('be.visible').click({ force: true });
+          cy.get('[data-cy="delete-article"]').should('have.length', delBtnLen - 1);
+          cy.get('.ant-message-notice-content', { timeout: 10000 }).should('have.length', 1);
+          cy.get('.ant-message-notice-content', { timeout: 10000 }).should('have.length', 0);
+        });
       }
     });
 });
@@ -96,30 +86,19 @@ Cypress.Commands.add('createArticle', () => {
   cy.visit(`/${allArticlesPath}`);
   cy.location('href').should('eq', Cypress.config().baseUrl + allArticlesPath);
 
-  cy.get('.anticon-plus').should('be.visible').click();
+  cy.get('[data-cy="plus"]').should('be.visible').click();
   cy.location('href').should('eq', Cypress.config().baseUrl + createNewArticlePath);
 
   cy.get('input[placeholder="Тема"]').type(testTitle, { force: true });
-  cy.get('.anticon-save').click();
-  cy.wait(['@personalArticles', '@personalArticles']);
-  cy.get('a[title="Статьи"]').should('be.visible').click();
-  cy.wait('@personalArticles');
-  cy.get('a[title="Статьи"]').should('have.attr', 'disabled');
+  cy.get('[data-cy="save"]').click();
+  cy.location('href').should('contain', Cypress.config().baseUrl + workbookPath);
+  cy.get('[data-cy="Статьи"]').should('be.visible').click();
+  cy.get('[data-cy="Статьи"]').should('have.attr', 'disabled');
   cy.get('.ant-spin-dot').should('not.exist');
-});
-
-Cypress.Commands.add('createConspect', () => {
-  cy.visit(`/${allWorkbookConspectsPath}`);
-  cy.location('href').should('eq', Cypress.config().baseUrl + '/' + allWorkbookConspectsPath);
-
-  cy.get('#plus-control-btn').should('be.visible').click();
-  cy.location('href').should('eq', Cypress.config().baseUrl + '/' + createNewConspectPath);
-
-  cy.get('input[placeholder="Тема"]').type(testTitle, { force: true });
-  cy.get('.anticon-save').click();
-  cy.wait(['@personalConspects', '@personalConspects']);
-  cy.get('a[title="Конспекты"]').should('have.attr', 'disabled');
-  cy.get('.ant-spin-dot').should('not.exist');
+  cy.get('.ant-message-notice-content', { timeout: 10000 }).should('have.length', 1);
+  cy.get('.ant-message-notice-content', { timeout: 10000 }).should('have.length', 0);
+  cy.get('[data-cy="Статьи"]').click();
+  cy.get('[data-cy="delete-article"]').should('exist');
 });
 
 //

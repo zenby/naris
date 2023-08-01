@@ -9,6 +9,7 @@
       [title]="tab.title"
       [disabled]="isTabDisabled(active, tab)"
       [nzType]="isTabDisabled(active, tab) ? 'dashed' : 'primary'"
+      [attr.data-cy]="tab.title"
     >
       <i *ngIf="tab.icon" nz-icon [nzType]="tab.icon || 'empty'" nzTheme="outline"></i>
       <span *ngIf="tab.iconText">{{ tab.iconText }}</span>
@@ -16,3 +17,14 @@
   </div>
 </ng-container>
 <router-outlet (activate)="activateTab()"></router-outlet>
+<nz-drawer
+  [nzClosable]="true"
+  [nzVisible]="isShowDrawer"
+  nzPlacement="right"
+  nzTitle="Document settings"
+  (nzOnClose)="closeDrawer()"
+>
+  <ng-container *nzDrawerContent>
+    <router-outlet name="drawer"></router-outlet>
+  </ng-container>
+</nz-drawer>

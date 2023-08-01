@@ -11,6 +11,15 @@ export class ResolveReadEmitterService implements Resolve<Promise<BusEmitter | u
 
   resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Promise<BusEmitter | undefined> {
     const owner = busEmitterFactory(this.owner, route.params);
+
+    this.patchConsole(owner);
+
+    this.bus$.publish(new CommandRead(owner));
+    //TODO: refactor toPromise to firstValueOf
+    return of(owner).toPromise();
+  }
+
+  private patchConsole(owner: BusEmitter) {
     const wnd = window as ResolveEmittersPatchedWindow;
 
     try {
@@ -20,9 +29,5 @@ export class ResolveReadEmitterService implements Resolve<Promise<BusEmitter | u
     } catch (e) {
       console.error('Ошибка назначения срезолвенных эмиттеров для консоли');
     }
-
-    this.bus$.publish(new CommandRead(owner));
-    //TODO: refactor toPromise to firstValueOf
-    return of(owner).toPromise();
   }
 }

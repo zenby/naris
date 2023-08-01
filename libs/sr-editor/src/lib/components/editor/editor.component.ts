@@ -39,7 +39,7 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.blockService.init(this.document.blocks);
+    this.blockService.init(this.document.blocks || []);
   }
 
   onFolderUp() {

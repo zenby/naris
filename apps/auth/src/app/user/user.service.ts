@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
@@ -9,6 +9,8 @@ import { UserInfoDto } from './dto/user-info-dto';
 
 @Injectable()
 export class UserService {
+  logger = new Logger(UserService.name);
+
   constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity | Error> {
@@ -19,9 +21,11 @@ export class UserService {
     const errors = await validate(newUser);
 
     if (errors?.length > 0) {
+      this.logger.error(errors);
       return new UnprocessableEntityException(ValidationErrorHelper.errorsToString(errors));
     }
 
+    this.logger.log('Try to create user' + JSON.stringify(createUserDto));
     return await this.userRepository.save(newUser).catch(() => {
       return new UnprocessableEntityException(`User with email ${newUser.email} has been already exist`);
     });

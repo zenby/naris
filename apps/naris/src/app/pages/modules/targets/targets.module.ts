@@ -39,11 +39,14 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { TargetDescriptionFormComponent } from './target-description-form/target-description-form.component';
 import { TargetDescriptionPopupComponent } from './target-description-popup/target-description-popup.component';
+import { TargetAchievedSubscriber } from '../../../api/progress/subscribers/target-achieved.subscriber';
 
 import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
 import { SrEditorModule } from '@soer/sr-editor';
 import { MarkdownModule } from 'ngx-markdown';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { TaskClosedSubscriber } from '../../../api/progress/subscribers/task-closed.subscriber';
+import { LinksModule } from '../links/links.module';
 
 @NgModule({
   declarations: [
@@ -94,8 +97,14 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
     AimsTreeModule,
     MarkdownModule.forRoot(),
     NzSpinModule,
+    LinksModule,
   ],
   exports: [],
   providers: [],
 })
-export class TargetsModule {}
+export class TargetsModule {
+  constructor(
+    private targetAchievedSubscriber: TargetAchievedSubscriber,
+    private taskClosedSubscriber: TaskClosedSubscriber
+  ) {}
+}

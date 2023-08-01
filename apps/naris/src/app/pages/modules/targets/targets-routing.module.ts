@@ -9,6 +9,7 @@ import { TargetEditFormComponent } from './target-edit-form/target-edit-form.com
 import { TaskEditFormComponent } from './task-edit-form/task-edit-form.component';
 import { TemplateCreateComponent } from './template-create/template-create.component';
 import { TargetDescriptionPopupComponent } from './target-description-popup/target-description-popup.component';
+import { VideoViewPageComponent } from '../links/video-view-page/video-view-page.component';
 
 const routes: Routes = [
   {
@@ -88,6 +89,14 @@ const routes: Routes = [
         component: TargetDescriptionPopupComponent,
         resolve: {
           target: 'targetEmitter',
+        },
+        outlet: 'popup',
+      },
+      {
+        path: 'link/:did/video',
+        component: VideoViewPageComponent,
+        resolve: {
+          link: 'jsonDocumentEmitter',
         },
         outlet: 'popup',
       },

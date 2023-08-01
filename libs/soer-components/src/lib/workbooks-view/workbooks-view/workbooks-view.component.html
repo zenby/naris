@@ -6,9 +6,15 @@
           {{ workbook.question }}
         </div>
         <div class="actions">
-          <i nz-icon nzType="edit" class="icon" (click)="this.workbookEdit.emit(workbook)"></i>
-          <i nz-icon nzType="eye" class="icon" (click)="this.workbookView.emit(workbook)"></i>
-          <i nz-icon nzType="download" class="icon" (click)="this.workbookDownload.emit(workbook)"></i>
+          <i nz-icon nzType="edit" data-cy="edit-article" class="icon" (click)="this.workbookEdit.emit(workbook)"></i>
+          <i nz-icon nzType="eye" data-cy="eye-article" class="icon" (click)="this.workbookView.emit(workbook)"></i>
+          <i
+            nz-icon
+            nzType="download"
+            data-cy="download-article"
+            class="icon"
+            (click)="this.workbookDownload.emit(workbook)"
+          ></i>
           <button
             nzPopconfirmTitle="Вы уверены, что хотите удалить этот документ?"
             nzPopconfirmPlacement="bottom"
@@ -16,6 +22,7 @@
             nz-button
             nzType="text"
             nzDanger
+            data-cy="delete-article"
             (nzOnConfirm)="this.workbookDelete.emit(workbook)"
           >
             <i class="icon icon-error" nz-icon nzType="delete"></i>

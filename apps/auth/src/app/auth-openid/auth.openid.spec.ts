@@ -1,47 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthOpenIdController } from './auth.openid.controller';
-import { ConfigService } from '@nestjs/config';
 import { UserEntity } from '../user/user.entity';
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { AuthService } from '../auth/auth.service';
-
-const fingerprint = {
-  ipAddresses: ['10.10.0.1'],
-  userAgent: 'test',
-};
-
-const request = {
-  headers: {
-    'x-original-forwarded-for': fingerprint.ipAddresses,
-    'user-agent': fingerprint.userAgent,
-  },
-} as unknown as Request;
+import { HttpJsonStatus } from '@soer/sr-common-interfaces';
+import { getJWTTokenWithFingerprintFactory } from '../auth/tests/auth.test.helper';
+import { testConfig } from '../auth/tests/auth.test.config';
+import { AuthTestModule } from '../auth/tests/auth.test.module';
+import { regularUser, testRequest, testFingerprint } from '../user/tests/test.users';
 
 describe('AuthOpenIdController', () => {
   let controller: AuthOpenIdController;
   let authService: AuthService;
+  const internalErrorMessage = 'Something went wrong. Try it later';
+  const config = testConfig;
+  const request = testRequest;
+  const getJWTTokenForUserWithFingerprint = getJWTTokenWithFingerprintFactory(config);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [AuthTestModule],
       controllers: [AuthOpenIdController],
-      providers: [
-        {
-          provide: AuthService,
-          useValue: {
-            getRefreshToken: jest.fn(() => 'fake-refresh-token'),
-          },
-        },
-        {
-          provide: ConfigService,
-          useValue: {
-            get: jest.fn(() => ({
-              cookieName: 'fake-cookie-name',
-              redirectUrl: '/fake-redirect-url',
-            })),
-          },
-        },
-      ],
     }).compile();
 
     controller = module.get<AuthOpenIdController>(AuthOpenIdController);
@@ -53,7 +33,7 @@ describe('AuthOpenIdController', () => {
       const result = await controller.googleLogin();
 
       expect(result).toEqual({
-        status: 'ok',
+        status: HttpJsonStatus.Ok,
         items: [],
       });
     });
@@ -64,17 +44,18 @@ describe('AuthOpenIdController', () => {
         redirect: jest.fn(),
       } as unknown as Response;
 
-      const user = {} as UserEntity;
+      const jwtToken = getJWTTokenForUserWithFingerprint(regularUser, testFingerprint);
+      const refreshSpy = jest.spyOn(authService, 'getRefreshToken');
 
-      await controller.googleLoginCallback(user, request, response);
+      await controller.googleLoginCallback(regularUser, request, response);
 
-      expect(authService.getRefreshToken).toHaveBeenCalledWith(user, fingerprint);
-      expect(response.cookie).toHaveBeenCalledWith('fake-cookie-name', 'fake-refresh-token', {
+      expect(refreshSpy).toHaveBeenCalledWith(regularUser, testFingerprint);
+      expect(response.cookie).toHaveBeenCalledWith(config.cookieName, jwtToken, {
         httpOnly: true,
         sameSite: 'none',
         secure: true,
       });
-      expect(response.redirect).toHaveBeenCalledWith('/fake-redirect-url');
+      expect(response.redirect).toHaveBeenCalledWith(config.redirectUrl);
     });
 
     it('should throw InternalServerErrorException on error when invalid callback', async () => {
@@ -85,7 +66,7 @@ describe('AuthOpenIdController', () => {
       });
 
       await expect(controller.googleLoginCallback(user, request, {} as unknown as Response)).rejects.toThrowError(
-        'Something went wrong. Try it later'
+        internalErrorMessage
       );
     });
   });
@@ -95,26 +76,28 @@ describe('AuthOpenIdController', () => {
       const result = await controller.yandexLogin();
 
       expect(result).toEqual({
-        status: 'ok',
+        status: HttpJsonStatus.Ok,
         items: [],
       });
     });
 
     it('should call authService.getRefreshToken, set cookie when callback then redirect', async () => {
-      const user = {} as UserEntity;
       const response = {
         cookie: jest.fn(),
         redirect: jest.fn(),
       } as unknown as Response;
-      await controller.yandexCallback(user, request, response);
+      const jwtToken = getJWTTokenForUserWithFingerprint(regularUser, testFingerprint);
+      const refreshSpy = jest.spyOn(authService, 'getRefreshToken');
 
-      expect(authService.getRefreshToken).toHaveBeenCalledWith(user, fingerprint);
-      expect(response.cookie).toHaveBeenCalledWith('fake-cookie-name', 'fake-refresh-token', {
+      await controller.yandexCallback(regularUser, request, response);
+
+      expect(refreshSpy).toHaveBeenCalledWith(regularUser, testFingerprint);
+      expect(response.cookie).toHaveBeenCalledWith(config.cookieName, jwtToken, {
         httpOnly: true,
         sameSite: 'none',
         secure: true,
       });
-      expect(response.redirect).toHaveBeenCalledWith('/fake-redirect-url');
+      expect(response.redirect).toHaveBeenCalledWith(config.redirectUrl);
     });
 
     it('should throw InternalServerErrorException on error when invalid callback', async () => {
@@ -125,7 +108,7 @@ describe('AuthOpenIdController', () => {
       });
 
       await expect(controller.yandexCallback(user, request, {} as unknown as Response)).rejects.toThrowError(
-        'Something went wrong. Try it later'
+        internalErrorMessage
       );
     });
   });

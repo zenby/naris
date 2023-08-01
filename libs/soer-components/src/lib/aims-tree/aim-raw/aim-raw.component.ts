@@ -7,7 +7,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { AimModel, EMPTY_AIM } from '../interfaces/aim.model';
+import { AimModel, AimVideoAction, EMPTY_AIM } from '../interfaces/aim.model';
 
 @Component({
   selector: 'soer-aim-raw',
@@ -26,8 +26,11 @@ export class AimRawComponent implements OnChanges {
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() add: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
+  @Output() taskClose: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() expand: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
+  @Output() video: EventEmitter<AimVideoAction> = new EventEmitter<AimVideoAction>();
+
   doneProgress = 100;
   actions = ['plus', 'edit', 'delete'];
   inlineEditorActions = ['save', 'cancel'];
@@ -44,6 +47,10 @@ export class AimRawComponent implements OnChanges {
 
   showDescription() {
     this.description.emit([this.aimIndex]);
+  }
+
+  showVideo() {
+    this.video.emit({ isEdit: this.isEdit, linkVideoId: this.aim.linkVideoId, aim: this.aim });
   }
 
   onDescription($event: number[], index: number) {

@@ -1,11 +1,13 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { ConfigService } from '@nestjs/config';
-import { CommonAppConfig, Jwt } from '@soer/sr-common-interfaces';
+import { CommonAppConfig, Jwt, OAuthClientConfig } from '@soer/sr-common-interfaces';
 
 export interface Configuration<T extends TypeOrmModuleOptions = unknown> extends CommonAppConfig {
   jwt: Jwt;
   typeOrm: T;
+  yandexClient: OAuthClientConfig;
+  googleClient: OAuthClientConfig;
 }
 
 export function getTypeOrmConfig(): TypeOrmModuleOptions {
@@ -35,6 +37,16 @@ export function configurationFactory(): Configuration {
       redirectUrl: process.env.NARIS_LOGIN_URL || '/',
     },
     typeOrm: getTypeOrmConfig(),
+    yandexClient: {
+      clientID: process.env.YANDEX_CLIENT_ID,
+      clientSecret: process.env.YANDEX_CLIENT_SECRET,
+      callbackURL: process.env.YANDEX_CLIENT_CALLBACK,
+    },
+    googleClient: {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+    },
   };
 }
 

@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BusEmitter, MixedBusService } from '@soer/mixed-bus';
-import { AimModel } from '@soer/soer-components';
+import { ANY_SERVICE, BusEmitter, MixedBusService } from '@soer/mixed-bus';
+import { AimModel, AimVideoAction } from '@soer/soer-components';
 import { CommandDelete, CommandUpdate, DataStoreService, DtoPack, OK } from '@soer/sr-dto';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { filter, first, Observable } from 'rxjs';
 import { convertToJsonDTO, parseJsonDTOPack } from '../../../../api/json.dto.helpers';
 import { TargetModel, Visibility } from '../../../../api/targets/target.interface';
 import { DONE_PROGRESS, TargetKey, UNDONE_PROGRESS } from '../targets.const';
+import { TaskClosedEvent } from '../events/task-closed.event';
+import { TargetAchievedEvent } from '../events/target-achieved.event';
 
 @Component({
   selector: 'soer-list-aims-page',
@@ -61,6 +63,13 @@ export class ListAimsPageComponent implements OnInit {
     this.bus$.publish(new CommandDelete(tmpTargetId, {}, { tid: target.id }));
   }
 
+  onTaskClose(target: AimModel, task: AimModel): void {
+    this.bus$.publish(new TaskClosedEvent(ANY_SERVICE, task as TargetModel));
+    if (target.progress === 100) {
+      this.bus$.publish(new TargetAchievedEvent(ANY_SERVICE, target as TargetModel));
+    }
+  }
+
   createTasksVisibility(): void {
     this.targets$
       .pipe(
@@ -91,5 +100,27 @@ export class ListAimsPageComponent implements OnInit {
     const path = descriptionPath.map((pathId) => (pathId === -1 ? 'root' : pathId)).join('-');
     const outlets = { popup: ['target', String(id), 'description', path] };
     this.router.navigate(['/pages/targets', { outlets }]);
+  }
+
+  onVideo(videoLinkAction: AimVideoAction) {
+    if (videoLinkAction.isEdit) {
+      const newId =
+        videoLinkAction.linkVideoId === -1
+          ? 0
+          : prompt('Укажите номер ссылки', (videoLinkAction.linkVideoId || 0).toString());
+      if (newId) {
+        videoLinkAction.aim.linkVideoId = +newId;
+      } else {
+        videoLinkAction.aim.linkVideoId = undefined;
+      }
+      return;
+    }
+    const id = videoLinkAction.linkVideoId;
+    if (id) {
+      const outlets = { popup: ['link', String(id), 'video'] };
+      this.router.navigate(['/pages/targets', { outlets }]);
+      return;
+    }
+    console.error('Невозможно обработать действие ', videoLinkAction);
   }
 }

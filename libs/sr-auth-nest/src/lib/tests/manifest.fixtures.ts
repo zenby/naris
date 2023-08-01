@@ -20,7 +20,7 @@ export const ManifestStreamFixture: UserManifest = {
   email: 'email@gmail.com',
   firstName: 'name',
   lastName: 'lastname',
-  role: 'WORKSHOP',
+  role: 'STREAM',
   expired: new Date('2023-08-07T09:29:53.000Z'),
   namespaces: [
     {
@@ -35,7 +35,7 @@ export const ManifestProFixture: UserManifest = {
   email: 'email@gmail.com',
   firstName: 'name',
   lastName: 'lastname',
-  role: 'WORKSHOP',
+  role: 'PRO',
   expired: new Date('2023-08-07T09:29:53.000Z'),
   namespaces: [
     {
@@ -44,4 +44,22 @@ export const ManifestProFixture: UserManifest = {
       deadlineMs: 1691400593000,
     },
   ],
+};
+
+export const ManifestGuestFixture: UserManifest = {
+  email: 'email@gmail.com',
+  firstName: 'name',
+  lastName: 'lastname',
+  role: 'GUEST',
+  expired: new Date('2023-08-07T09:29:53.000Z'),
+  namespaces: [],
+};
+
+export const ManifestUnknownFixture: UserManifest = {
+  email: 'email@gmail.com',
+  firstName: 'name',
+  lastName: 'lastname',
+  role: 'UNKNOWN',
+  expired: new Date('2023-08-07T09:29:53.000Z'),
+  namespaces: [],
 };

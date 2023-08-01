@@ -1,4 +1,4 @@
-import { dev } from '../../src/environments/feature-flags';
+import { prodFeatures } from 'apps/naris/src/environments/features';
 import { EnvironmentInterface } from '../../src/environments/environment.interface';
 import { getDevHostVariables } from '../../src/environments/getHostVariables';
 
@@ -16,6 +16,6 @@ export const environment: EnvironmentInterface = {
   privateAssetsUrl: HOST + '/assets/private/',
   payServiceUrl: HOST + '/api/v2/seller',
   features: {
-    auth_v2: true,
+    ...prodFeatures,
   },
 };

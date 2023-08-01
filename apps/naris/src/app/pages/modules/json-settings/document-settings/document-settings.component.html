@@ -1,0 +1,19 @@
+<ng-container *ngIf="documents$ | async as dto">
+  <ng-container *ngFor="let document of dto.items">
+    <h1>Документ: {{ document.id }} {{ document.accessTag }}</h1>
+    <div>
+      <span>Создан: {{ document.createdAt | date }}</span>
+    </div>
+    <div>
+      <span>Изменен: {{ document.updatedAt | date }}</span>
+    </div>
+    <div>
+      <span>Изменить на:</span>
+      <a href="javascript:void(0)" (click)="accessTag('PRIVATE')">Private</a>
+      | <a href="javascript:void(0)" (click)="accessTag('PUBLIC')">Public</a> |
+      <a href="javascript:void(0)" (click)="accessTag('STREAM')">Stream</a> |
+      <a href="javascript:void(0)" (click)="accessTag('WORKSHOP')">Workshop</a> |
+      <a href="javascript:void(0)" (click)="accessTag('PRO')">PRO</a>
+    </div>
+  </ng-container>
+</ng-container>

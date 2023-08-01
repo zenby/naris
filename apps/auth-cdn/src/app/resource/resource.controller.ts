@@ -16,12 +16,24 @@ import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { ResourceService } from './resource.service';
 import { Resource } from './resource.model';
 import { ResourcesQueryDto } from './dto/resources-query.dto';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { uploadBodySchema } from './doc/upload-body.schema';
+import { errorResponseSchema } from './doc/error-response.schema';
+import { uploadResponseSchema } from './doc/upload-response.schema';
+import { getResourceSchema } from './doc/get-response.schema';
 
+@ApiTags('resources')
 @UsePipes(new ValidationPipe())
 @Controller('resource')
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 
+  @ApiBearerAuth('Authorization')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody(uploadBodySchema)
+  @ApiResponse({ status: 201, description: 'The resource has successfully been created', schema: uploadResponseSchema })
+  @ApiResponse({ status: 403, description: 'Anauthorized', schema: errorResponseSchema })
+  @ApiResponse({ status: 400, description: 'Bad request', schema: errorResponseSchema })
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<HttpJsonResult<{ uri: string }>> {
@@ -35,6 +47,13 @@ export class ResourceController {
     }
   }
 
+  @ApiOperation({
+    summary: 'Get resources',
+    description: 'Get resources filtered by filename and/or foldername',
+  })
+  @ApiBearerAuth('Authorization')
+  @ApiResponse({ status: 200, description: 'The results has successfully been return', schema: getResourceSchema })
+  @ApiResponse({ status: 403, description: 'Anauthorized', schema: errorResponseSchema })
   @Get()
   async getResources(@Query() query: ResourcesQueryDto): Promise<HttpJsonResult<Resource[]>> {
     try {

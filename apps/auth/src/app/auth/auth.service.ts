@@ -1,5 +1,5 @@
 import { compareSync } from 'bcrypt';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { Configuration } from '../config/config';
 import { ConfigService } from '@nestjs/config';
 
@@ -16,16 +16,24 @@ import { Fingerprint } from './helpers/fingerprint';
 export class AuthService {
   private readonly accessTokenHelper: AccessTokenHelper;
   private readonly refreshTokenHelper: RefreshTokenHelper;
+  logger = new Logger(AuthService.name);
 
   constructor(private readonly configService: ConfigService, private readonly userService: UserService) {
     const jwtConfig = configService.get<Configuration['jwt']>('jwt');
 
     this.accessTokenHelper = new AccessTokenHelper(jwtConfig);
     this.refreshTokenHelper = new RefreshTokenHelper(jwtConfig);
+
+    this.logger.log('Start service');
   }
 
-  async signUp(createUserDto: CreateUserDto) {
-    return await this.userService.createUser(createUserDto);
+  async signUp(createUserDto: CreateUserDto): Promise<UserEntity | Error> {
+    const existentUser = await this.userService.findByEmail(createUserDto.email);
+    if (existentUser instanceof NotFoundException) {
+      return await this.userService.createUser(createUserDto);
+    }
+
+    return new BadRequestException(`User with email ${createUserDto.email} already exists`);
   }
 
   getAccessToken(user: UserEntity): string {
@@ -72,6 +80,22 @@ export class AuthService {
     }
 
     return this.isPasswordMatch(password, user) ? user : new UnauthorizedException('Invalid password');
+  }
+
+  async authOrCreateUserByEmail(email: string): Promise<UserEntity | Error> {
+    const user = await this.userService.findByEmail(email);
+
+    if (user instanceof Error) {
+      this.logger.error(user);
+      const newUser = await this.userService.createUser({
+        login: email,
+        email,
+        password: '',
+      });
+      return newUser;
+    }
+
+    return user;
   }
 
   private isPasswordMatch(password: string, userFromDb: UserEntity): boolean {

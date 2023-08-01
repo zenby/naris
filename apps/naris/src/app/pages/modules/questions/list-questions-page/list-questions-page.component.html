@@ -1,6 +1,8 @@
 <nz-tabset nzLinkRouter [nzAnimated]="false" [nzLinkExact]="false">
   <nz-tab>
-    <a *nzTabLink nz-tab-link [routerLink]="['/', 'pages', 'qa', 'my']" id="my-questions-tab">Мои вопросы</a>
+    <a data-cy="myQuestionsTab" *nzTabLink nz-tab-link [routerLink]="['/', 'pages', 'qa', 'my']" id="my-questions-tab"
+      >Мои вопросы</a
+    >
     <ng-container *ngIf="question$ | async as questions">
       <ng-container
         *ngTemplateOutlet="
@@ -12,7 +14,14 @@
   </nz-tab>
 
   <nz-tab>
-    <a *nzTabLink nz-tab-link [routerLink]="['/', 'pages', 'qa', 'all']" id="all-questions-tab">Все вопросы</a>
+    <a
+      data-cy="allQuestionsTab"
+      *nzTabLink
+      nz-tab-link
+      [routerLink]="['/', 'pages', 'qa', 'all']"
+      id="all-questions-tab"
+      >Все вопросы</a
+    >
     <ng-container *ngIf="question$ | async | onlyWithAnaswer as questions">
       <ng-container
         *ngTemplateOutlet="
@@ -36,7 +45,13 @@
       <nz-list-item *ngFor="let question of questions" class="qa-list-item">
         <nz-list-item-meta [nzAvatar]="actionPlay">
           <nz-list-item-meta-description>
-            <p nz-typography nzEllipsis [nzEllipsisRows]="2" class="qa-list-item-description">
+            <p
+              data-cy="qaListItemDescription"
+              nz-typography
+              nzEllipsis
+              [nzEllipsisRows]="2"
+              class="qa-list-item-description"
+            >
               {{ question.question }}
             </p>
           </nz-list-item-meta-description>
@@ -66,7 +81,13 @@
         </ng-template>
         <ng-template #actionDelete>
           <button nz-button nzType="default">
-            <i nz-icon nzType="delete" (click)="questionDelete(question)" title="Удалить"></i>
+            <i
+              data-cy="questionDeleteBtn"
+              nz-icon
+              nzType="delete"
+              (click)="questionDelete(question)"
+              title="Удалить"
+            ></i>
           </button>
         </ng-template>
       </nz-list-item>
@@ -75,10 +96,12 @@
 </ng-template>
 
 <ng-template #emptylist>
-  <nz-result nzStatus="info" nzTitle="Задать первый вопрос">
+  <nz-result data-cy="firstAskProposal" nzStatus="info" nzTitle="Задать первый вопрос">
     <div nz-result-extra>
       <p class="info">Здесь можно задать свой вопрос и получить ответ в аудиоформе</p>
-      <button nz-button nzType="primary" (click)="createQuestion()" id="first-ask-btn">Задать</button>
+      <button data-cy="firstAskBtn" nz-button nzType="primary" (click)="createQuestion()" id="first-ask-btn">
+        Задать
+      </button>
     </div>
   </nz-result>
 </ng-template>

@@ -13,6 +13,7 @@ export interface TargetModel extends BlocksDocumentModel {
   title: string;
   overview: string;
   progress: number;
+  linkVideoId?: number;
   tasks: TargetModel[];
 }
 

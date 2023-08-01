@@ -9,11 +9,13 @@ import {
   CommandCreate,
   CommandDelete,
   CommandNew,
+  CommandPatch,
   CommandRead,
   CommandUpdate,
   CreateDoneEvent,
   DeleteDoneEvent,
   ErrorDataEvent,
+  PatchDoneEvent,
   ReadDoneEvent,
   UpdateDoneEvent,
 } from '../bus-messages/bus.messages';
@@ -23,20 +25,15 @@ import { DtoPack, ERROR, INIT, OK } from '../interfaces/dto.pack.interface';
 import { CRUDBusEmitter } from '../sr-dto.module';
 import { Params } from '@angular/router';
 
-type StoreCrudPatchedWindow = Window & { naris?: { store$?: StoreCrudService } };
-
 @Injectable({ providedIn: 'root' })
 export class StoreCrudService implements CRUD {
   constructor(private http: HttpClient, private bus$: MixedBusService, private urlBuilder: UrlBuilderService) {
-    const wnd = window as StoreCrudPatchedWindow;
-
-    wnd.naris = wnd.naris || {};
-    wnd.naris.store$ = this;
-
     bus$.of(CommandNew).subscribe(this.createNew.bind(this));
     bus$.of(CommandRead).subscribe(this.read.bind(this));
     bus$.of(CommandCreate).subscribe(this.create.bind(this));
+    bus$.of(CommandPatch).subscribe(this.patch.bind(this));
     bus$.of(CommandUpdate).subscribe(this.update.bind(this));
+
     bus$.of(CommandDelete).subscribe(this.delete.bind(this));
   }
 
@@ -100,6 +97,27 @@ export class StoreCrudService implements CRUD {
     return this.updateData(
       this.queryUpdate(msg.payload, msg.owner, msg.params).pipe(
         tap((data) => this.bus$.publish(new UpdateDoneEvent(msg.owner, data, msg.params)))
+      ),
+      msg.owner
+    );
+  }
+
+  // PATCH
+  protected queryPatch(data: unknown, owner: CRUDBusEmitter, routeParams: Params): Observable<DtoPack> {
+    return this.http.patch<DtoPack>(
+      this.urlBuilder.build(owner.schema['url'], owner.key, routeParams, owner.schema['params']),
+      data
+    );
+  }
+
+  public patch(msg: BusMessage | BusError): Promise<DtoPack> {
+    if (msg instanceof BusError || !isCRUDBusEmitter(msg.owner)) {
+      return Promise.resolve({ status: ERROR, items: [] });
+    }
+
+    return this.updateData(
+      this.queryPatch(msg.payload, msg.owner, msg.params).pipe(
+        tap((data) => this.bus$.publish(new PatchDoneEvent(msg.owner, data, msg.params)))
       ),
       msg.owner
     );

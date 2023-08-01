@@ -4,6 +4,7 @@ export interface AimModel extends BlocksDocumentModel {
   id?: number | string;
   title: string;
   overview: string;
+  linkVideoId?: number;
   progress: number;
   tasks: AimModel[];
 }
@@ -16,3 +17,9 @@ export const EMPTY_AIM: AimModel = {
   tasks: [],
   blocks: [{ text: '', type: 'markdown' }],
 };
+
+export interface AimVideoAction {
+  isEdit: boolean;
+  linkVideoId?: number;
+  aim: AimModel;
+}

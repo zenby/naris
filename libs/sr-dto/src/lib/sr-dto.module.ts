@@ -59,6 +59,17 @@ function createcrudEmitters<T extends BusKey>(options: CrudOptions<T>): Provider
 }
 
 function createCRUDSBusId(providerName: string, emitter: CRUDBusEmitter): Provider {
+  patchConsole(providerName, emitter);
+
+  return {
+    provide: `${providerName}`,
+    useFactory: () => {
+      return emitter;
+    },
+  };
+}
+
+function patchConsole(providerName: string, emitter: CRUDBusEmitter) {
   const wnd = window as EmittersPatchedWindow;
 
   try {
@@ -69,13 +80,6 @@ function createCRUDSBusId(providerName: string, emitter: CRUDBusEmitter): Provid
   } catch (e) {
     console.error('Не могу создать эмиттеры для консоли');
   }
-
-  return {
-    provide: `${providerName}`,
-    useFactory: () => {
-      return emitter;
-    },
-  };
 }
 
 function createDataEmitter(providerName: string, emitter: CRUDBusEmitter): Provider {

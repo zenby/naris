@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { AimModel, EMPTY_AIM } from '../interfaces/aim.model';
+import { AimModel, AimVideoAction, EMPTY_AIM } from '../interfaces/aim.model';
 import { TargetService } from '../target.service';
 
 @Component({
@@ -15,7 +15,9 @@ export class TargetComponent {
   @Output() update: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() edit: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() delete: EventEmitter<AimModel> = new EventEmitter<AimModel>();
+  @Output() taskClose: EventEmitter<AimModel> = new EventEmitter<AimModel>();
   @Output() description: EventEmitter<number[]> = new EventEmitter<number[]>();
+  @Output() video: EventEmitter<AimVideoAction> = new EventEmitter<AimVideoAction>();
 
   constructor(private targetService: TargetService) {}
 
@@ -43,10 +45,17 @@ export class TargetComponent {
   showDescription() {
     this.description.emit([-1]);
   }
+  showVideo() {
+    this.video.emit({ isEdit: this.isEdit, linkVideoId: this.target.linkVideoId, aim: this.target });
+  }
 
   onDescription(descriptionPath: number[]) {
     const rootIndex = 0;
     this.description.emit([rootIndex, ...descriptionPath]);
+  }
+
+  onVideo($event: AimVideoAction) {
+    this.video.emit($event);
   }
 
   onAction(action: string): void {

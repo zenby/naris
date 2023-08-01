@@ -1,6 +1,8 @@
-import { ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
+import { ExecutionContext, ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
+
+const logger = new Logger('Google oauth');
 
 @Injectable()
 export class GoogleAuthGuard extends AuthGuard('google') {
@@ -10,6 +12,8 @@ export class GoogleAuthGuard extends AuthGuard('google') {
 
   handleRequest<UserEntity>(err: Error, user: UserEntity) {
     if (err || !user) {
+      logger.error(err);
+      logger.error(JSON.stringify(user));
       throw err || new ForbiddenException();
     }
 

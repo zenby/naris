@@ -7,3 +7,5 @@ export interface SerializedJsonModel {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type DtoErrorMessage = string;

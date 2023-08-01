@@ -1,10 +1,8 @@
 import * as supertest from 'supertest';
 import * as cookieParser from 'cookie-parser';
 import * as jwt from 'jsonwebtoken';
-import { Repository } from 'typeorm';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
 import { AuthTestModule } from './tests/auth.test.module';
 import { AuthController } from './auth.controller';
@@ -12,7 +10,6 @@ import { LocalStrategy } from '../common/strategies/local.strategy';
 import { RefreshCookieStrategy } from '../common/strategies/refreshCookie.strategy';
 import { testConfig } from './tests/auth.test.config';
 import { LoginUserDto } from '../user/dto/login-user.dto';
-import { UserEntity } from '../user/user.entity';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { adminUser, regularUser, regularUserCredentials, testFingerprint, testUsers } from '../user/tests/test.users';
 import { createRequest, getJWTTokenWithFingerprintFactory, authRequestMakerFactory } from './tests/auth.test.helper';
@@ -21,7 +18,6 @@ import { Fingerprint } from './helpers/fingerprint';
 describe('Auth e2e-test', () => {
   let app: INestApplication;
   let request: ReturnType<typeof supertest>;
-  let userRepo: Repository<UserEntity>;
 
   const config = testConfig;
   const users = testUsers;
@@ -40,7 +36,6 @@ describe('Auth e2e-test', () => {
     app.use(cookieParser());
     await app.init();
 
-    userRepo = app.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
     request = supertest(app.getHttpServer());
   });
 
@@ -68,31 +63,27 @@ describe('Auth e2e-test', () => {
   });
 
   describe('POST /auth/signup', () => {
-    it('should create user when pass valid data', async () => {
-      const validDto: CreateUserDto = {
-        email: 'email@example.com',
-        login: 'login',
-        password: 'password',
+    it('should create a user when valid data is passed', async () => {
+      const newUserDto: CreateUserDto = {
+        email: 'newUserEmail@example.com',
+        login: 'newUserLogin',
+        password: 'newUserPassword',
       };
 
-      jest.spyOn(userRepo, 'save').mockResolvedValueOnce(null);
-
-      const response = await request.post('/auth/signup').send(validDto);
+      const response = await request.post('/auth/signup').send(newUserDto);
       const body: HttpJsonResult<string> = response.body;
 
       expect(body.status).toBe(HttpJsonStatus.Ok);
     });
 
-    it('should return error when pass invalid data ', async () => {
-      const invalidDto: CreateUserDto = {
-        email: 'email@example.com',
-        login: 'login',
-        password: 'password',
+    it('should return an error when existent user data is passed ', async () => {
+      const existentUserDto: CreateUserDto = {
+        email: regularUser.email,
+        login: regularUser.login,
+        password: regularUser.password,
       };
 
-      jest.spyOn(userRepo, 'save').mockRejectedValueOnce('Error');
-
-      const response = await request.post('/auth/signup').send(invalidDto);
+      const response = await request.post('/auth/signup').send(existentUserDto);
       const body: HttpJsonResult<string> = response.body;
 
       expect(body.status).toBe(HttpJsonStatus.Error);

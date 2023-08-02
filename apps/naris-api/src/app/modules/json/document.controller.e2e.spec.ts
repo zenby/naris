@@ -64,6 +64,7 @@ describe('JsonModule e2e-test', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
+    jest.spyOn(jsonService, 'isUserAuthorOfDocument').mockRestore();
   });
 
   afterAll(async () => {

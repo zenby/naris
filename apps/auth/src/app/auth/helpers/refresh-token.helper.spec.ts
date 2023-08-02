@@ -1,7 +1,7 @@
 import { adminUser, testFingerprint } from '../../user/tests/test.users';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokenHelper } from './refresh-token.helper';
-import { testConfig } from '../tests/auth.test.config';
+import { authTestConfig } from '../tests/auth.test.config';
 import { Fingerprint } from './fingerprint';
 import { createRequest } from '../tests/auth.test.helper';
 import { UnauthorizedException } from '@nestjs/common';
@@ -9,7 +9,7 @@ import { UnauthorizedException } from '@nestjs/common';
 describe('RefreshTokenHelper', () => {
   describe('generate', () => {
     it('should generate a valid token for a user with the specified secret', () => {
-      const refreshTokenHelper = new RefreshTokenHelper(testConfig);
+      const refreshTokenHelper = new RefreshTokenHelper(authTestConfig);
       const token = refreshTokenHelper.generate(adminUser, testFingerprint);
 
       expect(typeof token).toBe('string');
@@ -19,7 +19,7 @@ describe('RefreshTokenHelper', () => {
 
   describe('verify', () => {
     it('should successfully verify a valid token with the matching secret', () => {
-      const refreshTokenHelper = new RefreshTokenHelper(testConfig);
+      const refreshTokenHelper = new RefreshTokenHelper(authTestConfig);
       const token = refreshTokenHelper.generate(adminUser, testFingerprint);
 
       const result = refreshTokenHelper.verify(token, testFingerprint);
@@ -36,7 +36,7 @@ describe('RefreshTokenHelper', () => {
     });
 
     it('should return UnauthorizedException if the fingerprint is invalid', () => {
-      const refreshTokenHelper = new RefreshTokenHelper(testConfig);
+      const refreshTokenHelper = new RefreshTokenHelper(authTestConfig);
       const token = refreshTokenHelper.generate(adminUser, testFingerprint);
 
       const result = refreshTokenHelper.verify(
@@ -50,9 +50,9 @@ describe('RefreshTokenHelper', () => {
 
     it('should fail to verify a token with a different secret', () => {
       const wrongSecret = 'wrong_secret';
-      const jwtWithWrongSecret = { ...testConfig, jwtSecret: wrongSecret };
+      const jwtWithWrongSecret = { ...authTestConfig, jwtSecret: wrongSecret };
 
-      const refreshTokenHelper = new RefreshTokenHelper(testConfig);
+      const refreshTokenHelper = new RefreshTokenHelper(authTestConfig);
 
       const wrongRefreshTokenHelper = new RefreshTokenHelper(jwtWithWrongSecret);
       const wrongToken = wrongRefreshTokenHelper.generate(adminUser, testFingerprint);
@@ -61,7 +61,7 @@ describe('RefreshTokenHelper', () => {
     });
 
     it('should fail to verify an expired token', () => {
-      const jwtShotTimeConfig = { ...testConfig, expiresInRefresh: '1 second' };
+      const jwtShotTimeConfig = { ...authTestConfig, expiresInRefresh: '1 second' };
 
       const refreshTokenHelper = new RefreshTokenHelper(jwtShotTimeConfig);
       const token = refreshTokenHelper.generate(adminUser, testFingerprint);

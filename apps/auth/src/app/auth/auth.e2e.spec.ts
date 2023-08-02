@@ -8,7 +8,7 @@ import { AuthTestModule } from './tests/auth.test.module';
 import { AuthController } from './auth.controller';
 import { LocalStrategy } from '../common/strategies/local.strategy';
 import { RefreshCookieStrategy } from '../common/strategies/refreshCookie.strategy';
-import { testConfig } from './tests/auth.test.config';
+import { authTestConfig } from './tests/auth.test.config';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import {
@@ -19,17 +19,17 @@ import {
   testUsers,
   changedTestFingerprint,
 } from '../user/tests/test.users';
-import { createRequest, getJWTTokenWithFingerprintFactory, authRequestMakerFactory } from './tests/auth.test.helper';
+import { createRequest, userFactory, authRequestMakerFactory } from './tests/auth.test.helper';
 import { Fingerprint } from './helpers/fingerprint';
 
 describe('Auth e2e-test', () => {
   let app: INestApplication;
   let request: ReturnType<typeof supertest>;
 
-  const config = testConfig;
+  const config = authTestConfig;
   const users = testUsers;
   const expired10MinAgo = -10 * 60;
-  const getJWTTokenForUserWithFingerprint = getJWTTokenWithFingerprintFactory(config);
+  const userTokenGenerator = userFactory(config);
   const makeAuthRequest = authRequestMakerFactory(config.cookieName, testFingerprint);
 
   beforeAll(async () => {
@@ -111,7 +111,7 @@ describe('Auth e2e-test', () => {
 
   describe('GET /auth/access_token', () => {
     it('should generate access token when pass valid refresh token', async () => {
-      const jwtToken = getJWTTokenForUserWithFingerprint(users[0], testFingerprint);
+      const jwtToken = userTokenGenerator(users[0], testFingerprint);
       const authRequest = makeAuthRequest(request.get('/auth/access_token'), jwtToken);
 
       const response = await authRequest.expect(200);
@@ -124,7 +124,7 @@ describe('Auth e2e-test', () => {
     });
 
     it('should return 401 error when pass old refresh token', async () => {
-      const jwtToken = getJWTTokenForUserWithFingerprint(users[0], testFingerprint, expired10MinAgo);
+      const jwtToken = userTokenGenerator(users[0], testFingerprint, expired10MinAgo);
       const authRequest = makeAuthRequest(request.get('/auth/access_token'), jwtToken);
 
       await authRequest.expect(401);
@@ -135,7 +135,7 @@ describe('Auth e2e-test', () => {
     });
 
     it('should return 401 error when fingerprint data is changed', async () => {
-      const jwtToken = getJWTTokenForUserWithFingerprint(users[0], changedTestFingerprint);
+      const jwtToken = userTokenGenerator(users[0], changedTestFingerprint);
       const authRequest = makeAuthRequest(request.get('/auth/access_token'), jwtToken);
 
       await authRequest.expect(401);
@@ -144,7 +144,7 @@ describe('Auth e2e-test', () => {
 
   describe('POST /auth/access_token_for_user_request', () => {
     it('should generate an access_token for requested user', async () => {
-      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, testFingerprint);
+      const jwtToken = userTokenGenerator(adminUser, testFingerprint);
       const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
       const response = await authRequest.send({ switch_to_user_by_email: regularUser.email }).expect(201);
@@ -159,14 +159,14 @@ describe('Auth e2e-test', () => {
     });
 
     it('should return 401 error when pass old refresh token', async () => {
-      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, testFingerprint, expired10MinAgo);
+      const jwtToken = userTokenGenerator(adminUser, testFingerprint, expired10MinAgo);
       const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
       await authRequest.send({ switch_to_user_by_email: users[0].email }).expect(401);
     });
 
     it('should return 403 error when user role is USER', async () => {
-      const jwtToken = getJWTTokenForUserWithFingerprint(regularUser, testFingerprint);
+      const jwtToken = userTokenGenerator(regularUser, testFingerprint);
       const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
       await authRequest.send({ switch_to_user_by_email: regularUser.email }).expect(403);
@@ -180,21 +180,21 @@ describe('Auth e2e-test', () => {
 
     it('should return 401 error when fingerprint data changed', async () => {
       const fingerPrint = new Fingerprint(createRequest(['127.0.0.1', '192.168.0.2'], 'Mozilla/5.0'));
-      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, fingerPrint);
+      const jwtToken = userTokenGenerator(adminUser, fingerPrint);
       const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
       await authRequest.send({ switch_to_user_by_email: users[0].email }).expect(401);
     });
 
     it('should return 404 error when no params passed', async () => {
-      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, testFingerprint);
+      const jwtToken = userTokenGenerator(adminUser, testFingerprint);
       const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
       await authRequest.expect(404);
     });
 
     it('should return 404 error when empty email passed', async () => {
-      const jwtToken = getJWTTokenForUserWithFingerprint(adminUser, testFingerprint);
+      const jwtToken = userTokenGenerator(adminUser, testFingerprint);
       const authRequest = makeAuthRequest(request.post('/auth/access_token_for_user_request'), jwtToken);
 
       await authRequest.send({ switch_to_user_by_email: '' }).expect(404);

@@ -5,6 +5,7 @@ import { UserService } from '../../user/user.service';
 import { Profile } from 'passport';
 import { ConfigService } from '@nestjs/config';
 import { UserTestModule } from '../../user/tests/user.test.module';
+import { userTestConfig } from '../../user/tests/user.test.config';
 
 describe('YandexStrategy', () => {
   let strategy: YandexStrategy;
@@ -12,7 +13,7 @@ describe('YandexStrategy', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [UserTestModule],
+      imports: [UserTestModule.forConfig(userTestConfig)],
       providers: [
         YandexStrategy,
         {

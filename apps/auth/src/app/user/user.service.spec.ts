@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { faker } from '@faker-js/faker';
 import { UserTestModule } from './tests/user.test.module';
+import { userTestConfig } from './tests/user.test.config';
 
 describe('User service', () => {
   let userService: UserService;
@@ -13,7 +14,7 @@ describe('User service', () => {
 
   beforeAll(async () => {
     testModule = await Test.createTestingModule({
-      imports: [UserTestModule],
+      imports: [UserTestModule.forConfig(userTestConfig)],
     }).compile();
 
     userService = testModule.get<UserService>(UserService);

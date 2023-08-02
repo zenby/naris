@@ -24,6 +24,8 @@ declare global {
     interface Chainable<Subject> {
       login(email: string, password: string): void;
       removeAllExistingArticles(): void;
+      removeAllExistingDocuments(namespace: string): void;
+      createDocument(path: string, createDocumentPath: string, namespaceTitle: string): void;
       createArticle(): void;
       removeAllExistingConspects(): void;
       createConspect(): void;
@@ -60,6 +62,48 @@ Cypress.Commands.add('login', (login, password) => {
       });
     });
   });
+});
+
+Cypress.Commands.add('removeAllExistingDocuments', (namespace: string) => {
+  cy.get('[data-cy=' + namespace + ']').should('have.attr', 'disabled');
+  cy.get('.ant-spin-dot').should('not.exist');
+  cy.get('[data-cy="delete-article"]')
+    .should('have.length.gte', 0)
+    .then(($delBtnList) => {
+      const delBtnLen = $delBtnList.length;
+
+      for (let i = 0; i < delBtnLen; i++) {
+        cy.get('[data-cy="delete-article"]').then((delBtns) => {
+          const delBtnLen = delBtns.length;
+          cy.get('[data-cy="delete-article"]').eq(0).click({ force: true });
+          cy.contains('OK').should('be.visible').click({ force: true });
+          cy.get('[data-cy="delete-article"]').should('have.length', delBtnLen - 1);
+          cy.get('.ant-message-notice-content', { timeout: 10000 }).should('have.length', 1);
+          cy.get('.ant-message-notice-content', { timeout: 10000 }).should('have.length', 0);
+        });
+      }
+    });
+});
+
+Cypress.Commands.add('createDocument', (path: string, createDocumentPath: string, namespaceTitle: string) => {
+  cy.visit(`/${path}`);
+  cy.location('href').should('eq', Cypress.config().baseUrl + path);
+
+  cy.get('[data-cy="plus"]').should('be.visible').click();
+  cy.location('href').should('eq', Cypress.config().baseUrl + createDocumentPath);
+
+  cy.get('input[placeholder="Тема"]').type(testTitle, { force: true });
+  cy.get('[data-cy="save"]').click();
+  cy.location('href').should('contain', Cypress.config().baseUrl + workbookPath);
+  cy.get('[data-cy="' + namespaceTitle + '"]')
+    .should('be.visible')
+    .click();
+  cy.get('[data-cy="' + namespaceTitle + '"]').should('have.attr', 'disabled');
+  cy.get('.ant-spin-dot').should('not.exist');
+  cy.get('.ant-message-notice-content', { timeout: 10000 }).should('have.length', 1);
+  cy.get('.ant-message-notice-content', { timeout: 10000 }).should('have.length', 0);
+  cy.get('[data-cy="' + namespaceTitle + '"]').click();
+  cy.get('[data-cy="delete-article"]').should('exist');
 });
 
 Cypress.Commands.add('removeAllExistingArticles', () => {

@@ -81,13 +81,7 @@
         </ng-template>
         <ng-template #actionDelete>
           <button nz-button nzType="default">
-            <i
-              data-cy="questionDeleteBtn"
-              nz-icon
-              nzType="delete"
-              (click)="questionDelete(question)"
-              title="Удалить"
-            ></i>
+            <i data-cy="questionDelete" nz-icon nzType="delete" (click)="questionDelete(question)" title="Удалить"></i>
           </button>
         </ng-template>
       </nz-list-item>
@@ -99,7 +93,7 @@
   <nz-result data-cy="firstAskProposal" nzStatus="info" nzTitle="Задать первый вопрос">
     <div nz-result-extra>
       <p class="info">Здесь можно задать свой вопрос и получить ответ в аудиоформе</p>
-      <button data-cy="firstAskBtn" nz-button nzType="primary" (click)="createQuestion()" id="first-ask-btn">
+      <button data-cy="firstAsk" nz-button nzType="primary" (click)="createQuestion()" id="first-ask-btn">
         Задать
       </button>
     </div>

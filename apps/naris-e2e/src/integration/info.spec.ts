@@ -9,7 +9,7 @@ describe('naris overview', () => {
 
   it('should display info page', () => {
     cy.visit('/#!/pages/overview/info');
-    cy.get('a[title="Информация"]').should('have.attr', 'disabled', 'disabled');
+    cy.get('[data-cy="Информация"]').should('have.attr', 'disabled', 'disabled');
 
     cy.get('div.contact_text').each(($el) => {
       cy.wrap($el).should('be.visible');

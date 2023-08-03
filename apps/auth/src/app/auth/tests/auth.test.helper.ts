@@ -1,9 +1,27 @@
 import { UserEntity } from '../../user/user.entity';
 import { Fingerprint } from '../helpers/fingerprint';
-import * as jwt from 'jsonwebtoken';
 import { Request } from 'express';
-import * as superagent from 'superagent';
 import { Configuration } from '../../config/config';
+import * as jwt from 'jsonwebtoken';
+import * as superagent from 'superagent';
+import * as supertest from 'supertest';
+
+export function getJWTConfigMock(config: Configuration['jwt']) {
+  return {
+    get: (): Configuration['jwt'] => config,
+  };
+}
+
+export type AuthRequestMakeType = <TRequest extends superagent.SuperAgentRequest>(request: TRequest) => TRequest;
+
+export const createUserAuthRequestFactory = (config: Configuration['jwt'], fingerprint: Fingerprint) => {
+  return (request: supertest.Test, user: UserEntity) => {
+    const userTokenGenerator = userFactory(config);
+    const accessToken = userTokenGenerator(user, fingerprint);
+    const authRequestMakerFn = authRequestMakerFactory(config.cookieName, fingerprint);
+    return authRequestMakerFn(request, accessToken);
+  };
+};
 
 export const createRequest = (ipAddresses: string[], userAgent: string): Request => {
   return {
@@ -24,15 +42,15 @@ export const authRequestMakerFactory = (jwtCookieName: string, fingerprint: Fing
     return jwtToken ? { ...result, Cookie: [`${jwtCookieName}=${jwtToken}`] } : result;
   };
 
-  const authRequestMakerFn = <TRequest extends superagent.SuperAgentRequest>(request: TRequest, jwtToken?: string) => {
+  const authRequestMaker = <TRequest extends superagent.SuperAgentRequest>(request: TRequest, jwtToken?: string) => {
     const headers = getAuthHeaders(fingerprint, jwtToken);
     return request.set(headers);
   };
 
-  return authRequestMakerFn;
+  return authRequestMaker;
 };
 
-export const getJWTTokenWithFingerprintFactory = (config: Configuration['jwt']) => {
+export const userFactory = (config: Configuration['jwt']) => {
   return (user: UserEntity, requestFingerprint: Fingerprint, expiredInSec?: number) => {
     const { jwtSecret: secret, expiresInRefresh } = config;
     const iat = Math.floor(Date.now() / 1000) + expiredInSec;

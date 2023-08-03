@@ -5,8 +5,8 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from '../auth/auth.service';
 import { HttpJsonStatus } from '@soer/sr-common-interfaces';
-import { getJWTTokenWithFingerprintFactory } from '../auth/tests/auth.test.helper';
-import { testConfig } from '../auth/tests/auth.test.config';
+import { userFactory } from '../auth/tests/auth.test.helper';
+import { authTestConfig } from '../auth/tests/auth.test.config';
 import { AuthTestModule } from '../auth/tests/auth.test.module';
 import { regularUser, testRequest, testFingerprint } from '../user/tests/test.users';
 
@@ -14,9 +14,9 @@ describe('AuthOpenIdController', () => {
   let controller: AuthOpenIdController;
   let authService: AuthService;
   const internalErrorMessage = 'Something went wrong. Try it later';
-  const config = testConfig;
+  const config = authTestConfig;
   const request = testRequest;
-  const getJWTTokenForUserWithFingerprint = getJWTTokenWithFingerprintFactory(config);
+  const userTokenGenerator = userFactory(config);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -44,7 +44,7 @@ describe('AuthOpenIdController', () => {
         redirect: jest.fn(),
       } as unknown as Response;
 
-      const jwtToken = getJWTTokenForUserWithFingerprint(regularUser, testFingerprint);
+      const jwtToken = userTokenGenerator(regularUser, testFingerprint);
       const refreshSpy = jest.spyOn(authService, 'getRefreshToken');
 
       await controller.googleLoginCallback(regularUser, request, response);
@@ -86,7 +86,7 @@ describe('AuthOpenIdController', () => {
         cookie: jest.fn(),
         redirect: jest.fn(),
       } as unknown as Response;
-      const jwtToken = getJWTTokenForUserWithFingerprint(regularUser, testFingerprint);
+      const jwtToken = userTokenGenerator(regularUser, testFingerprint);
       const refreshSpy = jest.spyOn(authService, 'getRefreshToken');
 
       await controller.yandexCallback(regularUser, request, response);

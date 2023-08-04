@@ -27,6 +27,7 @@ import { QuestionViewComponent } from './question-view/question-view.component';
 import { OnlyWithAnaswerPipe } from './only-with-anaswer.pipe';
 import { QuestionsConfigService } from './services/questions-config.service';
 import { AudioPlayerModule } from '@soer/soer-components';
+import { QuestionAskedSubscriber } from './subscribers/questions.subscriber';
 
 @NgModule({
   declarations: [
@@ -63,4 +64,6 @@ import { AudioPlayerModule } from '@soer/soer-components';
   providers: [QuestionsConfigService],
   exports: [QuestionFormComponent],
 })
-export class QuestionsModule {}
+export class QuestionsModule {
+  constructor(private questionAskedSubscriber: QuestionAskedSubscriber) {}
+}

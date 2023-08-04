@@ -28,7 +28,8 @@
       "@soer/sr-feature-flags": ["libs/sr-feature-flags/src/index.ts"],
       "@soer/sr-local-storage": ["libs/sr-local-storage/src/index.ts"],
       "@soer/sr-storybook-host": ["libs/sr-storybook-host/src/index.ts"],
-      "@soer/sr-url-builder": ["libs/sr-url-builder/src/index.ts"]
+      "@soer/sr-url-builder": ["libs/sr-url-builder/src/index.ts"],
+      "@soer/naris/*": ["apps/naris/src/app/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

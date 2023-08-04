@@ -1,9 +1,15 @@
 <h1 data-cy="questionFormTitle">Задайте свой вопрос</h1>
 <form nz-form [formGroup]="form" (ngSubmit)="onSubmit()" nzLayout="vertical">
   <nz-form-item>
-    <nz-form-control>
+    <nz-form-control [nzErrorTip]="errorTemplate">
       <nz-textarea-count [nzMaxCharacterCount]="questionMaxLength">
         <textarea data-cy="questionInput" rows="8" formControlName="question" nz-input></textarea>
+        <ng-template #errorTemplate let-control>
+          <ng-container *ngIf="control.hasError('required')">Поле обязательно для заполнения</ng-container>
+          <ng-container *ngIf="control.hasError('maxlength')"
+            >Ваш вопрос не должен превышать {{ questionMaxLength }} символов</ng-container
+          >
+        </ng-template>
       </nz-textarea-count>
     </nz-form-control>
   </nz-form-item>

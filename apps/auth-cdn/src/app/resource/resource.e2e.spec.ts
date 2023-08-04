@@ -3,13 +3,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { Configuration, configurationFactory } from '../config/config';
-import { ResourceModule } from './resource.module';
 import { HttpJsonResult } from '@soer/sr-common-interfaces';
 import { faker } from '@faker-js/faker';
 import { DELIMETERS, ERRORS } from './constants';
 import { rmSync } from 'fs';
 import { generateTestFileData } from './helpers/generate-filedata.helper';
 import { FileData } from './resource.model';
+import { TestResourceModule } from './tests/resource.test.module';
 import { ResourceRepository } from './resource.repository';
 
 describe('Resource (e2e)', () => {
@@ -24,7 +24,7 @@ describe('Resource (e2e)', () => {
           isGlobal: true,
           load: [configurationFactory],
         }),
-        ResourceModule,
+        TestResourceModule,
       ],
     }).compile();
 

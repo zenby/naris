@@ -11,7 +11,7 @@ describe('naris overview', () => {
     cy.visit('/#!/pages/overview/info');
     cy.get('[data-cy="Информация"]').should('have.attr', 'disabled', 'disabled');
 
-    cy.get('div.contact_text').each(($el) => {
+    cy.get('[data-cy="contactText"]').each(($el) => {
       cy.wrap($el).should('be.visible');
     });
 

@@ -1,0 +1,30 @@
+<div class="wrapper">
+  <div class="title">
+    <h2>{{ header }}</h2>
+  </div>
+  <div class="container-wrapper">
+    <button
+      *ngIf="isNeedShowLeftArrow"
+      (click)="onArrowClick(-1)"
+      class="arrow arrow-left"
+      nz-button
+      nzType="default"
+      nzSize="small"
+    >
+      <span nz-icon nzType="left" nzTheme="outline"></span>
+    </button>
+    <div #container class="container">
+      <ng-content></ng-content>
+    </div>
+    <button
+      *ngIf="isNeedShowRightArrow"
+      (click)="onArrowClick(1)"
+      class="arrow arrow-right"
+      nz-button
+      nzType="default"
+      nzSize="small"
+    >
+      <span nz-icon nzType="right" nzTheme="outline"></span>
+    </button>
+  </div>
+</div>

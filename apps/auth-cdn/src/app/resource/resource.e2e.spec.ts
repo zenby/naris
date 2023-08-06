@@ -6,7 +6,6 @@ import { Configuration, configurationFactory } from '../config/config';
 import { HttpJsonResult } from '@soer/sr-common-interfaces';
 import { faker } from '@faker-js/faker';
 import { DELIMETERS, ERRORS } from './constants';
-import { rmSync } from 'fs';
 import { generateTestFileData } from './helpers/generate-filedata.helper';
 import { FileData } from './resource.model';
 import { TestResourceModule } from './tests/resource.test.module';

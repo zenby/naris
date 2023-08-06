@@ -30,8 +30,9 @@ export class CarouselComponent implements AfterViewInit, DoCheck {
   }
 
   private calculateIsNeedShowArrow(): void {
+    const el = this.container?.nativeElement;
+    const maxLeftScroll = el?.scrollWidth - el?.clientWidth;
     this.isNeedShowLeftArrow = this.container?.nativeElement?.scrollLeft > 0;
-    this.isNeedShowRightArrow =
-      this.container?.nativeElement?.scrollLeft < this.container?.nativeElement?.scrollLeftMax;
+    this.isNeedShowRightArrow = maxLeftScroll - this.container?.nativeElement?.scrollLeft > 100;
   }
 }

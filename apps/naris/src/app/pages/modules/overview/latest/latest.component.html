@@ -1,43 +1,25 @@
-<nz-divider nzText="Стримы" nzOrientation="left"></nz-divider>
-<div nz-row [nzGutter]="[24, 24]">
-  <div
-    class="video-info"
-    nz-col
-    nzXs="24"
-    nzSm="12"
-    nzMd="8"
-    nzLg="8"
-    nzXl="8"
-    *ngFor="let video of streams | async; index as i"
-  >
+<soer-carousel header="Стримы">
+  <div class="carousel-item" *ngFor="let video of streams | async">
     <soer-thumbnail-card
+      (click)="showVideo(video)"
       [title]="video.title"
       [description]="video.desc"
       [img]="video.thumb_url ?? ''"
-      (click)="showVideo(video)"
     >
     </soer-thumbnail-card>
   </div>
-</div>
-<nz-divider nzText="Воркшопы" nzOrientation="left"></nz-divider>
-<div nz-row [nzGutter]="[24, 24]">
-  <div
-    class="video-info"
-    nz-col
-    nzXs="24"
-    nzSm="12"
-    nzMd="8"
-    nzLg="8"
-    nzXl="8"
-    *ngFor="let video of workshops | async; index as i"
-  >
+</soer-carousel>
+
+<soer-carousel header="Воркшопы">
+  <div class="carousel-item" *ngFor="let video of workshops | async">
     <soer-thumbnail-card
+      (click)="showVideo(video)"
       [title]="video.title"
       [description]="video.desc"
       [img]="video.thumb_url ?? ''"
-      (click)="showVideo(video)"
     >
     </soer-thumbnail-card>
   </div>
-</div>
+</soer-carousel>
+
 <router-outlet></router-outlet>

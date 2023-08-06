@@ -32,14 +32,6 @@ describe('Resource (e2e)', () => {
     await app.init();
   });
 
-  afterAll(async () => {
-    await app.close();
-
-    const rootPath = app.get(ConfigService).get<Configuration['fileStoragePath']>('fileStoragePath');
-
-    rmSync(rootPath, { recursive: true, force: true });
-  });
-
   describe('GET /resource', () => {
     it('should return 200 OK with data', async () => {
       const { body } = await request(app.getHttpServer()).get('/resource').expect(200);

@@ -15,7 +15,7 @@ describe('naris overview', () => {
       cy.wrap($el).should('be.visible');
     });
 
-    cy.get('div.social_text').each(($el) => {
+    cy.get('[data-cy="socialText"]').each(($el) => {
       cy.wrap($el).should('be.visible');
     });
   });

@@ -45,7 +45,7 @@
             <div *ngIf="social?.icon" class="social_icon">
               <i nz-icon [nzType]="social.icon"></i>
             </div>
-            <div class="social_text">
+            <div data-cy="socialText" class="social_text">
               <h2>{{ social?.title }}</h2>
               <p>{{ social?.text }}</p>
             </div>

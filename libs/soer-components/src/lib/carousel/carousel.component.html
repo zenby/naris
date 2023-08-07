@@ -1,6 +1,10 @@
 <div class="wrapper">
   <div class="title">
-    <h2>{{ header }}</h2>
+    <h2>
+      {{ header }}
+      <span class="sub-header" *ngIf="subHeader">{{ subHeader }}</span>
+      <span nz-icon nzType="right" nzTheme="outline"></span>
+    </h2>
   </div>
   <div class="container-wrapper">
     <button

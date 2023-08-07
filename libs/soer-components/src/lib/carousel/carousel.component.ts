@@ -10,6 +10,7 @@ export class CarouselComponent implements AfterViewInit, DoCheck {
   public isNeedShowRightArrow = false;
   @ViewChild('container') container!: ElementRef;
   @Input() header = '';
+  @Input() subHeader = '';
 
   public constructor(private cdr: ChangeDetectorRef) {}
 

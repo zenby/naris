@@ -1,14 +1,13 @@
 <div data-cy="streamsFolderList">
   <ng-container *ngIf="streams.length > 0; else nocontent">
     <div class="video-info" *ngFor="let video of streams; index as i">
-      <soer-carousel [header]="video.title" *ngIf="video.children?.length">
+      <soer-carousel
+        [header]="video.title"
+        [subHeader]="video.children?.length + ' видео'"
+        *ngIf="video.children?.length"
+      >
         <div class="carousel-item" *ngFor="let subVideo of video.children">
-          <soer-thumbnail-card
-            (click)="showVideo(subVideo)"
-            [title]="subVideo.title"
-            [description]="subVideo.desc"
-            [img]="subVideo.thumb_url ?? ''"
-          >
+          <soer-thumbnail-card (click)="showVideo(subVideo)" [title]="subVideo.title" [img]="subVideo.thumb_url ?? ''">
           </soer-thumbnail-card>
         </div>
       </soer-carousel>
@@ -16,7 +15,6 @@
         *ngIf="video.thumb_url && !video.children"
         (click)="showVideo(video)"
         [title]="video.title"
-        [description]="video.desc"
         [img]="video.thumb_url"
       >
       </soer-thumbnail-card>

@@ -2,6 +2,39 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.27.0](https://gitlog.ru/Naris/soermono/compare/naris-0.26.0...naris-0.27.0) (2023-08-07)
+
+
+### Features
+
+* add cli commands ([1167337](https://gitlog.ru/Naris/soermono/commit/11673371cc9252f02d9e238a571953d6896e54fa))
+* add errors to access denied component ([3c22e7b](https://gitlog.ru/Naris/soermono/commit/3c22e7b9ddbf269e97e3c858cc0751bd2c6488d8))
+* add link smart id ([675d4ec](https://gitlog.ru/Naris/soermono/commit/675d4ece22abf080238a2a39c2b68dadcd194dcc))
+* add link video page ([b3ad3be](https://gitlog.ru/Naris/soermono/commit/b3ad3be7979e9afbacdcdba608180293f6af32f0))
+* add personal activity v2 for app features ([cf9b12d](https://gitlog.ru/Naris/soermono/commit/cf9b12d7a110576e3dd6469713e71ac8d82d8f59))
+* add script to naris browser cli ([a440453](https://gitlog.ru/Naris/soermono/commit/a440453c9428e1e2e77d4b858a19ad377a078802))
+* add service personal activity v2 ([f4d59d8](https://gitlog.ru/Naris/soermono/commit/f4d59d80e57e01377a6c38e1555468001c38d98d))
+* add status pipe and errors catch for Store ([3bc3ca9](https://gitlog.ru/Naris/soermono/commit/3bc3ca94dec07c189718ced68716da6515ea8bf9))
+* add subscriber for store target achieved activity ([724639a](https://gitlog.ru/Naris/soermono/commit/724639a0d861f416f19492b09a7d7c5d91a4b58f))
+* add subscriber for store task closed activity ([ff5824a](https://gitlog.ru/Naris/soermono/commit/ff5824a3b83d51de5468d636006962ca8c7505a9))
+* add types with status error ([6da9758](https://gitlog.ru/Naris/soermono/commit/6da97584711d4efa6c18525235a47e77275ecae5))
+* add video and info tags ([516ac1f](https://gitlog.ru/Naris/soermono/commit/516ac1fecb63dc344f91d8b7ba083fbe0783e3bf))
+* add video link to target ([dd9faf1](https://gitlog.ru/Naris/soermono/commit/dd9faf127d6e26a45ca53806c5de491704a9f5ae))
+* change stream carusel css ([28cf254](https://gitlog.ru/Naris/soermono/commit/28cf2549e75d784f0b54160ddd1202dab3880dde))
+* display latest videos by carousel component ([06c0b58](https://gitlog.ru/Naris/soermono/commit/06c0b583be74656ee38b8a585cb67746dfbf0c4e))
+* display streams videos by carousel component ([1c90908](https://gitlog.ru/Naris/soermono/commit/1c90908d2476aa2b2f158eb7980ab180a253c870))
+* **naris:** add questions subscriber to store activity ([488f64f](https://gitlog.ru/Naris/soermono/commit/488f64f5388269371955caede958a03aeb60433b))
+* **naris:** create question asked event when create new question ([fcd71e2](https://gitlog.ru/Naris/soermono/commit/fcd71e24e684931cd14cb9b3687c4aae131a14cc))
+* remove personal activity v2 ([55c7dc3](https://gitlog.ru/Naris/soermono/commit/55c7dc3013022388583f979f51ec86782d814978))
+* **target:** add achieved target event ([a8796b4](https://gitlog.ru/Naris/soermono/commit/a8796b4a0db23c2c2e0a0fa4c47f02b029732bf3))
+* **target:** add closed task event ([b421699](https://gitlog.ru/Naris/soermono/commit/b421699d03f6f77faa91daae5d7fad50463d55f1))
+* **targets:** add task close event ([83e124b](https://gitlog.ru/Naris/soermono/commit/83e124b2e55a5af76519c51348b1d32f59dcfd77))
+
+
+### Bug Fixes
+
+* fix feature flag import for acrivity subscribers ([b20576d](https://gitlog.ru/Naris/soermono/commit/b20576dff32f5707bc1704e292e513281083bc6a))
+
 ## [0.27.0](https://gitlog.ru/Naris/soermono/compare/naris-0.26.0...naris-0.27.0) (2023-07-24)
 
 

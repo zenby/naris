@@ -1,5 +1,5 @@
 import { Reflector } from '@nestjs/core';
-import { DynamicRole, ManifestNamespace, UserRole } from '@soer/sr-common-interfaces';
+import { DynamicRole, UserRole } from '@soer/sr-common-interfaces';
 import { createMockExecutionContext } from './tests/test-helpers';
 import { RolesAuthGuard } from './roles-auth.guard';
 

@@ -1,17 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as supertest from 'supertest';
-import { JsonModule } from './json.module';
-import { HttpJsonStatus, ManifestNamespace } from '@soer/sr-common-interfaces';
-import { JwtConfig } from '../../config/jwt.config';
-import { ConfigModule, ConfigType } from '@nestjs/config';
-import { JwtTestHelper } from '../../common/helpers/jwt.test.helper';
-import { In, Repository } from 'typeorm';
 import { faker } from '@faker-js/faker';
+import { INestApplication } from '@nestjs/common';
+import { ConfigModule, ConfigType } from '@nestjs/config';
+import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { JsonEntity } from './json.entity';
-import { createFakeDocument } from '../../common/helpers/document.test.helper';
-import { AccessTag } from './types/json.const';
 import {
   ManifestModule,
   ManifestProFixture,
@@ -19,6 +10,15 @@ import {
   ManifestStreamFixture,
   ManifestWorkshopFixture,
 } from '@soer/sr-auth-nest';
+import { HttpJsonStatus } from '@soer/sr-common-interfaces';
+import * as supertest from 'supertest';
+import { In, Repository } from 'typeorm';
+import { createFakeDocument } from '../../common/helpers/document.test.helper';
+import { JwtTestHelper } from '../../common/helpers/jwt.test.helper';
+import { JwtConfig } from '../../config/jwt.config';
+import { JsonEntity } from './json.entity';
+import { JsonModule } from './json.module';
+import { AccessTag } from './types/json.const';
 
 describe('JsonModule e2e-test', () => {
   let app: INestApplication;

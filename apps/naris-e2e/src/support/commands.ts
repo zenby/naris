@@ -1,10 +1,4 @@
-import {
-  createNewArticlePath,
-  allArticlesPath,
-  allWorkbookConspectsPath,
-  createNewConspectPath,
-  workbookPath,
-} from './pathConstants';
+import { createNewArticlePath, allArticlesPath, workbookPath } from './pathConstants';
 import { testTitle } from '../support/articleConstants';
 // ***********************************************
 // This example commands.js shows you how to

@@ -23,6 +23,7 @@ const pinoDev = {
 
 const pinoProd = {
   pinoHttp: {
+    level: 'info',
     customProps: () => ({
       context: 'HTTP',
     }),

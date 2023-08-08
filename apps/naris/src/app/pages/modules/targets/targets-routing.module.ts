@@ -38,7 +38,10 @@ const routes: Routes = [
       },
       {
         path: 'list',
-        data: { header: { title: 'Цели', subtitle: 'Установите новые цели' } },
+        data: {
+          header: { title: 'Цели', subtitle: 'Установите новые цели' },
+          controls: [{ title: 'Добавить', path: ['../', { outlets: { popup: ['target', 'new'] } }], icon: 'plus' }],
+        },
         component: ListTargetsPageComponent,
         resolve: {
           targets: 'targetsEmitter',

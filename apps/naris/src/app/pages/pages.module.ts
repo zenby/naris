@@ -33,6 +33,7 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzListModule } from 'ng-zorro-antd/list';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 @NgModule({
   imports: [
@@ -62,6 +63,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
     OverlayModule,
     ThumbnailCardModule,
     CarouselModule,
+    NzTagModule,
   ],
   declarations: [
     MobileMenuComponent,

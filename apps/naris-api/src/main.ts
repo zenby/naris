@@ -7,23 +7,31 @@ import { Logger, LoggerErrorInterceptor, LoggerModule } from 'nestjs-pino';
 import { AppModule } from './app/app.module';
 import { setupSwagger } from './swagger';
 
+const pinoDev = {
+  pinoHttp: {
+    customProps: () => ({
+      context: 'HTTP',
+    }),
+    transport: {
+      target: 'pino-pretty',
+      options: {
+        singleLine: true,
+      },
+    },
+  },
+};
+
+const pinoProd = {
+  pinoHttp: {
+    customProps: () => ({
+      context: 'HTTP',
+    }),
+  },
+};
+
 async function createLogger(): Promise<Logger> {
   @Module({
-    imports: [
-      LoggerModule.forRoot({
-        pinoHttp: {
-          customProps: (_req, _res) => ({
-            context: 'HTTP',
-          }),
-          transport: {
-            target: 'pino-pretty',
-            options: {
-              singleLine: true,
-            },
-          },
-        },
-      }),
-    ],
+    imports: [LoggerModule.forRoot(process.env.NODE_ENV === 'production' ? pinoProd : pinoDev)],
   })
   class TempModule {}
 

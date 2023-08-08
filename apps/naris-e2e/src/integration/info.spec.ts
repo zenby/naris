@@ -3,8 +3,6 @@ describe('naris overview', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/*.svg').as('signIn');
     cy.login('user', 'user');
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
   });
 
   it('should display info page', () => {

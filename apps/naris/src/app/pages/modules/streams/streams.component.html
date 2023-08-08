@@ -1,6 +1,6 @@
 <div data-cy="streamsFolderList">
   <ng-container *ngIf="streams.length > 0; else nocontent">
-    <div class="video-info" *ngFor="let video of streams; index as i">
+    <div class="video-info" [ngClass]="{ 'even-row': i % 2 }" *ngFor="let video of streams; index as i">
       <soer-carousel
         [header]="video.title"
         [subHeader]="video.children?.length + ' видео'"

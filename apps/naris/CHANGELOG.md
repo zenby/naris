@@ -2,6 +2,17 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.30.0](https://gitlog.ru/Naris/soermono/compare/naris-0.29.0...naris-0.30.0) (2023-08-09)
+
+
+### Features
+
+* add rollback button to target view ([6508b4b](https://gitlog.ru/Naris/soermono/commit/6508b4bde87f0b83de9dc6a07f4cc78da321c658))
+* add tiles to targets ([7b5ee04](https://gitlog.ru/Naris/soermono/commit/7b5ee04b2fabb483f09ac50d3023dbef05044c81))
+* change delete target workflow ([9008aa0](https://gitlog.ru/Naris/soermono/commit/9008aa0372ed9d4b719e64b4181dd73cbf32a686))
+* change targets list view ([20108a1](https://gitlog.ru/Naris/soermono/commit/20108a1cc411d0f5801df75f72aed6767cbad7de))
+* remove redirect for every 401 and 403, to error catch when renew access ([070447c](https://gitlog.ru/Naris/soermono/commit/070447ccfbb0025a199834e8291c16b8bb5b8799))
+
 ## [0.27.0](https://gitlog.ru/Naris/soermono/compare/naris-0.26.0...naris-0.27.0) (2023-08-08)
 
 

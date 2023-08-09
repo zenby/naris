@@ -30,7 +30,11 @@ const routes: Routes = [
       },
       {
         path: 'filter/:tid',
-        data: { header: { title: 'Цель', subtitle: 'текущие задачи', cantBeTab: true } },
+        data: {
+          header: { title: 'Цель', subtitle: 'текущие задачи', cantBeTab: true },
+          controls: [{ title: 'Назад', path: ['../..'], icon: 'rollback' }],
+        },
+
         component: ListTargetsPageComponent,
         resolve: {
           targets: 'targetEmitter',

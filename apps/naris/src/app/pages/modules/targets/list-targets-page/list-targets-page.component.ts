@@ -58,7 +58,17 @@ export class ListTargetsPageComponent implements OnInit {
 
   onDelete(target: AimModel): void {
     const tmpTargetId = { ...this.targetId, key: { tid: target.id } };
-    this.bus$.publish(new CommandDelete(tmpTargetId, {}, { tid: target.id, afterCommandDoneRedirectTo: './' }));
+    this.bus$.publish(
+      new CommandDelete(
+        tmpTargetId,
+        {},
+        {
+          tid: target.id,
+          afterCommandDoneRedirectTo: ['.'],
+          skipSyncRead: true,
+        }
+      )
+    );
   }
 
   onTaskClose(target: AimModel, task: AimModel): void {

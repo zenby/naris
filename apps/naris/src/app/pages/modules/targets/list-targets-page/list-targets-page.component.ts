@@ -16,7 +16,7 @@ import { TargetAchievedEvent } from '../events/target-achieved.event';
   templateUrl: './list-targets-page.component.html',
   styleUrls: ['./list-targets-page.component.scss'],
 })
-export class ListTargetsPageComponent {
+export class ListTargetsPageComponent implements OnInit {
   checked = false;
   public targets$: Observable<DtoPack<TargetModel>>;
   public visibility: Visibility = {};
@@ -58,7 +58,7 @@ export class ListTargetsPageComponent {
 
   onDelete(target: AimModel): void {
     const tmpTargetId = { ...this.targetId, key: { tid: target.id } };
-    this.bus$.publish(new CommandDelete(tmpTargetId, {}, { tid: target.id }));
+    this.bus$.publish(new CommandDelete(tmpTargetId, {}, { tid: target.id, afterCommandDoneRedirectTo: './' }));
   }
 
   onTaskClose(target: AimModel, task: AimModel): void {

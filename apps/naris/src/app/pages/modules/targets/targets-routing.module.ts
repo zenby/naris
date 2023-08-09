@@ -30,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: 'filter/:tid',
-        data: { header: { title: 'Сегодня', subtitle: 'текущие задачи', cantBeTab: true } },
+        data: { header: { title: 'Цель', subtitle: 'текущие задачи', cantBeTab: true } },
         component: ListTargetsPageComponent,
         resolve: {
           targets: 'targetEmitter',
@@ -39,8 +39,9 @@ const routes: Routes = [
       {
         path: 'list',
         data: {
-          header: { title: 'Цели', subtitle: 'Установите новые цели' },
+          //          header: { title: 'Цели', subtitle: 'Установите новые цели' },
           controls: [{ title: 'Добавить', path: ['../', { outlets: { popup: ['target', 'new'] } }], icon: 'plus' }],
+          cantBeTab: false,
         },
         component: ListTargetsPageComponent,
         resolve: {

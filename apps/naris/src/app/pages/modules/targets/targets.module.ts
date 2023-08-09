@@ -41,12 +41,14 @@ import { TargetDescriptionFormComponent } from './target-description-form/target
 import { TargetDescriptionPopupComponent } from './target-description-popup/target-description-popup.component';
 import { TargetAchievedSubscriber } from '../../../api/progress/subscribers/target-achieved.subscriber';
 
-import { AimsTreeModule, InlineEditorModule } from '@soer/soer-components';
+import { AimsTreeModule, InlineEditorModule, TileModule } from '@soer/soer-components';
 import { SrEditorModule } from '@soer/sr-editor';
 import { MarkdownModule } from 'ngx-markdown';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { TaskClosedSubscriber } from '../../../api/progress/subscribers/task-closed.subscriber';
 import { LinksModule } from '../links/links.module';
+
+const SOER_COMPONENTS_MODULES = [TileModule];
 
 @NgModule({
   declarations: [
@@ -98,6 +100,7 @@ import { LinksModule } from '../links/links.module';
     MarkdownModule.forRoot(),
     NzSpinModule,
     LinksModule,
+    ...SOER_COMPONENTS_MODULES,
   ],
   exports: [],
   providers: [],

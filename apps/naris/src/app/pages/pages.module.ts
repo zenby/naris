@@ -34,6 +34,8 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { LinksModule } from './modules/links/links.module';
+import { Tag2LinkPipe } from './modules/streams/tag2link.pipe';
 
 @NgModule({
   imports: [
@@ -64,6 +66,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     ThumbnailCardModule,
     CarouselModule,
     NzTagModule,
+    LinksModule,
   ],
   declarations: [
     MobileMenuComponent,
@@ -71,6 +74,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     StreamsComponent,
     RoadmapComponent,
     ComposeVideoPlayerComponent,
+    Tag2LinkPipe,
   ],
   exports: [RouterComposeModule],
 })

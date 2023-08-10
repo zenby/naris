@@ -9,7 +9,11 @@
         <div class="carousel-item" *ngFor="let subVideo of video.children">
           <soer-thumbnail-card (click)="showVideo(subVideo)" [title]="subVideo.title" [img]="subVideo.thumb_url ?? ''">
           </soer-thumbnail-card>
-          <nz-tag *ngFor="let tag of subVideo.tags || []" [nzColor]="'blue'">{{ tag }}</nz-tag>
+          <soer-link-tag
+            *ngFor="let tag of subVideo.tags || []"
+            [pageLink]="tag | tag2link"
+            (action)="gotoLink($event)"
+          ></soer-link-tag>
         </div>
       </soer-carousel>
       <soer-thumbnail-card

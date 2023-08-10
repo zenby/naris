@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppPageLink } from '@soer/sr-common-interfaces';
 import { Subscription } from 'rxjs';
 import { VideoModel } from '../../../api/streams/stream.model';
 import { VideoService } from '../../../services/video/video.service';
@@ -37,5 +38,11 @@ export class StreamsComponent implements OnInit, OnDestroy {
     this.router.navigate([videoSource, videoId], {
       relativeTo: this.route,
     });
+  }
+
+  gotoLink(link: AppPageLink): void {
+    if (link.linkType === 'conspect') {
+      this.router.navigate(['/', 'pages', 'workbook', 'conspects', 'view', link.value]);
+    }
   }
 }

@@ -1,19 +1,20 @@
 import { faker } from '@faker-js/faker';
 import { ExecutionContext } from '@nestjs/common';
-import { JwtPayload } from '../types/jwt-payload.interface';
-import { JsonEntity } from '../../modules/json/json.entity';
+import { JwtPayload } from '../../types/jwt-payload.interface';
+import { JsonEntity } from '../../../modules/json/json.entity';
 
+type DocumentInfo = Partial<JsonEntity>;
 /**
  * createdAt, updatedAt не включаем в фейковый документ, чтобы
  * избежать проблем при конвертации дат в строки в e2e тестах
  */
-export const createFakeDocument = (): JsonEntity => {
+export const createFakeDocument = (docInfo?: DocumentInfo): JsonEntity => {
   return {
-    id: faker.datatype.number(),
-    json: faker.lorem.text(),
-    namespace: faker.lorem.word(),
-    author_email: faker.internet.email(),
-    accessTag: faker.helpers.arrayElement(['PUBLIC', 'PRIVATE', 'STREAM', 'WORKSHOP', 'PRO']),
+    id: docInfo?.id ?? faker.datatype.number(),
+    json: docInfo?.json ?? faker.lorem.text(),
+    author_email: docInfo?.author_email ?? faker.internet.email(),
+    namespace: docInfo?.namespace ?? faker.lorem.word(),
+    accessTag: docInfo?.accessTag ?? faker.helpers.arrayElement(['PUBLIC', 'PRIVATE', 'STREAM', 'WORKSHOP', 'PRO']),
   } as JsonEntity;
 };
 

@@ -25,7 +25,7 @@ export class JsonService {
   }
 
   async getAll(documentNamespace: string): Promise<JsonEntity[]> {
-    return this.jsonRepository.find({ where: { namespace: documentNamespace } });
+    return await this.jsonRepository.find({ where: { namespace: documentNamespace } });
   }
 
   async createJson(author_email: string, documentNamespace: string, createJsonDto: CreateJsonDto): Promise<JsonEntity> {

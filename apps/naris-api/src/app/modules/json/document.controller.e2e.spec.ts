@@ -5,11 +5,12 @@ import { JsonModule } from './json.module';
 import { HttpJsonStatus, UserManifest } from '@soer/sr-common-interfaces';
 import { JwtConfig } from '../../config/jwt.config';
 import { ConfigModule, ConfigType } from '@nestjs/config';
-import { JwtTestHelper } from '../../common/helpers/jwt.test.helper';
+import { JwtTestHelper } from '../../common/tests/helpers/jwt.test.helper';
 import { Repository } from 'typeorm';
+import { faker } from '@faker-js/faker';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { JsonEntity } from './json.entity';
-import { createFakeDocument, jsonEntityMetadataPropertiesMap } from '../../common/helpers/document.test.helper';
+import { createFakeDocument, jsonEntityMetadataPropertiesMap } from '../../common/tests/helpers/document.test.helper';
 import { AccessTag } from './types/json.const';
 import {
   ManifestGuestFixture,
@@ -21,7 +22,6 @@ import {
   ManifestWorkshopFixture,
 } from '@soer/sr-auth-nest';
 import { JsonService } from './json.service';
-import { faker } from '@faker-js/faker';
 
 describe('JsonModule e2e-test', () => {
   let app: INestApplication;

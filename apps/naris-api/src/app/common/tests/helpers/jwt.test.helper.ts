@@ -1,5 +1,5 @@
 import { sign } from 'jsonwebtoken';
-import { JwtPayload } from '../types/jwt-payload.interface';
+import { JwtPayload } from '../../types/jwt-payload.interface';
 
 export class JwtTestHelper {
   static readonly defaultSecret = 'defaultSecretForTest';

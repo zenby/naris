@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { DocumentAuthorGuard } from './document-author.guard';
 import { JsonService } from '../../modules/json/json.service';
-import { JwtTestHelper } from '../helpers/jwt.test.helper';
-import { createFakeDocument, createMockExecutionContext } from '../helpers/document.test.helper';
+import { JwtTestHelper } from '../tests/helpers/jwt.test.helper';
+import { createFakeDocument, createMockExecutionContext } from '../tests/helpers/document.test.helper';
 
 describe('DocumentAuthorGuard', () => {
   const testJwtPayload = JwtTestHelper.defaultPayload;

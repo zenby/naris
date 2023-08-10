@@ -41,8 +41,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
   }
 
   gotoLink(link: AppPageLink): void {
+    console.log(link);
     if (link.linkType === 'conspect') {
-      this.router.navigate(['/', 'pages', 'workbook', 'conspects', 'view', link.value]);
+      this.router.navigate(['.', 'conspect', 'view', link.value], { relativeTo: this.route });
     }
   }
 }

@@ -25,3 +25,5 @@ export * from './lib/activity';
 export * from './lib/list/list.module';
 export * from './lib/confirm/confirm.module';
 export * from './lib/confirm/confirm.service';
+export * from './lib/popup-content/popup-content.module';
+export * from './lib/popup-content/popup-content.component';

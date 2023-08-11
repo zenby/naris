@@ -1,50 +1,30 @@
-<div class="target-panel">
-  <ng-container *ngIf="(targets$ | async)?.items as topics">
-    <ng-container *ngIf="topics.length > 0; else nocontent">
-      <a
-        class="ant-btn-create"
-        nz-button
-        nzType="primary"
-        [routerLink]="['/pages/targets', { outlets: { popup: ['target', 'new'] } }]"
-        >Создать</a
-      >
-      <div nz-row [nzGutter]="[24, 24]">
-        <div nz-col nzXs="24" nzSm="12" nzMd="8" nzLg="8" nzXl="8" *ngFor="let topic of topics">
-          <nz-card [nzActions]="[actionEdit, actionDelete]">
-            <p>{{ topic.title }}</p>
-          </nz-card>
-
-          <ng-template #actionDelete>
-            <i
-              nz-icon
-              nzType="delete"
-              nz-popconfirm
-              nzPopconfirmTitle="Точно удалить?"
-              nzPopconfirmPlacement="bottom"
-              (nzOnConfirm)="onDelete(topic)"
-            ></i>
-          </ng-template>
-          <ng-template #actionEdit>
-            <a [routerLink]="['/pages/targets', { outlets: { popup: ['target', 'edit', topic.id] } }]">
-              <i nz-icon nzType="edit"></i>
-            </a>
-          </ng-template>
+<ng-container *ngIf="(targets$ | async)?.items as targets">
+  <ng-container *ngIf="targets.length > 0; else nocontent">
+    <div nz-row [nzGutter]="[24, 24]" class="targets">
+      <ng-container *ngFor="let target of targets; let index = index">
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" [nzXl]="isSingleMode ? 24 : 12" style="margin: 0 auto">
+          <soer-target
+            [target]="target"
+            (delete)="onDelete($event)"
+            (update)="onUpdate($event)"
+            (edit)="onEdit($event)"
+            (description)="onDescription($event, target.id)"
+            (video)="onVideo($event)"
+            (taskClose)="onTaskClose(target, $event)"
+          >
+            <ng-container toolbar>
+              <a nz-button nzType="link" *ngIf="!isSingleMode" [routerLink]="['filter', target.id]"
+                ><i nz-icon nzType="pushpin"></i
+              ></a>
+              <a nz-button nzType="link" *ngIf="isSingleMode" [routerLink]="['/', 'pages', 'targets']"
+                ><i nz-icon nzType="bars"></i
+              ></a>
+            </ng-container>
+          </soer-target>
         </div>
-      </div>
-    </ng-container>
-
-    <ng-template #nocontent>
-      <nz-empty
-        nzNotFoundContent="Нет ни одной цели"
-        nzNotFoundImage="simple"
-        [nzNotFoundFooter]="footerNoContent"
-      ></nz-empty>
-    </ng-template>
-    <ng-template #footerNoContent>
-      <a nz-button nzType="primary" [routerLink]="['/pages/targets', { outlets: { popup: ['target', 'new'] } }]"
-        >Создать</a
-      >
-    </ng-template>
-    <ng-template #downloadIcon>скачать</ng-template>
+      </ng-container>
+    </div>
   </ng-container>
-</div>
+</ng-container>
+
+<ng-template #nocontent><nz-empty nzNotFoundImage="simple"></nz-empty></ng-template>

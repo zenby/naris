@@ -29,6 +29,7 @@ export class DocumentController {
     @GetUserManifest() manifest: UserManifest
   ): Promise<HttpJsonResult<JsonEntity>> {
     try {
+      this.logger.log('Load document by id=', id);
       const document = await this.jsonService.findDocumentById(parseInt(id, 10));
       const isAuthor = await this.jsonService.isUserAuthorOfDocument(parseInt(id, 10), user.email);
       if (

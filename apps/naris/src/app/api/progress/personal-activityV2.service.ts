@@ -7,10 +7,13 @@ import { v4 as uuidv4 } from 'uuid';
 export enum ActivityType {
   TARGET = 'TARGET',
   TASK = 'TASK',
+  QUESTION = 'QUESTION',
 }
 
+type PayloadValue = string | number | object;
+
 export interface PayloadModel {
-  [key: string]: string | number | Array<string | number | object> | object;
+  [key: string]: PayloadValue | PayloadValue[];
 }
 
 export interface PersonalActivityEventPayload {

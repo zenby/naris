@@ -2,6 +2,23 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.9.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.8.0...naris-api-0.9.0) (2023-08-08)
+
+
+### Features
+
+* add dev and prod config for pino ([65195ab](https://gitlog.ru/Naris/soermono/commit/65195ab6a8a3d05c510ad167401f75f18e19bff9))
+
+## [0.8.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.7.1...naris-api-0.8.0) (2023-08-08)
+
+
+### Features
+
+* add logger info to document ([3f26e9d](https://gitlog.ru/Naris/soermono/commit/3f26e9d0860ff607ced69bbd8b630bccffd6831a))
+* add pino logger ([a6ec3f9](https://gitlog.ru/Naris/soermono/commit/a6ec3f94ef207daf8b15a8e5c579ed43eb0b2a0f))
+
+## [0.7.1](https://gitlog.ru/Naris/soermono/compare/naris-api-0.7.0...naris-api-0.7.1) (2023-08-08)
+
 ## [0.5.0](https://gitlog.ru/Naris/soermono/compare/naris-api-0.4.0...naris-api-0.5.0) (2023-07-28)
 
 

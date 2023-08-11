@@ -34,6 +34,7 @@ import { JsonSettingsModule } from '../json-settings/json-settings.module';
     ViewAbstractePageComponent,
     EditAbstracteFormComponent,
   ],
+  exports: [ViewAbstractePageComponent],
   providers: [ConfirmPageLeaveGuard],
   imports: [
     PreloaderModule,

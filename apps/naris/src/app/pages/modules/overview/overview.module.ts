@@ -11,7 +11,13 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { ActivityModule, NoContentModule, TileModule, ThumbnailCardModule } from '@soer/soer-components';
+import {
+  ActivityModule,
+  NoContentModule,
+  TileModule,
+  ThumbnailCardModule,
+  CarouselModule,
+} from '@soer/soer-components';
 import { ByRoutePathResolver } from '../../../api/by-route-path.resolver';
 import { StreamService } from '../../../api/streams/stream.service';
 import { WorkshopsService } from '../../../api/workshops/workshops.service';
@@ -38,6 +44,7 @@ const NG_ZORRO_MODULES = [
   NzGridModule,
   NzTypographyModule,
   NzFormModule,
+  CarouselModule,
 ];
 
 @NgModule({

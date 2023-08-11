@@ -3,6 +3,8 @@ import { UserEntity } from '../user.entity';
 import { testUsers } from './test.users';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
+type CriteriaParameter = string | string[] | number | number[] | Date | Date[] | FindOptionsWhere<UserEntity>;
+
 export class UserTestRepository {
   private readonly users = testUsers;
 
@@ -36,16 +38,11 @@ export class UserTestRepository {
     return entity;
   }
 
-  async update(
-    criteria: string | string[] | number | number[] | Date | Date[] | FindOptionsWhere<UserEntity>,
-    partialEntity: QueryDeepPartialEntity<UserEntity>
-  ): Promise<UpdateResult> {
+  async update(_criteria: CriteriaParameter, _entity: QueryDeepPartialEntity<UserEntity>): Promise<UpdateResult> {
     return {} as UpdateResult;
   }
 
-  async delete(
-    criteria: string | string[] | number | number[] | Date | Date[] | FindOptionsWhere<UserEntity>
-  ): Promise<DeleteResult> {
+  async delete(_criteria: CriteriaParameter): Promise<DeleteResult> {
     return {} as DeleteResult;
   }
 }

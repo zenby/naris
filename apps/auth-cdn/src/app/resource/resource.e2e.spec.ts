@@ -3,18 +3,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { Configuration, configurationFactory } from '../config/config';
-import { ResourceModule } from './resource.module';
 import { HttpJsonResult } from '@soer/sr-common-interfaces';
 import { faker } from '@faker-js/faker';
 import { DELIMETERS, ERRORS } from './constants';
-import { rmSync } from 'fs';
 import { generateTestFileData } from './helpers/generate-filedata.helper';
 import { FileData } from './resource.model';
-import { ResourceRepository } from './resource.repository';
+import { TestResourceModule } from './tests/resource.test.module';
+import { files } from './tests/test.resources';
 
 describe('Resource (e2e)', () => {
   let app: INestApplication;
-  let resourceRepository: ResourceRepository;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -24,155 +22,128 @@ describe('Resource (e2e)', () => {
           isGlobal: true,
           load: [configurationFactory],
         }),
-        ResourceModule,
+        TestResourceModule,
       ],
     }).compile();
 
     app = module.createNestApplication();
-    resourceRepository = app.get(ResourceRepository);
+
     await app.init();
-  });
-
-  afterAll(async () => {
-    await app.close();
-
-    const rootPath = app.get(ConfigService).get<Configuration['fileStoragePath']>('fileStoragePath');
-
-    rmSync(rootPath, { recursive: true, force: true });
   });
 
   describe('GET /resource', () => {
     it('should return 200 OK with data', async () => {
-      const files = [
-        'barak3!barak2!2023-07-14-6d2oboet~barak1.jpg',
-        'barak3!2023-07-14-8d2oboet~barak1.jpg',
-        '2023-07-14-2d2oboet~barak1.jpg',
-      ];
-
-      jest.spyOn(resourceRepository, 'getFilenames').mockResolvedValue(files);
-
       const { body } = await request(app.getHttpServer()).get('/resource').expect(200);
 
       expect(body.items).toEqual([
         {
-          title: 'barak3',
+          title: 'phantom3',
           children: [
-            {
-              title: 'barak2',
-              children: [{ title: 'barak1.jpg', url: buildURL(files[0]) }],
-            },
-            { title: 'barak1.jpg', url: buildURL(files[1]) },
+            { title: 'fantom2', children: [{ title: 'fantom1.jpg', url: buildURL(files[0]) }] },
+            { title: 'fantom1.jpg', url: buildURL(files[2]) },
           ],
         },
-        { title: 'barak1.jpg', url: buildURL(files[2]) },
+        {
+          title: 'fantom3',
+          children: [{ title: 'pantom1', children: [{ title: 'fantom2.jpg', url: buildURL(files[1]) }] }],
+        },
+        {
+          title: 'fantom2',
+          children: [{ title: 'fantom2.jpg', url: buildURL(files[3]) }],
+        },
+        { title: 'dantom1', children: [{ title: 'fantom3.jpg', url: buildURL(files[4]) }] },
+        { title: 'fantom1.jpg', url: buildURL(files[5]) },
+        { title: 'fantom2.jpg', url: buildURL(files[6]) },
+        { title: 'mumbarak.jpg', url: buildURL(files[7]) },
+        { title: 'barak.jpg', url: buildURL(files[8]) },
+        { title: 'baragur.jpg', url: buildURL(files[9]) },
       ]);
     });
 
-    describe('should return results when filter', () => {
-      const files = [
-        'phantom3!fantom2!2023-07-14-6d2oboet~fantom1.jpg',
-        'fantom3!pantom1!2023-07-14-7d2oboet~fantom2.jpg',
-        'phantom3!2023-07-14-8d2oboet~fantom1.jpg',
-        'fantom2!2023-07-14-9d2oboet~fantom2.jpg',
-        'dantom1!2023-07-14-1d2oboet~fantom3.jpg',
-        '2023-07-14-2d2oboet~fantom1.jpg',
-        '2023-07-14-3d2oboet~fantom2.jpg',
-        '2023-07-14-1d2oboet~mumbarak.jpg',
-        '2023-07-14-2d2oboet~barak.jpg',
-        '2023-07-14-3d2oboet~baragur.jpg',
-      ];
+    it('should return resources which are filtered by full folder name', async () => {
+      const { body } = await request(app.getHttpServer()).get('/resource?folder=fantom2').expect(200);
 
-      beforeAll(() => {
-        jest.spyOn(resourceRepository, 'getFilenames').mockResolvedValue(files);
-      });
+      expect(body.items).toEqual([
+        {
+          title: 'phantom3',
+          children: [
+            {
+              title: 'fantom2',
+              children: [{ title: 'fantom1.jpg', url: buildURL(files[0]) }],
+            },
+          ],
+        },
+        {
+          title: 'fantom2',
+          children: [{ title: 'fantom2.jpg', url: buildURL(files[3]) }],
+        },
+      ]);
+    });
 
-      it('by full folder name', async () => {
-        const { body } = await request(app.getHttpServer()).get('/resource?folder=fantom2').expect(200);
+    it('should return resources which are filtered by folder name with pattern fantom*', async () => {
+      const { body } = await request(app.getHttpServer()).get('/resource?folder=dantom*').expect(200);
 
-        expect(body.items).toEqual([
-          {
-            title: 'phantom3',
-            children: [
-              {
-                title: 'fantom2',
-                children: [{ title: 'fantom1.jpg', url: buildURL(files[0]) }],
-              },
-            ],
-          },
-          {
-            title: 'fantom2',
-            children: [{ title: 'fantom2.jpg', url: buildURL(files[3]) }],
-          },
-        ]);
-      });
+      expect(body.items).toEqual([{ title: 'dantom1', children: [{ title: 'fantom3.jpg', url: buildURL(files[4]) }] }]);
+    });
 
-      it('by folder name with pattern fantom*', async () => {
-        const { body } = await request(app.getHttpServer()).get('/resource?folder=dantom*').expect(200);
+    it('should return resources which are filtered by folder name with pattern *antom2', async () => {
+      const { body } = await request(app.getHttpServer()).get('/resource?folder=*antom2').expect(200);
 
-        expect(body.items).toEqual([
-          { title: 'dantom1', children: [{ title: 'fantom3.jpg', url: buildURL(files[4]) }] },
-        ]);
-      });
+      expect(body.items).toEqual([
+        {
+          title: 'phantom3',
+          children: [{ title: 'fantom2', children: [{ title: 'fantom1.jpg', url: buildURL(files[0]) }] }],
+        },
+        { title: 'fantom2', children: [{ title: 'fantom2.jpg', url: buildURL(files[3]) }] },
+      ]);
+    });
 
-      it('by folder name with pattern *antom2', async () => {
-        const { body } = await request(app.getHttpServer()).get('/resource?folder=*antom2').expect(200);
+    it('should return resources which are filtered by folder name with pattern *hantom*', async () => {
+      const { body } = await request(app.getHttpServer()).get('/resource?folder=*hantom*').expect(200);
 
-        expect(body.items).toEqual([
-          {
-            title: 'phantom3',
-            children: [{ title: 'fantom2', children: [{ title: 'fantom1.jpg', url: buildURL(files[0]) }] }],
-          },
-          { title: 'fantom2', children: [{ title: 'fantom2.jpg', url: buildURL(files[3]) }] },
-        ]);
-      });
+      expect(body.items).toEqual([
+        {
+          title: 'phantom3',
+          children: [
+            { title: 'fantom2', children: [{ title: 'fantom1.jpg', url: buildURL(files[0]) }] },
+            { title: 'fantom1.jpg', url: buildURL(files[2]) },
+          ],
+        },
+      ]);
+    });
 
-      it('by folder name with pattern *hantom*', async () => {
-        const { body } = await request(app.getHttpServer()).get('/resource?folder=*hantom*').expect(200);
+    it('should return resources which are filtered by full filename', async () => {
+      const { body } = await request(app.getHttpServer()).get('/resource?filename=fantom2').expect(200);
 
-        expect(body.items).toEqual([
-          {
-            title: 'phantom3',
-            children: [
-              { title: 'fantom2', children: [{ title: 'fantom1.jpg', url: buildURL(files[0]) }] },
-              { title: 'fantom1.jpg', url: buildURL(files[2]) },
-            ],
-          },
-        ]);
-      });
+      expect(body.items).toEqual([
+        {
+          title: 'fantom3',
+          children: [{ title: 'pantom1', children: [{ title: 'fantom2.jpg', url: buildURL(files[1]) }] }],
+        },
+        { title: 'fantom2', children: [{ title: 'fantom2.jpg', url: buildURL(files[3]) }] },
+        { title: 'fantom2.jpg', url: buildURL(files[6]) },
+      ]);
+    });
 
-      it('by full filename', async () => {
-        const { body } = await request(app.getHttpServer()).get('/resource?filename=fantom2').expect(200);
+    it('should return resources which are filtered by filename with pattern bar*', async () => {
+      const { body } = await request(app.getHttpServer()).get('/resource?filename=bar*').expect(200);
 
-        expect(body.items).toEqual([
-          {
-            title: 'fantom3',
-            children: [{ title: 'pantom1', children: [{ title: 'fantom2.jpg', url: buildURL(files[1]) }] }],
-          },
-          { title: 'fantom2', children: [{ title: 'fantom2.jpg', url: buildURL(files[3]) }] },
-          { title: 'fantom2.jpg', url: buildURL(files[6]) },
-        ]);
-      });
+      expect(body.items).toEqual([
+        { title: 'barak.jpg', url: buildURL(files[8]) },
+        { title: 'baragur.jpg', url: buildURL(files[9]) },
+      ]);
+    });
 
-      it('by filename with pattern bar*', async () => {
-        const { body } = await request(app.getHttpServer()).get('/resource?filename=bar*').expect(200);
+    it('should return resources which are filtered by filename with pattern *bar*', async () => {
+      const { body } = await request(app.getHttpServer()).get('/resource?filename=*bar*').expect(200);
 
-        expect(body.items).toEqual([
-          { title: 'barak.jpg', url: buildURL(files[8]) },
-          { title: 'baragur.jpg', url: buildURL(files[9]) },
-        ]);
-      });
+      expect(body.items).toEqual([{ title: 'mumbarak.jpg', url: buildURL(files[7]) }]);
+    });
 
-      it('by filename with pattern *bar*', async () => {
-        const { body } = await request(app.getHttpServer()).get('/resource?filename=*bar*').expect(200);
+    it('should return resources which are filtered by filename with pattern *barak', async () => {
+      const { body } = await request(app.getHttpServer()).get('/resource?filename=*barak').expect(200);
 
-        expect(body.items).toEqual([{ title: 'mumbarak.jpg', url: buildURL(files[7]) }]);
-      });
-
-      it('by filename with pattern *barak', async () => {
-        const { body } = await request(app.getHttpServer()).get('/resource?filename=*barak').expect(200);
-
-        expect(body.items).toEqual([{ title: 'mumbarak.jpg', url: buildURL(files[7]) }]);
-      });
+      expect(body.items).toEqual([{ title: 'mumbarak.jpg', url: buildURL(files[7]) }]);
     });
   });
 

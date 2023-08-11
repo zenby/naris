@@ -12,6 +12,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private auth: AuthService, private router: Router, private bus$: MixedBusService) {}
 
   private handleAuthError(err: HttpErrorResponse): Observable<any> {
+    console.log(err);
     if (err.error && err.error.status === 'error' && err.error.items) {
       this.bus$.publish(new BusError(undefined, err.error.items));
     } else {
@@ -22,14 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
       this.router.navigateByUrl(`/login`);
       return of(err.message);
     }
-    if (err.status === 401 || err.status === 403) {
-      if ((document.location + '').indexOf('login?skipchecks=true') === -1) {
-        this.auth.logout();
-        this.router.navigateByUrl(`/login`);
-      }
-      return of(err.message);
-    }
-    return throwError(err);
+    return of(err.message);
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -42,6 +36,16 @@ export class AuthInterceptor implements HttpInterceptor {
       // Если вышел срок действия токена, то перед запросом надо его обновить
       if (!this.auth.isAuth) {
         return this.auth.renewTokenV2().pipe(
+          catchError((err) => {
+            console.error('Error when update token', err);
+            if (err.status === 401) {
+              if ((document.location + '').indexOf('login?skipchecks=true') === -1) {
+                this.auth.logout();
+                this.router.navigateByUrl(`/login`);
+              }
+            }
+            return of(err);
+          }),
           switchMap((data) => {
             const [{ accessToken }] = data.items;
             const cloned = req.clone({

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule, Routes } from '@angular/router';
 import { SrDTOModule } from '@soer/sr-dto';
-import { NoContentComponent } from '@soer/soer-components';
+import { NoContentComponent, PopupContentComponent } from '@soer/soer-components';
 import { FeatureFlag } from '@soer/sr-feature-flags';
 
 import { ByRoutePathResolver } from '../api/by-route-path.resolver';
@@ -27,6 +27,7 @@ import { environment } from '../../environments/environment';
 import { ActivityJournalPageComponent } from './modules/account-page/activity-journal-page/activity-journal-page.component';
 import { JsonDocumentKey } from './modules/json-settings/document.const';
 import { LinkKey } from './modules/links/links.const';
+import { ViewAbstractePageComponent } from './modules/abstracte/view-abstracte-page/view-abstracte-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'prefix' },
@@ -50,6 +51,28 @@ const routes: Routes = [
         path: 'novideo',
         component: NoContentComponent,
         data: { header: { title: 'Смотрим стрим...' } },
+      },
+
+      {
+        path: 'conspect/view',
+        component: PopupContentComponent,
+
+        children: [
+          {
+            path: ':wid',
+            component: ViewAbstractePageComponent,
+            data: {
+              header: {
+                title: 'Конспект',
+                subtitle: 'помощь в осмыслении материалов по программированию',
+              },
+              controls: [{ title: 'Назад', path: ['../../..'], icon: 'rollback' }],
+            },
+            resolve: {
+              workbook: 'workbookEmitter',
+            },
+          },
+        ],
       },
       {
         path: ':videoSource/:videoId',

@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { JsonEntity } from './json.entity';
-import { DeleteResult, FindOptionsSelect, In, Repository } from 'typeorm';
-import { CreateJsonDto } from './dto/create-json.dto';
 import { HttpJsonResult, HttpJsonStatus } from '@soer/sr-common-interfaces';
-import { UpdateJsonDto } from './dto/update-json.dto';
-import { AccessTag } from './types/json.const';
+import { DeleteResult, In, Repository } from 'typeorm';
+import { CreateJsonDto } from './dto/create-json.dto';
 import { PatchDocumentPropertiesDto } from './dto/patch-document-properties.dto';
+import { UpdateJsonDto } from './dto/update-json.dto';
+import { JsonEntity } from './json.entity';
+import { AccessTag } from './types/json.const';
 
 @Injectable()
 export class JsonService {
@@ -25,7 +25,7 @@ export class JsonService {
   }
 
   async getAll(documentNamespace: string): Promise<JsonEntity[]> {
-    return this.jsonRepository.find({ where: { namespace: documentNamespace } });
+    return await this.jsonRepository.find({ where: { namespace: documentNamespace } });
   }
 
   async createJson(author_email: string, documentNamespace: string, createJsonDto: CreateJsonDto): Promise<JsonEntity> {

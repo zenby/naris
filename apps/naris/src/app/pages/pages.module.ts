@@ -3,7 +3,13 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { SrDTOModule } from '@soer/sr-dto';
-import { AccessDeniedModule, DemoNgZorroAntdModule, OverlayModule, VideoPlayerModule } from '@soer/soer-components';
+import {
+  AccessDeniedModule,
+  CarouselModule,
+  DemoNgZorroAntdModule,
+  OverlayModule,
+  VideoPlayerModule,
+} from '@soer/soer-components';
 import { IconsProviderModule } from '../../icons-provider.module';
 import { DefaultComponent } from './default/default.component';
 import { MobileMenuComponent } from './default/mobile-menu/mobile-menu.component';
@@ -27,6 +33,9 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzListModule } from 'ng-zorro-antd/list';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { LinksModule } from './modules/links/links.module';
+import { Tag2LinkPipe } from './modules/streams/tag2link.pipe';
 
 @NgModule({
   imports: [
@@ -55,6 +64,9 @@ import { NzListModule } from 'ng-zorro-antd/list';
     SourcesModule,
     OverlayModule,
     ThumbnailCardModule,
+    CarouselModule,
+    NzTagModule,
+    LinksModule,
   ],
   declarations: [
     MobileMenuComponent,
@@ -62,6 +74,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
     StreamsComponent,
     RoadmapComponent,
     ComposeVideoPlayerComponent,
+    Tag2LinkPipe,
   ],
   exports: [RouterComposeModule],
 })

@@ -33,7 +33,13 @@
   }
 
   &.none {
-    background-color: #fff;
+    background-color: #3d3d3d;
+    .soer-tile {
+      &__content,
+      &__title {
+        color: #fff;
+      }
+    }
   }
 }
 

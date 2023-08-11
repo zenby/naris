@@ -6,5 +6,6 @@ export interface VideoModel {
   createdAt?: string;
   title: string;
   desc: string;
+  tags: string[];
   children?: VideoModel[];
 }

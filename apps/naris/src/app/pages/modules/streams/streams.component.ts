@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppPageLink } from '@soer/sr-common-interfaces';
 import { Subscription } from 'rxjs';
 import { VideoModel } from '../../../api/streams/stream.model';
 import { VideoService } from '../../../services/video/video.service';
@@ -11,18 +12,12 @@ import { VideoService } from '../../../services/video/video.service';
 })
 export class StreamsComponent implements OnInit, OnDestroy {
   public streams: VideoModel[] = [];
-  public isFolderOpen = -1;
   private queryParamsSub: Subscription | null = null;
   constructor(private route: ActivatedRoute, private router: Router, private videoService: VideoService) {}
 
   ngOnInit(): void {
-    this.queryParamsSub = this.route.queryParams.subscribe((params) => {
-      this.isFolderOpen = params['fid'] || -1;
-      if (params['fid'] >= 0) {
-        this.streams = this.route.snapshot.data?.['streams'][params['fid']].children || [];
-      } else {
-        this.streams = this.route.snapshot.data?.['streams'] || [];
-      }
+    this.queryParamsSub = this.route.queryParams.subscribe(() => {
+      this.streams = this.route.snapshot.data?.['streams'] || [];
     });
   }
 
@@ -32,17 +27,6 @@ export class StreamsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onFolderUp(): void {
-    this.router.navigate(['.'], { relativeTo: this.route, queryParams: {} });
-  }
-
-  showVideoOrOpenFolder(videoOrFolder: VideoModel, index: number): void {
-    if (videoOrFolder.children && index >= 0) {
-      this.router.navigate(['.'], { relativeTo: this.route, queryParams: { fid: index } });
-    } else {
-      this.showVideo(videoOrFolder);
-    }
-  }
   showVideo(video: VideoModel): void {
     const { id: videoId, source: videoSource } = this.videoService.getVideoIdAndSource(video);
 
@@ -53,7 +37,13 @@ export class StreamsComponent implements OnInit, OnDestroy {
     }
     this.router.navigate([videoSource, videoId], {
       relativeTo: this.route,
-      queryParams: { fid: this.isFolderOpen === -1 ? undefined : this.isFolderOpen },
     });
+  }
+
+  gotoLink(link: AppPageLink): void {
+    console.log(link);
+    if (link.linkType === 'conspect') {
+      this.router.navigate(['.', 'conspect', 'view', link.value], { relativeTo: this.route });
+    }
   }
 }

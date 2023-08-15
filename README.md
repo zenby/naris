@@ -33,6 +33,10 @@ npx nx serve naris
 
 ## Проекты
 
+### Диаграмма проектов
+
+![Visualization of the codebase](./diagram.svg)
+
 ### Naris
 
 Naris - это платформа для саморазвития, которая включает в себя следующие возможности:
